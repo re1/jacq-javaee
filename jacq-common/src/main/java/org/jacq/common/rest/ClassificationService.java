@@ -9,5 +9,6 @@ import javax.ws.rs.core.MediaType;
 public interface ClassificationService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/test")
 	public String test();
 }
