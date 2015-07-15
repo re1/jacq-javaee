@@ -1,80 +1,128 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * The persistent class for the tbl_certificate database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_certificate")
-@NamedQuery(name="TblCertificate.findAll", query="SELECT t FROM TblCertificate t")
+@Table(name = "tbl_certificate")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblCertificate.findAll", query = "SELECT t FROM TblCertificate t"),
+    @NamedQuery(name = "TblCertificate.findById", query = "SELECT t FROM TblCertificate t WHERE t.id = :id")})
 public class TblCertificate implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String annotation;
-	private String number;
-	private TblCertificateType tblCertificateType;
-	private TblLivingPlant tblLivingPlant;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "number")
+    private String number;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "annotation")
+    private String annotation;
+    @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblLivingPlant livingPlantId;
+    @JoinColumn(name = "certificate_type_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblCertificateType certificateTypeId;
 
-	public TblCertificate() {
-	}
+    public TblCertificate() {
+    }
 
+    public TblCertificate(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public String getNumber() {
+        return number;
+    }
 
-	@Lob
-	public String getAnnotation() {
-		return this.annotation;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-	public void setAnnotation(String annotation) {
-		this.annotation = annotation;
-	}
+    public String getAnnotation() {
+        return annotation;
+    }
 
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
 
-	@Lob
-	public String getNumber() {
-		return this.number;
-	}
+    public TblLivingPlant getLivingPlantId() {
+        return livingPlantId;
+    }
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public void setLivingPlantId(TblLivingPlant livingPlantId) {
+        this.livingPlantId = livingPlantId;
+    }
 
+    public TblCertificateType getCertificateTypeId() {
+        return certificateTypeId;
+    }
 
-	//bi-directional many-to-one association to TblCertificateType
-	@ManyToOne
-	@JoinColumn(name="certificate_type_id", nullable=false)
-	public TblCertificateType getTblCertificateType() {
-		return this.tblCertificateType;
-	}
+    public void setCertificateTypeId(TblCertificateType certificateTypeId) {
+        this.certificateTypeId = certificateTypeId;
+    }
 
-	public void setTblCertificateType(TblCertificateType tblCertificateType) {
-		this.tblCertificateType = tblCertificateType;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblCertificate)) {
+            return false;
+        }
+        TblCertificate other = (TblCertificate) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-	//bi-directional many-to-one association to TblLivingPlant
-	@ManyToOne
-	@JoinColumn(name="living_plant_id", nullable=false)
-	public TblLivingPlant getTblLivingPlant() {
-		return this.tblLivingPlant;
-	}
-
-	public void setTblLivingPlant(TblLivingPlant tblLivingPlant) {
-		this.tblLivingPlant = tblLivingPlant;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblCertificate[ id=" + id + " ]";
+    }
 
 }

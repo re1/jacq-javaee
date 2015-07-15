@@ -1,83 +1,126 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_cultivar database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_cultivar")
-@NamedQuery(name="TblCultivar.findAll", query="SELECT t FROM TblCultivar t")
+@Table(name = "tbl_cultivar")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblCultivar.findAll", query = "SELECT t FROM TblCultivar t"),
+    @NamedQuery(name = "TblCultivar.findByCultivarId", query = "SELECT t FROM TblCultivar t WHERE t.cultivarId = :cultivarId"),
+    @NamedQuery(name = "TblCultivar.findByCultivar", query = "SELECT t FROM TblCultivar t WHERE t.cultivar = :cultivar")})
 public class TblCultivar implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int cultivarId;
-	private String cultivar;
-	private TblScientificNameInformation tblScientificNameInformation;
-	private List<TblLivingPlant> tblLivingPlants;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "cultivar_id")
+    private Integer cultivarId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "cultivar")
+    private String cultivar;
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id")
+    @ManyToOne(optional = false)
+    private TblScientificNameInformation scientificNameId;
+    @OneToMany(mappedBy = "cultivarId")
+    private Collection<TblLivingPlant> tblLivingPlantCollection;
 
-	public TblCultivar() {
-	}
+    public TblCultivar() {
+    }
 
+    public TblCultivar(Integer cultivarId) {
+        this.cultivarId = cultivarId;
+    }
 
-	@Id
-	@Column(name="cultivar_id", unique=true, nullable=false)
-	public int getCultivarId() {
-		return this.cultivarId;
-	}
+    public TblCultivar(Integer cultivarId, String cultivar) {
+        this.cultivarId = cultivarId;
+        this.cultivar = cultivar;
+    }
 
-	public void setCultivarId(int cultivarId) {
-		this.cultivarId = cultivarId;
-	}
+    public Integer getCultivarId() {
+        return cultivarId;
+    }
 
+    public void setCultivarId(Integer cultivarId) {
+        this.cultivarId = cultivarId;
+    }
 
-	@Column(nullable=false, length=255)
-	public String getCultivar() {
-		return this.cultivar;
-	}
+    public String getCultivar() {
+        return cultivar;
+    }
 
-	public void setCultivar(String cultivar) {
-		this.cultivar = cultivar;
-	}
+    public void setCultivar(String cultivar) {
+        this.cultivar = cultivar;
+    }
 
+    public TblScientificNameInformation getScientificNameId() {
+        return scientificNameId;
+    }
 
-	//bi-directional many-to-one association to TblScientificNameInformation
-	@ManyToOne
-	@JoinColumn(name="scientific_name_id", nullable=false)
-	public TblScientificNameInformation getTblScientificNameInformation() {
-		return this.tblScientificNameInformation;
-	}
+    public void setScientificNameId(TblScientificNameInformation scientificNameId) {
+        this.scientificNameId = scientificNameId;
+    }
 
-	public void setTblScientificNameInformation(TblScientificNameInformation tblScientificNameInformation) {
-		this.tblScientificNameInformation = tblScientificNameInformation;
-	}
+    @XmlTransient
+    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
+        return tblLivingPlantCollection;
+    }
 
+    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
+        this.tblLivingPlantCollection = tblLivingPlantCollection;
+    }
 
-	//bi-directional many-to-one association to TblLivingPlant
-	@OneToMany(mappedBy="tblCultivar")
-	public List<TblLivingPlant> getTblLivingPlants() {
-		return this.tblLivingPlants;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (cultivarId != null ? cultivarId.hashCode() : 0);
+        return hash;
+    }
 
-	public void setTblLivingPlants(List<TblLivingPlant> tblLivingPlants) {
-		this.tblLivingPlants = tblLivingPlants;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblCultivar)) {
+            return false;
+        }
+        TblCultivar other = (TblCultivar) object;
+        if ((this.cultivarId == null && other.cultivarId != null) || (this.cultivarId != null && !this.cultivarId.equals(other.cultivarId))) {
+            return false;
+        }
+        return true;
+    }
 
-	public TblLivingPlant addTblLivingPlant(TblLivingPlant tblLivingPlant) {
-		getTblLivingPlants().add(tblLivingPlant);
-		tblLivingPlant.setTblCultivar(this);
-
-		return tblLivingPlant;
-	}
-
-	public TblLivingPlant removeTblLivingPlant(TblLivingPlant tblLivingPlant) {
-		getTblLivingPlants().remove(tblLivingPlant);
-		tblLivingPlant.setTblCultivar(null);
-
-		return tblLivingPlant;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblCultivar[ cultivarId=" + cultivarId + " ]";
+    }
 
 }

@@ -1,83 +1,125 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_tree_record_file_page database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_tree_record_file_page")
-@NamedQuery(name="TblTreeRecordFilePage.findAll", query="SELECT t FROM TblTreeRecordFilePage t")
+@Table(name = "tbl_tree_record_file_page")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblTreeRecordFilePage.findAll", query = "SELECT t FROM TblTreeRecordFilePage t"),
+    @NamedQuery(name = "TblTreeRecordFilePage.findById", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.id = :id"),
+    @NamedQuery(name = "TblTreeRecordFilePage.findByPage", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.page = :page")})
 public class TblTreeRecordFilePage implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private int page;
-	private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePages;
-	private TblTreeRecordFile tblTreeRecordFile;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "page")
+    private int page;
+    @JoinColumn(name = "tree_record_file_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblTreeRecordFile treeRecordFileId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId")
+    private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
 
-	public TblTreeRecordFilePage() {
-	}
+    public TblTreeRecordFilePage() {
+    }
 
+    public TblTreeRecordFilePage(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public TblTreeRecordFilePage(Integer id, int page) {
+        this.id = id;
+        this.page = page;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(nullable=false)
-	public int getPage() {
-		return this.page;
-	}
+    public int getPage() {
+        return page;
+    }
 
-	public void setPage(int page) {
-		this.page = page;
-	}
+    public void setPage(int page) {
+        this.page = page;
+    }
 
+    public TblTreeRecordFile getTreeRecordFileId() {
+        return treeRecordFileId;
+    }
 
-	//bi-directional many-to-one association to TblLivingPlantTreeRecordFilePage
-	@OneToMany(mappedBy="tblTreeRecordFilePage")
-	public List<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePages() {
-		return this.tblLivingPlantTreeRecordFilePages;
-	}
+    public void setTreeRecordFileId(TblTreeRecordFile treeRecordFileId) {
+        this.treeRecordFileId = treeRecordFileId;
+    }
 
-	public void setTblLivingPlantTreeRecordFilePages(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePages) {
-		this.tblLivingPlantTreeRecordFilePages = tblLivingPlantTreeRecordFilePages;
-	}
+    @XmlTransient
+    public Collection<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageCollection() {
+        return tblLivingPlantTreeRecordFilePageCollection;
+    }
 
-	public TblLivingPlantTreeRecordFilePage addTblLivingPlantTreeRecordFilePage(TblLivingPlantTreeRecordFilePage tblLivingPlantTreeRecordFilePage) {
-		getTblLivingPlantTreeRecordFilePages().add(tblLivingPlantTreeRecordFilePage);
-		tblLivingPlantTreeRecordFilePage.setTblTreeRecordFilePage(this);
+    public void setTblLivingPlantTreeRecordFilePageCollection(Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection) {
+        this.tblLivingPlantTreeRecordFilePageCollection = tblLivingPlantTreeRecordFilePageCollection;
+    }
 
-		return tblLivingPlantTreeRecordFilePage;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public TblLivingPlantTreeRecordFilePage removeTblLivingPlantTreeRecordFilePage(TblLivingPlantTreeRecordFilePage tblLivingPlantTreeRecordFilePage) {
-		getTblLivingPlantTreeRecordFilePages().remove(tblLivingPlantTreeRecordFilePage);
-		tblLivingPlantTreeRecordFilePage.setTblTreeRecordFilePage(null);
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblTreeRecordFilePage)) {
+            return false;
+        }
+        TblTreeRecordFilePage other = (TblTreeRecordFilePage) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-		return tblLivingPlantTreeRecordFilePage;
-	}
-
-
-	//bi-directional many-to-one association to TblTreeRecordFile
-	@ManyToOne
-	@JoinColumn(name="tree_record_file_id", nullable=false)
-	public TblTreeRecordFile getTblTreeRecordFile() {
-		return this.tblTreeRecordFile;
-	}
-
-	public void setTblTreeRecordFile(TblTreeRecordFile tblTreeRecordFile) {
-		this.tblTreeRecordFile = tblTreeRecordFile;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblTreeRecordFilePage[ id=" + id + " ]";
+    }
 
 }

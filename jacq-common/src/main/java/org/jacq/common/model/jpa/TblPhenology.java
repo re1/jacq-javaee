@@ -1,70 +1,105 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_phenology database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_phenology")
-@NamedQuery(name="TblPhenology.findAll", query="SELECT t FROM TblPhenology t")
+@Table(name = "tbl_phenology")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblPhenology.findAll", query = "SELECT t FROM TblPhenology t"),
+    @NamedQuery(name = "TblPhenology.findById", query = "SELECT t FROM TblPhenology t WHERE t.id = :id"),
+    @NamedQuery(name = "TblPhenology.findByPhenology", query = "SELECT t FROM TblPhenology t WHERE t.phenology = :phenology")})
 public class TblPhenology implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String phenology;
-	private List<TblBotanicalObject> tblBotanicalObjects;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 45)
+    @Column(name = "phenology")
+    private String phenology;
+    @OneToMany(mappedBy = "phenologyId")
+    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
 
-	public TblPhenology() {
-	}
+    public TblPhenology() {
+    }
 
+    public TblPhenology(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public String getPhenology() {
+        return phenology;
+    }
 
-	@Column(length=45)
-	public String getPhenology() {
-		return this.phenology;
-	}
+    public void setPhenology(String phenology) {
+        this.phenology = phenology;
+    }
 
-	public void setPhenology(String phenology) {
-		this.phenology = phenology;
-	}
+    @XmlTransient
+    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
+        return tblBotanicalObjectCollection;
+    }
 
+    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
+        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    }
 
-	//bi-directional many-to-one association to TblBotanicalObject
-	@OneToMany(mappedBy="tblPhenology")
-	public List<TblBotanicalObject> getTblBotanicalObjects() {
-		return this.tblBotanicalObjects;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public void setTblBotanicalObjects(List<TblBotanicalObject> tblBotanicalObjects) {
-		this.tblBotanicalObjects = tblBotanicalObjects;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblPhenology)) {
+            return false;
+        }
+        TblPhenology other = (TblPhenology) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-	public TblBotanicalObject addTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().add(tblBotanicalObject);
-		tblBotanicalObject.setTblPhenology(this);
-
-		return tblBotanicalObject;
-	}
-
-	public TblBotanicalObject removeTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().remove(tblBotanicalObject);
-		tblBotanicalObject.setTblPhenology(null);
-
-		return tblBotanicalObject;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblPhenology[ id=" + id + " ]";
+    }
 
 }

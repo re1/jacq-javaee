@@ -1,91 +1,125 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_person database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_person")
-@NamedQuery(name="TblPerson.findAll", query="SELECT t FROM TblPerson t")
+@Table(name = "tbl_person")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblPerson.findAll", query = "SELECT t FROM TblPerson t"),
+    @NamedQuery(name = "TblPerson.findById", query = "SELECT t FROM TblPerson t WHERE t.id = :id"),
+    @NamedQuery(name = "TblPerson.findByName", query = "SELECT t FROM TblPerson t WHERE t.name = :name")})
 public class TblPerson implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String name;
-	private List<TblBotanicalObject> tblBotanicalObjects;
-	private List<TblAcquisitionEvent> tblAcquisitionEvents;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "name")
+    private String name;
+    @ManyToMany(mappedBy = "tblPersonCollection")
+    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    @OneToMany(mappedBy = "determinedById")
+    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
 
-	public TblPerson() {
-	}
+    public TblPerson() {
+    }
 
+    public TblPerson(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public TblPerson(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(nullable=false, length=255)
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    @XmlTransient
+    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
+        return tblAcquisitionEventCollection;
+    }
 
-	//bi-directional many-to-one association to TblBotanicalObject
-	@OneToMany(mappedBy="tblPerson")
-	public List<TblBotanicalObject> getTblBotanicalObjects() {
-		return this.tblBotanicalObjects;
-	}
+    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
+        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    }
 
-	public void setTblBotanicalObjects(List<TblBotanicalObject> tblBotanicalObjects) {
-		this.tblBotanicalObjects = tblBotanicalObjects;
-	}
+    @XmlTransient
+    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
+        return tblBotanicalObjectCollection;
+    }
 
-	public TblBotanicalObject addTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().add(tblBotanicalObject);
-		tblBotanicalObject.setTblPerson(this);
+    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
+        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    }
 
-		return tblBotanicalObject;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public TblBotanicalObject removeTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().remove(tblBotanicalObject);
-		tblBotanicalObject.setTblPerson(null);
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblPerson)) {
+            return false;
+        }
+        TblPerson other = (TblPerson) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-		return tblBotanicalObject;
-	}
-
-
-	//bi-directional many-to-many association to TblAcquisitionEvent
-	@ManyToMany
-	@JoinTable(
-		name="tbl_acquisition_event_person"
-		, joinColumns={
-			@JoinColumn(name="person_id", nullable=false)
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="acquisition_event_id", nullable=false)
-			}
-		)
-	public List<TblAcquisitionEvent> getTblAcquisitionEvents() {
-		return this.tblAcquisitionEvents;
-	}
-
-	public void setTblAcquisitionEvents(List<TblAcquisitionEvent> tblAcquisitionEvents) {
-		this.tblAcquisitionEvents = tblAcquisitionEvents;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblPerson[ id=" + id + " ]";
+    }
 
 }

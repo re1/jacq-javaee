@@ -1,171 +1,192 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_acquisition_event database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_acquisition_event")
-@NamedQuery(name="TblAcquisitionEvent.findAll", query="SELECT t FROM TblAcquisitionEvent t")
+@Table(name = "tbl_acquisition_event")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblAcquisitionEvent.findAll", query = "SELECT t FROM TblAcquisitionEvent t"),
+    @NamedQuery(name = "TblAcquisitionEvent.findById", query = "SELECT t FROM TblAcquisitionEvent t WHERE t.id = :id")})
 public class TblAcquisitionEvent implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String annotation;
-	private String number;
-	private TblAcquisitionDate tblAcquisitionDate;
-	private TblAcquisitionType tblAcquisitionType;
-	private TblLocation tblLocation;
-	private TblLocationCoordinate tblLocationCoordinate;
-	private List<TblAcquisitionEventSource> tblAcquisitionEventSources;
-	private List<TblBotanicalObject> tblBotanicalObjects;
-	private List<TblPerson> tblPersons;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "number")
+    private String number;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "annotation")
+    private String annotation;
+    @JoinTable(name = "tbl_acquisition_event_person", joinColumns = {
+        @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "person_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<TblPerson> tblPersonCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
+    @JoinColumn(name = "location_coordinates_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblLocationCoordinates locationCoordinatesId;
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    @ManyToOne
+    private TblLocation locationId;
+    @JoinColumn(name = "acquisition_type_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblAcquisitionType acquisitionTypeId;
+    @JoinColumn(name = "acquisition_date_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblAcquisitionDate acquisitionDateId;
 
-	public TblAcquisitionEvent() {
-	}
+    public TblAcquisitionEvent() {
+    }
 
+    public TblAcquisitionEvent(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public String getNumber() {
+        return number;
+    }
 
-	@Lob
-	public String getAnnotation() {
-		return this.annotation;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-	public void setAnnotation(String annotation) {
-		this.annotation = annotation;
-	}
+    public String getAnnotation() {
+        return annotation;
+    }
 
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
 
-	@Lob
-	public String getNumber() {
-		return this.number;
-	}
+    @XmlTransient
+    public Collection<TblPerson> getTblPersonCollection() {
+        return tblPersonCollection;
+    }
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public void setTblPersonCollection(Collection<TblPerson> tblPersonCollection) {
+        this.tblPersonCollection = tblPersonCollection;
+    }
 
+    @XmlTransient
+    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
+        return tblBotanicalObjectCollection;
+    }
 
-	//bi-directional many-to-one association to TblAcquisitionDate
-	@ManyToOne
-	@JoinColumn(name="acquisition_date_id", nullable=false)
-	public TblAcquisitionDate getTblAcquisitionDate() {
-		return this.tblAcquisitionDate;
-	}
+    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
+        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    }
 
-	public void setTblAcquisitionDate(TblAcquisitionDate tblAcquisitionDate) {
-		this.tblAcquisitionDate = tblAcquisitionDate;
-	}
+    @XmlTransient
+    public Collection<TblAcquisitionEventSource> getTblAcquisitionEventSourceCollection() {
+        return tblAcquisitionEventSourceCollection;
+    }
 
+    public void setTblAcquisitionEventSourceCollection(Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection) {
+        this.tblAcquisitionEventSourceCollection = tblAcquisitionEventSourceCollection;
+    }
 
-	//bi-directional many-to-one association to TblAcquisitionType
-	@ManyToOne
-	@JoinColumn(name="acquisition_type_id", nullable=false)
-	public TblAcquisitionType getTblAcquisitionType() {
-		return this.tblAcquisitionType;
-	}
+    public TblLocationCoordinates getLocationCoordinatesId() {
+        return locationCoordinatesId;
+    }
 
-	public void setTblAcquisitionType(TblAcquisitionType tblAcquisitionType) {
-		this.tblAcquisitionType = tblAcquisitionType;
-	}
+    public void setLocationCoordinatesId(TblLocationCoordinates locationCoordinatesId) {
+        this.locationCoordinatesId = locationCoordinatesId;
+    }
 
+    public TblLocation getLocationId() {
+        return locationId;
+    }
 
-	//bi-directional many-to-one association to TblLocation
-	@ManyToOne
-	@JoinColumn(name="location_id")
-	public TblLocation getTblLocation() {
-		return this.tblLocation;
-	}
+    public void setLocationId(TblLocation locationId) {
+        this.locationId = locationId;
+    }
 
-	public void setTblLocation(TblLocation tblLocation) {
-		this.tblLocation = tblLocation;
-	}
+    public TblAcquisitionType getAcquisitionTypeId() {
+        return acquisitionTypeId;
+    }
 
+    public void setAcquisitionTypeId(TblAcquisitionType acquisitionTypeId) {
+        this.acquisitionTypeId = acquisitionTypeId;
+    }
 
-	//bi-directional many-to-one association to TblLocationCoordinate
-	@ManyToOne
-	@JoinColumn(name="location_coordinates_id", nullable=false)
-	public TblLocationCoordinate getTblLocationCoordinate() {
-		return this.tblLocationCoordinate;
-	}
+    public TblAcquisitionDate getAcquisitionDateId() {
+        return acquisitionDateId;
+    }
 
-	public void setTblLocationCoordinate(TblLocationCoordinate tblLocationCoordinate) {
-		this.tblLocationCoordinate = tblLocationCoordinate;
-	}
+    public void setAcquisitionDateId(TblAcquisitionDate acquisitionDateId) {
+        this.acquisitionDateId = acquisitionDateId;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	//bi-directional many-to-one association to TblAcquisitionEventSource
-	@OneToMany(mappedBy="tblAcquisitionEvent")
-	public List<TblAcquisitionEventSource> getTblAcquisitionEventSources() {
-		return this.tblAcquisitionEventSources;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblAcquisitionEvent)) {
+            return false;
+        }
+        TblAcquisitionEvent other = (TblAcquisitionEvent) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-	public void setTblAcquisitionEventSources(List<TblAcquisitionEventSource> tblAcquisitionEventSources) {
-		this.tblAcquisitionEventSources = tblAcquisitionEventSources;
-	}
-
-	public TblAcquisitionEventSource addTblAcquisitionEventSource(TblAcquisitionEventSource tblAcquisitionEventSource) {
-		getTblAcquisitionEventSources().add(tblAcquisitionEventSource);
-		tblAcquisitionEventSource.setTblAcquisitionEvent(this);
-
-		return tblAcquisitionEventSource;
-	}
-
-	public TblAcquisitionEventSource removeTblAcquisitionEventSource(TblAcquisitionEventSource tblAcquisitionEventSource) {
-		getTblAcquisitionEventSources().remove(tblAcquisitionEventSource);
-		tblAcquisitionEventSource.setTblAcquisitionEvent(null);
-
-		return tblAcquisitionEventSource;
-	}
-
-
-	//bi-directional many-to-one association to TblBotanicalObject
-	@OneToMany(mappedBy="tblAcquisitionEvent")
-	public List<TblBotanicalObject> getTblBotanicalObjects() {
-		return this.tblBotanicalObjects;
-	}
-
-	public void setTblBotanicalObjects(List<TblBotanicalObject> tblBotanicalObjects) {
-		this.tblBotanicalObjects = tblBotanicalObjects;
-	}
-
-	public TblBotanicalObject addTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().add(tblBotanicalObject);
-		tblBotanicalObject.setTblAcquisitionEvent(this);
-
-		return tblBotanicalObject;
-	}
-
-	public TblBotanicalObject removeTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().remove(tblBotanicalObject);
-		tblBotanicalObject.setTblAcquisitionEvent(null);
-
-		return tblBotanicalObject;
-	}
-
-
-	//bi-directional many-to-many association to TblPerson
-	@ManyToMany(mappedBy="tblAcquisitionEvents")
-	public List<TblPerson> getTblPersons() {
-		return this.tblPersons;
-	}
-
-	public void setTblPersons(List<TblPerson> tblPersons) {
-		this.tblPersons = tblPersons;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblAcquisitionEvent[ id=" + id + " ]";
+    }
 
 }

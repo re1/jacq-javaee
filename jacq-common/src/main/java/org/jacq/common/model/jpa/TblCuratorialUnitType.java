@@ -1,82 +1,132 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
-
+import java.util.Collection;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_curatorial_unit_type database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_curatorial_unit_type")
-@NamedQuery(name="TblCuratorialUnitType.findAll", query="SELECT t FROM TblCuratorialUnitType t")
+@Table(name = "tbl_curatorial_unit_type")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblCuratorialUnitType.findAll", query = "SELECT t FROM TblCuratorialUnitType t"),
+    @NamedQuery(name = "TblCuratorialUnitType.findByCuratorialUnitTypeId", query = "SELECT t FROM TblCuratorialUnitType t WHERE t.curatorialUnitTypeId = :curatorialUnitTypeId"),
+    @NamedQuery(name = "TblCuratorialUnitType.findByTypeName", query = "SELECT t FROM TblCuratorialUnitType t WHERE t.typeName = :typeName"),
+    @NamedQuery(name = "TblCuratorialUnitType.findByTimestamp", query = "SELECT t FROM TblCuratorialUnitType t WHERE t.timestamp = :timestamp")})
 public class TblCuratorialUnitType implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int curatorialUnitTypeId;
-	private Timestamp timestamp;
-	private String typeName;
-	private List<TblCuratorialUnit> tblCuratorialUnits;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "curatorial_unit_type_id")
+    private Integer curatorialUnitTypeId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "type_name")
+    private String typeName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "curatorialUnitTypeId")
+    private Collection<TblCuratorialUnit> tblCuratorialUnitCollection;
 
-	public TblCuratorialUnitType() {
-	}
+    public TblCuratorialUnitType() {
+    }
 
+    public TblCuratorialUnitType(Integer curatorialUnitTypeId) {
+        this.curatorialUnitTypeId = curatorialUnitTypeId;
+    }
 
-	@Id
-	@Column(name="curatorial_unit_type_id", unique=true, nullable=false)
-	public int getCuratorialUnitTypeId() {
-		return this.curatorialUnitTypeId;
-	}
+    public TblCuratorialUnitType(Integer curatorialUnitTypeId, String typeName, Date timestamp) {
+        this.curatorialUnitTypeId = curatorialUnitTypeId;
+        this.typeName = typeName;
+        this.timestamp = timestamp;
+    }
 
-	public void setCuratorialUnitTypeId(int curatorialUnitTypeId) {
-		this.curatorialUnitTypeId = curatorialUnitTypeId;
-	}
+    public Integer getCuratorialUnitTypeId() {
+        return curatorialUnitTypeId;
+    }
 
+    public void setCuratorialUnitTypeId(Integer curatorialUnitTypeId) {
+        this.curatorialUnitTypeId = curatorialUnitTypeId;
+    }
 
-	@Column(nullable=false)
-	public Timestamp getTimestamp() {
-		return this.timestamp;
-	}
+    public String getTypeName() {
+        return typeName;
+    }
 
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	@Column(name="type_name", nullable=false, length=45)
-	public String getTypeName() {
-		return this.typeName;
-	}
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
+    @XmlTransient
+    public Collection<TblCuratorialUnit> getTblCuratorialUnitCollection() {
+        return tblCuratorialUnitCollection;
+    }
 
+    public void setTblCuratorialUnitCollection(Collection<TblCuratorialUnit> tblCuratorialUnitCollection) {
+        this.tblCuratorialUnitCollection = tblCuratorialUnitCollection;
+    }
 
-	//bi-directional many-to-one association to TblCuratorialUnit
-	@OneToMany(mappedBy="tblCuratorialUnitType")
-	public List<TblCuratorialUnit> getTblCuratorialUnits() {
-		return this.tblCuratorialUnits;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (curatorialUnitTypeId != null ? curatorialUnitTypeId.hashCode() : 0);
+        return hash;
+    }
 
-	public void setTblCuratorialUnits(List<TblCuratorialUnit> tblCuratorialUnits) {
-		this.tblCuratorialUnits = tblCuratorialUnits;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblCuratorialUnitType)) {
+            return false;
+        }
+        TblCuratorialUnitType other = (TblCuratorialUnitType) object;
+        if ((this.curatorialUnitTypeId == null && other.curatorialUnitTypeId != null) || (this.curatorialUnitTypeId != null && !this.curatorialUnitTypeId.equals(other.curatorialUnitTypeId))) {
+            return false;
+        }
+        return true;
+    }
 
-	public TblCuratorialUnit addTblCuratorialUnit(TblCuratorialUnit tblCuratorialUnit) {
-		getTblCuratorialUnits().add(tblCuratorialUnit);
-		tblCuratorialUnit.setTblCuratorialUnitType(this);
-
-		return tblCuratorialUnit;
-	}
-
-	public TblCuratorialUnit removeTblCuratorialUnit(TblCuratorialUnit tblCuratorialUnit) {
-		getTblCuratorialUnits().remove(tblCuratorialUnit);
-		tblCuratorialUnit.setTblCuratorialUnitType(null);
-
-		return tblCuratorialUnit;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblCuratorialUnitType[ curatorialUnitTypeId=" + curatorialUnitTypeId + " ]";
+    }
 
 }

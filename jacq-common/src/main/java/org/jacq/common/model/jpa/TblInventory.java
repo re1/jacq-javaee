@@ -1,97 +1,140 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
-
+import java.util.Collection;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_inventory database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_inventory")
-@NamedQuery(name="TblInventory.findAll", query="SELECT t FROM TblInventory t")
+@Table(name = "tbl_inventory")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblInventory.findAll", query = "SELECT t FROM TblInventory t"),
+    @NamedQuery(name = "TblInventory.findByInventoryId", query = "SELECT t FROM TblInventory t WHERE t.inventoryId = :inventoryId"),
+    @NamedQuery(name = "TblInventory.findByTimestamp", query = "SELECT t FROM TblInventory t WHERE t.timestamp = :timestamp")})
 public class TblInventory implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int inventoryId;
-	private Timestamp timestamp;
-	private FrmwrkUser frmwrkUser;
-	private TblInventoryType tblInventoryType;
-	private List<TblInventoryObject> tblInventoryObjects;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "inventory_id")
+    private Integer inventoryId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+    @JoinColumn(name = "inventory_type_id", referencedColumnName = "inventory_type_id")
+    @ManyToOne(optional = false)
+    private TblInventoryType inventoryTypeId;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private FrmwrkUser userId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId")
+    private Collection<TblInventoryObject> tblInventoryObjectCollection;
 
-	public TblInventory() {
-	}
+    public TblInventory() {
+    }
 
+    public TblInventory(Integer inventoryId) {
+        this.inventoryId = inventoryId;
+    }
 
-	@Id
-	@Column(name="inventory_id", unique=true, nullable=false)
-	public int getInventoryId() {
-		return this.inventoryId;
-	}
+    public TblInventory(Integer inventoryId, Date timestamp) {
+        this.inventoryId = inventoryId;
+        this.timestamp = timestamp;
+    }
 
-	public void setInventoryId(int inventoryId) {
-		this.inventoryId = inventoryId;
-	}
+    public Integer getInventoryId() {
+        return inventoryId;
+    }
 
+    public void setInventoryId(Integer inventoryId) {
+        this.inventoryId = inventoryId;
+    }
 
-	@Column(nullable=false)
-	public Timestamp getTimestamp() {
-		return this.timestamp;
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
+    public TblInventoryType getInventoryTypeId() {
+        return inventoryTypeId;
+    }
 
-	//bi-directional many-to-one association to FrmwrkUser
-	@ManyToOne
-	@JoinColumn(name="user_id", nullable=false)
-	public FrmwrkUser getFrmwrkUser() {
-		return this.frmwrkUser;
-	}
+    public void setInventoryTypeId(TblInventoryType inventoryTypeId) {
+        this.inventoryTypeId = inventoryTypeId;
+    }
 
-	public void setFrmwrkUser(FrmwrkUser frmwrkUser) {
-		this.frmwrkUser = frmwrkUser;
-	}
+    public FrmwrkUser getUserId() {
+        return userId;
+    }
 
+    public void setUserId(FrmwrkUser userId) {
+        this.userId = userId;
+    }
 
-	//bi-directional many-to-one association to TblInventoryType
-	@ManyToOne
-	@JoinColumn(name="inventory_type_id", nullable=false)
-	public TblInventoryType getTblInventoryType() {
-		return this.tblInventoryType;
-	}
+    @XmlTransient
+    public Collection<TblInventoryObject> getTblInventoryObjectCollection() {
+        return tblInventoryObjectCollection;
+    }
 
-	public void setTblInventoryType(TblInventoryType tblInventoryType) {
-		this.tblInventoryType = tblInventoryType;
-	}
+    public void setTblInventoryObjectCollection(Collection<TblInventoryObject> tblInventoryObjectCollection) {
+        this.tblInventoryObjectCollection = tblInventoryObjectCollection;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (inventoryId != null ? inventoryId.hashCode() : 0);
+        return hash;
+    }
 
-	//bi-directional many-to-one association to TblInventoryObject
-	@OneToMany(mappedBy="tblInventory")
-	public List<TblInventoryObject> getTblInventoryObjects() {
-		return this.tblInventoryObjects;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblInventory)) {
+            return false;
+        }
+        TblInventory other = (TblInventory) object;
+        if ((this.inventoryId == null && other.inventoryId != null) || (this.inventoryId != null && !this.inventoryId.equals(other.inventoryId))) {
+            return false;
+        }
+        return true;
+    }
 
-	public void setTblInventoryObjects(List<TblInventoryObject> tblInventoryObjects) {
-		this.tblInventoryObjects = tblInventoryObjects;
-	}
-
-	public TblInventoryObject addTblInventoryObject(TblInventoryObject tblInventoryObject) {
-		getTblInventoryObjects().add(tblInventoryObject);
-		tblInventoryObject.setTblInventory(this);
-
-		return tblInventoryObject;
-	}
-
-	public TblInventoryObject removeTblInventoryObject(TblInventoryObject tblInventoryObject) {
-		getTblInventoryObjects().remove(tblInventoryObject);
-		tblInventoryObject.setTblInventory(null);
-
-		return tblInventoryObject;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblInventory[ inventoryId=" + inventoryId + " ]";
+    }
 
 }

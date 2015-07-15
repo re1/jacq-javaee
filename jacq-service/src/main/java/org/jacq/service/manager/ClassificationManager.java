@@ -8,19 +8,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jacq.common.model.jpa.TaxClassification;
+import org.jacq.common.model.jpa.TblTaxClassification;
 
 @ManagedBean
 public class ClassificationManager implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@PersistenceContext(unitName = "jacq-service")
-	EntityManager entityManager;
+    private static final long serialVersionUID = 1L;
 
-	public List<TaxClassification> getTopLevelEntries() {
-		Query query = entityManager.createNamedQuery("TaxClassification.findAllTopLevel", TaxClassification.class);
+    @PersistenceContext(unitName = "jacq-service")
+    EntityManager entityManager;
 
-		List<TaxClassification> resultList = query.getResultList();
-		return resultList;
-	}
+    public List<TblTaxClassification> getTopLevelEntries() {
+        Query query = entityManager.createNamedQuery("TblTaxClassification.findAllTopLevel", TblTaxClassification.class);
+
+        List<TblTaxClassification> resultList = query.getResultList();
+        return resultList;
+    }
 }

@@ -1,160 +1,199 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the frmwrk2_auth_item database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="frmwrk2_auth_item")
-@NamedQuery(name="Frmwrk2AuthItem.findAll", query="SELECT f FROM Frmwrk2AuthItem f")
+@Table(name = "frmwrk2_auth_item")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Frmwrk2AuthItem.findAll", query = "SELECT f FROM Frmwrk2AuthItem f"),
+    @NamedQuery(name = "Frmwrk2AuthItem.findByName", query = "SELECT f FROM Frmwrk2AuthItem f WHERE f.name = :name"),
+    @NamedQuery(name = "Frmwrk2AuthItem.findByType", query = "SELECT f FROM Frmwrk2AuthItem f WHERE f.type = :type"),
+    @NamedQuery(name = "Frmwrk2AuthItem.findByCreatedAt", query = "SELECT f FROM Frmwrk2AuthItem f WHERE f.createdAt = :createdAt"),
+    @NamedQuery(name = "Frmwrk2AuthItem.findByUpdatedAt", query = "SELECT f FROM Frmwrk2AuthItem f WHERE f.updatedAt = :updatedAt")})
 public class Frmwrk2AuthItem implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private int createdAt;
-	private String data;
-	private String description;
-	private int type;
-	private int updatedAt;
-	private List<Frmwrk2AuthAssignment> frmwrk2AuthAssignments;
-	private List<Frmwrk2AuthItem> frmwrk2AuthItems1;
-	private List<Frmwrk2AuthItem> frmwrk2AuthItems2;
-	private Frmwrk2AuthRule frmwrk2AuthRule;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 64)
+    @Column(name = "name")
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "type")
+    private int type;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "data")
+    private String data;
+    @Column(name = "created_at")
+    private Integer createdAt;
+    @Column(name = "updated_at")
+    private Integer updatedAt;
+    @JoinTable(name = "frmwrk2_auth_item_child", joinColumns = {
+        @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
+        @JoinColumn(name = "child", referencedColumnName = "name")})
+    @ManyToMany
+    private Collection<Frmwrk2AuthItem> frmwrk2AuthItemCollection;
+    @ManyToMany(mappedBy = "frmwrk2AuthItemCollection")
+    private Collection<Frmwrk2AuthItem> frmwrk2AuthItemCollection1;
+    @JoinColumn(name = "rule_name", referencedColumnName = "name")
+    @ManyToOne
+    private Frmwrk2AuthRule ruleName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrk2AuthItem")
+    private Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection;
 
-	public Frmwrk2AuthItem() {
-	}
+    public Frmwrk2AuthItem() {
+    }
 
+    public Frmwrk2AuthItem(String name) {
+        this.name = name;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false, length=64)
-	public String getName() {
-		return this.name;
-	}
+    public Frmwrk2AuthItem(String name, int type) {
+        this.name = name;
+        this.type = type;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name="created_at")
-	public int getCreatedAt() {
-		return this.createdAt;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public void setCreatedAt(int createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setType(int type) {
+        this.type = type;
+    }
 
+    public String getDescription() {
+        return description;
+    }
 
-	@Lob
-	public String getData() {
-		return this.data;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public String getData() {
+        return data;
+    }
 
+    public void setData(String data) {
+        this.data = data;
+    }
 
-	@Lob
-	public String getDescription() {
-		return this.description;
-	}
+    public Integer getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCreatedAt(Integer createdAt) {
+        this.createdAt = createdAt;
+    }
 
+    public Integer getUpdatedAt() {
+        return updatedAt;
+    }
 
-	@Column(nullable=false)
-	public int getType() {
-		return this.type;
-	}
+    public void setUpdatedAt(Integer updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    @XmlTransient
+    public Collection<Frmwrk2AuthItem> getFrmwrk2AuthItemCollection() {
+        return frmwrk2AuthItemCollection;
+    }
 
+    public void setFrmwrk2AuthItemCollection(Collection<Frmwrk2AuthItem> frmwrk2AuthItemCollection) {
+        this.frmwrk2AuthItemCollection = frmwrk2AuthItemCollection;
+    }
 
-	@Column(name="updated_at")
-	public int getUpdatedAt() {
-		return this.updatedAt;
-	}
+    @XmlTransient
+    public Collection<Frmwrk2AuthItem> getFrmwrk2AuthItemCollection1() {
+        return frmwrk2AuthItemCollection1;
+    }
 
-	public void setUpdatedAt(int updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setFrmwrk2AuthItemCollection1(Collection<Frmwrk2AuthItem> frmwrk2AuthItemCollection1) {
+        this.frmwrk2AuthItemCollection1 = frmwrk2AuthItemCollection1;
+    }
 
+    public Frmwrk2AuthRule getRuleName() {
+        return ruleName;
+    }
 
-	//bi-directional many-to-one association to Frmwrk2AuthAssignment
-	@OneToMany(mappedBy="frmwrk2AuthItem")
-	public List<Frmwrk2AuthAssignment> getFrmwrk2AuthAssignments() {
-		return this.frmwrk2AuthAssignments;
-	}
+    public void setRuleName(Frmwrk2AuthRule ruleName) {
+        this.ruleName = ruleName;
+    }
 
-	public void setFrmwrk2AuthAssignments(List<Frmwrk2AuthAssignment> frmwrk2AuthAssignments) {
-		this.frmwrk2AuthAssignments = frmwrk2AuthAssignments;
-	}
+    @XmlTransient
+    public Collection<Frmwrk2AuthAssignment> getFrmwrk2AuthAssignmentCollection() {
+        return frmwrk2AuthAssignmentCollection;
+    }
 
-	public Frmwrk2AuthAssignment addFrmwrk2AuthAssignment(Frmwrk2AuthAssignment frmwrk2AuthAssignment) {
-		getFrmwrk2AuthAssignments().add(frmwrk2AuthAssignment);
-		frmwrk2AuthAssignment.setFrmwrk2AuthItem(this);
+    public void setFrmwrk2AuthAssignmentCollection(Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection) {
+        this.frmwrk2AuthAssignmentCollection = frmwrk2AuthAssignmentCollection;
+    }
 
-		return frmwrk2AuthAssignment;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (name != null ? name.hashCode() : 0);
+        return hash;
+    }
 
-	public Frmwrk2AuthAssignment removeFrmwrk2AuthAssignment(Frmwrk2AuthAssignment frmwrk2AuthAssignment) {
-		getFrmwrk2AuthAssignments().remove(frmwrk2AuthAssignment);
-		frmwrk2AuthAssignment.setFrmwrk2AuthItem(null);
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Frmwrk2AuthItem)) {
+            return false;
+        }
+        Frmwrk2AuthItem other = (Frmwrk2AuthItem) object;
+        if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
+            return false;
+        }
+        return true;
+    }
 
-		return frmwrk2AuthAssignment;
-	}
-
-
-	//bi-directional many-to-many association to Frmwrk2AuthItem
-	@ManyToMany
-	@JoinTable(
-		name="frmwrk2_auth_item_child"
-		, joinColumns={
-			@JoinColumn(name="child", nullable=false)
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="parent", nullable=false)
-			}
-		)
-	public List<Frmwrk2AuthItem> getFrmwrk2AuthItems1() {
-		return this.frmwrk2AuthItems1;
-	}
-
-	public void setFrmwrk2AuthItems1(List<Frmwrk2AuthItem> frmwrk2AuthItems1) {
-		this.frmwrk2AuthItems1 = frmwrk2AuthItems1;
-	}
-
-
-	//bi-directional many-to-many association to Frmwrk2AuthItem
-	@ManyToMany(mappedBy="frmwrk2AuthItems1")
-	public List<Frmwrk2AuthItem> getFrmwrk2AuthItems2() {
-		return this.frmwrk2AuthItems2;
-	}
-
-	public void setFrmwrk2AuthItems2(List<Frmwrk2AuthItem> frmwrk2AuthItems2) {
-		this.frmwrk2AuthItems2 = frmwrk2AuthItems2;
-	}
-
-
-	//bi-directional many-to-one association to Frmwrk2AuthRule
-	@ManyToOne
-	@JoinColumn(name="rule_name")
-	public Frmwrk2AuthRule getFrmwrk2AuthRule() {
-		return this.frmwrk2AuthRule;
-	}
-
-	public void setFrmwrk2AuthRule(Frmwrk2AuthRule frmwrk2AuthRule) {
-		this.frmwrk2AuthRule = frmwrk2AuthRule;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.Frmwrk2AuthItem[ name=" + name + " ]";
+    }
 
 }

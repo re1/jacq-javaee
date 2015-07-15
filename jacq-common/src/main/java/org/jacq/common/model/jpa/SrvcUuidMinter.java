@@ -1,79 +1,144 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * The persistent class for the srvc_uuid_minter database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="srvc_uuid_minter")
-@NamedQuery(name="SrvcUuidMinter.findAll", query="SELECT s FROM SrvcUuidMinter s")
+@Table(name = "srvc_uuid_minter")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "SrvcUuidMinter.findAll", query = "SELECT s FROM SrvcUuidMinter s"),
+    @NamedQuery(name = "SrvcUuidMinter.findByUuidMinterId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuidMinterId = :uuidMinterId"),
+    @NamedQuery(name = "SrvcUuidMinter.findByInternalId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.internalId = :internalId"),
+    @NamedQuery(name = "SrvcUuidMinter.findByUuid", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuid = :uuid"),
+    @NamedQuery(name = "SrvcUuidMinter.findByTimestamp", query = "SELECT s FROM SrvcUuidMinter s WHERE s.timestamp = :timestamp")})
 public class SrvcUuidMinter implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int uuidMinterId;
-	private int internalId;
-	private Timestamp timestamp;
-	private String uuid;
-	private SrvcUuidMinterType srvcUuidMinterType;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "uuid_minter_id")
+    private Integer uuidMinterId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "internal_id")
+    private int internalId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 36)
+    @Column(name = "uuid")
+    private String uuid;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+    @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")
+    @ManyToOne(optional = false)
+    private SrvcUuidMinterType uuidMinterTypeId;
 
-	public SrvcUuidMinter() {
-	}
+    public SrvcUuidMinter() {
+    }
 
+    public SrvcUuidMinter(Integer uuidMinterId) {
+        this.uuidMinterId = uuidMinterId;
+    }
 
-	@Id
-	@Column(name="uuid_minter_id", unique=true, nullable=false)
-	public int getUuidMinterId() {
-		return this.uuidMinterId;
-	}
+    public SrvcUuidMinter(Integer uuidMinterId, int internalId, String uuid, Date timestamp) {
+        this.uuidMinterId = uuidMinterId;
+        this.internalId = internalId;
+        this.uuid = uuid;
+        this.timestamp = timestamp;
+    }
 
-	public void setUuidMinterId(int uuidMinterId) {
-		this.uuidMinterId = uuidMinterId;
-	}
+    public Integer getUuidMinterId() {
+        return uuidMinterId;
+    }
 
+    public void setUuidMinterId(Integer uuidMinterId) {
+        this.uuidMinterId = uuidMinterId;
+    }
 
-	@Column(name="internal_id", nullable=false)
-	public int getInternalId() {
-		return this.internalId;
-	}
+    public int getInternalId() {
+        return internalId;
+    }
 
-	public void setInternalId(int internalId) {
-		this.internalId = internalId;
-	}
+    public void setInternalId(int internalId) {
+        this.internalId = internalId;
+    }
 
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Column(nullable=false)
-	public Timestamp getTimestamp() {
-		return this.timestamp;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	@Column(nullable=false, length=36)
-	public String getUuid() {
-		return this.uuid;
-	}
+    public SrvcUuidMinterType getUuidMinterTypeId() {
+        return uuidMinterTypeId;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuidMinterTypeId(SrvcUuidMinterType uuidMinterTypeId) {
+        this.uuidMinterTypeId = uuidMinterTypeId;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (uuidMinterId != null ? uuidMinterId.hashCode() : 0);
+        return hash;
+    }
 
-	//bi-directional many-to-one association to SrvcUuidMinterType
-	@ManyToOne
-	@JoinColumn(name="uuid_minter_type_id", nullable=false)
-	public SrvcUuidMinterType getSrvcUuidMinterType() {
-		return this.srvcUuidMinterType;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof SrvcUuidMinter)) {
+            return false;
+        }
+        SrvcUuidMinter other = (SrvcUuidMinter) object;
+        if ((this.uuidMinterId == null && other.uuidMinterId != null) || (this.uuidMinterId != null && !this.uuidMinterId.equals(other.uuidMinterId))) {
+            return false;
+        }
+        return true;
+    }
 
-	public void setSrvcUuidMinterType(SrvcUuidMinterType srvcUuidMinterType) {
-		this.srvcUuidMinterType = srvcUuidMinterType;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.SrvcUuidMinter[ uuidMinterId=" + uuidMinterId + " ]";
+    }
 
 }

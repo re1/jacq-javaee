@@ -1,219 +1,217 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
-
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The persistent class for the tbl_organisation database table.
- * 
+ *
+ * @author wkoller
  */
 @Entity
-@Table(name="tbl_organisation")
-@NamedQuery(name="TblOrganisation.findAll", query="SELECT t FROM TblOrganisation t")
+@Table(name = "tbl_organisation")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblOrganisation.findAll", query = "SELECT t FROM TblOrganisation t"),
+    @NamedQuery(name = "TblOrganisation.findById", query = "SELECT t FROM TblOrganisation t WHERE t.id = :id"),
+    @NamedQuery(name = "TblOrganisation.findByDescription", query = "SELECT t FROM TblOrganisation t WHERE t.description = :description"),
+    @NamedQuery(name = "TblOrganisation.findByDepartment", query = "SELECT t FROM TblOrganisation t WHERE t.department = :department"),
+    @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse"),
+    @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")})
 public class TblOrganisation implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private int id;
-	private String department;
-	private String description;
-	private byte greenhouse;
-	private String ipenCode;
-	private List<Frmwrk_accessOrganisation> frmwrkAccessOrganisations;
-	private List<FrmwrkUser> frmwrkUsers;
-	private List<TblBotanicalObject> tblBotanicalObjects;
-	private TblImageServer tblImageServer;
-	private FrmwrkUser frmwrkUser;
-	private TblOrganisation tblOrganisation;
-	private List<TblOrganisation> tblOrganisations;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 255)
+    @Column(name = "description")
+    private String description;
+    @Size(max = 255)
+    @Column(name = "department")
+    private String department;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "greenhouse")
+    private boolean greenhouse;
+    @Size(max = 5)
+    @Column(name = "ipen_code")
+    private String ipenCode;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    private Collection<FrmwrkUser> frmwrkUserCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    private TblImageServer tblImageServer;
+    @OneToMany(mappedBy = "organisationId")
+    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    @JoinColumn(name = "gardener_id", referencedColumnName = "id")
+    @ManyToOne
+    private FrmwrkUser gardenerId;
+    @OneToMany(mappedBy = "parentOrganisationId")
+    private Collection<TblOrganisation> tblOrganisationCollection;
+    @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
+    @ManyToOne
+    private TblOrganisation parentOrganisationId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
 
-	public TblOrganisation() {
-	}
+    public TblOrganisation() {
+    }
 
+    public TblOrganisation(Integer id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(unique=true, nullable=false)
-	public int getId() {
-		return this.id;
-	}
+    public TblOrganisation(Integer id, boolean greenhouse) {
+        this.id = id;
+        this.greenhouse = greenhouse;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(length=255)
-	public String getDepartment() {
-		return this.department;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDepartment(String department) {
-		this.department = department;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public String getDepartment() {
+        return department;
+    }
 
-	@Column(length=255)
-	public String getDescription() {
-		return this.description;
-	}
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public boolean getGreenhouse() {
+        return greenhouse;
+    }
 
+    public void setGreenhouse(boolean greenhouse) {
+        this.greenhouse = greenhouse;
+    }
 
-	@Column(nullable=false)
-	public byte getGreenhouse() {
-		return this.greenhouse;
-	}
+    public String getIpenCode() {
+        return ipenCode;
+    }
 
-	public void setGreenhouse(byte greenhouse) {
-		this.greenhouse = greenhouse;
-	}
+    public void setIpenCode(String ipenCode) {
+        this.ipenCode = ipenCode;
+    }
 
+    @XmlTransient
+    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
+        return frmwrkUserCollection;
+    }
 
-	@Column(name="ipen_code", length=5)
-	public String getIpenCode() {
-		return this.ipenCode;
-	}
+    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
+        this.frmwrkUserCollection = frmwrkUserCollection;
+    }
 
-	public void setIpenCode(String ipenCode) {
-		this.ipenCode = ipenCode;
-	}
+    public TblImageServer getTblImageServer() {
+        return tblImageServer;
+    }
 
+    public void setTblImageServer(TblImageServer tblImageServer) {
+        this.tblImageServer = tblImageServer;
+    }
 
-	//bi-directional many-to-one association to Frmwrk_accessOrganisation
-	@OneToMany(mappedBy="tblOrganisation")
-	public List<Frmwrk_accessOrganisation> getFrmwrkAccessOrganisations() {
-		return this.frmwrkAccessOrganisations;
-	}
+    @XmlTransient
+    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
+        return tblBotanicalObjectCollection;
+    }
 
-	public void setFrmwrkAccessOrganisations(List<Frmwrk_accessOrganisation> frmwrkAccessOrganisations) {
-		this.frmwrkAccessOrganisations = frmwrkAccessOrganisations;
-	}
+    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
+        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    }
 
-	public Frmwrk_accessOrganisation addFrmwrkAccessOrganisation(Frmwrk_accessOrganisation frmwrkAccessOrganisation) {
-		getFrmwrkAccessOrganisations().add(frmwrkAccessOrganisation);
-		frmwrkAccessOrganisation.setTblOrganisation(this);
+    public FrmwrkUser getGardenerId() {
+        return gardenerId;
+    }
 
-		return frmwrkAccessOrganisation;
-	}
+    public void setGardenerId(FrmwrkUser gardenerId) {
+        this.gardenerId = gardenerId;
+    }
 
-	public Frmwrk_accessOrganisation removeFrmwrkAccessOrganisation(Frmwrk_accessOrganisation frmwrkAccessOrganisation) {
-		getFrmwrkAccessOrganisations().remove(frmwrkAccessOrganisation);
-		frmwrkAccessOrganisation.setTblOrganisation(null);
+    @XmlTransient
+    public Collection<TblOrganisation> getTblOrganisationCollection() {
+        return tblOrganisationCollection;
+    }
 
-		return frmwrkAccessOrganisation;
-	}
+    public void setTblOrganisationCollection(Collection<TblOrganisation> tblOrganisationCollection) {
+        this.tblOrganisationCollection = tblOrganisationCollection;
+    }
 
+    public TblOrganisation getParentOrganisationId() {
+        return parentOrganisationId;
+    }
 
-	//bi-directional many-to-one association to FrmwrkUser
-	@OneToMany(mappedBy="tblOrganisation")
-	public List<FrmwrkUser> getFrmwrkUsers() {
-		return this.frmwrkUsers;
-	}
+    public void setParentOrganisationId(TblOrganisation parentOrganisationId) {
+        this.parentOrganisationId = parentOrganisationId;
+    }
 
-	public void setFrmwrkUsers(List<FrmwrkUser> frmwrkUsers) {
-		this.frmwrkUsers = frmwrkUsers;
-	}
+    @XmlTransient
+    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
+        return frmwrkaccessOrganisationCollection;
+    }
 
-	public FrmwrkUser addFrmwrkUser(FrmwrkUser frmwrkUser) {
-		getFrmwrkUsers().add(frmwrkUser);
-		frmwrkUser.setTblOrganisation(this);
+    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
+        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
+    }
 
-		return frmwrkUser;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public FrmwrkUser removeFrmwrkUser(FrmwrkUser frmwrkUser) {
-		getFrmwrkUsers().remove(frmwrkUser);
-		frmwrkUser.setTblOrganisation(null);
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblOrganisation)) {
+            return false;
+        }
+        TblOrganisation other = (TblOrganisation) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
-		return frmwrkUser;
-	}
-
-
-	//bi-directional many-to-one association to TblBotanicalObject
-	@OneToMany(mappedBy="tblOrganisation")
-	public List<TblBotanicalObject> getTblBotanicalObjects() {
-		return this.tblBotanicalObjects;
-	}
-
-	public void setTblBotanicalObjects(List<TblBotanicalObject> tblBotanicalObjects) {
-		this.tblBotanicalObjects = tblBotanicalObjects;
-	}
-
-	public TblBotanicalObject addTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().add(tblBotanicalObject);
-		tblBotanicalObject.setTblOrganisation(this);
-
-		return tblBotanicalObject;
-	}
-
-	public TblBotanicalObject removeTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-		getTblBotanicalObjects().remove(tblBotanicalObject);
-		tblBotanicalObject.setTblOrganisation(null);
-
-		return tblBotanicalObject;
-	}
-
-
-	//bi-directional one-to-one association to TblImageServer
-	@OneToOne(mappedBy="tblOrganisation")
-	public TblImageServer getTblImageServer() {
-		return this.tblImageServer;
-	}
-
-	public void setTblImageServer(TblImageServer tblImageServer) {
-		this.tblImageServer = tblImageServer;
-	}
-
-
-	//bi-directional many-to-one association to FrmwrkUser
-	@ManyToOne
-	@JoinColumn(name="gardener_id")
-	public FrmwrkUser getFrmwrkUser() {
-		return this.frmwrkUser;
-	}
-
-	public void setFrmwrkUser(FrmwrkUser frmwrkUser) {
-		this.frmwrkUser = frmwrkUser;
-	}
-
-
-	//bi-directional many-to-one association to TblOrganisation
-	@ManyToOne
-	@JoinColumn(name="parent_organisation_id")
-	public TblOrganisation getTblOrganisation() {
-		return this.tblOrganisation;
-	}
-
-	public void setTblOrganisation(TblOrganisation tblOrganisation) {
-		this.tblOrganisation = tblOrganisation;
-	}
-
-
-	//bi-directional many-to-one association to TblOrganisation
-	@OneToMany(mappedBy="tblOrganisation")
-	public List<TblOrganisation> getTblOrganisations() {
-		return this.tblOrganisations;
-	}
-
-	public void setTblOrganisations(List<TblOrganisation> tblOrganisations) {
-		this.tblOrganisations = tblOrganisations;
-	}
-
-	public TblOrganisation addTblOrganisation(TblOrganisation tblOrganisation) {
-		getTblOrganisations().add(tblOrganisation);
-		tblOrganisation.setTblOrganisation(this);
-
-		return tblOrganisation;
-	}
-
-	public TblOrganisation removeTblOrganisation(TblOrganisation tblOrganisation) {
-		getTblOrganisations().remove(tblOrganisation);
-		tblOrganisation.setTblOrganisation(null);
-
-		return tblOrganisation;
-	}
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.TblOrganisation[ id=" + id + " ]";
+    }
 
 }

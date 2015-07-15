@@ -1,57 +1,84 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
- * The primary key class for the frmwrk2_auth_assignment database table.
- * 
+ *
+ * @author wkoller
  */
 @Embeddable
 public class Frmwrk2AuthAssignmentPK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
-	private String itemName;
-	private int userId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 64)
+    @Column(name = "item_name")
+    private String itemName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "user_id")
+    private int userId;
 
-	public Frmwrk2AuthAssignmentPK() {
-	}
+    public Frmwrk2AuthAssignmentPK() {
+    }
 
-	@Column(name="item_name", insertable=false, updatable=false, unique=true, nullable=false, length=64)
-	public String getItemName() {
-		return this.itemName;
-	}
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
+    public Frmwrk2AuthAssignmentPK(String itemName, int userId) {
+        this.itemName = itemName;
+        this.userId = userId;
+    }
 
-	@Column(name="user_id", insertable=false, updatable=false, unique=true, nullable=false)
-	public int getUserId() {
-		return this.userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public String getItemName() {
+        return itemName;
+    }
 
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof Frmwrk2AuthAssignmentPK)) {
-			return false;
-		}
-		Frmwrk2AuthAssignmentPK castOther = (Frmwrk2AuthAssignmentPK)other;
-		return 
-			this.itemName.equals(castOther.itemName)
-			&& (this.userId == castOther.userId);
-	}
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.itemName.hashCode();
-		hash = hash * prime + this.userId;
-		
-		return hash;
-	}
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (itemName != null ? itemName.hashCode() : 0);
+        hash += (int) userId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Frmwrk2AuthAssignmentPK)) {
+            return false;
+        }
+        Frmwrk2AuthAssignmentPK other = (Frmwrk2AuthAssignmentPK) object;
+        if ((this.itemName == null && other.itemName != null) || (this.itemName != null && !this.itemName.equals(other.itemName))) {
+            return false;
+        }
+        if (this.userId != other.userId) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "org.jacq.common.model.jpa.Frmwrk2AuthAssignmentPK[ itemName=" + itemName + ", userId=" + userId + " ]";
+    }
+
 }
