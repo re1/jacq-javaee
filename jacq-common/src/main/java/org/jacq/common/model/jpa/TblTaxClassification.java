@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_tax_classification")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTaxClassification.findAllTopLevel", query = "SELECT t FROM TaxClassification t WHERE t.parentTaxClassification IS NULL AND EXISTS( FROM TaxClassification AS children WHERE parentTaxClassification = t )"),
+    @NamedQuery(name = "TblTaxClassification.findAllTopLevel", query = "SELECT t FROM TblTaxClassification t WHERE t.parentScientificNameId IS NULL AND EXISTS( FROM TblTaxClassification AS children WHERE parentScientificNameId = t )"),
     @NamedQuery(name = "TblTaxClassification.findAll", query = "SELECT t FROM TblTaxClassification t"),
     @NamedQuery(name = "TblTaxClassification.findByTaxClassificationId", query = "SELECT t FROM TblTaxClassification t WHERE t.taxClassificationId = :taxClassificationId"),
     @NamedQuery(name = "TblTaxClassification.findByScientificNameId", query = "SELECT t FROM TblTaxClassification t WHERE t.scientificNameId = :scientificNameId"),

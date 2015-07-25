@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacq.report.rest.impl;
+package org.jacq.service.rest.impl;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.jacq.common.rest.LabelService;
 import org.jacq.common.rest.exception.JacqRestException;
-import org.jacq.report.manager.LabelManager;
+import org.jacq.service.manager.LabelManager;
 
 /**
  * @see LabelService

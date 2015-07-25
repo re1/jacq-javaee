@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.4.2.v201410272105 Build &lt;4.4.2.v20150217-1805></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">81</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.data.oda.pojo" name="LivingPlant" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>SynchronizeClassPath</name>
+                    <value>true</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClassPath</name>
+                    <value>/mnt/data/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;</value>
+                </ex-property>
+            </list-property>
+            <property name="pojoDataSetClassPath">/mnt/data/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="LivingPlantDataSet" id="8">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">AccessionNumber</property>
+                    <text-property name="heading">AccessionNumber</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Bgci</property>
+                    <text-property name="heading">Bgci</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">CultivationDate</property>
+                    <text-property name="heading">CultivationDate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">CultureNotes</property>
+                    <text-property name="heading">CultureNotes</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Id</property>
+                    <text-property name="heading">Id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">IndexSeminum</property>
+                    <text-property name="heading">IndexSeminum</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">IpenLocked</property>
+                    <text-property name="heading">IpenLocked</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">IpenNumber</property>
+                    <text-property name="heading">IpenNumber</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">LabelAnnotation</property>
+                    <text-property name="heading">LabelAnnotation</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">LabelSynonymScientificNameId</property>
+                    <text-property name="heading">LabelSynonymScientificNameId</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PhytoControl</property>
+                    <text-property name="heading">PhytoControl</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PlaceNumber</property>
+                    <text-property name="heading">PlaceNumber</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">AccessionNumber</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">Bgci</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">CultivationDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">CultureNotes</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">Id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">IndexSeminum</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">IpenLocked</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">IpenNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">LabelAnnotation</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">LabelSynonymScientificNameId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">PhytoControl</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">PlaceNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">LivingPlant</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">AccessionNumber</property>
+                    <property name="nativeName">AccessionNumber</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">Bgci</property>
+                    <property name="nativeName">Bgci</property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">16</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">CultivationDate</property>
+                    <property name="nativeName">CultivationDate</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">CultureNotes</property>
+                    <property name="nativeName">CultureNotes</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">Id</property>
+                    <property name="nativeName">Id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">IndexSeminum</property>
+                    <property name="nativeName">IndexSeminum</property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">16</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">IpenLocked</property>
+                    <property name="nativeName">IpenLocked</property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">16</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">IpenNumber</property>
+                    <property name="nativeName">IpenNumber</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">LabelAnnotation</property>
+                    <property name="nativeName">LabelAnnotation</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">LabelSynonymScientificNameId</property>
+                    <property name="nativeName">LabelSynonymScientificNameId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">PhytoControl</property>
+                    <property name="nativeName">PhytoControl</property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">16</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">PlaceNumber</property>
+                    <property name="nativeName">PlaceNumber</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<PojoQuery appContextKey="APP_CONTEXT_KEY_LIVINGPLANTDATASET" dataSetClass="org.jacq.service.report.birt.mock.LivingPlantDataSet" version="1.0">
+    <ColumnMapping index="1" name="AccessionNumber" odaDataType="Integer">
+        <Method name="getAccessionNumber"/>
+    </ColumnMapping>
+    <ColumnMapping index="2" name="Bgci" odaDataType="Boolean">
+        <Method name="getBgci"/>
+    </ColumnMapping>
+    <ColumnMapping index="3" name="CultivationDate" odaDataType="Date">
+        <Method name="getCultivationDate"/>
+    </ColumnMapping>
+    <ColumnMapping index="4" name="CultureNotes" odaDataType="String">
+        <Method name="getCultureNotes"/>
+    </ColumnMapping>
+    <ColumnMapping index="5" name="Id" odaDataType="Integer">
+        <Method name="getId"/>
+    </ColumnMapping>
+    <ColumnMapping index="6" name="IndexSeminum" odaDataType="Boolean">
+        <Method name="getIndexSeminum"/>
+    </ColumnMapping>
+    <ColumnMapping index="7" name="IpenLocked" odaDataType="Boolean">
+        <Method name="getIpenLocked"/>
+    </ColumnMapping>
+    <ColumnMapping index="8" name="IpenNumber" odaDataType="String">
+        <Method name="getIpenNumber"/>
+    </ColumnMapping>
+    <ColumnMapping index="9" name="LabelAnnotation" odaDataType="String">
+        <Method name="getLabelAnnotation"/>
+    </ColumnMapping>
+    <ColumnMapping index="10" name="LabelSynonymScientificNameId" odaDataType="Integer">
+        <Method name="getLabelSynonymScientificNameId"/>
+    </ColumnMapping>
+    <ColumnMapping index="11" name="PhytoControl" odaDataType="Boolean">
+        <Method name="getPhytoControl"/>
+    </ColumnMapping>
+    <ColumnMapping index="12" name="PlaceNumber" odaDataType="String">
+        <Method name="getPlaceNumber"/>
+    </ColumnMapping>
+</PojoQuery>
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AccessionNumber</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AccessionNumber</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>Bgci</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>16</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>Bgci</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CultivationDate</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CultivationDate</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CultureNotes</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CultureNotes</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>Id</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>Id</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>IndexSeminum</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>16</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>IndexSeminum</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>IpenLocked</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>16</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>IpenLocked</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>IpenNumber</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>IpenNumber</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LabelAnnotation</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LabelAnnotation</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LabelSynonymScientificNameId</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LabelSynonymScientificNameId</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>PhytoControl</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>16</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PhytoControl</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>PlaceNumber</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PlaceNumber</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>methodNameRegx</name>
+                    <value>get*</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClass</name>
+                    <value>org.jacq.common.model.jpa.TblLivingPlant</value>
+                </ex-property>
+            </list-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="topMargin">0.25cm</property>
+            <property name="leftMargin">0.15cm</property>
+            <property name="bottomMargin">0in</property>
+            <property name="rightMargin">0.15cm</property>
+            <property name="height">25mm</property>
+            <property name="width">78mm</property>
+            <property name="headerHeight">0in</property>
+            <property name="footerHeight">0in</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <list id="9">
+            <property name="dataSet">LivingPlantDataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">AccessionNumber</property>
+                    <text-property name="displayName">AccessionNumber</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">Bgci</property>
+                    <text-property name="displayName">Bgci</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["Bgci"]</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+                <structure>
+                    <property name="name">CultivationDate</property>
+                    <text-property name="displayName">CultivationDate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CultivationDate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">CultureNotes</property>
+                    <text-property name="displayName">CultureNotes</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CultureNotes"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">Id</property>
+                    <text-property name="displayName">Id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["Id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">IndexSeminum</property>
+                    <text-property name="displayName">IndexSeminum</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["IndexSeminum"]</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+                <structure>
+                    <property name="name">IpenLocked</property>
+                    <text-property name="displayName">IpenLocked</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["IpenLocked"]</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+                <structure>
+                    <property name="name">IpenNumber</property>
+                    <text-property name="displayName">IpenNumber</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["IpenNumber"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">LabelAnnotation</property>
+                    <text-property name="displayName">LabelAnnotation</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LabelAnnotation"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">LabelSynonymScientificNameId</property>
+                    <text-property name="displayName">LabelSynonymScientificNameId</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LabelSynonymScientificNameId"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">PhytoControl</property>
+                    <text-property name="displayName">PhytoControl</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PhytoControl"]</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+                <structure>
+                    <property name="name">PlaceNumber</property>
+                    <text-property name="displayName">PlaceNumber</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PlaceNumber"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <detail>
+                <grid id="10">
+                    <property name="textAlign">center</property>
+                    <property name="pageBreakAfter">always</property>
+                    <column id="11"/>
+                    <row id="12">
+                        <cell id="13">
+                            <text-data id="19">
+                                <expression name="valueExpr">row["AccessionNumber"]</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                    </row>
+                    <row id="14">
+                        <cell id="15">
+                            <text-data id="20">
+                                <expression name="valueExpr">row["Id"]</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                    </row>
+                    <row id="16">
+                        <cell id="17">
+                            <text-data id="21">
+                                <expression name="valueExpr">row["LabelAnnotation"]</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                    </row>
+                </grid>
+            </detail>
+        </list>
+    </body>
+</report>

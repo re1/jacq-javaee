@@ -1,6 +1,9 @@
 Development Setup
-- Eclipse (Luna)
-- JBoss AS Tools Plugin for Eclipse (http://tools.jboss.org/downloads/)
+- Netbeans (8.0.2)
+- WildFly Plugin / JavaEE Edition
 - WildFly 8.2
 
-Import project from GIT as Existing Maven Project.
+Maven project can be opened directly from netbeans.
+
+jacq-common contains JPA / JAX-RS classes / interfaces only.
+jacq-service contains the actual implementation using manager classes.

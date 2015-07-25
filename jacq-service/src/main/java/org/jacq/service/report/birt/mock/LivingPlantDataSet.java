@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacq.report.birt.mock;
+package org.jacq.service.report.birt.mock;
 
 import java.util.Map;
 import org.eclipse.birt.data.oda.pojo.api.IPojoDataSet;

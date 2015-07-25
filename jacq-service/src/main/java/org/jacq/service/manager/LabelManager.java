@@ -1,4 +1,4 @@
-package org.jacq.report.manager;
+package org.jacq.service.manager;
 
 import javax.annotation.ManagedBean;
 import javax.ws.rs.core.Response;
