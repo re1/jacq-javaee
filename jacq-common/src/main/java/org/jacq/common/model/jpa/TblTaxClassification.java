@@ -52,9 +52,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblTaxClassification.findByUserId", query = "SELECT t FROM TblTaxClassification t WHERE t.userId = :userId"),
     @NamedQuery(name = "TblTaxClassification.findByNumber", query = "SELECT t FROM TblTaxClassification t WHERE t.number = :number"),
     @NamedQuery(name = "TblTaxClassification.findByOrder", query = "SELECT t FROM TblTaxClassification t WHERE t.order = :order"),
-    @NamedQuery(name = "TblTaxClassification.findByTimestamp", query = "SELECT t FROM TblTaxClassification t WHERE t.timestamp = :timestamp")
-
-})
+    @NamedQuery(name = "TblTaxClassification.findByTimestamp", query = "SELECT t FROM TblTaxClassification t WHERE t.timestamp = :timestamp")})
 public class TblTaxClassification implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -36,12 +36,12 @@ public class TblRelevancy implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblRelevancyType relevancyTypeId;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblLivingPlant livingPlantId;
+    @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblRelevancyType relevancyTypeId;
 
     public TblRelevancy() {
     }
@@ -58,20 +58,20 @@ public class TblRelevancy implements Serializable {
         this.id = id;
     }
 
-    public TblRelevancyType getRelevancyTypeId() {
-        return relevancyTypeId;
-    }
-
-    public void setRelevancyTypeId(TblRelevancyType relevancyTypeId) {
-        this.relevancyTypeId = relevancyTypeId;
-    }
-
     public TblLivingPlant getLivingPlantId() {
         return livingPlantId;
     }
 
     public void setLivingPlantId(TblLivingPlant livingPlantId) {
         this.livingPlantId = livingPlantId;
+    }
+
+    public TblRelevancyType getRelevancyTypeId() {
+        return relevancyTypeId;
+    }
+
+    public void setRelevancyTypeId(TblRelevancyType relevancyTypeId) {
+        this.relevancyTypeId = relevancyTypeId;
     }
 
     @Override
