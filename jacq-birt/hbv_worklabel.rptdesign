@@ -14,10 +14,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>/mnt/data/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;</value>
+                    <value>/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">/mnt/data/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;</property>
+            <property name="pojoDataSetClassPath">/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -616,6 +616,7 @@
                     <row id="12">
                         <cell id="13">
                             <text-data id="19">
+                                <property name="fontFamily">"39 BigText"</property>
                                 <expression name="valueExpr">row["AccessionNumber"]</expression>
                                 <property name="contentType">html</property>
                             </text-data>
