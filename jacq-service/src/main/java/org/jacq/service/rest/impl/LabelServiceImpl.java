@@ -33,9 +33,9 @@ public class LabelServiceImpl implements LabelService, Serializable {
      * @see LabelService#getWork()
      */
     @Override
-    public Response getWork(int accessionNumber) {
+    public Response getWork(int botanicalObjectId) {
         try {
-            return labelManager.getWork(accessionNumber);
+            return labelManager.getWork(botanicalObjectId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

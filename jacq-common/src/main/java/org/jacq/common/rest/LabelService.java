@@ -21,12 +21,12 @@ public interface LabelService {
     /**
      * Generate a work label and return it as PDF
      *
-     * @param accessionNumber Accession number which the label should be created for
+     * @param botanicalObjectId ID of botanical object to create this work label for
      * @return
      */
     @GET
-    @Path("/work/{accession_number}")
+    @Path("/work/{botanical_object_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_PDF)
-    public Response getWork(@PathParam("accession_number") int accessionNumber);
+    public Response getWork(@PathParam("botanical_object_id") int botanicalObjectId);
 }
