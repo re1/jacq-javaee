@@ -368,4 +368,14 @@ public class TblBotanicalObject implements Serializable {
         return "org.jacq.common.model.jpa.TblBotanicalObject[ id=" + id + " ]";
     }
 
+    /**
+     * Custom mappings
+     */
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne
+    private ViewScientificName viewScientificName;
+
+    public ViewScientificName getViewScientificName() {
+        return viewScientificName;
+    }
 }

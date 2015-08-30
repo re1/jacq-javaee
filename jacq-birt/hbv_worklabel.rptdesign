@@ -25,53 +25,76 @@
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">AccessionNumber</property>
+                    <property name="analysis">measure</property>
                     <text-property name="heading">AccessionNumber</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">Bgci</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">Bgci</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">CultivationDate</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">CultivationDate</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">CultureNotes</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">CultureNotes</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">Id</property>
+                    <property name="analysis">measure</property>
                     <text-property name="heading">Id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">IndexSeminum</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">IndexSeminum</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">IpenLocked</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">IpenLocked</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">IpenNumber</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">IpenNumber</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">LabelAnnotation</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">LabelAnnotation</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">LabelSynonymScientificNameId</property>
+                    <property name="analysis">measure</property>
                     <text-property name="heading">LabelSynonymScientificNameId</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">PhytoControl</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">PhytoControl</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">PlaceNumber</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">PlaceNumber</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">ScientificName</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">ScientificName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ScientificNameNoAuthor</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">ScientificNameNoAuthor</text-property>
+                </structure>
             </list-property>
+            <list-property name="parameters"/>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -132,6 +155,16 @@
                     <structure>
                         <property name="position">12</property>
                         <property name="name">PlaceNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">ScientificName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">ScientificNameNoAuthor</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -222,6 +255,20 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">ScientificName</property>
+                    <property name="nativeName">ScientificName</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">ScientificNameNoAuthor</property>
+                    <property name="nativeName">ScientificNameNoAuthor</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_LIVINGPLANTDATASET" dataSetClass="org.jacq.service.report.birt.mock.LivingPlantDataSet" version="1.0">
@@ -261,6 +308,18 @@
     <ColumnMapping index="12" name="PlaceNumber" odaDataType="String">
         <Method name="getPlaceNumber"/>
     </ColumnMapping>
+    <ClassColumnMappings>
+        <ClassColumnMappings>
+            <ColumnMapping index="13" name="ScientificName" odaDataType="String">
+                <Method name="getScientificName"/>
+            </ColumnMapping>
+            <ColumnMapping index="14" name="ScientificNameNoAuthor" odaDataType="String">
+                <Method name="getScientificNameNoAuthor"/>
+            </ColumnMapping>
+            <Method name="getViewScientificName"/>
+        </ClassColumnMappings>
+        <Method name="getTblBotanicalObject"/>
+    </ClassColumnMappings>
 </PojoQuery>
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -607,6 +666,33 @@
                     <expression name="expression" type="javascript">dataSetRow["PlaceNumber"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">ScientificName</property>
+                    <text-property name="displayName">ScientificName</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ScientificName"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">AccessionNumberColumn</property>
+                    <text-property name="displayName">AccessionNumber</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
+                    <property name="dataType">integer</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">ScientificNameColumn</property>
+                    <text-property name="displayName">ScientificNameNoAuthor</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ScientificNameNoAuthor"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">LabelAnnotationColumn</property>
+                    <text-property name="displayName">LabelAnnotation</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LabelAnnotation"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <detail>
                 <grid id="10">
@@ -615,27 +701,28 @@
                     <column id="11"/>
                     <row id="12">
                         <cell id="13">
-                            <text-data id="19">
+                            <data id="26">
                                 <property name="fontFamily">"39 BigText"</property>
-                                <expression name="valueExpr">row["AccessionNumber"]</expression>
-                                <property name="contentType">html</property>
-                            </text-data>
+                                <structure name="numberFormat">
+                                    <property name="category">Custom</property>
+                                    <property name="pattern">*#0000000*</property>
+                                </structure>
+                                <property name="resultSetColumn">AccessionNumberColumn</property>
+                            </data>
                         </cell>
                     </row>
                     <row id="14">
                         <cell id="15">
-                            <text-data id="20">
-                                <expression name="valueExpr">row["Id"]</expression>
-                                <property name="contentType">html</property>
-                            </text-data>
+                            <data id="27">
+                                <property name="resultSetColumn">ScientificNameColumn</property>
+                            </data>
                         </cell>
                     </row>
                     <row id="16">
                         <cell id="17">
-                            <text-data id="21">
-                                <expression name="valueExpr">row["LabelAnnotation"]</expression>
-                                <property name="contentType">html</property>
-                            </text-data>
+                            <data id="28">
+                                <property name="resultSetColumn">LabelAnnotationColumn</property>
+                            </data>
                         </cell>
                     </row>
                 </grid>
