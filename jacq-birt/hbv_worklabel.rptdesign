@@ -574,6 +574,7 @@
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
             <property name="type">custom</property>
+            <property name="orientation">portrait</property>
             <property name="topMargin">0.25cm</property>
             <property name="leftMargin">0.15cm</property>
             <property name="bottomMargin">0in</property>

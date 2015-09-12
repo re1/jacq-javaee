@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,7 @@ import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.service.JacqConfig;
 
 /**
  * Business logic for label printing process
@@ -28,7 +30,7 @@ public class LabelManager {
     /**
      * TODO: load report design configuration from database
      */
-    public static final String REPORT_PATH = "/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-birt/hbv_worklabel.rptdesign";
+    public static String REPORT_PATH = null;
 
     private static final Logger LOGGER = Logger.getLogger(LabelManager.class.getName());
 
@@ -37,9 +39,17 @@ public class LabelManager {
 
     @Inject
     protected ApplicationManager applicationManager;
+    
+    @Inject
+    protected JacqConfig jacqConfig;
 
     // Context key for birt reporting
     public static final String APP_CONTEXT_KEY_LIVINGPLANTDATASET = "APP_CONTEXT_KEY_LIVINGPLANTDATASET";
+    
+    @PostConstruct
+    public void init() {
+        LabelManager.REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_WORK_LABEL);
+    }
 
     /**
      * @see LabelService#getWork()
