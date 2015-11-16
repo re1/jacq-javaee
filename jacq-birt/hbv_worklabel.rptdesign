@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.4.2.v201410272105 Build &lt;4.4.2.v20150217-1805></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506190710 Build &lt;@BUILD@></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -694,6 +694,18 @@
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">Column Binding</property>
+                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">AccessionNumberTextBinding</property>
+                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <detail>
                 <grid id="10">
@@ -702,14 +714,27 @@
                     <column id="11"/>
                     <row id="12">
                         <cell id="13">
-                            <data id="26">
-                                <property name="fontFamily">"39 BigText"</property>
-                                <structure name="numberFormat">
-                                    <property name="category">Custom</property>
-                                    <property name="pattern">*#0000000*</property>
-                                </structure>
-                                <property name="resultSetColumn">AccessionNumberColumn</property>
-                            </data>
+                            <grid id="29">
+                                <column id="30"/>
+                                <column id="31"/>
+                                <row id="32">
+                                    <cell id="33">
+                                        <data id="26">
+                                            <property name="fontFamily">"39 No Text"</property>
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">*#0000000*</property>
+                                            </structure>
+                                            <property name="resultSetColumn">AccessionNumberColumn</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="34">
+                                        <data id="36">
+                                            <property name="resultSetColumn">AccessionNumberTextBinding</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
                         </cell>
                     </row>
                     <row id="14">
