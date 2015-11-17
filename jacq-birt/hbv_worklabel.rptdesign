@@ -730,6 +730,10 @@
                                     </cell>
                                     <cell id="34">
                                         <data id="36">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">0000000</property>
+                                            </structure>
                                             <property name="resultSetColumn">AccessionNumberTextBinding</property>
                                         </data>
                                     </cell>
