@@ -703,7 +703,7 @@
                 <structure>
                     <property name="name">AccessionNumberTextBinding</property>
                     <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">integer</property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
@@ -723,7 +723,7 @@
                                             <property name="fontFamily">"39 No Text"</property>
                                             <structure name="numberFormat">
                                                 <property name="category">Custom</property>
-                                                <property name="pattern">*#0000000*</property>
+                                                <property name="pattern">*0000000*</property>
                                             </structure>
                                             <property name="resultSetColumn">AccessionNumberColumn</property>
                                         </data>
