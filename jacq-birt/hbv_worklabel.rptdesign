@@ -14,10 +14,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</value>
+                    <value>/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Documents/Programming/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</property>
+            <property name="pojoDataSetClassPath">/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -575,7 +575,7 @@
         <simple-master-page name="Simple MasterPage" id="2">
             <property name="type">custom</property>
             <property name="orientation">portrait</property>
-            <property name="topMargin">0.25cm</property>
+            <property name="topMargin">0cm</property>
             <property name="leftMargin">0.15cm</property>
             <property name="bottomMargin">0in</property>
             <property name="rightMargin">0.15cm</property>
@@ -714,13 +714,17 @@
                     <column id="11"/>
                     <row id="12">
                         <cell id="13">
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingBottom">1pt</property>
                             <grid id="29">
                                 <column id="30"/>
                                 <column id="31"/>
                                 <row id="32">
+                                    <property name="fontSize">20pt</property>
                                     <cell id="33">
                                         <data id="26">
                                             <property name="fontFamily">"39 No Text"</property>
+                                            <property name="fontSize">20pt</property>
                                             <structure name="numberFormat">
                                                 <property name="category">Custom</property>
                                                 <property name="pattern">*0000000*</property>
@@ -729,7 +733,10 @@
                                         </data>
                                     </cell>
                                     <cell id="34">
+                                        <property name="fontSize">15pt</property>
+                                        <property name="verticalAlign">middle</property>
                                         <data id="36">
+                                            <property name="fontSize">15pt</property>
                                             <structure name="numberFormat">
                                                 <property name="category">Custom</property>
                                                 <property name="pattern">0000000</property>
