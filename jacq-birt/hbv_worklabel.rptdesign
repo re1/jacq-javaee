@@ -714,7 +714,7 @@
                     <column id="11"/>
                     <row id="12">
                         <cell id="13">
-                            <property name="paddingTop">1pt</property>
+                            <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">1pt</property>
                             <grid id="29">
                                 <column id="30"/>
@@ -722,9 +722,11 @@
                                 <row id="32">
                                     <property name="fontSize">20pt</property>
                                     <cell id="33">
+                                        <property name="paddingTop">0pt</property>
                                         <data id="26">
                                             <property name="fontFamily">"39 No Text"</property>
                                             <property name="fontSize">20pt</property>
+                                            <property name="paddingTop">0pt</property>
                                             <structure name="numberFormat">
                                                 <property name="category">Custom</property>
                                                 <property name="pattern">*0000000*</property>
@@ -737,6 +739,7 @@
                                         <property name="verticalAlign">middle</property>
                                         <data id="36">
                                             <property name="fontSize">15pt</property>
+                                            <property name="paddingTop">0pt</property>
                                             <structure name="numberFormat">
                                                 <property name="category">Custom</property>
                                                 <property name="pattern">0000000</property>
