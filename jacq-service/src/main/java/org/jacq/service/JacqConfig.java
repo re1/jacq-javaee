@@ -10,8 +10,8 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.jacq.common.model.jpa.FrmwrkConfig;
 
@@ -23,14 +23,15 @@ import org.jacq.common.model.jpa.FrmwrkConfig;
 @ManagedBean
 @Singleton
 public class JacqConfig {
+
     protected static final String CONFIG_SEPARATOR = ".";
-    
+
     protected static final String BIRT = "birt";
     public static final String BIRT_WORK_LABEL = BIRT + CONFIG_SEPARATOR + "work_label";
 
     protected HashMap<String, String> config;
 
-    @Inject
+    @PersistenceContext
     protected EntityManager em;
 
     /**
