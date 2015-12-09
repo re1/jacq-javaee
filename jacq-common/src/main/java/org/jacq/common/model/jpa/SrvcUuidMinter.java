@@ -33,11 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SrvcUuidMinter.findAll", query = "SELECT s FROM SrvcUuidMinter s"),
+    @NamedQuery(name = "SrvcUuidMinter.findByTypeAndInternalId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuidMinterTypeId.description = :uuidMinterType AND s.internalId = :internalId"),
     @NamedQuery(name = "SrvcUuidMinter.findByUuidMinterId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuidMinterId = :uuidMinterId"),
     @NamedQuery(name = "SrvcUuidMinter.findByInternalId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.internalId = :internalId"),
     @NamedQuery(name = "SrvcUuidMinter.findByUuid", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuid = :uuid"),
     @NamedQuery(name = "SrvcUuidMinter.findByTimestamp", query = "SELECT s FROM SrvcUuidMinter s WHERE s.timestamp = :timestamp")})
 public class SrvcUuidMinter implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
