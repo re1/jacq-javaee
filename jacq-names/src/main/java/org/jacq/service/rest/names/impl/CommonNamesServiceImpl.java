@@ -15,8 +15,12 @@
  */
 package org.jacq.service.rest.names.impl;
 
+import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNamesService;
+import org.jacq.service.manager.names.CommonNamesManager;
 
 /**
  * Main common names, OpenRefine compliant, service
@@ -25,17 +29,19 @@ import org.jacq.common.rest.names.CommonNamesService;
  */
 public class CommonNamesServiceImpl implements CommonNamesService {
 
+    @Inject
+    protected CommonNamesManager commonNamesManager;
+
     /**
      * @see CommonNamesService#info()
      */
     @Override
     public OpenRefineInfo info() {
-        OpenRefineInfo openRefineInfo = new OpenRefineInfo();
-        openRefineInfo.setName("JACQ Common Names Service");
-        openRefineInfo.setIdentifierSpace("http://openup.nhm-wien.ac.at/commonNames/");
-        openRefineInfo.setSchemaSpace("http://openup.nhm-wien.ac.at/commonNames/");
-
-        return openRefineInfo;
+        try {
+            return commonNamesManager.info();
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
     }
 
     /**
@@ -43,7 +49,11 @@ public class CommonNamesServiceImpl implements CommonNamesService {
      */
     @Override
     public void query(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            commonNamesManager.query(query);
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
     }
 
 }
