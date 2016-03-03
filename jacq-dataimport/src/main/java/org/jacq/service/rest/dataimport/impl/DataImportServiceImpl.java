@@ -15,8 +15,12 @@
  */
 package org.jacq.service.rest.dataimport.impl;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.rest.dataimport.DataImportService;
+import org.jacq.service.dataimport.manager.DataImportManager;
 
 /**
  * @see DataImportService
@@ -24,13 +28,21 @@ import org.jacq.common.rest.dataimport.DataImportService;
  */
 public class DataImportServiceImpl implements DataImportService {
 
+    private static final Logger LOGGER = Logger.getLogger(DataImportServiceImpl.class.getName());
+
+    @Inject
+    protected DataImportManager dataImportManager;
+
     /**
      * @see
      * DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
      */
     @Override
     public void dataImport(ImportFile importFile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            dataImportManager.dataImport(importFile);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
-
 }
