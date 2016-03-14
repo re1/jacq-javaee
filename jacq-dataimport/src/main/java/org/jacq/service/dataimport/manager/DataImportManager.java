@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Base64;
 import java.util.logging.Level;
@@ -31,6 +32,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +46,12 @@ import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.model.jpa.TblSeparation;
+import org.jacq.common.model.jpa.TblSeparationType;
+import org.jacq.common.model.names.JsonRpcRequest;
+import org.jacq.common.model.names.TaxamatchOptions;
+import org.jacq.common.rest.names.ScientificNamesService;
+import org.jacq.service.dataimport.util.ServicesUtil;
 
 /**
  *
@@ -144,6 +152,24 @@ public class DataImportManager {
                 throw new IllegalArgumentException("Unable to find organisation");
             }
 
+            // lookup scientific name id through taxamatch service
+            // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
+            TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
+            taxamatchOptions.setNearMatch(false);
+            taxamatchOptions.setShowSyn(false);
+
+            ArrayList<Object> params = new ArrayList<>();
+            params.add("vienna");
+            params.add(importRecord.getScientificName());
+
+            JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
+            jsonRpcRequest.setId(1L);
+            jsonRpcRequest.setMethod("getMatchesService");
+            jsonRpcRequest.setParams(params);
+
+            ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
+            Response results = scientificNamesService.taxamatchMdld(jsonRpcRequest);
+
             // setup the botanical object
             TblBotanicalObject botanicalObject = new TblBotanicalObject();
             botanicalObject.setAcquisitionEventId(acquisitionEvent);
@@ -157,7 +183,39 @@ public class DataImportManager {
             TblLivingPlant livingPlant = new TblLivingPlant();
             livingPlant.setId(botanicalObject.getId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
-        }
+            em.persist(livingPlant);
 
+            // store alternative accession number
+            if (!StringUtils.isEmpty(importRecord.getAlternativeNumber())) {
+                alternativeAccessionNumber = new TblAlternativeAccessionNumber();
+                alternativeAccessionNumber.setLivingPlantId(livingPlant);
+                alternativeAccessionNumber.setNumber(importRecord.getAlternativeNumber());
+                em.persist(alternativeAccessionNumber);
+            }
+
+            // store original living plant id as alternative accession number
+            alternativeAccessionNumber = new TblAlternativeAccessionNumber();
+            alternativeAccessionNumber.setLivingPlantId(livingPlant);
+            alternativeAccessionNumber.setNumber(importRecord.getLivingPlantNumber());
+            em.persist(alternativeAccessionNumber);
+
+            // store separation data
+            if (importRecord.getSeparationDate() != null) {
+                // lookup separation type by name
+                TypedQuery<TblSeparationType> separationTypeQuery = em.createNamedQuery("TblSeparationType.findByType", TblSeparationType.class);
+                organisationQuery.setParameter("type", importRecord.getSeparationType());
+                TblSeparationType separationType = separationTypeQuery.getSingleResult();
+                if (organisation == null) {
+                    throw new IllegalArgumentException("Unable to find separation-type");
+                }
+
+                TblSeparation separation = new TblSeparation();
+                separation.setBotanicalObjectId(botanicalObject);
+                separation.setSeparationTypeId(separationType);
+                separation.setDate(importRecord.getSeparationDate());
+                em.persist(separation);
+            }
+
+        }
     }
 }
