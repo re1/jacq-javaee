@@ -30,10 +30,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.json.JsonArray;
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -56,7 +65,8 @@ import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.names.JsonRpcRequest;
-import org.jacq.common.model.names.TaxamatchOptions;
+import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
+import org.jacq.common.model.names.taxamatch.TaxamatchResponse;
 import org.jacq.common.rest.names.ScientificNamesService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
@@ -65,6 +75,7 @@ import org.jacq.service.dataimport.util.ServicesUtil;
  * @author wkoller
  */
 @ManagedBean
+@Transactional
 public class DataImportManager {
 
     private static final Logger LOGGER = Logger.getLogger(DataImportManager.class.getName());
@@ -131,6 +142,8 @@ public class DataImportManager {
         glashausLookup.put("TROPH", "G6");
         glashausLookup.put("WH", "Warmhaus");
         glashausLookup.put("XH (WH)", "G11");
+        glashausLookup.put("XH  (KH)", "G11");
+        glashausLookup.put("", "Botanischer Garten");
 
         Database db = DatabaseBuilder.open(new File("/tmp/bromi.mdb"));
         Table table = db.getTable("Tabelle");
@@ -138,8 +151,16 @@ public class DataImportManager {
         for (Row row : table) {
             ImportRecord importRecord = new ImportRecord();
 
+            // remember original id
+            importRecord.setOriginalId(Long.valueOf(row.getInt("ID")));
+
             // translate glashaus (location / organization)
-            String glashaus = glashausLookup.get(row.getString("Glashaus"));
+            String glashaus = row.getString("Glashaus");
+            if (StringUtils.isEmpty(glashaus)) {
+                glashaus = "";
+            }
+            glashaus = glashaus.trim();
+            glashaus = glashausLookup.get(glashaus);
             if (glashaus == null) {
                 LOGGER.log(Level.WARNING, "Invalid Glashaus for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Glashaus")});
                 continue;
@@ -147,7 +168,22 @@ public class DataImportManager {
             importRecord.setOrganization(glashaus);
 
             // clean the scientific name
-            importRecord.setScientificName(row.getString("Gattung") + " " + row.getString("Art") + " " + row.getString("Feld1"));
+            String gattung = row.getString("Gattung");
+            String art = row.getString("Art");
+            String feld1 = row.getString("Feld1");
+            String scientificName = gattung;
+            if (art != null) {
+                scientificName += " " + art;
+            }
+            if (feld1 != null) {
+                scientificName += " " + feld1;
+            }
+            if (StringUtils.isEmpty(scientificName)) {
+                LOGGER.log(Level.SEVERE, "No Scientific Name for entry ''{0}''!", new Object[]{row.getInt("ID")});
+                continue;
+            }
+
+            importRecord.setScientificName(scientificName);
             importRecord.setScientificName(importRecord.getScientificName().replaceAll("\\(.*\\)", ""));
 
             // alternative number
@@ -170,12 +206,17 @@ public class DataImportManager {
                 String pflanzenAbgang = row.getString("Pflanzen Abgang");
 
                 // separate date information
-                String pflanzenAbgangParts[] = pflanzenAbgang.split(" ");
+                String pflanzenAbgangParts[] = pflanzenAbgang.split(" |\\.");
 
                 if (pflanzenAbgangParts.length >= 2) {
+                    if (pflanzenAbgangParts.length > 2) {
+                        pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
+                    }
+
                     int month = -1;
                     switch (pflanzenAbgangParts[0]) {
                         case "Jänner":
+                        case "Jan":
                             month = 0;
                             break;
                         case "Februar":
@@ -200,15 +241,19 @@ public class DataImportManager {
                             month = 7;
                             break;
                         case "September":
+                        case "Sep":
                             month = 8;
                             break;
                         case "Oktober":
+                        case "Okt":
                             month = 9;
                             break;
                         case "November":
+                        case "Nov":
                             month = 10;
                             break;
                         case "Dezember":
+                        case "Dez":
                             month = 11;
                             break;
                         default:
@@ -217,9 +262,13 @@ public class DataImportManager {
                     }
 
                     if (month >= 0) {
-                        Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
-                        importRecord.setSeparationDate(separationDate);
-                        importRecord.setSeparationType("dead");
+                        try {
+                            Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
+                            importRecord.setSeparationDate(separationDate);
+                            importRecord.setSeparationType("dead");
+                        } catch (Exception e) {
+                            LOGGER.log(Level.WARNING, "Unable to parse date for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
+                        }
                     }
 
                 }
@@ -227,6 +276,9 @@ public class DataImportManager {
                     LOGGER.log(Level.WARNING, "Invalid Date-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
                 }
             }
+
+            // finally run the import
+            this.importRecord(importRecord);
         }
     }
 
@@ -242,8 +294,8 @@ public class DataImportManager {
             // check if entry already exists
             TypedQuery<TblAlternativeAccessionNumber> alternativeAccessionNumberQuery = em.createNamedQuery("TblAlternativeAccessionNumber.findByNumber", TblAlternativeAccessionNumber.class);
             alternativeAccessionNumberQuery.setParameter("number", importRecord.getLivingPlantNumber());
-            TblAlternativeAccessionNumber alternativeAccessionNumber = alternativeAccessionNumberQuery.getSingleResult();
-            if (alternativeAccessionNumber != null) {
+            List<TblAlternativeAccessionNumber> alternativeAccessionNumbers = alternativeAccessionNumberQuery.getResultList();
+            if (alternativeAccessionNumbers.size() > 0) {
                 LOGGER.log(Level.INFO, "Living-Plant Entry already exists: '{0}'", importRecord.getLivingPlantNumber());
                 return;
             }
@@ -252,10 +304,11 @@ public class DataImportManager {
             // lookup default acqusition type
             TypedQuery<TblAcquisitionType> acquisitionTypeQuery = em.createNamedQuery("TblAcquisitionType.findById", TblAcquisitionType.class);
             acquisitionTypeQuery.setParameter("id", 1);
-            TblAcquisitionType acquisitionType = acquisitionTypeQuery.getSingleResult();
-            if (acquisitionType == null) {
+            List<TblAcquisitionType> acquisitionTypes = acquisitionTypeQuery.getResultList();
+            if (acquisitionTypes.size() <= 0) {
                 throw new IllegalArgumentException("Unable to find acquisition type");
             }
+            TblAcquisitionType acquisitionType = acquisitionTypes.get(0);
 
             // start with the gathering location coordinates
             TblLocationCoordinates locationCoordinates = new TblLocationCoordinates();
@@ -276,10 +329,11 @@ public class DataImportManager {
             // lookup the organization by name
             TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findByDescription", TblOrganisation.class);
             organisationQuery.setParameter("description", importRecord.getOrganization());
-            TblOrganisation organisation = organisationQuery.getSingleResult();
-            if (organisation == null) {
+            List<TblOrganisation> organisations = organisationQuery.getResultList();
+            if (organisations.size() <= 0) {
                 throw new IllegalArgumentException("Unable to find organisation");
             }
+            TblOrganisation organisation = organisations.get(0);
 
             // lookup scientific name id through taxamatch service
             // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
@@ -297,7 +351,7 @@ public class DataImportManager {
             jsonRpcRequest.setParams(params);
 
             ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
-            Response results = scientificNamesService.taxamatchMdld(jsonRpcRequest);
+            TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
 
             // setup the botanical object
             TblBotanicalObject botanicalObject = new TblBotanicalObject();
@@ -315,6 +369,7 @@ public class DataImportManager {
             em.persist(livingPlant);
 
             // store alternative accession number
+            TblAlternativeAccessionNumber alternativeAccessionNumber = null;
             if (!StringUtils.isEmpty(importRecord.getAlternativeNumber())) {
                 alternativeAccessionNumber = new TblAlternativeAccessionNumber();
                 alternativeAccessionNumber.setLivingPlantId(livingPlant);

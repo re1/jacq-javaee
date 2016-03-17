@@ -51,6 +51,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine"),
     @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
 public class TblBotanicalObject implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,7 +82,7 @@ public class TblBotanicalObject implements Serializable {
     private Date recordingDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "accessible")
+    @Column(name = "[accessible]")
     private boolean accessible;
     @Basic(optional = false)
     @NotNull

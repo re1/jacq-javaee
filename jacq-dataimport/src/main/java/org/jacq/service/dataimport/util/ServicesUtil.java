@@ -15,6 +15,7 @@
  */
 package org.jacq.service.dataimport.util;
 
+import org.jacq.common.rest.filter.ContentTypeResponseFilter;
 import org.jacq.common.rest.names.ScientificNamesService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -33,6 +34,7 @@ public class ServicesUtil {
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
+        resteasyClient.register(new ContentTypeResponseFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }

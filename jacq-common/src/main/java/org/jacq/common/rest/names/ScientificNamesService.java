@@ -22,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.JsonRpcRequest;
+import org.jacq.common.model.names.taxamatch.TaxamatchResponse;
 
 /**
  * Interface for scientific names service
@@ -42,5 +43,5 @@ public interface ScientificNamesService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @POST
-    public Response taxamatchMdld(JsonRpcRequest jsonRpcRequest);
+    public TaxamatchResponse taxamatchMdld(JsonRpcRequest jsonRpcRequest);
 }
