@@ -45,4 +45,13 @@ public class DataImportServiceImpl implements DataImportService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+
+    @Override
+    public void importBromiMdb() {
+        try {
+            dataImportManager.importBromiMdb();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
 }

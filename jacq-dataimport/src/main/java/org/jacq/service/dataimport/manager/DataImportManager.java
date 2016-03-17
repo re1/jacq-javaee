@@ -15,6 +15,11 @@
  */
 package org.jacq.service.dataimport.manager;
 
+import com.healthmarketscience.jackcess.Database;
+import com.healthmarketscience.jackcess.DatabaseBuilder;
+import com.healthmarketscience.jackcess.Row;
+import com.healthmarketscience.jackcess.Table;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -24,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
@@ -88,7 +95,7 @@ public class DataImportManager {
 
             // do the actual mapping of the record to the import record structure (including type conversions etc.)
             importRecord.setSpecimenNumber(record.get(i++));
-            importRecord.setOrganizationId(Long.valueOf(record.get(i++)));
+            importRecord.setOrganization(record.get(i++));
             importRecord.setScientificName(record.get(i++));
             importRecord.setAlternativeNumber(record.get(i++));
             importRecord.setGenericAnnotation(record.get(i++));
@@ -102,12 +109,134 @@ public class DataImportManager {
     }
 
     /**
+     * Reads the bromi mdb file and imports it into the system
+     */
+    public void importBromiMdb() throws IOException {
+        // glashaus lookup table
+        HashMap<String, String> glashausLookup = new HashMap<>();
+        glashausLookup.put("BH", "G12");
+        glashausLookup.put("JH", "G18");
+        glashausLookup.put("QG", "G9");
+        glashausLookup.put("GH5", "G5");
+        glashausLookup.put("XH", "G11");
+        glashausLookup.put("WH1", "G8");
+        glashausLookup.put("TOH", "G15");
+        glashausLookup.put("WOH", "G16");
+        glashausLookup.put("KH", "G13");
+        glashausLookup.put("WH2", "G7");
+        glashausLookup.put("SUK", "Sukkulente");
+        glashausLookup.put("GH", "Sukkulente");
+        glashausLookup.put("Sukh", "Sukkulente");
+        glashausLookup.put("TOH+F367", "G15");
+        glashausLookup.put("TROPH", "G6");
+        glashausLookup.put("WH", "Warmhaus");
+        glashausLookup.put("XH (WH)", "G11");
+
+        Database db = DatabaseBuilder.open(new File("/tmp/bromi.mdb"));
+        Table table = db.getTable("Tabelle");
+
+        for (Row row : table) {
+            ImportRecord importRecord = new ImportRecord();
+
+            // translate glashaus (location / organization)
+            String glashaus = glashausLookup.get(row.getString("Glashaus"));
+            if (glashaus == null) {
+                LOGGER.log(Level.WARNING, "Invalid Glashaus for entry '{0}'! ({1})", new Object[]{row.getString("ID"), row.getString("Glashaus")});
+                continue;
+            }
+            importRecord.setOrganization(glashaus);
+
+            // clean the scientific name
+            importRecord.setScientificName(row.getString("Gattung") + " " + row.getString("Art") + " " + row.getString("Feld1"));
+            importRecord.setScientificName(importRecord.getScientificName().replaceAll("\\(.*\\)", ""));
+
+            // alternative number
+            importRecord.setAlternativeNumber(row.getString("Herkunft-Nr"));
+
+            // generic annotation
+            importRecord.setGenericAnnotation("Zuletzt bearbeitet am: " + row.getString("Bearbeitungs Datum") + "; " + row.getString("Unklar"));
+
+            // living plant number
+            importRecord.setLivingPlantNumber(row.getString("Garten-Nr"));
+
+            // gathering number
+            importRecord.setGatheringNumber(row.getString("Herkunft-Nr"));
+
+            // label annotation
+            importRecord.setLabelAnnotation((!StringUtils.isEmpty(row.getString("Garten-Nr"))) ? row.getString("Garten-Nr") : row.getString("Herkunft-Nr"));
+
+            // separation
+            if (!StringUtils.isEmpty(row.getString("Pflanzen Abgang"))) {
+                String pflanzenAbgang = row.getString("Pflanzen Abgang");
+
+                // separate date information
+                String pflanzenAbgangParts[] = pflanzenAbgang.split(" ");
+
+                if (pflanzenAbgangParts.length >= 2) {
+                    int month = -1;
+                    switch (pflanzenAbgangParts[0]) {
+                        case "Jänner":
+                            month = 0;
+                            break;
+                        case "Februar":
+                            month = 1;
+                            break;
+                        case "März":
+                            month = 2;
+                            break;
+                        case "April":
+                            month = 3;
+                            break;
+                        case "Mai":
+                            month = 4;
+                            break;
+                        case "Juni":
+                            month = 5;
+                            break;
+                        case "Juli":
+                            month = 6;
+                            break;
+                        case "August":
+                            month = 7;
+                            break;
+                        case "September":
+                            month = 8;
+                            break;
+                        case "Oktober":
+                            month = 9;
+                            break;
+                        case "November":
+                            month = 10;
+                            break;
+                        case "Dezember":
+                            month = 11;
+                            break;
+                        default:
+                            LOGGER.log(Level.WARNING, "Invalid Month-Format for entry '{0}'! ({1})", new Object[]{row.getString("ID"), pflanzenAbgangParts[0]});
+                            break;
+                    }
+
+                    if (month >= 0) {
+                        Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
+                        importRecord.setSeparationDate(separationDate);
+                        importRecord.setSeparationType("dead");
+                    }
+
+                }
+                else {
+                    LOGGER.log(Level.WARNING, "Invalid Date-Format for entry '{0}'! ({1})", new Object[]{row.getString("ID"), row.getString("Pflanzen Abgang")});
+                }
+            }
+        }
+    }
+
+    /**
      * Processes a record entry and writes the data to the database
      *
      * @param importRecord
      */
     @Transactional(rollbackOn = {Exception.class})
-    public void importRecord(ImportRecord importRecord) {
+    protected void importRecord(ImportRecord importRecord) {
         // check if we need to import a living plant
         if (!StringUtils.isEmpty(importRecord.getLivingPlantNumber())) {
             // check if entry already exists
@@ -145,8 +274,8 @@ public class DataImportManager {
             em.persist(acquisitionEvent);
 
             // lookup the organization by name
-            TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findById", TblOrganisation.class);
-            organisationQuery.setParameter("id", importRecord.getOrganizationId());
+            TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findByDescription", TblOrganisation.class);
+            organisationQuery.setParameter("description", importRecord.getOrganization());
             TblOrganisation organisation = organisationQuery.getSingleResult();
             if (organisation == null) {
                 throw new IllegalArgumentException("Unable to find organisation");

@@ -27,7 +27,7 @@ public class ImportRecord {
     protected Long originalId;
     protected String specimenNumber;
     protected String livingPlantNumber;
-    protected Long organizationId;
+    protected String organization;
     protected String scientificName;
     protected String alternativeNumber;
     protected String genericAnnotation;
@@ -60,12 +60,12 @@ public class ImportRecord {
         this.livingPlantNumber = livingPlantNumber;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public String getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public String getScientificName() {
