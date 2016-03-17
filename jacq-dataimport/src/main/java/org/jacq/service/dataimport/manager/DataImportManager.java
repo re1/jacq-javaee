@@ -141,7 +141,7 @@ public class DataImportManager {
             // translate glashaus (location / organization)
             String glashaus = glashausLookup.get(row.getString("Glashaus"));
             if (glashaus == null) {
-                LOGGER.log(Level.WARNING, "Invalid Glashaus for entry '{0}'! ({1})", new Object[]{row.getString("ID"), row.getString("Glashaus")});
+                LOGGER.log(Level.WARNING, "Invalid Glashaus for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Glashaus")});
                 continue;
             }
             importRecord.setOrganization(glashaus);
@@ -212,7 +212,7 @@ public class DataImportManager {
                             month = 11;
                             break;
                         default:
-                            LOGGER.log(Level.WARNING, "Invalid Month-Format for entry '{0}'! ({1})", new Object[]{row.getString("ID"), pflanzenAbgangParts[0]});
+                            LOGGER.log(Level.WARNING, "Invalid Month-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), pflanzenAbgangParts[0]});
                             break;
                     }
 
@@ -224,7 +224,7 @@ public class DataImportManager {
 
                 }
                 else {
-                    LOGGER.log(Level.WARNING, "Invalid Date-Format for entry '{0}'! ({1})", new Object[]{row.getString("ID"), row.getString("Pflanzen Abgang")});
+                    LOGGER.log(Level.WARNING, "Invalid Date-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
                 }
             }
         }
