@@ -59,12 +59,16 @@ import org.jacq.common.model.jpa.TblAcquisitionEvent;
 import org.jacq.common.model.jpa.TblAcquisitionType;
 import org.jacq.common.model.jpa.TblAlternativeAccessionNumber;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblImportProperties;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.names.JsonRpcRequest;
+import org.jacq.common.model.names.taxamatch.Result;
+import org.jacq.common.model.names.taxamatch.Searchresult;
+import org.jacq.common.model.names.taxamatch.Species;
 import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
 import org.jacq.common.model.names.taxamatch.TaxamatchResponse;
 import org.jacq.common.rest.names.ScientificNamesService;
@@ -122,31 +126,35 @@ public class DataImportManager {
     /**
      * Reads the bromi mdb file and imports it into the system
      */
-    public void importBromiMdb() throws IOException {
+    public void importBromiMdb() throws IOException, ParseException {
         // glashaus lookup table
         HashMap<String, String> glashausLookup = new HashMap<>();
-        glashausLookup.put("BH", "G12");
-        glashausLookup.put("JH", "G18");
-        glashausLookup.put("QG", "G9");
-        glashausLookup.put("GH5", "G5");
-        glashausLookup.put("XH", "G11");
-        glashausLookup.put("WH1", "G8");
-        glashausLookup.put("TOH", "G15");
-        glashausLookup.put("WOH", "G16");
-        glashausLookup.put("KH", "G13");
-        glashausLookup.put("WH2", "G7");
+        glashausLookup.put("BH", "G12 (Bromelien)");
+        glashausLookup.put("JH", "G18 (Jacquinhaus)");
+        glashausLookup.put("QG", "G9 (Orchideen)");
+        glashausLookup.put("GH5", "G5 (Sukkulentenhaus West)");
+        glashausLookup.put("XH", "G11 (Xerophyten)");
+        glashausLookup.put("WH1", "G8 (Warmhaus 1)");
+        glashausLookup.put("TOH", "G15 (Orchideen temp. Haus)");
+        glashausLookup.put("WOH", "G16 (Orchideen Warmhaus)");
+        glashausLookup.put("KH", "G13 (Orchideen-Kalthaus)");
+        glashausLookup.put("WH2", "G7 (Warmhaus 2)");
         glashausLookup.put("SUK", "Sukkulente");
         glashausLookup.put("GH", "Sukkulente");
         glashausLookup.put("Sukh", "Sukkulente");
-        glashausLookup.put("TOH+F367", "G15");
-        glashausLookup.put("TROPH", "G6");
+        glashausLookup.put("TOH+F367", "G15 (Orchideen temp. Haus)");
+        glashausLookup.put("TROPH", "G6 (Tropenhaus öffentlich)");
         glashausLookup.put("WH", "Warmhaus");
-        glashausLookup.put("XH (WH)", "G11");
-        glashausLookup.put("XH  (KH)", "G11");
+        glashausLookup.put("XH (WH)", "G11 (Xerophyten)");
+        glashausLookup.put("XH  (KH)", "G11 (Xerophyten)");
         glashausLookup.put("", "Botanischer Garten");
+        glashausLookup.put("AG", "Orchideen");
+        glashausLookup.put("Augarten", "Orchideen");
 
         Database db = DatabaseBuilder.open(new File("/tmp/bromi.mdb"));
         Table table = db.getTable("Tabelle");
+        int rowCount = table.getRowCount();
+        int counter = 0;
 
         for (Row row : table) {
             ImportRecord importRecord = new ImportRecord();
@@ -179,8 +187,8 @@ public class DataImportManager {
                 scientificName += " " + feld1;
             }
             if (StringUtils.isEmpty(scientificName)) {
-                LOGGER.log(Level.SEVERE, "No Scientific Name for entry ''{0}''!", new Object[]{row.getInt("ID")});
-                continue;
+                LOGGER.log(Level.WARNING, "No Scientific Name for entry ''{0}''!", new Object[]{row.getInt("ID")});
+                scientificName = "Indeterminatae dicot";
             }
 
             importRecord.setScientificName(scientificName);
@@ -205,80 +213,111 @@ public class DataImportManager {
             if (!StringUtils.isEmpty(row.getString("Pflanzen Abgang"))) {
                 String pflanzenAbgang = row.getString("Pflanzen Abgang");
 
-                // separate date information
-                String pflanzenAbgangParts[] = pflanzenAbgang.split(" |\\.");
+                // try to parse the date as "normal" date
+                try {
+                    importRecord.setSeparationDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(pflanzenAbgang));
+                    importRecord.setSeparationType("dead (eliminated)");
+                } catch (ParseException pe) {
+                    // separate date information
+                    String pflanzenAbgangParts[] = pflanzenAbgang.split(" |\\.");
 
-                if (pflanzenAbgangParts.length >= 2) {
-                    if (pflanzenAbgangParts.length > 2) {
-                        pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
-                    }
-
-                    int month = -1;
-                    switch (pflanzenAbgangParts[0]) {
-                        case "Jänner":
-                        case "Jan":
-                            month = 0;
-                            break;
-                        case "Februar":
-                            month = 1;
-                            break;
-                        case "März":
-                            month = 2;
-                            break;
-                        case "April":
-                            month = 3;
-                            break;
-                        case "Mai":
-                            month = 4;
-                            break;
-                        case "Juni":
-                            month = 5;
-                            break;
-                        case "Juli":
-                            month = 6;
-                            break;
-                        case "August":
-                            month = 7;
-                            break;
-                        case "September":
-                        case "Sep":
-                            month = 8;
-                            break;
-                        case "Oktober":
-                        case "Okt":
-                            month = 9;
-                            break;
-                        case "November":
-                        case "Nov":
-                            month = 10;
-                            break;
-                        case "Dezember":
-                        case "Dez":
-                            month = 11;
-                            break;
-                        default:
-                            LOGGER.log(Level.WARNING, "Invalid Month-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), pflanzenAbgangParts[0]});
-                            break;
-                    }
-
-                    if (month >= 0) {
-                        try {
-                            Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
-                            importRecord.setSeparationDate(separationDate);
-                            importRecord.setSeparationType("dead");
-                        } catch (Exception e) {
-                            LOGGER.log(Level.WARNING, "Unable to parse date for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
+                    if (pflanzenAbgangParts.length >= 2) {
+                        if (pflanzenAbgangParts[0].equals("ca")) {
+                            if (pflanzenAbgangParts.length > 3) {
+                                pflanzenAbgangParts[0] = pflanzenAbgangParts[2];
+                                pflanzenAbgangParts[1] = pflanzenAbgangParts[3];
+                            }
+                            else {
+                                pflanzenAbgangParts[0] = pflanzenAbgangParts[1];
+                                pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
+                            }
                         }
-                    }
+                        else if (pflanzenAbgangParts.length > 2) {
+                            pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
+                        }
 
+                        int month = -1;
+                        switch (pflanzenAbgangParts[0]) {
+                            case "Jänner":
+                            case "Jan":
+                            case "Jän":
+                                month = 0;
+                                break;
+                            case "Februar":
+                            case "Feb":
+                                month = 1;
+                                break;
+                            case "März":
+                                month = 2;
+                                break;
+                            case "April":
+                            case "Apr":
+                                month = 3;
+                                break;
+                            case "Mai":
+                                month = 4;
+                                break;
+                            case "Juni":
+                                month = 5;
+                                break;
+                            case "Juli":
+                                month = 6;
+                                break;
+                            case "August":
+                            case "Aug":
+                                month = 7;
+                                break;
+                            case "September":
+                            case "Sep":
+                                month = 8;
+                                break;
+                            case "Oktober":
+                            case "Okt":
+                                month = 9;
+                                break;
+                            case "November":
+                            case "Nov":
+                                month = 10;
+                                break;
+                            case "Dezember":
+                            case "Dez":
+                                month = 11;
+                                break;
+                            default:
+                                LOGGER.log(Level.WARNING, "Invalid Month-Format for entry ''{0}''! ({1} / {2})", new Object[]{row.getInt("ID"), pflanzenAbgangParts[0], pflanzenAbgang});
+                                break;
+                        }
+
+                        if (month >= 0) {
+                            try {
+                                Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
+                                importRecord.setSeparationDate(separationDate);
+                                importRecord.setSeparationType("dead (eliminated)");
+                            } catch (Exception e) {
+                                LOGGER.log(Level.WARNING, "Unable to parse date for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
+                            }
+                        }
+
+                    }
+                    else {
+                        LOGGER.log(Level.WARNING, "Invalid Date-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
+                    }
                 }
-                else {
-                    LOGGER.log(Level.WARNING, "Invalid Date-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
-                }
+            }
+
+            // Augarten entries have their own separation (static)
+            if (glashaus.equals(glashausLookup.get("AG"))) {
+                importRecord.setSeparationDate(DateFormat.getDateInstance(DateFormat.SHORT).parse("17.12.2012"));
+                importRecord.setSeparationType("separated");
+                importRecord.setSeparationAnnotation("Augarten");
             }
 
             // finally run the import
             this.importRecord(importRecord);
+
+            counter++;
+
+            LOGGER.log(Level.INFO, "Processed entry {0} of {1}", new Object[]{counter, rowCount});
         }
     }
 
@@ -296,7 +335,7 @@ public class DataImportManager {
             alternativeAccessionNumberQuery.setParameter("number", importRecord.getLivingPlantNumber());
             List<TblAlternativeAccessionNumber> alternativeAccessionNumbers = alternativeAccessionNumberQuery.getResultList();
             if (alternativeAccessionNumbers.size() > 0) {
-                LOGGER.log(Level.INFO, "Living-Plant Entry already exists: '{0}'", importRecord.getLivingPlantNumber());
+                LOGGER.log(Level.INFO, "Living-Plant Entry already exists: ''{0}''", importRecord.getLivingPlantNumber());
                 return;
             }
 
@@ -306,7 +345,7 @@ public class DataImportManager {
             acquisitionTypeQuery.setParameter("id", 1);
             List<TblAcquisitionType> acquisitionTypes = acquisitionTypeQuery.getResultList();
             if (acquisitionTypes.size() <= 0) {
-                throw new IllegalArgumentException("Unable to find acquisition type");
+                throw new IllegalArgumentException("Unable to find acquisition type: '" + 1 + "'");
             }
             TblAcquisitionType acquisitionType = acquisitionTypes.get(0);
 
@@ -331,7 +370,7 @@ public class DataImportManager {
             organisationQuery.setParameter("description", importRecord.getOrganization());
             List<TblOrganisation> organisations = organisationQuery.getResultList();
             if (organisations.size() <= 0) {
-                throw new IllegalArgumentException("Unable to find organisation");
+                throw new IllegalArgumentException("Unable to find organisation: '" + importRecord.getOrganization() + "'");
             }
             TblOrganisation organisation = organisations.get(0);
 
@@ -344,6 +383,7 @@ public class DataImportManager {
             ArrayList<Object> params = new ArrayList<>();
             params.add("vienna");
             params.add(importRecord.getScientificName());
+            params.add(taxamatchOptions);
 
             JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
             jsonRpcRequest.setId(1L);
@@ -353,12 +393,36 @@ public class DataImportManager {
             ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
             TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
 
+            Long scientificNameId = 0L;
+            for (Result result : response.getResult().getResult()) {
+                for (Searchresult searchResult : result.getSearchresult()) {
+                    for (Species species : searchResult.getSpecies()) {
+                        if (species.getDistance() <= 0L) {
+                            scientificNameId = species.getTaxonID();
+                            break;
+                        }
+                    }
+
+                    if (scientificNameId != 0L) {
+                        break;
+                    }
+                }
+
+                if (scientificNameId != 0L) {
+                    break;
+                }
+            }
+            if (scientificNameId == 0L) {
+                LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                scientificNameId = 46236L;
+            }
+
             // setup the botanical object
             TblBotanicalObject botanicalObject = new TblBotanicalObject();
             botanicalObject.setAcquisitionEventId(acquisitionEvent);
             botanicalObject.setRecordingDate(new Date());
             botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
-            botanicalObject.setScientificNameId(1); // TODO query taxamatch
+            botanicalObject.setScientificNameId(scientificNameId);
             botanicalObject.setOrganisationId(organisation);
             em.persist(botanicalObject);
 
@@ -387,19 +451,27 @@ public class DataImportManager {
             if (importRecord.getSeparationDate() != null) {
                 // lookup separation type by name
                 TypedQuery<TblSeparationType> separationTypeQuery = em.createNamedQuery("TblSeparationType.findByType", TblSeparationType.class);
-                organisationQuery.setParameter("type", importRecord.getSeparationType());
-                TblSeparationType separationType = separationTypeQuery.getSingleResult();
-                if (organisation == null) {
-                    throw new IllegalArgumentException("Unable to find separation-type");
+                separationTypeQuery.setParameter("type", importRecord.getSeparationType());
+                List<TblSeparationType> separationTypes = separationTypeQuery.getResultList();
+                if (separationTypes == null || separationTypes.size() <= 0) {
+                    throw new IllegalArgumentException("Unable to find separation-type: '" + importRecord.getSeparationType() + "'");
                 }
+                TblSeparationType separationType = separationTypes.get(0);
 
                 TblSeparation separation = new TblSeparation();
                 separation.setBotanicalObjectId(botanicalObject);
                 separation.setSeparationTypeId(separationType);
                 separation.setDate(importRecord.getSeparationDate());
+                separation.setAnnotation(importRecord.getSeparationAnnotation());
                 em.persist(separation);
             }
 
+            // persist the import properties
+            TblImportProperties importProperties = new TblImportProperties();
+            importProperties.setBotanicalObjectId(botanicalObject);
+            importProperties.setIDPflanze(importRecord.getOriginalId());
+            importProperties.setSpeciesName(importRecord.getScientificName());
+            em.persist(importProperties);
         }
     }
 }

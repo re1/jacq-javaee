@@ -9,7 +9,7 @@ public class Species {
     private Long distance;
     private Double ratio;
     private String taxon;
-    private String taxonID;
+    private Long taxonID;
     private String syn;
     private Long synID;
     private List<Object> commonNames = new ArrayList<Object>();
@@ -82,7 +82,7 @@ public class Species {
      *
      * @return The taxonID
      */
-    public String getTaxonID() {
+    public Long getTaxonID() {
         return taxonID;
     }
 
@@ -90,7 +90,7 @@ public class Species {
      *
      * @param taxonID The taxonID
      */
-    public void setTaxonID(String taxonID) {
+    public void setTaxonID(Long taxonID) {
         this.taxonID = taxonID;
     }
 

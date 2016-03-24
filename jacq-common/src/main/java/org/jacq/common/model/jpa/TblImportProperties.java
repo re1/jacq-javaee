@@ -34,14 +34,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze"),
     @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")})
 public class TblImportProperties implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "IDPflanze")
-    private Integer iDPflanze;
+    private Long iDPflanze;
     @Size(max = 255)
     @Column(name = "species_name")
     private String speciesName;
@@ -56,23 +57,23 @@ public class TblImportProperties implements Serializable {
     public TblImportProperties() {
     }
 
-    public TblImportProperties(Integer id) {
+    public TblImportProperties(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getIDPflanze() {
+    public Long getIDPflanze() {
         return iDPflanze;
     }
 
-    public void setIDPflanze(Integer iDPflanze) {
+    public void setIDPflanze(Long iDPflanze) {
         this.iDPflanze = iDPflanze;
     }
 

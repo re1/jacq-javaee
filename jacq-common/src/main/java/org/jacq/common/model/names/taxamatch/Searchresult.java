@@ -7,11 +7,12 @@ import javax.xml.bind.annotation.XmlElement;
 public class Searchresult {
 
     private String genus;
-    private String distance;
+    private Integer distance;
     private Long ratio;
     private String taxon;
     private String ID;
     private List<Species> species = new ArrayList<Species>();
+    private Integer taxonID;
 
     /**
      *
@@ -33,7 +34,7 @@ public class Searchresult {
      *
      * @return The distance
      */
-    public String getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
@@ -41,7 +42,7 @@ public class Searchresult {
      *
      * @param distance The distance
      */
-    public void setDistance(String distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 
@@ -108,6 +109,15 @@ public class Searchresult {
      */
     public void setSpecies(List<Species> species) {
         this.species = species;
+    }
+
+    @XmlElement(name = "taxonID")
+    public Integer getTaxonID() {
+        return taxonID;
+    }
+
+    public void setTaxonID(Integer taxonID) {
+        this.taxonID = taxonID;
     }
 
 }

@@ -34,6 +34,7 @@ public class ImportRecord {
     protected String gatheringNumber;
     protected Date separationDate;
     protected String separationType;
+    protected String separationAnnotation;
     protected String labelAnnotation;
 
     public Long getOriginalId() {
@@ -114,6 +115,14 @@ public class ImportRecord {
 
     public void setSeparationType(String separationType) {
         this.separationType = separationType;
+    }
+
+    public String getSeparationAnnotation() {
+        return separationAnnotation;
+    }
+
+    public void setSeparationAnnotation(String separationAnnotation) {
+        this.separationAnnotation = separationAnnotation;
     }
 
     public String getLabelAnnotation() {
