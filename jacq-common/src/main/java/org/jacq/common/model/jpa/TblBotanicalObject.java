@@ -51,6 +51,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine"),
     @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
 public class TblBotanicalObject implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +61,7 @@ public class TblBotanicalObject implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private int scientificNameId;
+    private Long scientificNameId;
     @Column(name = "determination_date")
     @Temporal(TemporalType.DATE)
     private Date determinationDate;
@@ -81,7 +82,7 @@ public class TblBotanicalObject implements Serializable {
     private Date recordingDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "accessible")
+    @Column(name = "[accessible]")
     private boolean accessible;
     @Basic(optional = false)
     @NotNull
@@ -135,7 +136,7 @@ public class TblBotanicalObject implements Serializable {
         this.id = id;
     }
 
-    public TblBotanicalObject(Integer id, int scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
+    public TblBotanicalObject(Integer id, Long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
         this.id = id;
         this.scientificNameId = scientificNameId;
         this.recordingDate = recordingDate;
@@ -152,11 +153,11 @@ public class TblBotanicalObject implements Serializable {
         this.id = id;
     }
 
-    public int getScientificNameId() {
+    public Long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(int scientificNameId) {
+    public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
