@@ -10,7 +10,7 @@ public class Searchresult {
     private Integer distance;
     private Long ratio;
     private String taxon;
-    private String ID;
+    private Long ID;
     private List<Species> species = new ArrayList<Species>();
     private Integer taxonID;
 
@@ -83,7 +83,7 @@ public class Searchresult {
      * @return The ID
      */
     @XmlElement(name = "ID")
-    public String getID() {
+    public Long getID() {
         return ID;
     }
 
@@ -91,7 +91,7 @@ public class Searchresult {
      *
      * @param ID The ID
      */
-    public void setID(String ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

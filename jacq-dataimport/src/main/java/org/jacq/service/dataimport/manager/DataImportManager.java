@@ -394,8 +394,14 @@ public class DataImportManager {
             TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
 
             Long scientificNameId = 0L;
+            Long genusScientificNameId = 0L;
             for (Result result : response.getResult().getResult()) {
                 for (Searchresult searchResult : result.getSearchresult()) {
+                    // check for genus match
+                    if (searchResult.getDistance() == 0) {
+                        genusScientificNameId = searchResult.getID();
+                    }
+
                     for (Species species : searchResult.getSpecies()) {
                         if (species.getDistance() <= 0L) {
                             scientificNameId = species.getTaxonID();
@@ -413,8 +419,15 @@ public class DataImportManager {
                 }
             }
             if (scientificNameId == 0L) {
-                LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                scientificNameId = 46236L;
+                if (genusScientificNameId == 0L) {
+                    LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                    scientificNameId = 46236L;
+                }
+                else {
+                    LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
+                    scientificNameId = genusScientificNameId;
+                }
+
             }
 
             // setup the botanical object
