@@ -439,10 +439,15 @@ public class DataImportManager {
             botanicalObject.setOrganisationId(organisation);
             em.persist(botanicalObject);
 
+            // create empty acquisition date entry, view editing requires it to be set
+            TblAcquisitionDate incomingDate = new TblAcquisitionDate();
+            em.persist(incomingDate);
+
             // setup living plant object
             TblLivingPlant livingPlant = new TblLivingPlant();
             livingPlant.setId(botanicalObject.getId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
+            livingPlant.setIncomingDateId(incomingDate);
             em.persist(livingPlant);
 
             // store alternative accession number
@@ -477,6 +482,10 @@ public class DataImportManager {
                 separation.setDate(importRecord.getSeparationDate());
                 separation.setAnnotation(importRecord.getSeparationAnnotation());
                 em.persist(separation);
+
+                // update botanical object to be separated
+                botanicalObject.setSeparated(true);
+                em.persist(botanicalObject);
             }
 
             // persist the import properties
