@@ -399,7 +399,7 @@ public class DataImportManager {
                 for (Searchresult searchResult : result.getSearchresult()) {
                     // check for genus match
                     if (searchResult.getDistance() == 0) {
-                        genusScientificNameId = searchResult.getID();
+                        genusScientificNameId = searchResult.getTaxonID();
                     }
 
                     for (Species species : searchResult.getSpecies()) {
