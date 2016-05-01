@@ -15,8 +15,14 @@
  */
 package org.jacq.service.names.manager;
 
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.ManagedBean;
+import javax.annotation.Resource;
+import javax.enterprise.concurrent.ManagedExecutorService;
+import javax.enterprise.context.RequestScoped;
+import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
+import org.jacq.common.model.names.OpenRefineResponse;
 
 /**
  * Handles all common names related actions
@@ -24,7 +30,16 @@ import org.jacq.common.model.names.OpenRefineInfo;
  * @author wkoller
  */
 @ManagedBean
+@RequestScoped
 public class CommonNamesManager {
+
+    @Resource
+    protected ManagedExecutorService executorService;
+
+    /**
+     * HashMap for storign the result of all queries
+     */
+    protected ConcurrentHashMap<Long, CommonName> result = new ConcurrentHashMap<>();
 
     /**
      * @see CommonNamesService#info()
@@ -41,7 +56,7 @@ public class CommonNamesManager {
     /**
      * @see CommonNamesService#query(java.lang.String)
      */
-    public void query(String query) {
+    public OpenRefineResponse<CommonName> query(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

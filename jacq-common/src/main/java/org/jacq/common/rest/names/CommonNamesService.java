@@ -21,7 +21,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
+import org.jacq.common.model.names.OpenRefineResponse;
 
 /**
  * Common Names service interface
@@ -46,10 +48,11 @@ public interface CommonNamesService {
      * Query the common names service
      *
      * @param query
+     * @return List of matched common names
      */
     @Path("/")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void query(@QueryParam("query") String query);
+    public OpenRefineResponse<CommonName> query(@QueryParam("query") String query);
 }
