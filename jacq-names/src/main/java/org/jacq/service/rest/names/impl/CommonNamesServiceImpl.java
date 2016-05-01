@@ -20,7 +20,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNamesService;
-import org.jacq.service.manager.names.CommonNamesManager;
+import org.jacq.service.names.manager.CommonNamesManager;
 
 /**
  * Main common names, OpenRefine compliant, service
