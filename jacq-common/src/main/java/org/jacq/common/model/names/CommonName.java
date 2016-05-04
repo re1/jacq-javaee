@@ -17,7 +17,10 @@ package org.jacq.common.model.names;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.persistence.Transient;
 import javax.validation.Valid;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Pojo for all information of a common name
@@ -39,7 +42,6 @@ public class CommonName {
     public String taxonId;
     @Valid
     public List<String> references = new ArrayList<>();
-    public String reference;
 
     public String getId() {
         return id;
@@ -130,11 +132,23 @@ public class CommonName {
     }
 
     public String getReference() {
-        return reference;
+        return StringUtils.join(this.references, ";");
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    /**
+     * Helper function for creating a unique hash which is used for quickly
+     * deduplicating during result fetching
+     *
+     * @return
+     */
+    @Transient
+    public Long deduplicateHash() {
+        Long hash = 7L;
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + Objects.hashCode(this.language);
+        hash = 61 * hash + Objects.hashCode(this.geography);
+        hash = 61 * hash + Objects.hashCode(this.period);
+        hash = 61 * hash + Objects.hashCode(this.taxon);
+        return hash;
     }
-
 }

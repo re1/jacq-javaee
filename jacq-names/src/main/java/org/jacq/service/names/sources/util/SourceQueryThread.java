@@ -16,7 +16,6 @@
 package org.jacq.service.names.sources.util;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.service.names.sources.CommonNamesSource;
@@ -44,9 +43,19 @@ public class SourceQueryThread implements Runnable {
 
         // merge results into global result map
         for (CommonName commonName : queryResult) {
+            // clean the scientific name
+            // TODO: implement
 
+            // check if result already exists
+            Long deduplicateHash = commonName.deduplicateHash();
+            if (result.containsKey(deduplicateHash)) {
+                // only update references
+                result.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
+            }
+            else {
+                // add entry to result list
+                result.put(deduplicateHash, commonName);
+            }
         }
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

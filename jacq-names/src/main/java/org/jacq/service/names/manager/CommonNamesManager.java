@@ -20,6 +20,8 @@ import javax.annotation.ManagedBean;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
@@ -33,11 +35,14 @@ import org.jacq.common.model.names.OpenRefineResponse;
 @RequestScoped
 public class CommonNamesManager {
 
+    @PersistenceContext
+    protected EntityManager em;
+
     @Resource
     protected ManagedExecutorService executorService;
 
     /**
-     * HashMap for storign the result of all queries
+     * HashMap for storing the result of all queries
      */
     protected ConcurrentHashMap<Long, CommonName> result = new ConcurrentHashMap<>();
 
