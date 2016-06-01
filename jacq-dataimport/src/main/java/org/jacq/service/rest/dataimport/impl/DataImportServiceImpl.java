@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.rest.dataimport.DataImportService;
+import org.jacq.service.dataimport.manager.BromiMdbImportManager;
 import org.jacq.service.dataimport.manager.DataImportManager;
 
 /**
@@ -32,6 +33,9 @@ public class DataImportServiceImpl implements DataImportService {
 
     @Inject
     protected DataImportManager dataImportManager;
+
+    @Inject
+    protected BromiMdbImportManager bromiMdbImportManager;
 
     /**
      * @see
@@ -46,10 +50,13 @@ public class DataImportServiceImpl implements DataImportService {
         }
     }
 
+    /**
+     * @see DataImportService#importBromiMdb()
+     */
     @Override
     public void importBromiMdb() {
         try {
-            dataImportManager.importBromiMdb();
+            bromiMdbImportManager.importBromiMdb();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

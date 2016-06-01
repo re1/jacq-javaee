@@ -1,13 +1,12 @@
 package org.jacq.common.model.names.taxamatch;
 
-import org.jacq.common.model.names.taxamatch.Result;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaxamatchResult {
 
     private String error;
-    private List<Result> result = new ArrayList<Result>();
+    private List<Result> result = new ArrayList<>();
 
     /**
      *
