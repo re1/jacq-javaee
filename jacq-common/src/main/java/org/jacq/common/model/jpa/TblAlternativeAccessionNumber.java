@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblAlternativeAccessionNumber.findById", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.id = :id"),
     @NamedQuery(name = "TblAlternativeAccessionNumber.findByNumber", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.number = :number")})
 public class TblAlternativeAccessionNumber implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

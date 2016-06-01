@@ -80,7 +80,7 @@ public class ViewTaxon implements Serializable {
     @NotNull
     @Column(name = "taxonID")
     @Id
-    private int taxonID;
+    private Integer taxonID;
     @Column(name = "synID")
     private Integer synID;
     @Column(name = "basID")
@@ -88,7 +88,7 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "genID")
-    private int genID;
+    private Integer genID;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "annotation")
@@ -96,14 +96,14 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "external")
-    private short external;
+    private Integer external;
     @Size(max = 100)
     @Column(name = "genus")
     private String genus;
     @Column(name = "DallaTorreIDs")
     private Integer dallaTorreIDs;
     @Column(name = "DallaTorreZusatzIDs")
-    private Character dallaTorreZusatzIDs;
+    private String dallaTorreZusatzIDs;
     @Size(max = 255)
     @Column(name = "author_g")
     private String authorG;
@@ -208,11 +208,11 @@ public class ViewTaxon implements Serializable {
     public ViewTaxon() {
     }
 
-    public int getTaxonID() {
+    public Integer getTaxonID() {
         return taxonID;
     }
 
-    public void setTaxonID(int taxonID) {
+    public void setTaxonID(Integer taxonID) {
         this.taxonID = taxonID;
     }
 
@@ -232,11 +232,11 @@ public class ViewTaxon implements Serializable {
         this.basID = basID;
     }
 
-    public int getGenID() {
+    public Integer getGenID() {
         return genID;
     }
 
-    public void setGenID(int genID) {
+    public void setGenID(Integer genID) {
         this.genID = genID;
     }
 
@@ -248,11 +248,11 @@ public class ViewTaxon implements Serializable {
         this.annotation = annotation;
     }
 
-    public short getExternal() {
+    public Integer getExternal() {
         return external;
     }
 
-    public void setExternal(short external) {
+    public void setExternal(Integer external) {
         this.external = external;
     }
 
@@ -272,11 +272,11 @@ public class ViewTaxon implements Serializable {
         this.dallaTorreIDs = dallaTorreIDs;
     }
 
-    public Character getDallaTorreZusatzIDs() {
+    public String getDallaTorreZusatzIDs() {
         return dallaTorreZusatzIDs;
     }
 
-    public void setDallaTorreZusatzIDs(Character dallaTorreZusatzIDs) {
+    public void setDallaTorreZusatzIDs(String dallaTorreZusatzIDs) {
         this.dallaTorreZusatzIDs = dallaTorreZusatzIDs;
     }
 

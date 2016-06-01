@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -373,10 +374,18 @@ public class TblBotanicalObject implements Serializable {
      * Custom mappings
      */
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ViewScientificName viewScientificName;
 
     public ViewScientificName getViewScientificName() {
         return viewScientificName;
+    }
+
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "taxonID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ViewTaxon viewTaxon;
+
+    public ViewTaxon getViewTaxon() {
+        return viewTaxon;
     }
 }

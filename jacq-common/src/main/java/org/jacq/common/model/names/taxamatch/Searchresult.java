@@ -13,6 +13,7 @@ public class Searchresult {
     private Long ID;
     private List<Species> species = new ArrayList<Species>();
     private Long taxonID;
+    private String family;
 
     /**
      *
@@ -120,4 +121,11 @@ public class Searchresult {
         this.taxonID = taxonID;
     }
 
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
 }
