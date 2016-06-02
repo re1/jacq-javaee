@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.manager.names;
+package org.jacq.service.names.manager;
 
 import javax.annotation.ManagedBean;
 import org.jacq.common.model.names.OpenRefineInfo;
