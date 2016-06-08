@@ -38,6 +38,7 @@ public class ImportRecord {
     protected String separationAnnotation;
     protected String labelAnnotation;
     protected String matchFamily;
+    protected String ipenNumber;
 
     public Long getOriginalId() {
         return originalId;
@@ -151,6 +152,14 @@ public class ImportRecord {
         this.matchFamily = matchFamily;
     }
 
+    public String getIpenNumber() {
+        return ipenNumber;
+    }
+
+    public void setIpenNumber(String ipenNumber) {
+        this.ipenNumber = ipenNumber;
+    }
+
     /**
      * Helper function for converting the import record to a single line string
      * for appending to the annotation field of an existing record
@@ -198,6 +207,9 @@ public class ImportRecord {
         }
         if (labelAnnotation != null) {
             annotationString += labelAnnotation + ";";
+        }
+        if (ipenNumber != null) {
+            annotationString += ipenNumber + ";";
         }
 
         return annotationString;
