@@ -283,6 +283,7 @@ public class DataImportManager {
             livingPlant.setId(botanicalObject.getId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
             livingPlant.setIncomingDateId(incomingDate);
+            livingPlant.setIpenNumber(importRecord.getIpenNumber());
             em.persist(livingPlant);
 
             // store alternative accession number

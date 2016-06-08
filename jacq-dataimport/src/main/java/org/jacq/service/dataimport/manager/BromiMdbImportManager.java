@@ -252,6 +252,9 @@ public class BromiMdbImportManager {
             // limit matches to Bromeliaceae
             importRecord.setMatchFamily("Bromeliaceae");
 
+            // set ipen to default one
+            importRecord.setIpenNumber("XX-1-WU");
+
             // finally run the import
             DataImportManager.ImportStatus importStatus = dataImportManager.importRecord(importRecord);
             if (importStatus == DataImportManager.ImportStatus.INSERTED) {
