@@ -15,16 +15,19 @@
  */
 package org.jacq.service.names.manager;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.ManagedBean;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
+import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 
 /**
  * Handles all common names related actions
@@ -40,6 +43,9 @@ public class CommonNamesManager {
 
     @Resource
     protected ManagedExecutorService executorService;
+
+    @Inject
+    protected DnpGoThSource dnpGoThSource;
 
     /**
      * HashMap for storing the result of all queries
@@ -62,6 +68,10 @@ public class CommonNamesManager {
      * @see CommonNamesService#query(java.lang.String)
      */
     public OpenRefineResponse<CommonName> query(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        OpenRefineResponse openRefineResponse = new OpenRefineResponse();
+
+        openRefineResponse.setResult(dnpGoThSource.query(query));
+
+        return openRefineResponse;
     }
 }
