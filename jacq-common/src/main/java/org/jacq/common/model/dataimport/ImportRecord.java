@@ -27,6 +27,7 @@ public class ImportRecord {
     protected Long originalId;
     protected String specimenNumber;
     protected String livingPlantNumber;
+    protected String alternativeLivingPlantNumber;
     protected String organization;
     protected String scientificName;
     protected String alternativeNumber;
@@ -36,6 +37,8 @@ public class ImportRecord {
     protected String separationType;
     protected String separationAnnotation;
     protected String labelAnnotation;
+    protected String matchFamily;
+    protected String ipenNumber;
 
     public Long getOriginalId() {
         return originalId;
@@ -59,6 +62,14 @@ public class ImportRecord {
 
     public void setLivingPlantNumber(String livingPlantNumber) {
         this.livingPlantNumber = livingPlantNumber;
+    }
+
+    public String getAlternativeLivingPlantNumber() {
+        return alternativeLivingPlantNumber;
+    }
+
+    public void setAlternativeLivingPlantNumber(String alternativeLivingPlantNumber) {
+        this.alternativeLivingPlantNumber = alternativeLivingPlantNumber;
     }
 
     public String getOrganization() {
@@ -133,4 +144,74 @@ public class ImportRecord {
         this.labelAnnotation = labelAnnotation;
     }
 
+    public String getMatchFamily() {
+        return matchFamily;
+    }
+
+    public void setMatchFamily(String matchFamily) {
+        this.matchFamily = matchFamily;
+    }
+
+    public String getIpenNumber() {
+        return ipenNumber;
+    }
+
+    public void setIpenNumber(String ipenNumber) {
+        this.ipenNumber = ipenNumber;
+    }
+
+    /**
+     * Helper function for converting the import record to a single line string
+     * for appending to the annotation field of an existing record
+     *
+     * @return
+     */
+    public String toAnnotationString() {
+        String annotationString = "";
+
+        if (originalId != null) {
+            annotationString += originalId + ";";
+        }
+        if (specimenNumber != null) {
+            annotationString += specimenNumber + ";";
+        }
+        if (livingPlantNumber != null) {
+            annotationString += livingPlantNumber + ";";
+        }
+        if (alternativeLivingPlantNumber != null) {
+            annotationString += alternativeLivingPlantNumber + ";";
+        }
+        if (organization != null) {
+            annotationString += organization + ";";
+        }
+        if (scientificName != null) {
+            annotationString += scientificName + ";";
+        }
+        if (alternativeNumber != null) {
+            annotationString += alternativeNumber + ";";
+        }
+        if (genericAnnotation != null) {
+            annotationString += genericAnnotation + ";";
+        }
+        if (gatheringNumber != null) {
+            annotationString += gatheringNumber + ";";
+        }
+        if (separationDate != null) {
+            annotationString += separationDate + ";";
+        }
+        if (separationType != null) {
+            annotationString += separationType + ";";
+        }
+        if (separationAnnotation != null) {
+            annotationString += separationAnnotation + ";";
+        }
+        if (labelAnnotation != null) {
+            annotationString += labelAnnotation + ";";
+        }
+        if (ipenNumber != null) {
+            annotationString += ipenNumber + ";";
+        }
+
+        return annotationString;
+    }
 }

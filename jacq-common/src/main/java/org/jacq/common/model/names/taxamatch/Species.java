@@ -13,6 +13,7 @@ public class Species {
     private String syn;
     private Long synID;
     private List<Object> commonNames = new ArrayList<Object>();
+    private String family;
 
     /**
      *
@@ -142,4 +143,11 @@ public class Species {
         this.commonNames = commonNames;
     }
 
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
 }

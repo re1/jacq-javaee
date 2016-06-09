@@ -12,7 +12,8 @@ public class Searchresult {
     private String taxon;
     private Long ID;
     private List<Species> species = new ArrayList<Species>();
-    private Integer taxonID;
+    private Long taxonID;
+    private String family;
 
     /**
      *
@@ -112,12 +113,19 @@ public class Searchresult {
     }
 
     @XmlElement(name = "taxonID")
-    public Integer getTaxonID() {
+    public Long getTaxonID() {
         return taxonID;
     }
 
-    public void setTaxonID(Integer taxonID) {
+    public void setTaxonID(Long taxonID) {
         this.taxonID = taxonID;
     }
 
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
 }

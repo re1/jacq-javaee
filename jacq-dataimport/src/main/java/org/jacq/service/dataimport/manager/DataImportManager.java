@@ -15,40 +15,22 @@
  */
 package org.jacq.service.dataimport.manager;
 
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.DatabaseBuilder;
-import com.healthmarketscience.jackcess.Row;
-import com.healthmarketscience.jackcess.Table;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Base64;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
-import javax.json.JsonArray;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +47,7 @@ import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
+import org.jacq.common.model.jpa.ViewTaxon;
 import org.jacq.common.model.names.JsonRpcRequest;
 import org.jacq.common.model.names.taxamatch.Result;
 import org.jacq.common.model.names.taxamatch.Searchresult;
@@ -81,6 +64,14 @@ import org.jacq.service.dataimport.util.ServicesUtil;
 @ManagedBean
 @Transactional
 public class DataImportManager {
+
+    /**
+     * Possible return values for an import
+     */
+    public enum ImportStatus {
+        INSERTED,
+        UPDATED
+    };
 
     private static final Logger LOGGER = Logger.getLogger(DataImportManager.class.getName());
 
@@ -124,219 +115,63 @@ public class DataImportManager {
     }
 
     /**
-     * Reads the bromi mdb file and imports it into the system
-     */
-    public void importBromiMdb() throws IOException, ParseException {
-        // glashaus lookup table
-        HashMap<String, String> glashausLookup = new HashMap<>();
-        glashausLookup.put("BH", "G12 (Bromelien)");
-        glashausLookup.put("JH", "G18 (Jacquinhaus)");
-        glashausLookup.put("QG", "G9 (Orchideen)");
-        glashausLookup.put("GH5", "G5 (Sukkulentenhaus West)");
-        glashausLookup.put("XH", "G11 (Xerophyten)");
-        glashausLookup.put("WH1", "G8 (Warmhaus 1)");
-        glashausLookup.put("TOH", "G15 (Orchideen temp. Haus)");
-        glashausLookup.put("WOH", "G16 (Orchideen Warmhaus)");
-        glashausLookup.put("KH", "G13 (Orchideen-Kalthaus)");
-        glashausLookup.put("WH2", "G7 (Warmhaus 2)");
-        glashausLookup.put("SUK", "Sukkulente");
-        glashausLookup.put("GH", "Sukkulente");
-        glashausLookup.put("Sukh", "Sukkulente");
-        glashausLookup.put("TOH+F367", "G15 (Orchideen temp. Haus)");
-        glashausLookup.put("TROPH", "G6 (Tropenhaus öffentlich)");
-        glashausLookup.put("WH", "Warmhaus");
-        glashausLookup.put("XH (WH)", "G11 (Xerophyten)");
-        glashausLookup.put("XH  (KH)", "G11 (Xerophyten)");
-        glashausLookup.put("", "Botanischer Garten");
-        glashausLookup.put("AG", "Orchideen");
-        glashausLookup.put("Augarten", "Orchideen");
-
-        Database db = DatabaseBuilder.open(new File("/tmp/bromi.mdb"));
-        Table table = db.getTable("Tabelle");
-        int rowCount = table.getRowCount();
-        int counter = 0;
-
-        for (Row row : table) {
-            ImportRecord importRecord = new ImportRecord();
-
-            // remember original id
-            importRecord.setOriginalId(Long.valueOf(row.getInt("ID")));
-
-            // translate glashaus (location / organization)
-            String glashaus = row.getString("Glashaus");
-            if (StringUtils.isEmpty(glashaus)) {
-                glashaus = "";
-            }
-            glashaus = glashaus.trim();
-            glashaus = glashausLookup.get(glashaus);
-            if (glashaus == null) {
-                LOGGER.log(Level.WARNING, "Invalid Glashaus for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Glashaus")});
-                continue;
-            }
-            importRecord.setOrganization(glashaus);
-
-            // clean the scientific name
-            String gattung = row.getString("Gattung");
-            String art = row.getString("Art");
-            String feld1 = row.getString("Feld1");
-            String scientificName = gattung;
-            if (art != null) {
-                scientificName += " " + art;
-            }
-            if (feld1 != null) {
-                scientificName += " " + feld1;
-            }
-            if (StringUtils.isEmpty(scientificName)) {
-                LOGGER.log(Level.WARNING, "No Scientific Name for entry ''{0}''!", new Object[]{row.getInt("ID")});
-                scientificName = "Indeterminatae dicot";
-            }
-
-            importRecord.setScientificName(scientificName);
-            importRecord.setScientificName(importRecord.getScientificName().replaceAll("\\(.*\\)", ""));
-
-            // alternative number
-            importRecord.setAlternativeNumber(row.getString("Herkunft-Nr"));
-
-            // generic annotation
-            importRecord.setGenericAnnotation("Zuletzt bearbeitet am: " + row.getString("Bearbeitungs Datum") + "; " + row.getString("Unklar"));
-
-            // living plant number
-            importRecord.setLivingPlantNumber(row.getString("Garten-Nr"));
-
-            // gathering number
-            importRecord.setGatheringNumber(row.getString("Herkunft-Nr"));
-
-            // label annotation
-            importRecord.setLabelAnnotation((!StringUtils.isEmpty(row.getString("Garten-Nr"))) ? row.getString("Garten-Nr") : row.getString("Herkunft-Nr"));
-
-            // separation
-            if (!StringUtils.isEmpty(row.getString("Pflanzen Abgang"))) {
-                String pflanzenAbgang = row.getString("Pflanzen Abgang");
-
-                // try to parse the date as "normal" date
-                try {
-                    importRecord.setSeparationDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(pflanzenAbgang));
-                    importRecord.setSeparationType("dead (eliminated)");
-                } catch (ParseException pe) {
-                    // separate date information
-                    String pflanzenAbgangParts[] = pflanzenAbgang.split(" |\\.");
-
-                    if (pflanzenAbgangParts.length >= 2) {
-                        if (pflanzenAbgangParts[0].equals("ca")) {
-                            if (pflanzenAbgangParts.length > 3) {
-                                pflanzenAbgangParts[0] = pflanzenAbgangParts[2];
-                                pflanzenAbgangParts[1] = pflanzenAbgangParts[3];
-                            }
-                            else {
-                                pflanzenAbgangParts[0] = pflanzenAbgangParts[1];
-                                pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
-                            }
-                        }
-                        else if (pflanzenAbgangParts.length > 2) {
-                            pflanzenAbgangParts[1] = pflanzenAbgangParts[2];
-                        }
-
-                        int month = -1;
-                        switch (pflanzenAbgangParts[0]) {
-                            case "Jänner":
-                            case "Jan":
-                            case "Jän":
-                                month = 0;
-                                break;
-                            case "Februar":
-                            case "Feb":
-                                month = 1;
-                                break;
-                            case "März":
-                                month = 2;
-                                break;
-                            case "April":
-                            case "Apr":
-                                month = 3;
-                                break;
-                            case "Mai":
-                                month = 4;
-                                break;
-                            case "Juni":
-                                month = 5;
-                                break;
-                            case "Juli":
-                                month = 6;
-                                break;
-                            case "August":
-                            case "Aug":
-                                month = 7;
-                                break;
-                            case "September":
-                            case "Sep":
-                                month = 8;
-                                break;
-                            case "Oktober":
-                            case "Okt":
-                                month = 9;
-                                break;
-                            case "November":
-                            case "Nov":
-                                month = 10;
-                                break;
-                            case "Dezember":
-                            case "Dez":
-                                month = 11;
-                                break;
-                            default:
-                                LOGGER.log(Level.WARNING, "Invalid Month-Format for entry ''{0}''! ({1} / {2})", new Object[]{row.getInt("ID"), pflanzenAbgangParts[0], pflanzenAbgang});
-                                break;
-                        }
-
-                        if (month >= 0) {
-                            try {
-                                Date separationDate = new Date(Integer.valueOf(pflanzenAbgangParts[1]) + 100, month, 1);
-                                importRecord.setSeparationDate(separationDate);
-                                importRecord.setSeparationType("dead (eliminated)");
-                            } catch (Exception e) {
-                                LOGGER.log(Level.WARNING, "Unable to parse date for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
-                            }
-                        }
-
-                    }
-                    else {
-                        LOGGER.log(Level.WARNING, "Invalid Date-Format for entry ''{0}''! ({1})", new Object[]{row.getInt("ID"), row.getString("Pflanzen Abgang")});
-                    }
-                }
-            }
-
-            // Augarten entries have their own separation (static)
-            if (glashaus.equals(glashausLookup.get("AG"))) {
-                importRecord.setSeparationDate(DateFormat.getDateInstance(DateFormat.SHORT).parse("17.12.2012"));
-                importRecord.setSeparationType("separated");
-                importRecord.setSeparationAnnotation("Augarten");
-            }
-
-            // finally run the import
-            this.importRecord(importRecord);
-
-            counter++;
-
-            LOGGER.log(Level.INFO, "Processed entry {0} of {1}", new Object[]{counter, rowCount});
-        }
-    }
-
-    /**
      * Processes a record entry and writes the data to the database
      *
      * @param importRecord
      */
     @Transactional(rollbackOn = {Exception.class})
-    protected void importRecord(ImportRecord importRecord) {
+    protected ImportStatus importRecord(ImportRecord importRecord) {
         // check if we need to import a living plant
         if (!StringUtils.isEmpty(importRecord.getLivingPlantNumber())) {
             // check if entry already exists
             TypedQuery<TblAlternativeAccessionNumber> alternativeAccessionNumberQuery = em.createNamedQuery("TblAlternativeAccessionNumber.findByNumber", TblAlternativeAccessionNumber.class);
             alternativeAccessionNumberQuery.setParameter("number", importRecord.getLivingPlantNumber());
             List<TblAlternativeAccessionNumber> alternativeAccessionNumbers = alternativeAccessionNumberQuery.getResultList();
+            // check if we have an alternative living plant number & try to find existing entry
+            if (alternativeAccessionNumbers.size() <= 0 && importRecord.getAlternativeLivingPlantNumber() != null) {
+                alternativeAccessionNumberQuery = em.createNamedQuery("TblAlternativeAccessionNumber.findByNumber", TblAlternativeAccessionNumber.class);
+                alternativeAccessionNumberQuery.setParameter("number", importRecord.getAlternativeLivingPlantNumber());
+                alternativeAccessionNumbers = alternativeAccessionNumberQuery.getResultList();
+            }
+
+            // check if we found an existing entry, if yes use the first match and append the info to the annotation field
             if (alternativeAccessionNumbers.size() > 0) {
-                LOGGER.log(Level.INFO, "Living-Plant Entry already exists: ''{0}''", importRecord.getLivingPlantNumber());
-                return;
+
+                TblAlternativeAccessionNumber alternativeAccessionNumber = alternativeAccessionNumbers.get(0);
+                TblBotanicalObject botanicalObject = alternativeAccessionNumber.getLivingPlantId().getTblBotanicalObject();
+
+                // check if we limit to a certain family
+                if (!StringUtils.isEmpty(importRecord.getMatchFamily())) {
+                    // check if we can find a family
+                    if (!StringUtils.isEmpty(botanicalObject.getViewTaxon().getFamily())) {
+                        // compare family, but ignore case
+                        if (importRecord.getMatchFamily().equalsIgnoreCase(botanicalObject.getViewTaxon().getFamily())) {
+                            LOGGER.log(Level.INFO, "Living-Plant Entry already exists: ''{0}'' / ''{1}''", new Object[]{importRecord.getLivingPlantNumber(), importRecord.getAlternativeLivingPlantNumber()});
+
+                            String annotation = botanicalObject.getAnnotation();
+
+                            // check if we already have an annotation, if yes append a newline
+                            if (StringUtils.isEmpty(annotation)) {
+                                annotation = importRecord.toAnnotationString();
+                            }
+                            else {
+                                annotation += "\n" + importRecord.toAnnotationString();
+                            }
+                            botanicalObject.setAnnotation(annotation);
+                            em.persist(botanicalObject);
+
+                            LOGGER.log(Level.INFO, "Updated annotation for entry: ''{0}''", botanicalObject.getId());
+
+                            return ImportStatus.UPDATED;
+                        }
+                        else {
+                            LOGGER.log(Level.INFO, "Family of matched entry does not conform to match-family: ''{0}'' vs ''{1}''", new Object[]{botanicalObject.getViewTaxon().getFamily(), importRecord.getMatchFamily()});
+                        }
+                    }
+                    else {
+                        LOGGER.log(Level.INFO, "No family entry found for: ''{0}'' ({1})", new Object[]{botanicalObject.getViewScientificName().getScientificName(), botanicalObject.getScientificNameId()});
+                    }
+                }
             }
 
             // no entry exists yet, start creating the data
@@ -399,7 +234,7 @@ public class DataImportManager {
                 for (Searchresult searchResult : result.getSearchresult()) {
                     // check for genus match
                     if (searchResult.getDistance() == 0) {
-                        genusScientificNameId = searchResult.getID();
+                        genusScientificNameId = searchResult.getTaxonID();
                     }
 
                     for (Species species : searchResult.getSpecies()) {
@@ -448,6 +283,7 @@ public class DataImportManager {
             livingPlant.setId(botanicalObject.getId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
             livingPlant.setIncomingDateId(incomingDate);
+            livingPlant.setIpenNumber(importRecord.getIpenNumber());
             em.persist(livingPlant);
 
             // store alternative accession number
@@ -495,5 +331,7 @@ public class DataImportManager {
             importProperties.setSpeciesName(importRecord.getScientificName());
             em.persist(importProperties);
         }
+
+        return ImportStatus.INSERTED;
     }
 }

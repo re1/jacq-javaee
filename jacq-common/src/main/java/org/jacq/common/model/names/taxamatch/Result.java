@@ -1,6 +1,5 @@
 package org.jacq.common.model.names.taxamatch;
 
-import org.jacq.common.model.names.taxamatch.Searchresult;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,7 @@ public class Result {
     private String type;
     private String database;
     private Boolean includeCommonNames;
-    private List<Searchresult> searchresult = new ArrayList<Searchresult>();
+    private List<Searchresult> searchresult = new ArrayList<>();
 
     /**
      *
