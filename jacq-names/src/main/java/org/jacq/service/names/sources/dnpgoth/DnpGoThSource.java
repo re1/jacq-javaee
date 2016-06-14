@@ -36,27 +36,27 @@ public class DnpGoThSource implements CommonNamesSource {
     protected static final String __VIEWSTATE = "__VIEWSTATE";
     protected static final String __VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
     protected static final String __EVENTVALIDATION = "__EVENTVALIDATION";
-    protected static final String __SCROLLPOSITIONX = "__SCROLLPOSITIONX";
-    protected static final String __SCROLLPOSITIONY = "__SCROLLPOSITIONY";
-    protected static final String TVWRESULT_EXPANDSTATE = "tvwResult_ExpandState";
 
     protected Pattern inputFormPattern;
 
     protected Pattern resultLinkPattern;
 
+    protected Pattern resultNamePattern;
+
     @PostConstruct
     public void init() {
         inputFormPattern = Pattern.compile("<input.+ id=\"(.+)\" value=\"(.*)\" \\/>");
-        // <a href="javascript:__doPostBack('tvwResult','s0\\55')" id="tvwResultt2"><font face="Tahoma" color="ForestGreen" size="2"><b>Acanthus leucostachyus Wall.</b> [S ]</font></a>
-        // style="white-space:nowrap;"><a class="tvwResult_0 tvwResult_1" href="javascript:__doPostBack('tvwResult','s0\\5831')" onclick="TreeView_SelectNode(tvwResult_Data, this,'tvwResultt8');" id="tvwResultt8"><b>Rhinacanthus nasutus (L.) Kurz</b>
-        resultLinkPattern = Pattern.compile("style=\"white-space:nowrap;\"><a.+href=\"javascript:__doPostBack\\('(.+)','(.+)'\\)\".+ id=\"(.+)\"><b>(.+)</b>");
+        // <td nowrap="nowrap"><a href="javascript:__doPostBack('tvwResult','s0\\54')" id="tvwResultt1"><font face="Tahoma" color="ForestGreen" size="2"><b>Acanthus ebracteatus Vahl</b>
+        resultLinkPattern = Pattern.compile("<td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('(.+)','(.+)'\\)\" id=\"(.+)\">.+<b>(.+)</b>");
+        // <td><img src="/WebResource.axd?d=EIMMg-9HJMcSshywAUEDljFAW5I4W1k_5qpJxd6qTcYArBgUdHTbwXZcn87x1yEwCheqvekCbMW9bu-oNdFXy-govl4rhcj8FbRtHAKMH9gTObum0&amp;t=635588870575142005" alt="" /></td><td nowrap="nowrap"><a href="javascript:__doPostBack('tvwResult','s0\\54\\169')" id="tvwResultt2"><font face="Tahoma" color="ForestGreen" size="2">แก้มหมอ  (สตูล)</font></a></td>
+        resultNamePattern = Pattern.compile("<td><img.+/></td><td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('.+','.+'\\)\" id=\".+\"><font face=\"Tahoma\" color=\"ForestGreen\" size=\"2\">(.+)\\s+\\((.+)\\)</font></a></td>");
     }
 
     @Override
     public ArrayList<CommonName> query(String query) {
         DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getDnpGoThWebSearch();
 
-        Response response = dnpGoThWebSearch.searchTree("Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0", "%Acanthus%", "%", "Species");
+        Response response = dnpGoThWebSearch.searchTree("%Acanthus%", "%", "Species");
         String content = response.readEntity(String.class);
 
         // parse input form properties
@@ -64,9 +64,6 @@ public class DnpGoThSource implements CommonNamesSource {
         String viewState = null;
         String viewStateGenerator = null;
         String eventValidation = null;
-        String scrollPositionX = null;
-        String scrollPositionY = null;
-        String tvwResultExpandState = null;
 
         // parse the static form parameters and save them to variables
         while (inputFormMatcher.find()) {
@@ -79,15 +76,6 @@ public class DnpGoThSource implements CommonNamesSource {
             else if (__EVENTVALIDATION.equals(inputFormMatcher.group(1))) {
                 eventValidation = inputFormMatcher.group(2);
             }
-            else if (__SCROLLPOSITIONX.equals(inputFormMatcher.group(1))) {
-                scrollPositionX = inputFormMatcher.group(2);
-            }
-            else if (__SCROLLPOSITIONY.equals(inputFormMatcher.group(1))) {
-                scrollPositionY = inputFormMatcher.group(2);
-            }
-            else if (TVWRESULT_EXPANDSTATE.equals(inputFormMatcher.group(1))) {
-                tvwResultExpandState = inputFormMatcher.group(2);
-            }
 
             System.err.println(inputFormMatcher.group(1) + " = " + inputFormMatcher.group(2));
         }
@@ -97,13 +85,24 @@ public class DnpGoThSource implements CommonNamesSource {
         while (resultLinkMatcher.find()) {
             String eventTarget = resultLinkMatcher.group(1);
             String eventArgument = resultLinkMatcher.group(2).replace("\\\\", "\\");    // remove escaping resulting from javascript
-            String tvwResultSelectedNode = resultLinkMatcher.group(3);
 
-            response = dnpGoThWebSearch.searchTreeExpand("Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0", "http://www.dnp.go.th/botany/ThaiPlantName/SearchTree.aspx?Genus=%25Acanthus%25&Species=%25&GroupBy=Species", "%Acanthus%", "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument, scrollPositionX, scrollPositionY, tvwResultExpandState, "", tvwResultSelectedNode);
+            System.err.println(resultLinkMatcher.group(1) + " = " + resultLinkMatcher.group(2));
+
+            response = dnpGoThWebSearch.searchTreeExpand("%Acanthus%", "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
 
             String expandContent = response.readEntity(String.class);
 
-            System.err.println(resultLinkMatcher.group(1) + " = " + resultLinkMatcher.group(2));
+            Matcher resultNameMatcher = resultNamePattern.matcher(expandContent);
+            while (resultNameMatcher.find()) {
+                String commonName = resultNameMatcher.group(1);
+                String geography = resultNameMatcher.group(2);
+
+                // clean the common name, since it may contain <b> tags
+                commonName = commonName.replaceAll("<b>", "").replaceAll("</b>", "");
+
+                System.err.println(commonName + " (" + geography + ")");
+            }
+
         }
 
         return null;

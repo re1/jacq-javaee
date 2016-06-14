@@ -46,7 +46,7 @@ public interface DnpGoThWebSearch {
      */
     @GET
     @Path("/SearchTree.aspx")
-    public Response searchTree(@HeaderParam("User-Agent") String userAgent, @QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy);
+    public Response searchTree(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy);
 
     /**
      * Search names for the given genus / species, returns HTML formatted
@@ -60,5 +60,5 @@ public interface DnpGoThWebSearch {
     @POST
     @Path("/SearchTree.aspx")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response searchTreeExpand(@HeaderParam("User-Agent") String userAgent, @HeaderParam("Referer") String referer, @QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy, @FormParam("__VIEWSTATE") String viewState, @FormParam("__VIEWSTATEGENERATOR") String viewStateGenerator, @FormParam("__EVENTVALIDATION") String eventValidation, @FormParam("__EVENTTARGET") String eventTarget, @FormParam("__EVENTARGUMENT") String eventArgument, @FormParam("__SCROLLPOSITIONX") String scrollPositionX, @FormParam("__SCROLLPOSITIONY") String scrollPositionY, @FormParam("tvwResult_ExpandState") String tvwResultExpandState, @FormParam("tvwResult_PopulateLog") String tvwResultPopulateLog, @FormParam("tvwResult_SelectedNode") String tvwResultSelectedNode);
+    public Response searchTreeExpand(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy, @FormParam("__VIEWSTATE") String viewState, @FormParam("__VIEWSTATEGENERATOR") String viewStateGenerator, @FormParam("__EVENTVALIDATION") String eventValidation, @FormParam("__EVENTTARGET") String eventTarget, @FormParam("__EVENTARGUMENT") String eventArgument);
 }
