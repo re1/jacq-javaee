@@ -47,7 +47,6 @@ import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
-import org.jacq.common.model.jpa.ViewTaxon;
 import org.jacq.common.model.names.JsonRpcRequest;
 import org.jacq.common.model.names.taxamatch.Result;
 import org.jacq.common.model.names.taxamatch.Searchresult;
@@ -152,10 +151,10 @@ public class DataImportManager {
 
                             // check if we already have an annotation, if yes append a newline
                             if (StringUtils.isEmpty(annotation)) {
-                                annotation = importRecord.toAnnotationString();
+                                annotation = importRecord.getImportFile().getFileName() + ": " + importRecord.toAnnotationString();
                             }
                             else {
-                                annotation += "\n" + importRecord.toAnnotationString();
+                                annotation += "\n" + importRecord.getImportFile().getFileName() + ": " + importRecord.toAnnotationString();
                             }
                             botanicalObject.setAnnotation(annotation);
                             em.persist(botanicalObject);
