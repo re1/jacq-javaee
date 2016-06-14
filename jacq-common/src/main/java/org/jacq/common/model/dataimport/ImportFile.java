@@ -35,7 +35,7 @@ public class ImportFile {
     /**
      * Original size of file
      */
-    protected String fileSize;
+    protected Long fileSize;
 
     public String getFileContent() {
         return fileContent;
@@ -53,11 +53,11 @@ public class ImportFile {
         this.fileName = fileName;
     }
 
-    public String getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(String fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

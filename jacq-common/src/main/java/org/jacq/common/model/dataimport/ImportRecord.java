@@ -24,6 +24,11 @@ import java.util.Date;
  */
 public class ImportRecord {
 
+    /**
+     * Reference to originating importFile object, must not be null
+     */
+    protected ImportFile importFile;
+
     protected Long originalId;
     protected String specimenNumber;
     protected String livingPlantNumber;
@@ -158,6 +163,14 @@ public class ImportRecord {
 
     public void setIpenNumber(String ipenNumber) {
         this.ipenNumber = ipenNumber;
+    }
+
+    public ImportFile getImportFile() {
+        return importFile;
+    }
+
+    public void setImportFile(ImportFile importFile) {
+        this.importFile = importFile;
     }
 
     /**
