@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.model.dataimport.ImportRecord;
 import org.jacq.common.rest.dataimport.DataImportService;
 
@@ -78,13 +79,23 @@ public class BromiMdbImportManager {
         glashausLookup.put("AG", "Orchideen");
         glashausLookup.put("Augarten", "Orchideen");
 
+        // generate importfile object for referencing in the import-record object
+        ImportFile importFile = new ImportFile();
+        importFile.setFileName("bromi.mdb");
+        // as we handle the file directly, we can leave the file content empty
+        importFile.setFileSize(0L);
+        importFile.setFileContent("");
+
+        // open access file for processing
         Database db = DatabaseBuilder.open(new File("/tmp/bromi.mdb"));
         Table table = db.getTable("Tabelle");
         int rowCount = table.getRowCount();
         int counter = 0;
 
+        // iterate over rows and handle them
         for (Row row : table) {
             ImportRecord importRecord = new ImportRecord();
+            importRecord.setImportFile(importFile);
 
             // remember original id
             importRecord.setOriginalId(Long.valueOf(row.getInt("ID")));
