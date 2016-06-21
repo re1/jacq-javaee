@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jacq.version>0.1.0</jacq.version>
+        <jacq.version>0.2.0</jacq.version>
     </properties>
 
 </project>
