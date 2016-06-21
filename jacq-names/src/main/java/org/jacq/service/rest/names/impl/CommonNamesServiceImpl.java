@@ -18,7 +18,10 @@ package org.jacq.service.rest.names.impl;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
+import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.common.rest.names.CommonNamesService;
 import org.jacq.service.names.manager.CommonNamesManager;
 
@@ -33,24 +36,17 @@ public class CommonNamesServiceImpl implements CommonNamesService {
     protected CommonNamesManager commonNamesManager;
 
     /**
-     * @see CommonNamesService#info()
-     */
-    @Override
-    public OpenRefineInfo info() {
-        try {
-            return commonNamesManager.info();
-        } catch (Exception e) {
-            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
-        }
-    }
-
-    /**
      * @see CommonNamesService#query(java.lang.String)
      */
     @Override
-    public void query(String query) {
+    public Response query(String query) {
         try {
-            commonNamesManager.query(query);
+            if (StringUtils.isEmpty(query)) {
+                return Response.ok(commonNamesManager.info()).build();
+            }
+            else {
+                return Response.ok(commonNamesManager.query(query)).build();
+            }
         } catch (Exception e) {
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }

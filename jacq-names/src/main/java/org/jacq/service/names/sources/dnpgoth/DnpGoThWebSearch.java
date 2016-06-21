@@ -13,23 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.sources;
+package org.jacq.service.names.sources.dnpgoth;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Interface definition for http://www.dnp.go.th source
+ * Interface definition for http://www.dnp.go.th web search
  *
  * @author wkoller
  */
+// http://www.dnp.go.th/botany/ThaiPlantName/SearchTree.aspx?Genus=%25Acanthus%25&Species=%25ebracteatus%25&GroupBy=Species
 // http://www.dnp.go.th/botany/ThaiPlantName/SearchTree.aspx?Genus=%25andrographis%25&Species=%25laxiflora%25&GroupBy=Species
 @Path("/botany/ThaiPlantName/")
-public interface DnpGoTh {
+public interface DnpGoThWebSearch {
+
+    /**
+     * Search names for the given genus / species, returns HTML formatted
+     * results
+     *
+     * @param genus
+     * @param species
+     * @param groupBy
+     * @return
+     */
+    @GET
+    @Path("/SearchTree.aspx")
+    public Response searchTree(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy);
 
     /**
      * Search names for the given genus / species, returns HTML formatted
@@ -42,6 +59,6 @@ public interface DnpGoTh {
      */
     @POST
     @Path("/SearchTree.aspx")
-    @Produces(MediaType.TEXT_HTML)
-    public Response searchTree(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy);
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response searchTreeExpand(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy, @FormParam("__VIEWSTATE") String viewState, @FormParam("__VIEWSTATEGENERATOR") String viewStateGenerator, @FormParam("__EVENTVALIDATION") String eventValidation, @FormParam("__EVENTTARGET") String eventTarget, @FormParam("__EVENTARGUMENT") String eventArgument);
 }

@@ -3,8 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jacq</groupId>
     <artifactId>jacq</artifactId>
-    <version>0.1.0</version>
+    <version>${jacq.version}</version>
     <name>jacq</name>
     <packaging>pom</packaging>
+
+    <properties>
+        <jacq.version>0.1.0</jacq.version>
+    </properties>
 
 </project>
