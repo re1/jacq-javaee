@@ -47,6 +47,9 @@ public class CommonNamesManager {
     @Inject
     protected DnpGoThSource dnpGoThSource;
 
+    @Inject
+    protected NameParserManager nameParserManager;
+
     /**
      * HashMap for storing the result of all queries
      */
@@ -68,6 +71,8 @@ public class CommonNamesManager {
      * @see CommonNamesService#query(java.lang.String)
      */
     public OpenRefineResponse<CommonName> query(String query) {
+        nameParserManager.parseName(query);
+
         OpenRefineResponse openRefineResponse = new OpenRefineResponse();
 
         openRefineResponse.setResult(dnpGoThSource.query(query));

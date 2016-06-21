@@ -33,9 +33,9 @@ import org.jacq.service.names.sources.util.SourcesUtil;
 @ManagedBean
 public class DnpGoThSource implements CommonNamesSource {
 
-    protected static final String __VIEWSTATE = "__VIEWSTATE";
-    protected static final String __VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
-    protected static final String __EVENTVALIDATION = "__EVENTVALIDATION";
+    protected static final String VIEWSTATE = "__VIEWSTATE";
+    protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
+    protected static final String EVENTVALIDATION = "__EVENTVALIDATION";
 
     protected Pattern inputFormPattern;
 
@@ -67,14 +67,20 @@ public class DnpGoThSource implements CommonNamesSource {
 
         // parse the static form parameters and save them to variables
         while (inputFormMatcher.find()) {
-            if (__VIEWSTATE.equals(inputFormMatcher.group(1))) {
-                viewState = inputFormMatcher.group(2);
-            }
-            else if (__VIEWSTATEGENERATOR.equals(inputFormMatcher.group(1))) {
-                viewStateGenerator = inputFormMatcher.group(2);
-            }
-            else if (__EVENTVALIDATION.equals(inputFormMatcher.group(1))) {
-                eventValidation = inputFormMatcher.group(2);
+            if (null != inputFormMatcher.group(1)) {
+                switch (inputFormMatcher.group(1)) {
+                    case VIEWSTATE:
+                        viewState = inputFormMatcher.group(2);
+                        break;
+                    case VIEWSTATEGENERATOR:
+                        viewStateGenerator = inputFormMatcher.group(2);
+                        break;
+                    case EVENTVALIDATION:
+                        eventValidation = inputFormMatcher.group(2);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             System.err.println(inputFormMatcher.group(1) + " = " + inputFormMatcher.group(2));
@@ -83,17 +89,20 @@ public class DnpGoThSource implements CommonNamesSource {
         // parse results
         Matcher resultLinkMatcher = resultLinkPattern.matcher(content);
         while (resultLinkMatcher.find()) {
+            // extract event target and argument from matched groups
             String eventTarget = resultLinkMatcher.group(1);
             String eventArgument = resultLinkMatcher.group(2).replace("\\\\", "\\");    // remove escaping resulting from javascript
 
             System.err.println(resultLinkMatcher.group(1) + " = " + resultLinkMatcher.group(2));
 
+            // query the source again for the actual common names
             response = dnpGoThWebSearch.searchTreeExpand("%Acanthus%", "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
 
+            // read returned result and parse it
             String expandContent = response.readEntity(String.class);
-
             Matcher resultNameMatcher = resultNamePattern.matcher(expandContent);
             while (resultNameMatcher.find()) {
+                // extract actual common name and geography from results
                 String commonName = resultNameMatcher.group(1);
                 String geography = resultNameMatcher.group(2);
 
@@ -102,7 +111,6 @@ public class DnpGoThSource implements CommonNamesSource {
 
                 System.err.println(commonName + " (" + geography + ")");
             }
-
         }
 
         return null;
