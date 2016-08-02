@@ -22,6 +22,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
@@ -53,10 +54,13 @@ public class DnpGoThSource implements CommonNamesSource {
     }
 
     @Override
-    public ArrayList<CommonName> query(String query) {
+    public ArrayList<CommonName> query(NameParserResponse query) {
         DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getDnpGoThWebSearch();
 
-        Response response = dnpGoThWebSearch.searchTree("%Acanthus%", "%", "Species");
+        String genus = (query.getGenus() != null) ? query.getGenus() : query.getUninomial();
+        String species = (query.getSpecies() != null) ? query.getSpecies() : "";
+
+        Response response = dnpGoThWebSearch.searchTree("%" + genus + "%", "%" + species + "%", "Species");
         String content = response.readEntity(String.class);
 
         // parse input form properties

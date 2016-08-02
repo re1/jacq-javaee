@@ -27,6 +27,7 @@ import javax.persistence.PersistenceContext;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
+import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 
 /**
@@ -71,11 +72,11 @@ public class CommonNamesManager {
      * @see CommonNamesService#query(java.lang.String)
      */
     public OpenRefineResponse<CommonName> query(String query) {
-        nameParserManager.parseName(query);
+        NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
         OpenRefineResponse openRefineResponse = new OpenRefineResponse();
 
-        openRefineResponse.setResult(dnpGoThSource.query(query));
+        openRefineResponse.setResult(dnpGoThSource.query(nameParserResponse));
 
         return openRefineResponse;
     }

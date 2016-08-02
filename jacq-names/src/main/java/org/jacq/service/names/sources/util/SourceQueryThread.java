@@ -18,6 +18,7 @@ package org.jacq.service.names.sources.util;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 
 /**
@@ -27,10 +28,10 @@ import org.jacq.service.names.sources.CommonNamesSource;
 public class SourceQueryThread implements Runnable {
 
     protected CommonNamesSource commonNamesSource;
-    protected String query;
+    protected NameParserResponse query;
     protected ConcurrentHashMap<Long, CommonName> result;
 
-    public SourceQueryThread(CommonNamesSource commonNamesSource, String query, ConcurrentHashMap<Long, CommonName> result) {
+    public SourceQueryThread(CommonNamesSource commonNamesSource, NameParserResponse query, ConcurrentHashMap<Long, CommonName> result) {
         this.commonNamesSource = commonNamesSource;
         this.query = query;
         this.result = result;
