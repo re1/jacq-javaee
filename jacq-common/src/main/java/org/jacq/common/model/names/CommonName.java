@@ -16,11 +16,12 @@
 package org.jacq.common.model.names;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Transient;
 import javax.validation.Valid;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Pojo for all information of a common name
@@ -32,7 +33,7 @@ public class CommonName {
     public String id;
     public String name;
     @Valid
-    public List<String> type = new ArrayList<>();
+    public List<String> type = Arrays.asList("/name/common");
     public String language;
     public String geography;
     public String period;
@@ -136,8 +137,7 @@ public class CommonName {
     }
 
     /**
-     * Helper function for creating a unique hash which is used for quickly
-     * deduplicating during result fetching
+     * Helper function for creating a unique hash which is used for quickly deduplicating during result fetching
      *
      * @return
      */

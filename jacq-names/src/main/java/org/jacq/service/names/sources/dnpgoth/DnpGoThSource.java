@@ -16,6 +16,8 @@
 package org.jacq.service.names.sources.dnpgoth;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.ManagedBean;
@@ -34,9 +36,14 @@ import org.jacq.service.names.sources.util.SourcesUtil;
 @ManagedBean
 public class DnpGoThSource implements CommonNamesSource {
 
+    private static final Logger LOGGER = Logger.getLogger(DnpGoThSource.class.getName());
+
     protected static final String VIEWSTATE = "__VIEWSTATE";
     protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
     protected static final String EVENTVALIDATION = "__EVENTVALIDATION";
+
+    protected static final String REFERENCE = "Thai Plant Names - Tem Smitinand, Copyright 2006-2013 Forest Herbarium, http://www.dnp.go.th/botany/ThaiPlantName/DefaultEng.aspx";
+    protected static final String LANGUAGE_CODE = "tha";
 
     protected Pattern inputFormPattern;
 
@@ -47,19 +54,32 @@ public class DnpGoThSource implements CommonNamesSource {
     @PostConstruct
     public void init() {
         inputFormPattern = Pattern.compile("<input.+ id=\"(.+)\" value=\"(.*)\" \\/>");
-        // <td nowrap="nowrap"><a href="javascript:__doPostBack('tvwResult','s0\\54')" id="tvwResultt1"><font face="Tahoma" color="ForestGreen" size="2"><b>Acanthus ebracteatus Vahl</b>
         resultLinkPattern = Pattern.compile("<td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('(.+)','(.+)'\\)\" id=\"(.+)\">.+<b>(.+)</b>");
-        // <td><img src="/WebResource.axd?d=EIMMg-9HJMcSshywAUEDljFAW5I4W1k_5qpJxd6qTcYArBgUdHTbwXZcn87x1yEwCheqvekCbMW9bu-oNdFXy-govl4rhcj8FbRtHAKMH9gTObum0&amp;t=635588870575142005" alt="" /></td><td nowrap="nowrap"><a href="javascript:__doPostBack('tvwResult','s0\\54\\169')" id="tvwResultt2"><font face="Tahoma" color="ForestGreen" size="2">แก้มหมอ  (สตูล)</font></a></td>
         resultNamePattern = Pattern.compile("<td><img.+/></td><td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('.+','.+'\\)\" id=\".+\"><font face=\"Tahoma\" color=\"ForestGreen\" size=\"2\">(.+)\\s+\\((.+)\\)</font></a></td>");
     }
 
+    /**
+     * Query http://www.dnp.go.th by simulating form submits and processing the view state
+     *
+     * @param query
+     * @return
+     */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
+        ArrayList<CommonName> results = new ArrayList<>();
+
         DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getDnpGoThWebSearch();
 
+        // get genus and species from parsed name
         String genus = (query.getGenus() != null) ? query.getGenus() : query.getUninomial();
-        String species = (query.getSpecies() != null) ? query.getSpecies() : "";
+        String species = query.getSpecies();
 
+        // if no species specified, use an empty string
+        if (species == null) {
+            species = "";
+        }
+
+        // send initial query to search form
         Response response = dnpGoThWebSearch.searchTree("%" + genus + "%", "%" + species + "%", "Species");
         String content = response.readEntity(String.class);
 
@@ -87,7 +107,7 @@ public class DnpGoThSource implements CommonNamesSource {
                 }
             }
 
-            System.err.println(inputFormMatcher.group(1) + " = " + inputFormMatcher.group(2));
+            LOGGER.log(Level.FINEST, "{0} = {1}", new Object[]{inputFormMatcher.group(1), inputFormMatcher.group(2)});
         }
 
         // parse results
@@ -96,8 +116,9 @@ public class DnpGoThSource implements CommonNamesSource {
             // extract event target and argument from matched groups
             String eventTarget = resultLinkMatcher.group(1);
             String eventArgument = resultLinkMatcher.group(2).replace("\\\\", "\\");    // remove escaping resulting from javascript
+            String scientificName = resultLinkMatcher.group(4);
 
-            System.err.println(resultLinkMatcher.group(1) + " = " + resultLinkMatcher.group(2));
+            LOGGER.log(Level.FINEST, "{0} = {1}", new Object[]{resultLinkMatcher.group(1), resultLinkMatcher.group(2)});
 
             // query the source again for the actual common names
             response = dnpGoThWebSearch.searchTreeExpand("%Acanthus%", "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
@@ -113,11 +134,22 @@ public class DnpGoThSource implements CommonNamesSource {
                 // clean the common name, since it may contain <b> tags
                 commonName = commonName.replaceAll("<b>", "").replaceAll("</b>", "");
 
-                System.err.println(commonName + " (" + geography + ")");
+                // put together the result information into a common name object
+                CommonName result = new CommonName();
+                result.setGeography(geography);
+                result.setName(commonName);
+                result.setTaxon(scientificName);
+                result.setLanguage(LANGUAGE_CODE);
+                result.getReferences().add(REFERENCE);
+
+                // finally add the result to the list of results
+                results.add(result);
+
+                LOGGER.log(Level.FINEST, "{0} ({1})", new Object[]{commonName, geography});
             }
         }
 
-        return null;
+        return results;
     }
 
 }

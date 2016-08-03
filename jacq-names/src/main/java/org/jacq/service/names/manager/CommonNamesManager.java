@@ -16,7 +16,14 @@
 package org.jacq.service.names.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -29,6 +36,7 @@ import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
+import org.jacq.service.names.sources.util.SourceQueryThread;
 
 /**
  * Handles all common names related actions
@@ -38,6 +46,8 @@ import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 @ManagedBean
 @RequestScoped
 public class CommonNamesManager {
+
+    private static final Logger LOGGER = Logger.getLogger(CommonNamesManager.class.getName());
 
     @PersistenceContext
     protected EntityManager em;
@@ -54,7 +64,7 @@ public class CommonNamesManager {
     /**
      * HashMap for storing the result of all queries
      */
-    protected ConcurrentHashMap<Long, CommonName> result = new ConcurrentHashMap<>();
+    protected HashMap<Long, CommonName> result = new HashMap<>();
 
     /**
      * @see CommonNamesService#info()
@@ -74,9 +84,46 @@ public class CommonNamesManager {
     public OpenRefineResponse<CommonName> query(String query) {
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
-        OpenRefineResponse openRefineResponse = new OpenRefineResponse();
+        // create the list of common name sources
+        ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
+        queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
 
-        openRefineResponse.setResult(dnpGoThSource.query(nameParserResponse));
+        try {
+            // now query all sources and wait for them to finish
+            List<Future<ArrayList<CommonName>>> queryResults = executorService.invokeAll(queryTasks);
+
+            for (Future<ArrayList<CommonName>> queryResult : queryResults) {
+                try {
+                    ArrayList<CommonName> commonNameList;
+                    commonNameList = queryResult.get();
+                    // merge results into global result map
+                    for (CommonName commonName : commonNameList) {
+                        // clean the scientific name
+                        // TODO: implement
+
+                        // check if result already exists
+                        Long deduplicateHash = commonName.deduplicateHash();
+                        if (result.containsKey(deduplicateHash)) {
+                            // only update references
+                            result.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
+                        }
+                        else {
+                            // add entry to result list
+                            result.put(deduplicateHash, commonName);
+                        }
+                    }
+                } catch (ExecutionException ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } catch (InterruptedException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+
+        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse();
+
+        openRefineResponse.setResult(new ArrayList(result.values()));
 
         return openRefineResponse;
     }

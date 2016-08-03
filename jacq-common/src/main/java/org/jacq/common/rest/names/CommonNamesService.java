@@ -32,8 +32,12 @@ import javax.ws.rs.core.Response;
 public interface CommonNamesService {
 
     /**
-     * Outputs OpenRefine compliant metadata information or Query the common
-     * names service
+     * Definition of JSON Media-Type with UTF-8 encoding for valid response headers
+     */
+    public static final String APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON + "; charset=UTF-8";
+
+    /**
+     * Outputs OpenRefine compliant metadata information or Query the common names service
      *
      * @param query
      * @return List of matched common names
@@ -41,6 +45,6 @@ public interface CommonNamesService {
     @Path("/")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON_UTF8)
     public Response query(@QueryParam("query") String query);
 }
