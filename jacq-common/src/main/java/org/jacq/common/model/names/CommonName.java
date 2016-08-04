@@ -40,7 +40,7 @@ public class CommonName {
     public String taxon;
     public Long score;
     public Boolean match;
-    public String taxonId;
+    public Long taxonId;
     @Valid
     public List<String> references = new ArrayList<>();
 
@@ -116,11 +116,11 @@ public class CommonName {
         this.match = match;
     }
 
-    public String getTaxonId() {
+    public Long getTaxonId() {
         return taxonId;
     }
 
-    public void setTaxonId(String taxonId) {
+    public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
     }
 

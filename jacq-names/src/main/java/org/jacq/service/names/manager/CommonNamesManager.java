@@ -31,6 +31,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import org.jacq.common.model.jpa.openup.TblScientificNameCache;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
@@ -49,7 +51,7 @@ public class CommonNamesManager {
 
     private static final Logger LOGGER = Logger.getLogger(CommonNamesManager.class.getName());
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "openup")
     protected EntityManager em;
 
     @Resource
@@ -60,11 +62,6 @@ public class CommonNamesManager {
 
     @Inject
     protected NameParserManager nameParserManager;
-
-    /**
-     * HashMap for storing the result of all queries
-     */
-    protected HashMap<Long, CommonName> result = new HashMap<>();
 
     /**
      * @see CommonNamesService#info()
@@ -82,6 +79,9 @@ public class CommonNamesManager {
      * @see CommonNamesService#query(java.lang.String)
      */
     public OpenRefineResponse<CommonName> query(String query) {
+        HashMap<Long, CommonName> resultMap = new HashMap<>();
+
+        // before we start, clean the queried name
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
         // create the list of common name sources
@@ -99,17 +99,17 @@ public class CommonNamesManager {
                     // merge results into global result map
                     for (CommonName commonName : commonNameList) {
                         // clean the scientific name
-                        // TODO: implement
+                        commonName.setTaxon(nameParserManager.parseName(commonName.getTaxon()).getScientificName());
 
                         // check if result already exists
                         Long deduplicateHash = commonName.deduplicateHash();
-                        if (result.containsKey(deduplicateHash)) {
+                        if (resultMap.containsKey(deduplicateHash)) {
                             // only update references
-                            result.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
+                            resultMap.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
                         }
                         else {
                             // add entry to result list
-                            result.put(deduplicateHash, commonName);
+                            resultMap.put(deduplicateHash, commonName);
                         }
                     }
                 } catch (ExecutionException ex) {
@@ -121,9 +121,23 @@ public class CommonNamesManager {
             LOGGER.log(Level.SEVERE, null, ex);
         }
 
-        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse();
+        // convert resultmap to list
+        ArrayList<CommonName> resultList = new ArrayList(resultMap.values());
 
-        openRefineResponse.setResult(new ArrayList(result.values()));
+        // iterate over result and fetch ids resp. create them
+        for (CommonName result : resultList) {
+            // lookup the scientific name
+            TypedQuery<TblScientificNameCache> scientificNameCacheQuery = em.createNamedQuery("TblScientificNameCache.findByName", TblScientificNameCache.class);
+            scientificNameCacheQuery.setParameter("name", result.getTaxon());
+            List<TblScientificNameCache> scientificNameCaches = scientificNameCacheQuery.getResultList();
+            if (scientificNameCaches != null && scientificNameCaches.size() > 0) {
+                result.setTaxonId(scientificNameCaches.get(0).getId());
+            }
+        }
+
+        // prepare open refine response
+        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse();
+        openRefineResponse.setResult(resultList);
 
         return openRefineResponse;
     }
