@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblCommonNamesCache.findByName", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name"),
     @NamedQuery(name = "TblCommonNamesCache.findByLanguage", query = "SELECT t FROM TblCommonNamesCache t WHERE t.language = :language"),
     @NamedQuery(name = "TblCommonNamesCache.findByGeography", query = "SELECT t FROM TblCommonNamesCache t WHERE t.geography = :geography"),
-    @NamedQuery(name = "TblCommonNamesCache.findByPeriod", query = "SELECT t FROM TblCommonNamesCache t WHERE t.period = :period")})
+    @NamedQuery(name = "TblCommonNamesCache.findByPeriod", query = "SELECT t FROM TblCommonNamesCache t WHERE t.period = :period"),
+    @NamedQuery(name = "TblCommonNamesCache.findCachedEntry", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name and t.language = :language and t.geography = :geography and t.period = :period")
+})
 public class TblCommonNamesCache implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +52,7 @@ public class TblCommonNamesCache implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -69,20 +71,20 @@ public class TblCommonNamesCache implements Serializable {
     public TblCommonNamesCache() {
     }
 
-    public TblCommonNamesCache(Integer id) {
+    public TblCommonNamesCache(Long id) {
         this.id = id;
     }
 
-    public TblCommonNamesCache(Integer id, String name) {
+    public TblCommonNamesCache(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

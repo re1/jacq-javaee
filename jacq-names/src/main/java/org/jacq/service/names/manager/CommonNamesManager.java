@@ -32,6 +32,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
+import org.jacq.common.model.jpa.openup.TblCommonNamesCache;
 import org.jacq.common.model.jpa.openup.TblScientificNameCache;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
@@ -47,6 +52,7 @@ import org.jacq.service.names.sources.util.SourceQueryThread;
  */
 @ManagedBean
 @RequestScoped
+@Transactional
 public class CommonNamesManager {
 
     private static final Logger LOGGER = Logger.getLogger(CommonNamesManager.class.getName());
@@ -78,6 +84,7 @@ public class CommonNamesManager {
     /**
      * @see CommonNamesService#query(java.lang.String)
      */
+    @Transactional
     public OpenRefineResponse<CommonName> query(String query) {
         HashMap<Long, CommonName> resultMap = new HashMap<>();
 
@@ -127,12 +134,47 @@ public class CommonNamesManager {
         // iterate over result and fetch ids resp. create them
         for (CommonName result : resultList) {
             // lookup the scientific name
+            TblScientificNameCache scientificNameCache = null;
             TypedQuery<TblScientificNameCache> scientificNameCacheQuery = em.createNamedQuery("TblScientificNameCache.findByName", TblScientificNameCache.class);
             scientificNameCacheQuery.setParameter("name", result.getTaxon());
             List<TblScientificNameCache> scientificNameCaches = scientificNameCacheQuery.getResultList();
             if (scientificNameCaches != null && scientificNameCaches.size() > 0) {
-                result.setTaxonId(scientificNameCaches.get(0).getId());
+                scientificNameCache = scientificNameCaches.get(0);
             }
+            else {
+                // add the scientific name
+                scientificNameCache = new TblScientificNameCache();
+                scientificNameCache.setName(result.getTaxon());
+                em.persist(scientificNameCache);
+            }
+            // set id of scientific name in our result
+            result.setTaxonId(scientificNameCache.getId());
+
+            // lookup the common name
+            TblCommonNamesCache commonNamesCache = null;
+
+            // we use a string building query here for performance reason - shoud normally be avoided at any costs!
+            String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.name = '" + result.getName() + "'";
+            lookupQuery += " AND " + queryFieldHelper("language", result.getLanguage());
+            lookupQuery += " AND " + queryFieldHelper("geography", result.getGeography());
+            lookupQuery += " AND " + queryFieldHelper("period", result.getPeriod());
+
+            // query and fetch the result
+            TypedQuery<TblCommonNamesCache> commonNamesCacheQuery = em.createQuery(lookupQuery, TblCommonNamesCache.class);
+            List<TblCommonNamesCache> commonNamesCaches = commonNamesCacheQuery.getResultList();
+            if (commonNamesCaches != null && commonNamesCaches.size() > 0) {
+                commonNamesCache = commonNamesCaches.get(0);
+            }
+            else {
+                // add the common name
+                commonNamesCache = new TblCommonNamesCache();
+                commonNamesCache.setName(result.getName());
+                commonNamesCache.setLanguage(result.getLanguage());
+                commonNamesCache.setGeography(result.getGeography());
+                commonNamesCache.setPeriod(result.getPeriod());
+                em.persist(commonNamesCache);
+            }
+            result.setId(commonNamesCache.getId());
         }
 
         // prepare open refine response
@@ -140,5 +182,21 @@ public class CommonNamesManager {
         openRefineResponse.setResult(resultList);
 
         return openRefineResponse;
+    }
+
+    /**
+     * Small helper function for string building a null / value query
+     *
+     * @param field
+     * @param value
+     * @return
+     */
+    protected String queryFieldHelper(String field, String value) {
+        if (value == null) {
+            return field + " IS NULL";
+        }
+        else {
+            return field + " = '" + value + "'";
+        }
     }
 }

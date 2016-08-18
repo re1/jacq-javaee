@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CommonName {
 
-    public String id;
+    public Long id;
     public String name;
     @Valid
     public List<String> type = Arrays.asList("/name/common");
@@ -44,11 +44,11 @@ public class CommonName {
     @Valid
     public List<String> references = new ArrayList<>();
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

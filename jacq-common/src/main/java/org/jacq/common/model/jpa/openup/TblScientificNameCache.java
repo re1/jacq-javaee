@@ -47,7 +47,7 @@ public class TblScientificNameCache implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -57,20 +57,20 @@ public class TblScientificNameCache implements Serializable {
     public TblScientificNameCache() {
     }
 
-    public TblScientificNameCache(Integer id) {
+    public TblScientificNameCache(Long id) {
         this.id = id;
     }
 
-    public TblScientificNameCache(Integer id, String name) {
+    public TblScientificNameCache(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

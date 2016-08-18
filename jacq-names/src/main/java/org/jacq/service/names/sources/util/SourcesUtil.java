@@ -38,8 +38,7 @@ public class SourcesUtil {
     }
 
     /**
-     * Utility function for creating a proxy to a given source class with
-     * base-url
+     * Utility function for creating a proxy to a given source class with base-url
      *
      * @param <T>
      * @param serviceInterfaceClass
@@ -48,7 +47,7 @@ public class SourcesUtil {
      */
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
-        resteasyClient.register(new RequestDebugFilter());
+        //resteasyClient.register(new RequestDebugFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }
