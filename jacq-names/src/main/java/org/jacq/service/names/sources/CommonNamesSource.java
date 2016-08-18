@@ -17,6 +17,7 @@ package org.jacq.service.names.sources;
 
 import java.util.ArrayList;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.service.names.model.NameParserResponse;
 
 /**
  * Interface definition for common names sources
@@ -25,5 +26,5 @@ import org.jacq.common.model.names.CommonName;
  */
 public interface CommonNamesSource {
 
-    public ArrayList<CommonName> query(String query);
+    public ArrayList<CommonName> query(NameParserResponse query);
 }

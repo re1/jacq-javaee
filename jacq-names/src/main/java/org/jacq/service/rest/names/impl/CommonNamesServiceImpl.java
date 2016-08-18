@@ -15,6 +15,8 @@
  */
 package org.jacq.service.rest.names.impl;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -32,6 +34,8 @@ import org.jacq.service.names.manager.CommonNamesManager;
  */
 public class CommonNamesServiceImpl implements CommonNamesService {
 
+    private static final Logger LOGGER = Logger.getLogger(CommonNamesServiceImpl.class.getName());
+
     @Inject
     protected CommonNamesManager commonNamesManager;
 
@@ -48,6 +52,8 @@ public class CommonNamesServiceImpl implements CommonNamesService {
                 return Response.ok(commonNamesManager.query(query)).build();
             }
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null, e);
+
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
     }

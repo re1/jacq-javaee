@@ -16,46 +16,48 @@
 package org.jacq.service.names.sources.util;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 
 /**
  *
  * @author wkoller
  */
-public class SourceQueryThread implements Runnable {
+public class SourceQueryThread implements Callable<ArrayList<CommonName>> {
 
     protected CommonNamesSource commonNamesSource;
-    protected String query;
-    protected ConcurrentHashMap<Long, CommonName> result;
+    protected NameParserResponse query;
 
-    public SourceQueryThread(CommonNamesSource commonNamesSource, String query, ConcurrentHashMap<Long, CommonName> result) {
+    public SourceQueryThread(CommonNamesSource commonNamesSource, NameParserResponse query) {
         this.commonNamesSource = commonNamesSource;
         this.query = query;
-        this.result = result;
     }
 
     @Override
-    public void run() {
-        // query source for list of matching common names
-        ArrayList<CommonName> queryResult = this.commonNamesSource.query(query);
+    public ArrayList<CommonName> call() throws Exception {
+        return this.commonNamesSource.query(query);
 
-        // merge results into global result map
-        for (CommonName commonName : queryResult) {
-            // clean the scientific name
-            // TODO: implement
-
-            // check if result already exists
-            Long deduplicateHash = commonName.deduplicateHash();
-            if (result.containsKey(deduplicateHash)) {
-                // only update references
-                result.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
-            }
-            else {
-                // add entry to result list
-                result.put(deduplicateHash, commonName);
-            }
-        }
+//        // query source for list of matching common names
+//        ArrayList<CommonName> queryResult = this.commonNamesSource.query(query);
+//
+//        // merge results into global result map
+//        for (CommonName commonName : queryResult) {
+//            // clean the scientific name
+//            // TODO: implement
+//
+//            // check if result already exists
+//            Long deduplicateHash = commonName.deduplicateHash();
+//            if (result.containsKey(deduplicateHash)) {
+//                // only update references
+//                result.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
+//            }
+//            else {
+//                // add entry to result list
+//                result.put(deduplicateHash, commonName);
+//            }
+//        }
     }
 }
