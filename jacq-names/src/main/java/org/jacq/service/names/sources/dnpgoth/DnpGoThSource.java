@@ -79,6 +79,8 @@ public class DnpGoThSource implements CommonNamesSource {
             species = "";
         }
 
+        LOGGER.log(Level.FINE, "Querying for genus / species: {0} / {1}", new Object[]{genus, species});
+
         // send initial query to search form
         Response response = dnpGoThWebSearch.searchTree("%" + genus + "%", "%" + species + "%", "Species");
         String content = response.readEntity(String.class);
@@ -121,7 +123,7 @@ public class DnpGoThSource implements CommonNamesSource {
             LOGGER.log(Level.FINEST, "{0} = {1}", new Object[]{resultLinkMatcher.group(1), resultLinkMatcher.group(2)});
 
             // query the source again for the actual common names
-            response = dnpGoThWebSearch.searchTreeExpand("%Acanthus%", "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
+            response = dnpGoThWebSearch.searchTreeExpand("%" + genus + "%", "%" + species + "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
 
             // read returned result and parse it
             String expandContent = response.readEntity(String.class);
