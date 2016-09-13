@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="header">
+            Header
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form styleClass="jacq-searchform">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p:inputText id="scientific_name" placeholder="Scientific Name" value="#{searchController.scientificName}" />
+                    </div>
+                    <div class="col-md-6">
+                        <p:inputText id="organization" placeholder="Organization" value="#{searchController.organization}" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p:outputLabel for="has_image" value="With images" />
+                        <p:selectBooleanCheckbox id="has_image" value="#{searchController.hasImage}" />
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p:commandButton value="Search" action="#{searchController.search()}" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
