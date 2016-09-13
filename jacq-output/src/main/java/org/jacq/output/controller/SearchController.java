@@ -51,7 +51,7 @@ public class SearchController {
      * @return
      */
     public String search() {
-        return "home";
+        return "results";
     }
 
 }
