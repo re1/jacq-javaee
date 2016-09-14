@@ -50,7 +50,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblBotanicalObject.findByRecordingDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.recordingDate = :recordingDate"),
     @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible"),
     @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine"),
-    @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
+    @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated"),
+    @NamedQuery(name = "TblBotanicalObject.findByScientificName", query = "SELECT t FROM TblBotanicalObject t WHERE LOWER(t.viewScientificName.scientificName) LIKE :scientificName")})
 public class TblBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,7 +59,7 @@ public class TblBotanicalObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
@@ -133,11 +134,11 @@ public class TblBotanicalObject implements Serializable {
     public TblBotanicalObject() {
     }
 
-    public TblBotanicalObject(Integer id) {
+    public TblBotanicalObject(Long id) {
         this.id = id;
     }
 
-    public TblBotanicalObject(Integer id, Long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
+    public TblBotanicalObject(Long id, Long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
         this.id = id;
         this.scientificNameId = scientificNameId;
         this.recordingDate = recordingDate;
@@ -146,11 +147,11 @@ public class TblBotanicalObject implements Serializable {
         this.separated = separated;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

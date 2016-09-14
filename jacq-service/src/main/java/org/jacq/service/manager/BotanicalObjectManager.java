@@ -13,28 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.rest.impl;
+package org.jacq.service.manager;
 
 import java.util.List;
-import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.jacq.common.model.BotanicalObjectResult;
+import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.rest.BotanicalObjectService;
-import org.jacq.service.manager.BotanicalObjectManager;
 
 /**
  *
  * @author wkoller
  */
-public class BotanitcalObjectServiceImpl implements BotanicalObjectService {
+public class BotanicalObjectManager {
 
-    @Inject
-    protected BotanicalObjectManager botanicalObjectManager;
+    @PersistenceContext(unitName = "jacq-service")
+    protected EntityManager em;
 
     /**
      * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean)
      */
-    @Override
     public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage) {
-        return botanicalObjectManager.search(scientificName, organization, hasImage);
+        TypedQuery<TblBotanicalObject> botanicalObjectSearchQuery = em.createNamedQuery("TblBotanicalObject.findByScientificName", TblBotanicalObject.class);
+        botanicalObjectSearchQuery.setParameter("scientificName", "%" + scientificName.toLowerCase() + "%");
+
+        return BotanicalObjectResult.fromList(botanicalObjectSearchQuery.getResultList());
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.jacq.common.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,6 +32,7 @@ import org.jacq.common.model.jpa.TblBotanicalObject;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BotanicalObjectResult {
 
+    protected Long botanicalObjectId;
     protected List<String> commonNames;
     protected String scientificName;
     protected String organization;
@@ -68,6 +70,14 @@ public class BotanicalObjectResult {
         this.accessionNumber = accessionNumber;
     }
 
+    public Long getBotanicalObjectId() {
+        return botanicalObjectId;
+    }
+
+    public void setBotanicalObjectId(Long botanicalObjectId) {
+        this.botanicalObjectId = botanicalObjectId;
+    }
+
     public BotanicalObjectResult() {
     }
 
@@ -75,5 +85,24 @@ public class BotanicalObjectResult {
         this.scientificName = botanicalObject.getViewScientificName().getScientificName();
         this.organization = botanicalObject.getOrganisationId().getDescription();
         this.accessionNumber = botanicalObject.getTblLivingPlant().getAccessionNumber();
+        this.botanicalObjectId = botanicalObject.getId();
+    }
+
+    /**
+     * Helper function for converting a list of BotanicalObject entries to botanicalobject results
+     *
+     * @param botanicalObjectList
+     * @return
+     */
+    public static List<BotanicalObjectResult> fromList(List<TblBotanicalObject> botanicalObjectList) {
+        List<BotanicalObjectResult> botanicalObjectResults = new ArrayList<>();
+
+        if (botanicalObjectList != null) {
+            for (TblBotanicalObject botanicalObject : botanicalObjectList) {
+                botanicalObjectResults.add(new BotanicalObjectResult(botanicalObject));
+            }
+        }
+
+        return botanicalObjectResults;
     }
 }
