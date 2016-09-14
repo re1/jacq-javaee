@@ -108,6 +108,18 @@ public class CommonNamesManager {
                         // clean the scientific name
                         commonName.setTaxon(nameParserManager.parseName(commonName.getTaxon()).getScientificName());
 
+                        // check if matching / score should be updated
+                        if (commonName.getMatch() == null || commonName.getScore() == null) {
+                            if (commonName.getTaxon().equalsIgnoreCase(nameParserResponse.getScientificName())) {
+                                commonName.setMatch(Boolean.TRUE);
+                                commonName.setScore(100L);
+                            }
+                            else {
+                                commonName.setMatch(Boolean.FALSE);
+                                commonName.setScore(0L);
+                            }
+                        }
+
                         // check if result already exists
                         Long deduplicateHash = commonName.deduplicateHash();
                         if (resultMap.containsKey(deduplicateHash)) {
