@@ -39,24 +39,28 @@ public class YListSource implements CommonNamesSource {
 
     private static final Logger LOGGER = Logger.getLogger(YListSource.class.getName());
 
-    protected static final String VIEWSTATE = "__VIEWSTATE";
-    protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
-    protected static final String EVENTVALIDATION = "__EVENTVALIDATION";
-
-    protected static final String REFERENCE = "Thai Plant Names - Tem Smitinand, Copyright 2006-2013 Forest Herbarium, http://www.dnp.go.th/botany/ThaiPlantName/DefaultEng.aspx";
+    /**
+     * ISO 639-3 language codes for common names
+     */
     protected static final String LANGUAGE_CODE_JAP = "jap";
+    protected static final String LANGUAGE_CODE_ZHO = "zho";
+    protected static final String LANGUAGE_CODE_KOR = "kor";
 
-    protected Pattern inputFormPattern;
-
+    // Patterns for various matching parts
     protected Pattern resultLinkPattern;
-
     protected Pattern resultNamePattern;
+    protected Pattern chineseNamePattern;
+    protected Pattern koreanNamePattern;
 
+    /**
+     * Initialize matching pattern for later usage
+     */
     @PostConstruct
     public void init() {
-        // <span class = 'std_name'><a  href = 'ylist_detail_display.php?pass=11870'><span class = 'gakumei'>Annona cherimola Mill.</span>
         resultLinkPattern = Pattern.compile("<a  href = 'ylist_detail_display.php\\?pass=([^']+)'><span class = 'gakumei'>([^<]+)</span>");
-        resultNamePattern = Pattern.compile("<u>和名</u>：　 ([^<]+)<br>");
+        resultNamePattern = Pattern.compile("<u>和名</u>：　 ([^<]+)<br>.*<u>掲載図鑑とページ番号</u>：　([^<]+)<br>");
+        chineseNamePattern = Pattern.compile("<u>中国名</u>：　([^<]+)");
+        koreanNamePattern = Pattern.compile("<u>韓国名</u>：　([^<]+)");
     }
 
     /**
@@ -69,10 +73,10 @@ public class YListSource implements CommonNamesSource {
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
 
+        // get proxy to ylist web search
         YListWebSearch yListWebSearch = SourcesUtil.getYListWebSearch();
 
         // send initial query to search form
-        // ?capital=0&family_order=2&family_disp_type=1&family_header=0&spec_order=0&list_type=0
         Response response = yListWebSearch.simpleSearch(query.getScientificName(), 0, 2, 1, 0, 0, 0);
         String content = response.readEntity(String.class);
 
@@ -83,6 +87,7 @@ public class YListSource implements CommonNamesSource {
             String pass = resultLinkMatcher.group(1);
             String scientificName = resultLinkMatcher.group(2);
 
+            // debug info
             LOGGER.log(Level.FINEST, "{0} = {1}", new Object[]{pass, scientificName});
 
             // query the source again for the actual common names
@@ -94,16 +99,49 @@ public class YListSource implements CommonNamesSource {
             while (resultNameMatcher.find()) {
                 // extract actual common name and geography from results
                 String commonName = resultNameMatcher.group(1);
+                String reference = resultNameMatcher.group(2);
 
                 // put together the result information into a common name object
                 CommonName result = new CommonName();
                 result.setName(commonName);
                 result.setTaxon(scientificName);
                 result.setLanguage(LANGUAGE_CODE_JAP);
-                result.getReferences().add(REFERENCE);
+                result.getReferences().add(reference);
 
                 // finally add the result to the list of results
                 results.add(result);
+
+                // check if an additional chinese name is present
+                Matcher chineseNameMatcher = chineseNamePattern.matcher(detailContent);
+                if (chineseNameMatcher.find()) {
+                    commonName = chineseNameMatcher.group(1);
+
+                    // put together the result information into a common name object
+                    result = new CommonName();
+                    result.setName(commonName);
+                    result.setTaxon(scientificName);
+                    result.setLanguage(LANGUAGE_CODE_ZHO);
+                    result.getReferences().add(reference);
+
+                    // finally add the result to the list of results
+                    results.add(result);
+                }
+
+                // check if an additional korean name is present
+                Matcher koreanNameMatcher = koreanNamePattern.matcher(detailContent);
+                if (koreanNameMatcher.find()) {
+                    commonName = koreanNameMatcher.group(1);
+
+                    // put together the result information into a common name object
+                    result = new CommonName();
+                    result.setName(commonName);
+                    result.setTaxon(scientificName);
+                    result.setLanguage(LANGUAGE_CODE_KOR);
+                    result.getReferences().add(reference);
+
+                    // finally add the result to the list of results
+                    results.add(result);
+                }
 
                 LOGGER.log(Level.FINEST, "{0}", new Object[]{commonName});
             }
