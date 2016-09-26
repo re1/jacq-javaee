@@ -18,7 +18,6 @@ package org.jacq.service.names.sources.dnpgoth;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -36,8 +35,7 @@ import javax.ws.rs.core.Response;
 public interface DnpGoThWebSearch {
 
     /**
-     * Search names for the given genus / species, returns HTML formatted
-     * results
+     * Search names for the given genus / species, returns HTML formatted results
      *
      * @param genus
      * @param species
@@ -49,8 +47,7 @@ public interface DnpGoThWebSearch {
     public Response searchTree(@QueryParam("Genus") String genus, @QueryParam("Species") String species, @QueryParam("GroupBy") String groupBy);
 
     /**
-     * Search names for the given genus / species, returns HTML formatted
-     * results
+     * Search names for the given genus / species, returns HTML formatted results
      *
      * @param genus
      * @param species

@@ -44,6 +44,7 @@ import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 import org.jacq.service.names.sources.util.SourceQueryThread;
+import org.jacq.service.names.sources.ylist.YListSource;
 
 /**
  * Handles all common names related actions
@@ -65,6 +66,9 @@ public class CommonNamesManager {
 
     @Inject
     protected DnpGoThSource dnpGoThSource;
+
+    @Inject
+    protected YListSource yListSource;
 
     @Inject
     protected NameParserManager nameParserManager;
@@ -94,6 +98,7 @@ public class CommonNamesManager {
         // create the list of common name sources
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
+        queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
 
         try {
             // now query all sources and wait for them to finish

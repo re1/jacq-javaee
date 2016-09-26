@@ -20,6 +20,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThWebSearch;
+import org.jacq.service.names.sources.ylist.YListWebSearch;
 
 /**
  * Helper class for providing quick access to source-services
@@ -35,6 +36,15 @@ public class SourcesUtil {
      */
     public static DnpGoThWebSearch getDnpGoThWebSearch() {
         return getProxy(DnpGoThWebSearch.class, "http://www.dnp.go.th/");
+    }
+
+    /**
+     * Create service instance for http://ylist.info/
+     *
+     * @return
+     */
+    public static YListWebSearch getYListWebSearch() {
+        return getProxy(YListWebSearch.class, "http://ylist.info/");
     }
 
     /**
