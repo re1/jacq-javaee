@@ -24,6 +24,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.model.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
@@ -154,4 +155,11 @@ public class DnpGoThSource implements CommonNamesSource {
         return results;
     }
 
+    /**
+     * @see CommonNamesSource#query(java.lang.String)
+     */
+    @Override
+    public ArrayList<ScientificName> query(String query) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

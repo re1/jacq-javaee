@@ -17,6 +17,7 @@ package org.jacq.service.names.sources;
 
 import java.util.ArrayList;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.model.NameParserResponse;
 
 /**
@@ -26,5 +27,19 @@ import org.jacq.service.names.model.NameParserResponse;
  */
 public interface CommonNamesSource {
 
+    /**
+     * Query the source for a list of common names, based on a scientific name
+     *
+     * @param query parsed scientific name
+     * @return
+     */
     public ArrayList<CommonName> query(NameParserResponse query);
+
+    /**
+     * Query the source for a list of scientific names, based on a common name
+     *
+     * @param query common name to query for
+     * @return
+     */
+    public ArrayList<ScientificName> query(String query);
 }

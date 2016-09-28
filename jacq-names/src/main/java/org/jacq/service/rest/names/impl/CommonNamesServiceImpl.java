@@ -21,9 +21,6 @@ import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.jacq.common.model.names.CommonName;
-import org.jacq.common.model.names.OpenRefineInfo;
-import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.common.rest.names.CommonNamesService;
 import org.jacq.service.names.manager.CommonNamesManager;
 
