@@ -48,12 +48,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId"),
     @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")})
 public class TblLivingPlant implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "accession_number")
     private int accessionNumber;
@@ -118,11 +119,11 @@ public class TblLivingPlant implements Serializable {
     public TblLivingPlant() {
     }
 
-    public TblLivingPlant(Integer id) {
+    public TblLivingPlant(Long id) {
         this.id = id;
     }
 
-    public TblLivingPlant(Integer id, int accessionNumber, boolean ipenLocked, boolean phytoControl, boolean indexSeminum, boolean bgci) {
+    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, boolean phytoControl, boolean indexSeminum, boolean bgci) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -131,11 +132,11 @@ public class TblLivingPlant implements Serializable {
         this.bgci = bgci;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

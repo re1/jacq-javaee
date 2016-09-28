@@ -6,12 +6,11 @@
         <artifactId>jacq</artifactId>
         <version>${jacq.version}</version>
         <relativePath>../jacq/pom.xml</relativePath>
+    </parent>
 
-    <groupId>org.jacq</groupId>
     <artifactId>jacq-service</artifactId>
     <name>jacq-service</name>
     <packaging>war</packaging>
-    <version>0.3.0</version>
 
     <dependencies>
         <dependency>
