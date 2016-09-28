@@ -2,10 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jacq</groupId>
+    <parent>
+        <groupId>org.jacq</groupId>
+        <artifactId>jacq</artifactId>
+        <version>${jacq.version}</version>
+        <relativePath>../jacq/pom.xml</relativePath>
+    </parent>
+
     <artifactId>jacq-common</artifactId>
     <name>jacq-common</name>
-    <version>0.3.0</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -25,20 +31,8 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <finalName>jacq-common</finalName>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
 </project>

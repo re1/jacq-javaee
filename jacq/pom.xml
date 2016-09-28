@@ -6,9 +6,15 @@
     <version>${jacq.version}</version>
     <name>jacq</name>
     <packaging>pom</packaging>
-
+    <modules>
+        <module>../jacq-common</module>
+        <module>../jacq-dataimport</module>
+        <module>../jacq-input</module>
+        <module>../jacq-names</module>
+        <module>../jacq-output</module>
+        <module>../jacq-service</module>
+    </modules>
     <properties>
-        <jacq.version>0.2.0</jacq.version>
+        <jacq.version>0.3.0</jacq.version>
     </properties>
-
 </project>
