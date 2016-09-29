@@ -18,26 +18,28 @@ package org.jacq.service.rest.names.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.jacq.common.rest.names.CommonNamesService;
+import org.jacq.common.model.names.OpenRefineRequest;
 import org.jacq.service.names.manager.CommonNamesManager;
+import org.jacq.common.rest.names.NamesService;
 
 /**
  * Main common names, OpenRefine compliant, service
  *
  * @author wkoller
  */
-public class CommonNamesServiceImpl implements CommonNamesService {
+public class NamesServiceImpl implements NamesService {
 
-    private static final Logger LOGGER = Logger.getLogger(CommonNamesServiceImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NamesServiceImpl.class.getName());
 
     @Inject
     protected CommonNamesManager commonNamesManager;
 
     /**
-     * @see CommonNamesService#query(java.lang.String)
+     * @see NamesService#query(java.lang.String)
      */
     @Override
     public Response query(String query) {
@@ -55,4 +57,15 @@ public class CommonNamesServiceImpl implements CommonNamesService {
         }
     }
 
+    /**
+     * @see NamesService#query(org.jacq.common.model.names.OpenRefineRequest)
+     */
+    @Override
+    public Response query(@QueryParam("query") OpenRefineRequest query) {
+        String emptyCommand = "for debugger only";
+
+        emptyCommand = null;
+
+        return null;
+    }
 }

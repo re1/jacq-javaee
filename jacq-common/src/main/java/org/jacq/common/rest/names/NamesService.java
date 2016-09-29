@@ -22,14 +22,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.jacq.common.model.names.OpenRefineRequest;
 
 /**
- * Common Names service interface
+ * Common Names service interface, following the OpenRefine Reconciliation Service API
+ * https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API
  *
  * @author wkoller
  */
-@Path("/names/common")
-public interface CommonNamesService {
+@Path("/names")
+public interface NamesService {
 
     /**
      * Definition of JSON Media-Type with UTF-8 encoding for valid response headers
@@ -42,9 +44,21 @@ public interface CommonNamesService {
      * @param query
      * @return List of matched common names
      */
-    @Path("/")
+    @Path("/common")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)
     public Response query(@QueryParam("query") String query);
+
+    /**
+     * Queries the names service based on the passed OpenRefineRequest
+     *
+     * @param query
+     * @return List of matched names
+     */
+    @Path("/")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON_UTF8)
+    public Response query(@QueryParam("query") OpenRefineRequest query);
 }
