@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -39,7 +49,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblIndexSeminumContent.findAll", query = "SELECT t FROM TblIndexSeminumContent t"),
     @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumContentId", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumContentId = :indexSeminumContentId"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByAccessionNumber", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.accessionNumber = :accessionNumber"),
     @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumType", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumType = :indexSeminumType"),
     @NamedQuery(name = "TblIndexSeminumContent.findByIpenNumber", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.ipenNumber = :ipenNumber"),
     @NamedQuery(name = "TblIndexSeminumContent.findByHabitat", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.habitat = :habitat"),
@@ -50,6 +59,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblIndexSeminumContent.findByAcquisitionDate", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.acquisitionDate = :acquisitionDate"),
     @NamedQuery(name = "TblIndexSeminumContent.findByTimestamp", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.timestamp = :timestamp")})
 public class TblIndexSeminumContent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,8 +68,10 @@ public class TblIndexSeminumContent implements Serializable {
     private Integer indexSeminumContentId;
     @Basic(optional = false)
     @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
     @Column(name = "accession_number")
-    private int accessionNumber;
+    private String accessionNumber;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -113,12 +125,12 @@ public class TblIndexSeminumContent implements Serializable {
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId")
     private Collection<TblIndexSeminumPerson> tblIndexSeminumPersonCollection;
-    @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
-    @ManyToOne(optional = false)
-    private TblIndexSeminumRevision indexSeminumRevisionId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
+    @ManyToOne(optional = false)
+    private TblIndexSeminumRevision indexSeminumRevisionId;
 
     public TblIndexSeminumContent() {
     }
@@ -127,7 +139,7 @@ public class TblIndexSeminumContent implements Serializable {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public TblIndexSeminumContent(Integer indexSeminumContentId, int accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
+    public TblIndexSeminumContent(Integer indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
         this.indexSeminumContentId = indexSeminumContentId;
         this.accessionNumber = accessionNumber;
         this.family = family;
@@ -145,11 +157,11 @@ public class TblIndexSeminumContent implements Serializable {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public int getAccessionNumber() {
+    public String getAccessionNumber() {
         return accessionNumber;
     }
 
-    public void setAccessionNumber(int accessionNumber) {
+    public void setAccessionNumber(String accessionNumber) {
         this.accessionNumber = accessionNumber;
     }
 
@@ -266,20 +278,20 @@ public class TblIndexSeminumContent implements Serializable {
         this.tblIndexSeminumPersonCollection = tblIndexSeminumPersonCollection;
     }
 
-    public TblIndexSeminumRevision getIndexSeminumRevisionId() {
-        return indexSeminumRevisionId;
-    }
-
-    public void setIndexSeminumRevisionId(TblIndexSeminumRevision indexSeminumRevisionId) {
-        this.indexSeminumRevisionId = indexSeminumRevisionId;
-    }
-
     public TblBotanicalObject getBotanicalObjectId() {
         return botanicalObjectId;
     }
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
+    }
+
+    public TblIndexSeminumRevision getIndexSeminumRevisionId() {
+        return indexSeminumRevisionId;
+    }
+
+    public void setIndexSeminumRevisionId(TblIndexSeminumRevision indexSeminumRevisionId) {
+        this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 
     @Override

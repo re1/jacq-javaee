@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -48,6 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FrmwrkUser.findByBirthdate", query = "SELECT f FROM FrmwrkUser f WHERE f.birthdate = :birthdate"),
     @NamedQuery(name = "FrmwrkUser.findByForcePasswordChange", query = "SELECT f FROM FrmwrkUser f WHERE f.forcePasswordChange = :forcePasswordChange")})
 public class FrmwrkUser implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,31 +103,29 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblOrganisation organisationId;
-    @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
-    @ManyToOne(optional = false)
-    private FrmwrkUserType userTypeId;
-    @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
-    @ManyToOne(optional = false)
-    private FrmwrkEmploymentType employmentTypeId;
     @OneToMany(mappedBy = "userId")
     private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<TblInventory> tblInventoryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
-    private Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection;
     @OneToMany(mappedBy = "gardenerId")
     private Collection<TblOrganisation> tblOrganisationCollection;
     @OneToMany(mappedBy = "userId")
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(mappedBy = "userId")
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<TblInventory> tblInventoryCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
     private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    @OneToMany(mappedBy = "userId")
+    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection;
+    @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
+    @ManyToOne(optional = false)
+    private FrmwrkEmploymentType employmentTypeId;
+    @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
+    @ManyToOne(optional = false)
+    private FrmwrkUserType userTypeId;
+    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblOrganisation organisationId;
 
     public FrmwrkUser() {
     }
@@ -215,30 +224,6 @@ public class FrmwrkUser implements Serializable {
         this.forcePasswordChange = forcePasswordChange;
     }
 
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
-    }
-
-    public FrmwrkUserType getUserTypeId() {
-        return userTypeId;
-    }
-
-    public void setUserTypeId(FrmwrkUserType userTypeId) {
-        this.userTypeId = userTypeId;
-    }
-
-    public FrmwrkEmploymentType getEmploymentTypeId() {
-        return employmentTypeId;
-    }
-
-    public void setEmploymentTypeId(FrmwrkEmploymentType employmentTypeId) {
-        this.employmentTypeId = employmentTypeId;
-    }
-
     @XmlTransient
     public Collection<FrmwrkaccessClassification> getFrmwrkaccessClassificationCollection() {
         return frmwrkaccessClassificationCollection;
@@ -246,33 +231,6 @@ public class FrmwrkUser implements Serializable {
 
     public void setFrmwrkaccessClassificationCollection(Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection) {
         this.frmwrkaccessClassificationCollection = frmwrkaccessClassificationCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblInventory> getTblInventoryCollection() {
-        return tblInventoryCollection;
-    }
-
-    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
-        this.tblInventoryCollection = tblInventoryCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblIndexSeminumRevision> getTblIndexSeminumRevisionCollection() {
-        return tblIndexSeminumRevisionCollection;
-    }
-
-    public void setTblIndexSeminumRevisionCollection(Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection) {
-        this.tblIndexSeminumRevisionCollection = tblIndexSeminumRevisionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Frmwrk2AuthAssignment> getFrmwrk2AuthAssignmentCollection() {
-        return frmwrk2AuthAssignmentCollection;
-    }
-
-    public void setFrmwrk2AuthAssignmentCollection(Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection) {
-        this.frmwrk2AuthAssignmentCollection = frmwrk2AuthAssignmentCollection;
     }
 
     @XmlTransient
@@ -285,15 +243,6 @@ public class FrmwrkUser implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
-    }
-
-    @XmlTransient
     public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
         return frmwrkaccessOrganisationCollection;
     }
@@ -303,12 +252,63 @@ public class FrmwrkUser implements Serializable {
     }
 
     @XmlTransient
+    public Collection<TblInventory> getTblInventoryCollection() {
+        return tblInventoryCollection;
+    }
+
+    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
+        this.tblInventoryCollection = tblInventoryCollection;
+    }
+
+    @XmlTransient
     public Collection<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentCollection() {
         return frmwrkAuthAssignmentCollection;
     }
 
     public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
         this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
+    }
+
+    @XmlTransient
+    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
+        return frmwrkaccessBotanicalObjectCollection;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
+        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblIndexSeminumRevision> getTblIndexSeminumRevisionCollection() {
+        return tblIndexSeminumRevisionCollection;
+    }
+
+    public void setTblIndexSeminumRevisionCollection(Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection) {
+        this.tblIndexSeminumRevisionCollection = tblIndexSeminumRevisionCollection;
+    }
+
+    public FrmwrkEmploymentType getEmploymentTypeId() {
+        return employmentTypeId;
+    }
+
+    public void setEmploymentTypeId(FrmwrkEmploymentType employmentTypeId) {
+        this.employmentTypeId = employmentTypeId;
+    }
+
+    public FrmwrkUserType getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(FrmwrkUserType userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
     }
 
     @Override

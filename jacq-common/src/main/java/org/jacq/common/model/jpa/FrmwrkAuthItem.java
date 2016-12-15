@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -37,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FrmwrkAuthItem.findByName", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.name = :name"),
     @NamedQuery(name = "FrmwrkAuthItem.findByType", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.type = :type")})
 public class FrmwrkAuthItem implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -70,11 +81,11 @@ public class FrmwrkAuthItem implements Serializable {
     @OneToMany(mappedBy = "authItemname")
     private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
     @OneToMany(mappedBy = "authItemname")
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(mappedBy = "authItemname")
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem")
     private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    @OneToMany(mappedBy = "authItemname")
+    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
 
     public FrmwrkAuthItem() {
     }
@@ -156,15 +167,6 @@ public class FrmwrkAuthItem implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
-    }
-
-    @XmlTransient
     public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
         return frmwrkaccessOrganisationCollection;
     }
@@ -180,6 +182,15 @@ public class FrmwrkAuthItem implements Serializable {
 
     public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
         this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
+    }
+
+    @XmlTransient
+    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
+        return frmwrkaccessBotanicalObjectCollection;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
+        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
     }
 
     @Override

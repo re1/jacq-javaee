@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -33,6 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "FrmwrkaccessClassification.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.allowDeny = :allowDeny"),
     @NamedQuery(name = "FrmwrkaccessClassification.findByTaxsynID", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.taxsynID = :taxsynID")})
 public class FrmwrkaccessClassification implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,12 +58,12 @@ public class FrmwrkaccessClassification implements Serializable {
     @NotNull
     @Column(name = "tax_syn_ID")
     private int taxsynID;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private FrmwrkUser userId;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
     @ManyToOne
     private FrmwrkAuthItem authItemname;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne
+    private FrmwrkUser userId;
 
     public FrmwrkaccessClassification() {
     }
@@ -91,20 +102,20 @@ public class FrmwrkaccessClassification implements Serializable {
         this.taxsynID = taxsynID;
     }
 
-    public FrmwrkUser getUserId() {
-        return userId;
-    }
-
-    public void setUserId(FrmwrkUser userId) {
-        this.userId = userId;
-    }
-
     public FrmwrkAuthItem getAuthItemname() {
         return authItemname;
     }
 
     public void setAuthItemname(FrmwrkAuthItem authItemname) {
         this.authItemname = authItemname;
+    }
+
+    public FrmwrkUser getUserId() {
+        return userId;
+    }
+
+    public void setUserId(FrmwrkUser userId) {
+        this.userId = userId;
     }
 
     @Override
