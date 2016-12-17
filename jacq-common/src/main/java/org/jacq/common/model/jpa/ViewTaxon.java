@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -9,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -79,8 +88,7 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "taxonID")
-    @Id
-    private Integer taxonID;
+    private int taxonID;
     @Column(name = "synID")
     private Integer synID;
     @Column(name = "basID")
@@ -88,7 +96,7 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "genID")
-    private Integer genID;
+    private int genID;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "annotation")
@@ -96,14 +104,14 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "external")
-    private Integer external;
+    private short external;
     @Size(max = 100)
     @Column(name = "genus")
     private String genus;
     @Column(name = "DallaTorreIDs")
     private Integer dallaTorreIDs;
     @Column(name = "DallaTorreZusatzIDs")
-    private String dallaTorreZusatzIDs;
+    private Character dallaTorreZusatzIDs;
     @Size(max = 255)
     @Column(name = "author_g")
     private String authorG;
@@ -208,11 +216,11 @@ public class ViewTaxon implements Serializable {
     public ViewTaxon() {
     }
 
-    public Integer getTaxonID() {
+    public int getTaxonID() {
         return taxonID;
     }
 
-    public void setTaxonID(Integer taxonID) {
+    public void setTaxonID(int taxonID) {
         this.taxonID = taxonID;
     }
 
@@ -232,11 +240,11 @@ public class ViewTaxon implements Serializable {
         this.basID = basID;
     }
 
-    public Integer getGenID() {
+    public int getGenID() {
         return genID;
     }
 
-    public void setGenID(Integer genID) {
+    public void setGenID(int genID) {
         this.genID = genID;
     }
 
@@ -248,11 +256,11 @@ public class ViewTaxon implements Serializable {
         this.annotation = annotation;
     }
 
-    public Integer getExternal() {
+    public short getExternal() {
         return external;
     }
 
-    public void setExternal(Integer external) {
+    public void setExternal(short external) {
         this.external = external;
     }
 
@@ -272,11 +280,11 @@ public class ViewTaxon implements Serializable {
         this.dallaTorreIDs = dallaTorreIDs;
     }
 
-    public String getDallaTorreZusatzIDs() {
+    public Character getDallaTorreZusatzIDs() {
         return dallaTorreZusatzIDs;
     }
 
-    public void setDallaTorreZusatzIDs(String dallaTorreZusatzIDs) {
+    public void setDallaTorreZusatzIDs(Character dallaTorreZusatzIDs) {
         this.dallaTorreZusatzIDs = dallaTorreZusatzIDs;
     }
 

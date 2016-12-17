@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -41,6 +51,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse"),
     @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")})
 public class TblOrganisation implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,22 +71,24 @@ public class TblOrganisation implements Serializable {
     @Size(max = 5)
     @Column(name = "ipen_code")
     private String ipenCode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
-    private Collection<FrmwrkUser> frmwrkUserCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
-    private TblImageServer tblImageServer;
     @OneToMany(mappedBy = "organisationId")
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
-    @JoinColumn(name = "gardener_id", referencedColumnName = "id")
-    @ManyToOne
-    private FrmwrkUser gardenerId;
     @OneToMany(mappedBy = "parentOrganisationId")
     private Collection<TblOrganisation> tblOrganisationCollection;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
     @ManyToOne
     private TblOrganisation parentOrganisationId;
+    @JoinColumn(name = "gardener_id", referencedColumnName = "id")
+    @ManyToOne
+    private FrmwrkUser gardenerId;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    private TblImageServer tblImageServer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    private Collection<FrmwrkUser> frmwrkUserCollection;
 
     public TblOrganisation() {
     }
@@ -130,37 +143,12 @@ public class TblOrganisation implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
-        return frmwrkUserCollection;
-    }
-
-    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
-        this.frmwrkUserCollection = frmwrkUserCollection;
-    }
-
-    public TblImageServer getTblImageServer() {
-        return tblImageServer;
-    }
-
-    public void setTblImageServer(TblImageServer tblImageServer) {
-        this.tblImageServer = tblImageServer;
-    }
-
-    @XmlTransient
     public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
         return tblBotanicalObjectCollection;
     }
 
     public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
         this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
-    }
-
-    public FrmwrkUser getGardenerId() {
-        return gardenerId;
-    }
-
-    public void setGardenerId(FrmwrkUser gardenerId) {
-        this.gardenerId = gardenerId;
     }
 
     @XmlTransient
@@ -180,6 +168,22 @@ public class TblOrganisation implements Serializable {
         this.parentOrganisationId = parentOrganisationId;
     }
 
+    public FrmwrkUser getGardenerId() {
+        return gardenerId;
+    }
+
+    public void setGardenerId(FrmwrkUser gardenerId) {
+        this.gardenerId = gardenerId;
+    }
+
+    public TblImageServer getTblImageServer() {
+        return tblImageServer;
+    }
+
+    public void setTblImageServer(TblImageServer tblImageServer) {
+        this.tblImageServer = tblImageServer;
+    }
+
     @XmlTransient
     public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
         return frmwrkaccessOrganisationCollection;
@@ -187,6 +191,24 @@ public class TblOrganisation implements Serializable {
 
     public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
         this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblDerivativeVegetative> getTblDerivativeVegetativeCollection() {
+        return tblDerivativeVegetativeCollection;
+    }
+
+    public void setTblDerivativeVegetativeCollection(Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection) {
+        this.tblDerivativeVegetativeCollection = tblDerivativeVegetativeCollection;
+    }
+
+    @XmlTransient
+    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
+        return frmwrkUserCollection;
+    }
+
+    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
+        this.frmwrkUserCollection = frmwrkUserCollection;
     }
 
     @Override

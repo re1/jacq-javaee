@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -30,18 +40,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblBotanicalObjectSex.findAll", query = "SELECT t FROM TblBotanicalObjectSex t"),
     @NamedQuery(name = "TblBotanicalObjectSex.findById", query = "SELECT t FROM TblBotanicalObjectSex t WHERE t.id = :id")})
 public class TblBotanicalObjectSex implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "sex_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblSex sexId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "sex_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblSex sexId;
 
     public TblBotanicalObjectSex() {
     }
@@ -58,20 +69,20 @@ public class TblBotanicalObjectSex implements Serializable {
         this.id = id;
     }
 
-    public TblSex getSexId() {
-        return sexId;
-    }
-
-    public void setSexId(TblSex sexId) {
-        this.sexId = sexId;
-    }
-
     public TblBotanicalObject getBotanicalObjectId() {
         return botanicalObjectId;
     }
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
+    }
+
+    public TblSex getSexId() {
+        return sexId;
+    }
+
+    public void setSexId(TblSex sexId) {
+        this.sexId = sexId;
     }
 
     @Override

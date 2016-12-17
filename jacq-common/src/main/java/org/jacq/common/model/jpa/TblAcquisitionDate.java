@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -37,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAcquisitionDate.findByDay", query = "SELECT t FROM TblAcquisitionDate t WHERE t.day = :day"),
     @NamedQuery(name = "TblAcquisitionDate.findByCustom", query = "SELECT t FROM TblAcquisitionDate t WHERE t.custom = :custom")})
 public class TblAcquisitionDate implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,10 +66,10 @@ public class TblAcquisitionDate implements Serializable {
     @Size(max = 20)
     @Column(name = "custom")
     private String custom;
-    @OneToMany(mappedBy = "incomingDateId")
-    private Collection<TblLivingPlant> tblLivingPlantCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionDateId")
     private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    @OneToMany(mappedBy = "incomingDateId")
+    private Collection<TblLivingPlant> tblLivingPlantCollection;
 
     public TblAcquisitionDate() {
     }
@@ -108,21 +119,21 @@ public class TblAcquisitionDate implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
-        return tblLivingPlantCollection;
-    }
-
-    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
-        this.tblLivingPlantCollection = tblLivingPlantCollection;
-    }
-
-    @XmlTransient
     public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
         return tblAcquisitionEventCollection;
     }
 
     public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
         this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
+        return tblLivingPlantCollection;
+    }
+
+    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
+        this.tblLivingPlantCollection = tblLivingPlantCollection;
     }
 
     @Override

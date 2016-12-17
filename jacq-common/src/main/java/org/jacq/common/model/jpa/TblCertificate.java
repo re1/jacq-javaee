@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -32,6 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblCertificate.findAll", query = "SELECT t FROM TblCertificate t"),
     @NamedQuery(name = "TblCertificate.findById", query = "SELECT t FROM TblCertificate t WHERE t.id = :id")})
 public class TblCertificate implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +57,12 @@ public class TblCertificate implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblLivingPlant livingPlantId;
     @JoinColumn(name = "certificate_type_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblCertificateType certificateTypeId;
+    @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblLivingPlant livingPlantId;
 
     public TblCertificate() {
     }
@@ -84,20 +95,20 @@ public class TblCertificate implements Serializable {
         this.annotation = annotation;
     }
 
-    public TblLivingPlant getLivingPlantId() {
-        return livingPlantId;
-    }
-
-    public void setLivingPlantId(TblLivingPlant livingPlantId) {
-        this.livingPlantId = livingPlantId;
-    }
-
     public TblCertificateType getCertificateTypeId() {
         return certificateTypeId;
     }
 
     public void setCertificateTypeId(TblCertificateType certificateTypeId) {
         this.certificateTypeId = certificateTypeId;
+    }
+
+    public TblLivingPlant getLivingPlantId() {
+        return livingPlantId;
+    }
+
+    public void setLivingPlantId(TblLivingPlant livingPlantId) {
+        this.livingPlantId = livingPlantId;
     }
 
     @Override

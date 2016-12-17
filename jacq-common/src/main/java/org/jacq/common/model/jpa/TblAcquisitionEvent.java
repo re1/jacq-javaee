@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -38,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAcquisitionEvent.findAll", query = "SELECT t FROM TblAcquisitionEvent t"),
     @NamedQuery(name = "TblAcquisitionEvent.findById", query = "SELECT t FROM TblAcquisitionEvent t WHERE t.id = :id")})
 public class TblAcquisitionEvent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,18 +72,18 @@ public class TblAcquisitionEvent implements Serializable {
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
     private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
-    @JoinColumn(name = "location_coordinates_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblLocationCoordinates locationCoordinatesId;
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblLocation locationId;
-    @JoinColumn(name = "acquisition_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblAcquisitionType acquisitionTypeId;
     @JoinColumn(name = "acquisition_date_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblAcquisitionDate acquisitionDateId;
+    @JoinColumn(name = "acquisition_type_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblAcquisitionType acquisitionTypeId;
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    @ManyToOne
+    private TblLocation locationId;
+    @JoinColumn(name = "location_coordinates_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblLocationCoordinates locationCoordinatesId;
 
     public TblAcquisitionEvent() {
     }
@@ -132,20 +143,12 @@ public class TblAcquisitionEvent implements Serializable {
         this.tblAcquisitionEventSourceCollection = tblAcquisitionEventSourceCollection;
     }
 
-    public TblLocationCoordinates getLocationCoordinatesId() {
-        return locationCoordinatesId;
+    public TblAcquisitionDate getAcquisitionDateId() {
+        return acquisitionDateId;
     }
 
-    public void setLocationCoordinatesId(TblLocationCoordinates locationCoordinatesId) {
-        this.locationCoordinatesId = locationCoordinatesId;
-    }
-
-    public TblLocation getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(TblLocation locationId) {
-        this.locationId = locationId;
+    public void setAcquisitionDateId(TblAcquisitionDate acquisitionDateId) {
+        this.acquisitionDateId = acquisitionDateId;
     }
 
     public TblAcquisitionType getAcquisitionTypeId() {
@@ -156,12 +159,20 @@ public class TblAcquisitionEvent implements Serializable {
         this.acquisitionTypeId = acquisitionTypeId;
     }
 
-    public TblAcquisitionDate getAcquisitionDateId() {
-        return acquisitionDateId;
+    public TblLocation getLocationId() {
+        return locationId;
     }
 
-    public void setAcquisitionDateId(TblAcquisitionDate acquisitionDateId) {
-        this.acquisitionDateId = acquisitionDateId;
+    public void setLocationId(TblLocation locationId) {
+        this.locationId = locationId;
+    }
+
+    public TblLocationCoordinates getLocationCoordinatesId() {
+        return locationCoordinatesId;
+    }
+
+    public void setLocationCoordinatesId(TblLocationCoordinates locationCoordinatesId) {
+        this.locationCoordinatesId = locationCoordinatesId;
     }
 
     @Override

@@ -1,12 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,7 +24,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,8 +31,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,8 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblSpecimen.findAll", query = "SELECT t FROM TblSpecimen t"),
     @NamedQuery(name = "TblSpecimen.findBySpecimenId", query = "SELECT t FROM TblSpecimen t WHERE t.specimenId = :specimenId"),
+    @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber"),
     @NamedQuery(name = "TblSpecimen.findByTimestamp", query = "SELECT t FROM TblSpecimen t WHERE t.timestamp = :timestamp")})
 public class TblSpecimen implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,14 +56,14 @@ public class TblSpecimen implements Serializable {
     private Integer specimenId;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "herbar_number")
+    private String herbarNumber;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @ManyToMany(mappedBy = "tblSpecimenCollection")
-    private Collection<TblIdentifier> tblIdentifierCollection;
-    @JoinColumn(name = "curatorial_unit_id", referencedColumnName = "curatorial_unit_id")
-    @ManyToOne(optional = false)
-    private TblCuratorialUnit curatorialUnitId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
@@ -65,8 +75,9 @@ public class TblSpecimen implements Serializable {
         this.specimenId = specimenId;
     }
 
-    public TblSpecimen(Integer specimenId, Date timestamp) {
+    public TblSpecimen(Integer specimenId, String herbarNumber, Date timestamp) {
         this.specimenId = specimenId;
+        this.herbarNumber = herbarNumber;
         this.timestamp = timestamp;
     }
 
@@ -78,29 +89,20 @@ public class TblSpecimen implements Serializable {
         this.specimenId = specimenId;
     }
 
+    public String getHerbarNumber() {
+        return herbarNumber;
+    }
+
+    public void setHerbarNumber(String herbarNumber) {
+        this.herbarNumber = herbarNumber;
+    }
+
     public Date getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @XmlTransient
-    public Collection<TblIdentifier> getTblIdentifierCollection() {
-        return tblIdentifierCollection;
-    }
-
-    public void setTblIdentifierCollection(Collection<TblIdentifier> tblIdentifierCollection) {
-        this.tblIdentifierCollection = tblIdentifierCollection;
-    }
-
-    public TblCuratorialUnit getCuratorialUnitId() {
-        return curatorialUnitId;
-    }
-
-    public void setCuratorialUnitId(TblCuratorialUnit curatorialUnitId) {
-        this.curatorialUnitId = curatorialUnitId;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {
