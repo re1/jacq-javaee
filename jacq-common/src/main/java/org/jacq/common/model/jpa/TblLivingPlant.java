@@ -66,7 +66,7 @@ public class TblLivingPlant implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "accession_number")
     private int accessionNumber;
@@ -101,7 +101,7 @@ public class TblLivingPlant implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date cultivationDate;
     @Column(name = "label_synonym_scientific_name_id")
-    private Integer labelSynonymScientificNameId;
+    private Long labelSynonymScientificNameId;
     @Lob
     @Size(max = 65535)
     @Column(name = "label_annotation")
@@ -140,11 +140,11 @@ public class TblLivingPlant implements Serializable {
     public TblLivingPlant() {
     }
 
-    public TblLivingPlant(Integer id) {
+    public TblLivingPlant(Long id) {
         this.id = id;
     }
 
-    public TblLivingPlant(Integer id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci) {
+    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -154,11 +154,11 @@ public class TblLivingPlant implements Serializable {
         this.bgci = bgci;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -234,11 +234,11 @@ public class TblLivingPlant implements Serializable {
         this.cultivationDate = cultivationDate;
     }
 
-    public Integer getLabelSynonymScientificNameId() {
+    public Long getLabelSynonymScientificNameId() {
         return labelSynonymScientificNameId;
     }
 
-    public void setLabelSynonymScientificNameId(Integer labelSynonymScientificNameId) {
+    public void setLabelSynonymScientificNameId(Long labelSynonymScientificNameId) {
         this.labelSynonymScientificNameId = labelSynonymScientificNameId;
     }
 

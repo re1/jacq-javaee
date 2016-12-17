@@ -44,8 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblSpecimen.findAll", query = "SELECT t FROM TblSpecimen t"),
     @NamedQuery(name = "TblSpecimen.findBySpecimenId", query = "SELECT t FROM TblSpecimen t WHERE t.specimenId = :specimenId"),
-    @NamedQuery(name = "TblSpecimen.findByCuratorialUnitId", query = "SELECT t FROM TblSpecimen t WHERE t.curatorialUnitId = :curatorialUnitId"),
-    @NamedQuery(name = "TblSpecimen.findByBarcode", query = "SELECT t FROM TblSpecimen t WHERE t.barcode = :barcode"),
+    @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber"),
     @NamedQuery(name = "TblSpecimen.findByTimestamp", query = "SELECT t FROM TblSpecimen t WHERE t.timestamp = :timestamp")})
 public class TblSpecimen implements Serializable {
 
@@ -57,11 +56,9 @@ public class TblSpecimen implements Serializable {
     private Integer specimenId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "curatorial_unit_id")
-    private int curatorialUnitId;
-    @Size(max = 20)
-    @Column(name = "barcode")
-    private String barcode;
+    @Size(min = 1, max = 20)
+    @Column(name = "herbar_number")
+    private String herbarNumber;
     @Basic(optional = false)
     @NotNull
     @Column(name = "timestamp")
@@ -78,9 +75,9 @@ public class TblSpecimen implements Serializable {
         this.specimenId = specimenId;
     }
 
-    public TblSpecimen(Integer specimenId, int curatorialUnitId, Date timestamp) {
+    public TblSpecimen(Integer specimenId, String herbarNumber, Date timestamp) {
         this.specimenId = specimenId;
-        this.curatorialUnitId = curatorialUnitId;
+        this.herbarNumber = herbarNumber;
         this.timestamp = timestamp;
     }
 
@@ -92,20 +89,12 @@ public class TblSpecimen implements Serializable {
         this.specimenId = specimenId;
     }
 
-    public int getCuratorialUnitId() {
-        return curatorialUnitId;
+    public String getHerbarNumber() {
+        return herbarNumber;
     }
 
-    public void setCuratorialUnitId(int curatorialUnitId) {
-        this.curatorialUnitId = curatorialUnitId;
-    }
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
+    public void setHerbarNumber(String herbarNumber) {
+        this.herbarNumber = herbarNumber;
     }
 
     public Date getTimestamp() {

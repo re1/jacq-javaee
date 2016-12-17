@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ViewscientificName.findAll", query = "SELECT v FROM ViewscientificName v"),
     @NamedQuery(name = "ViewscientificName.findByScientificNameId", query = "SELECT v FROM ViewscientificName v WHERE v.scientificNameId = :scientificNameId")})
-public class ViewScientificName implements Serializable {
+public class ViewscientificName implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
@@ -53,7 +53,7 @@ public class ViewScientificName implements Serializable {
     @Column(name = "scientific_name_no_author")
     private String scientificNameNoAuthor;
 
-    public ViewScientificName() {
+    public ViewscientificName() {
     }
 
     public int getScientificNameId() {

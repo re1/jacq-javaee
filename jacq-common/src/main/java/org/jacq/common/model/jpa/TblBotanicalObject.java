@@ -93,7 +93,7 @@ public class TblBotanicalObject implements Serializable {
     private Date recordingDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "[accessible]")
+    @Column(name = "accessible")
     private boolean accessible;
     @Basic(optional = false)
     @NotNull
@@ -127,7 +127,7 @@ public class TblBotanicalObject implements Serializable {
     private TblDiaspora tblDiaspora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
     private Collection<TblSpecimen> tblSpecimenCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(mappedBy = "botanicalObjectId")
     private Collection<TblSeparation> tblSeparationCollection;
     @OneToMany(mappedBy = "botanicalObjectId")
     private Collection<TblInventoryObject> tblInventoryObjectCollection;
@@ -385,9 +385,9 @@ public class TblBotanicalObject implements Serializable {
      */
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private ViewScientificName viewScientificName;
+    private ViewscientificName viewScientificName;
 
-    public ViewScientificName getViewScientificName() {
+    public ViewscientificName getViewScientificName() {
         return viewScientificName;
     }
 

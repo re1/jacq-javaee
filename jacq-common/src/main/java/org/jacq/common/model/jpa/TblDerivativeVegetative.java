@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -75,7 +74,7 @@ public class TblDerivativeVegetative implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeVegetativeId")
+    @OneToMany(mappedBy = "derivativeVegetativeId")
     private Collection<TblSeparation> tblSeparationCollection;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
