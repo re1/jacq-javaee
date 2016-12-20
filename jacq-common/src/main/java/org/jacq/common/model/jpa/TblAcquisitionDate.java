@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,12 +41,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_date")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionDate.findAll", query = "SELECT t FROM TblAcquisitionDate t"),
-    @NamedQuery(name = "TblAcquisitionDate.findById", query = "SELECT t FROM TblAcquisitionDate t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAcquisitionDate.findByYear", query = "SELECT t FROM TblAcquisitionDate t WHERE t.year = :year"),
-    @NamedQuery(name = "TblAcquisitionDate.findByMonth", query = "SELECT t FROM TblAcquisitionDate t WHERE t.month = :month"),
-    @NamedQuery(name = "TblAcquisitionDate.findByDay", query = "SELECT t FROM TblAcquisitionDate t WHERE t.day = :day"),
-    @NamedQuery(name = "TblAcquisitionDate.findByCustom", query = "SELECT t FROM TblAcquisitionDate t WHERE t.custom = :custom")})
+    @NamedQuery(name = "TblAcquisitionDate.findAll", query = "SELECT t FROM TblAcquisitionDate t")
+    , @NamedQuery(name = "TblAcquisitionDate.findById", query = "SELECT t FROM TblAcquisitionDate t WHERE t.id = :id")
+    , @NamedQuery(name = "TblAcquisitionDate.findByYear", query = "SELECT t FROM TblAcquisitionDate t WHERE t.year = :year")
+    , @NamedQuery(name = "TblAcquisitionDate.findByMonth", query = "SELECT t FROM TblAcquisitionDate t WHERE t.month = :month")
+    , @NamedQuery(name = "TblAcquisitionDate.findByDay", query = "SELECT t FROM TblAcquisitionDate t WHERE t.day = :day")
+    , @NamedQuery(name = "TblAcquisitionDate.findByCustom", query = "SELECT t FROM TblAcquisitionDate t WHERE t.custom = :custom")})
 public class TblAcquisitionDate implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class TblAcquisitionDate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 4)
     @Column(name = "year")
     private String year;
@@ -66,23 +67,23 @@ public class TblAcquisitionDate implements Serializable {
     @Size(max = 20)
     @Column(name = "custom")
     private String custom;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionDateId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionDateId", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
-    @OneToMany(mappedBy = "incomingDateId")
+    @OneToMany(mappedBy = "incomingDateId", fetch = FetchType.LAZY)
     private Collection<TblLivingPlant> tblLivingPlantCollection;
 
     public TblAcquisitionDate() {
     }
 
-    public TblAcquisitionDate(Integer id) {
+    public TblAcquisitionDate(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

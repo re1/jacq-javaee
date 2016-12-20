@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,10 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_relevancy_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRelevancyType.findAll", query = "SELECT t FROM TblRelevancyType t"),
-    @NamedQuery(name = "TblRelevancyType.findById", query = "SELECT t FROM TblRelevancyType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRelevancyType.findByType", query = "SELECT t FROM TblRelevancyType t WHERE t.type = :type"),
-    @NamedQuery(name = "TblRelevancyType.findByImportant", query = "SELECT t FROM TblRelevancyType t WHERE t.important = :important")})
+    @NamedQuery(name = "TblRelevancyType.findAll", query = "SELECT t FROM TblRelevancyType t")
+    , @NamedQuery(name = "TblRelevancyType.findById", query = "SELECT t FROM TblRelevancyType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblRelevancyType.findByType", query = "SELECT t FROM TblRelevancyType t WHERE t.type = :type")
+    , @NamedQuery(name = "TblRelevancyType.findByImportant", query = "SELECT t FROM TblRelevancyType t WHERE t.important = :important")})
 public class TblRelevancyType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +53,7 @@ public class TblRelevancyType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 25)
     @Column(name = "type")
     private String type;
@@ -60,26 +61,26 @@ public class TblRelevancyType implements Serializable {
     @NotNull
     @Column(name = "important")
     private boolean important;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId", fetch = FetchType.LAZY)
     private Collection<TblRelevancy> tblRelevancyCollection;
 
     public TblRelevancyType() {
     }
 
-    public TblRelevancyType(Integer id) {
+    public TblRelevancyType(Long id) {
         this.id = id;
     }
 
-    public TblRelevancyType(Integer id, boolean important) {
+    public TblRelevancyType(Long id, boolean important) {
         this.id = id;
         this.important = important;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,9 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_accessBotanicalObject")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkaccessBotanicalObject.findAll", query = "SELECT f FROM FrmwrkaccessBotanicalObject f"),
-    @NamedQuery(name = "FrmwrkaccessBotanicalObject.findById", query = "SELECT f FROM FrmwrkaccessBotanicalObject f WHERE f.id = :id"),
-    @NamedQuery(name = "FrmwrkaccessBotanicalObject.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessBotanicalObject f WHERE f.allowDeny = :allowDeny")})
+    @NamedQuery(name = "FrmwrkaccessBotanicalObject.findAll", query = "SELECT f FROM FrmwrkaccessBotanicalObject f")
+    , @NamedQuery(name = "FrmwrkaccessBotanicalObject.findById", query = "SELECT f FROM FrmwrkaccessBotanicalObject f WHERE f.id = :id")
+    , @NamedQuery(name = "FrmwrkaccessBotanicalObject.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessBotanicalObject f WHERE f.allowDeny = :allowDeny")})
 public class FrmwrkaccessBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,38 +49,38 @@ public class FrmwrkaccessBotanicalObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "allowDeny")
     private boolean allowDeny;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser userId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant botanicalObjectId;
 
     public FrmwrkaccessBotanicalObject() {
     }
 
-    public FrmwrkaccessBotanicalObject(Integer id) {
+    public FrmwrkaccessBotanicalObject(Long id) {
         this.id = id;
     }
 
-    public FrmwrkaccessBotanicalObject(Integer id, boolean allowDeny) {
+    public FrmwrkaccessBotanicalObject(Long id, boolean allowDeny) {
         this.id = id;
         this.allowDeny = allowDeny;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

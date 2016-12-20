@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,17 +47,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_user")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkUser.findAll", query = "SELECT f FROM FrmwrkUser f"),
-    @NamedQuery(name = "FrmwrkUser.findById", query = "SELECT f FROM FrmwrkUser f WHERE f.id = :id"),
-    @NamedQuery(name = "FrmwrkUser.findByUsername", query = "SELECT f FROM FrmwrkUser f WHERE f.username = :username"),
-    @NamedQuery(name = "FrmwrkUser.findByPassword", query = "SELECT f FROM FrmwrkUser f WHERE f.password = :password"),
-    @NamedQuery(name = "FrmwrkUser.findBySalt", query = "SELECT f FROM FrmwrkUser f WHERE f.salt = :salt"),
-    @NamedQuery(name = "FrmwrkUser.findByTitlePrefix", query = "SELECT f FROM FrmwrkUser f WHERE f.titlePrefix = :titlePrefix"),
-    @NamedQuery(name = "FrmwrkUser.findByFirstname", query = "SELECT f FROM FrmwrkUser f WHERE f.firstname = :firstname"),
-    @NamedQuery(name = "FrmwrkUser.findByLastname", query = "SELECT f FROM FrmwrkUser f WHERE f.lastname = :lastname"),
-    @NamedQuery(name = "FrmwrkUser.findByTitleSuffix", query = "SELECT f FROM FrmwrkUser f WHERE f.titleSuffix = :titleSuffix"),
-    @NamedQuery(name = "FrmwrkUser.findByBirthdate", query = "SELECT f FROM FrmwrkUser f WHERE f.birthdate = :birthdate"),
-    @NamedQuery(name = "FrmwrkUser.findByForcePasswordChange", query = "SELECT f FROM FrmwrkUser f WHERE f.forcePasswordChange = :forcePasswordChange")})
+    @NamedQuery(name = "FrmwrkUser.findAll", query = "SELECT f FROM FrmwrkUser f")
+    , @NamedQuery(name = "FrmwrkUser.findById", query = "SELECT f FROM FrmwrkUser f WHERE f.id = :id")
+    , @NamedQuery(name = "FrmwrkUser.findByUsername", query = "SELECT f FROM FrmwrkUser f WHERE f.username = :username")
+    , @NamedQuery(name = "FrmwrkUser.findByPassword", query = "SELECT f FROM FrmwrkUser f WHERE f.password = :password")
+    , @NamedQuery(name = "FrmwrkUser.findBySalt", query = "SELECT f FROM FrmwrkUser f WHERE f.salt = :salt")
+    , @NamedQuery(name = "FrmwrkUser.findByTitlePrefix", query = "SELECT f FROM FrmwrkUser f WHERE f.titlePrefix = :titlePrefix")
+    , @NamedQuery(name = "FrmwrkUser.findByFirstname", query = "SELECT f FROM FrmwrkUser f WHERE f.firstname = :firstname")
+    , @NamedQuery(name = "FrmwrkUser.findByLastname", query = "SELECT f FROM FrmwrkUser f WHERE f.lastname = :lastname")
+    , @NamedQuery(name = "FrmwrkUser.findByTitleSuffix", query = "SELECT f FROM FrmwrkUser f WHERE f.titleSuffix = :titleSuffix")
+    , @NamedQuery(name = "FrmwrkUser.findByBirthdate", query = "SELECT f FROM FrmwrkUser f WHERE f.birthdate = :birthdate")
+    , @NamedQuery(name = "FrmwrkUser.findByForcePasswordChange", query = "SELECT f FROM FrmwrkUser f WHERE f.forcePasswordChange = :forcePasswordChange")})
 public class FrmwrkUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,7 +65,7 @@ public class FrmwrkUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
@@ -103,38 +104,38 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
-    @OneToMany(mappedBy = "gardenerId")
+    @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
     private Collection<TblOrganisation> tblOrganisationCollection;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<TblInventory> tblInventoryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser", fetch = FetchType.LAZY)
     private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection;
     @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkEmploymentType employmentTypeId;
     @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUserType userTypeId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
 
     public FrmwrkUser() {
     }
 
-    public FrmwrkUser(Integer id) {
+    public FrmwrkUser(Long id) {
         this.id = id;
     }
 
-    public FrmwrkUser(Integer id, String username, String password, String salt, String firstname, String lastname, boolean forcePasswordChange) {
+    public FrmwrkUser(Long id, String username, String password, String salt, String firstname, String lastname, boolean forcePasswordChange) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -144,11 +145,11 @@ public class FrmwrkUser implements Serializable {
         this.forcePasswordChange = forcePasswordChange;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_relevancy")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRelevancy.findAll", query = "SELECT t FROM TblRelevancy t"),
-    @NamedQuery(name = "TblRelevancy.findById", query = "SELECT t FROM TblRelevancy t WHERE t.id = :id")})
+    @NamedQuery(name = "TblRelevancy.findAll", query = "SELECT t FROM TblRelevancy t")
+    , @NamedQuery(name = "TblRelevancy.findById", query = "SELECT t FROM TblRelevancy t WHERE t.id = :id")})
 public class TblRelevancy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,26 +47,26 @@ public class TblRelevancy implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
     @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblRelevancyType relevancyTypeId;
 
     public TblRelevancy() {
     }
 
-    public TblRelevancy(Integer id) {
+    public TblRelevancy(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

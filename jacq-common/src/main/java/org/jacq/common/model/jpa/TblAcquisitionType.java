@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionType.findAll", query = "SELECT t FROM TblAcquisitionType t"),
-    @NamedQuery(name = "TblAcquisitionType.findById", query = "SELECT t FROM TblAcquisitionType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAcquisitionType.findByType", query = "SELECT t FROM TblAcquisitionType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblAcquisitionType.findAll", query = "SELECT t FROM TblAcquisitionType t")
+    , @NamedQuery(name = "TblAcquisitionType.findById", query = "SELECT t FROM TblAcquisitionType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblAcquisitionType.findByType", query = "SELECT t FROM TblAcquisitionType t WHERE t.type = :type")})
 public class TblAcquisitionType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,25 +51,25 @@ public class TblAcquisitionType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionTypeId", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
 
     public TblAcquisitionType() {
     }
 
-    public TblAcquisitionType(Integer id) {
+    public TblAcquisitionType(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

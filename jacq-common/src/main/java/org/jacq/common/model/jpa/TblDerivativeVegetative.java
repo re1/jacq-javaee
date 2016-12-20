@@ -21,6 +21,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,11 +47,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_derivative_vegetative")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblDerivativeVegetative.findAll", query = "SELECT t FROM TblDerivativeVegetative t"),
-    @NamedQuery(name = "TblDerivativeVegetative.findByDerivativeVegetativeId", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.derivativeVegetativeId = :derivativeVegetativeId"),
-    @NamedQuery(name = "TblDerivativeVegetative.findByAccessionNumber", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.accessionNumber = :accessionNumber"),
-    @NamedQuery(name = "TblDerivativeVegetative.findByCultivationDate", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.cultivationDate = :cultivationDate"),
-    @NamedQuery(name = "TblDerivativeVegetative.findByIndexSeminum", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.indexSeminum = :indexSeminum")})
+    @NamedQuery(name = "TblDerivativeVegetative.findAll", query = "SELECT t FROM TblDerivativeVegetative t")
+    , @NamedQuery(name = "TblDerivativeVegetative.findByDerivativeVegetativeId", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.derivativeVegetativeId = :derivativeVegetativeId")
+    , @NamedQuery(name = "TblDerivativeVegetative.findByAccessionNumber", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.accessionNumber = :accessionNumber")
+    , @NamedQuery(name = "TblDerivativeVegetative.findByCultivationDate", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.cultivationDate = :cultivationDate")
+    , @NamedQuery(name = "TblDerivativeVegetative.findByIndexSeminum", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.indexSeminum = :indexSeminum")})
 public class TblDerivativeVegetative implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,7 +59,7 @@ public class TblDerivativeVegetative implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "derivative_vegetative_id")
-    private Integer derivativeVegetativeId;
+    private Long derivativeVegetativeId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "accession_number")
@@ -74,36 +75,36 @@ public class TblDerivativeVegetative implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @OneToMany(mappedBy = "derivativeVegetativeId")
+    @OneToMany(mappedBy = "derivativeVegetativeId", fetch = FetchType.LAZY)
     private Collection<TblSeparation> tblSeparationCollection;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
     @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblPhenology phenologyId;
 
     public TblDerivativeVegetative() {
     }
 
-    public TblDerivativeVegetative(Integer derivativeVegetativeId) {
+    public TblDerivativeVegetative(Long derivativeVegetativeId) {
         this.derivativeVegetativeId = derivativeVegetativeId;
     }
 
-    public TblDerivativeVegetative(Integer derivativeVegetativeId, int accessionNumber, boolean indexSeminum) {
+    public TblDerivativeVegetative(Long derivativeVegetativeId, int accessionNumber, boolean indexSeminum) {
         this.derivativeVegetativeId = derivativeVegetativeId;
         this.accessionNumber = accessionNumber;
         this.indexSeminum = indexSeminum;
     }
 
-    public Integer getDerivativeVegetativeId() {
+    public Long getDerivativeVegetativeId() {
         return derivativeVegetativeId;
     }
 
-    public void setDerivativeVegetativeId(Integer derivativeVegetativeId) {
+    public void setDerivativeVegetativeId(Long derivativeVegetativeId) {
         this.derivativeVegetativeId = derivativeVegetativeId;
     }
 

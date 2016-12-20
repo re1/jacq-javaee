@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.output.SessionManager;
+import org.jacq.output.util.ServicesUtil;
 import org.jacq.output.view.LazyBotanicalObjectDataModel;
 
 /**
@@ -38,7 +39,7 @@ public class SearchController {
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyBotanicalObjectDataModel(null);
+        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getBotanicalObjectService());
     }
 
     public String getScientificName() {

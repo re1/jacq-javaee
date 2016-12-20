@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,8 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_event")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionEvent.findAll", query = "SELECT t FROM TblAcquisitionEvent t"),
-    @NamedQuery(name = "TblAcquisitionEvent.findById", query = "SELECT t FROM TblAcquisitionEvent t WHERE t.id = :id")})
+    @NamedQuery(name = "TblAcquisitionEvent.findAll", query = "SELECT t FROM TblAcquisitionEvent t")
+    , @NamedQuery(name = "TblAcquisitionEvent.findById", query = "SELECT t FROM TblAcquisitionEvent t WHERE t.id = :id")})
 public class TblAcquisitionEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +55,7 @@ public class TblAcquisitionEvent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Lob
     @Size(max = 65535)
     @Column(name = "number")
@@ -66,37 +67,37 @@ public class TblAcquisitionEvent implements Serializable {
     @JoinTable(name = "tbl_acquisition_event_person", joinColumns = {
         @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "person_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<TblPerson> tblPersonCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
     @JoinColumn(name = "acquisition_date_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionDate acquisitionDateId;
     @JoinColumn(name = "acquisition_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionType acquisitionTypeId;
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblLocation locationId;
     @JoinColumn(name = "location_coordinates_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLocationCoordinates locationCoordinatesId;
 
     public TblAcquisitionEvent() {
     }
 
-    public TblAcquisitionEvent(Integer id) {
+    public TblAcquisitionEvent(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,9 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_accessOrganisation")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkaccessOrganisation.findAll", query = "SELECT f FROM FrmwrkaccessOrganisation f"),
-    @NamedQuery(name = "FrmwrkaccessOrganisation.findById", query = "SELECT f FROM FrmwrkaccessOrganisation f WHERE f.id = :id"),
-    @NamedQuery(name = "FrmwrkaccessOrganisation.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessOrganisation f WHERE f.allowDeny = :allowDeny")})
+    @NamedQuery(name = "FrmwrkaccessOrganisation.findAll", query = "SELECT f FROM FrmwrkaccessOrganisation f")
+    , @NamedQuery(name = "FrmwrkaccessOrganisation.findById", query = "SELECT f FROM FrmwrkaccessOrganisation f WHERE f.id = :id")
+    , @NamedQuery(name = "FrmwrkaccessOrganisation.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessOrganisation f WHERE f.allowDeny = :allowDeny")})
 public class FrmwrkaccessOrganisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,38 +49,38 @@ public class FrmwrkaccessOrganisation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "allowDeny")
     private boolean allowDeny;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser userId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
 
     public FrmwrkaccessOrganisation() {
     }
 
-    public FrmwrkaccessOrganisation(Integer id) {
+    public FrmwrkaccessOrganisation(Long id) {
         this.id = id;
     }
 
-    public FrmwrkaccessOrganisation(Integer id, boolean allowDeny) {
+    public FrmwrkaccessOrganisation(Long id, boolean allowDeny) {
         this.id = id;
         this.allowDeny = allowDeny;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

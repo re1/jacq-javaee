@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,10 +40,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_import_properties")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImportProperties.findAll", query = "SELECT t FROM TblImportProperties t"),
-    @NamedQuery(name = "TblImportProperties.findById", query = "SELECT t FROM TblImportProperties t WHERE t.id = :id"),
-    @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze"),
-    @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")})
+    @NamedQuery(name = "TblImportProperties.findAll", query = "SELECT t FROM TblImportProperties t")
+    , @NamedQuery(name = "TblImportProperties.findById", query = "SELECT t FROM TblImportProperties t WHERE t.id = :id")
+    , @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze")
+    , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")})
 public class TblImportProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,7 +62,7 @@ public class TblImportProperties implements Serializable {
     @Column(name = "Verbreitung")
     private String verbreitung;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
 
     public TblImportProperties() {

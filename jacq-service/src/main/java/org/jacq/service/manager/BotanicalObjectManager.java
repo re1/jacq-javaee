@@ -19,6 +19,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import org.jacq.common.model.BotanicalObjectResult;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.rest.BotanicalObjectService;
@@ -35,9 +36,16 @@ public class BotanicalObjectManager {
     /**
      * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean)
      */
-    public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage) {
+    @Transactional
+    public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage, Integer offset, Integer limit) {
         TypedQuery<TblBotanicalObject> botanicalObjectSearchQuery = em.createNamedQuery("TblBotanicalObject.findByScientificName", TblBotanicalObject.class);
         botanicalObjectSearchQuery.setParameter("scientificName", "%" + scientificName.toLowerCase() + "%");
+        if (offset != null) {
+            botanicalObjectSearchQuery.setFirstResult(offset);
+        }
+        if (limit != null) {
+            botanicalObjectSearchQuery.setMaxResults(limit);
+        }
 
         return BotanicalObjectResult.fromList(botanicalObjectSearchQuery.getResultList());
     }

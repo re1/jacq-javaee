@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_person")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblPerson.findAll", query = "SELECT t FROM TblPerson t"),
-    @NamedQuery(name = "TblPerson.findById", query = "SELECT t FROM TblPerson t WHERE t.id = :id"),
-    @NamedQuery(name = "TblPerson.findByName", query = "SELECT t FROM TblPerson t WHERE t.name = :name")})
+    @NamedQuery(name = "TblPerson.findAll", query = "SELECT t FROM TblPerson t")
+    , @NamedQuery(name = "TblPerson.findById", query = "SELECT t FROM TblPerson t WHERE t.id = :id")
+    , @NamedQuery(name = "TblPerson.findByName", query = "SELECT t FROM TblPerson t WHERE t.name = :name")})
 public class TblPerson implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,34 +52,34 @@ public class TblPerson implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "tblPersonCollection")
+    @ManyToMany(mappedBy = "tblPersonCollection", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
-    @OneToMany(mappedBy = "determinedById")
+    @OneToMany(mappedBy = "determinedById", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
 
     public TblPerson() {
     }
 
-    public TblPerson(Integer id) {
+    public TblPerson(Long id) {
         this.id = id;
     }
 
-    public TblPerson(Integer id, String name) {
+    public TblPerson(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

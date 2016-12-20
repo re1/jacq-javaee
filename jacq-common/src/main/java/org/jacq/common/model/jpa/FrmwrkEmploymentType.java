@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_employment_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkEmploymentType.findAll", query = "SELECT f FROM FrmwrkEmploymentType f"),
-    @NamedQuery(name = "FrmwrkEmploymentType.findByEmploymentTypeId", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.employmentTypeId = :employmentTypeId"),
-    @NamedQuery(name = "FrmwrkEmploymentType.findByType", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkEmploymentType.findAll", query = "SELECT f FROM FrmwrkEmploymentType f")
+    , @NamedQuery(name = "FrmwrkEmploymentType.findByEmploymentTypeId", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.employmentTypeId = :employmentTypeId")
+    , @NamedQuery(name = "FrmwrkEmploymentType.findByType", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.type = :type")})
 public class FrmwrkEmploymentType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,32 +52,32 @@ public class FrmwrkEmploymentType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "employment_type_id")
-    private Integer employmentTypeId;
+    private Long employmentTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employmentTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employmentTypeId", fetch = FetchType.LAZY)
     private Collection<FrmwrkUser> frmwrkUserCollection;
 
     public FrmwrkEmploymentType() {
     }
 
-    public FrmwrkEmploymentType(Integer employmentTypeId) {
+    public FrmwrkEmploymentType(Long employmentTypeId) {
         this.employmentTypeId = employmentTypeId;
     }
 
-    public FrmwrkEmploymentType(Integer employmentTypeId, String type) {
+    public FrmwrkEmploymentType(Long employmentTypeId, String type) {
         this.employmentTypeId = employmentTypeId;
         this.type = type;
     }
 
-    public Integer getEmploymentTypeId() {
+    public Long getEmploymentTypeId() {
         return employmentTypeId;
     }
 
-    public void setEmploymentTypeId(Integer employmentTypeId) {
+    public void setEmploymentTypeId(Long employmentTypeId) {
         this.employmentTypeId = employmentTypeId;
     }
 

@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,9 +46,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_inventory")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblInventory.findAll", query = "SELECT t FROM TblInventory t"),
-    @NamedQuery(name = "TblInventory.findByInventoryId", query = "SELECT t FROM TblInventory t WHERE t.inventoryId = :inventoryId"),
-    @NamedQuery(name = "TblInventory.findByTimestamp", query = "SELECT t FROM TblInventory t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblInventory.findAll", query = "SELECT t FROM TblInventory t")
+    , @NamedQuery(name = "TblInventory.findByInventoryId", query = "SELECT t FROM TblInventory t WHERE t.inventoryId = :inventoryId")
+    , @NamedQuery(name = "TblInventory.findByTimestamp", query = "SELECT t FROM TblInventory t WHERE t.timestamp = :timestamp")})
 public class TblInventory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,38 +56,38 @@ public class TblInventory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "inventory_id")
-    private Integer inventoryId;
+    private Long inventoryId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId", fetch = FetchType.LAZY)
     private Collection<TblInventoryObject> tblInventoryObjectCollection;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser userId;
     @JoinColumn(name = "inventory_type_id", referencedColumnName = "inventory_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblInventoryType inventoryTypeId;
 
     public TblInventory() {
     }
 
-    public TblInventory(Integer inventoryId) {
+    public TblInventory(Long inventoryId) {
         this.inventoryId = inventoryId;
     }
 
-    public TblInventory(Integer inventoryId, Date timestamp) {
+    public TblInventory(Long inventoryId, Date timestamp) {
         this.inventoryId = inventoryId;
         this.timestamp = timestamp;
     }
 
-    public Integer getInventoryId() {
+    public Long getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(Integer inventoryId) {
+    public void setInventoryId(Long inventoryId) {
         this.inventoryId = inventoryId;
     }
 

@@ -34,7 +34,7 @@ public class BotanitcalObjectServiceImpl implements BotanicalObjectService {
      * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean)
      */
     @Override
-    public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage) {
-        return botanicalObjectManager.search(scientificName, organization, hasImage);
+    public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage, Integer offset, Integer limit) {
+        return botanicalObjectManager.search(scientificName, organization, hasImage, offset, limit);
     }
 }

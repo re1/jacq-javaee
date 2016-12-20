@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,9 +43,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_separation")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSeparation.findAll", query = "SELECT t FROM TblSeparation t"),
-    @NamedQuery(name = "TblSeparation.findById", query = "SELECT t FROM TblSeparation t WHERE t.id = :id"),
-    @NamedQuery(name = "TblSeparation.findByDate", query = "SELECT t FROM TblSeparation t WHERE t.date = :date")})
+    @NamedQuery(name = "TblSeparation.findAll", query = "SELECT t FROM TblSeparation t")
+    , @NamedQuery(name = "TblSeparation.findById", query = "SELECT t FROM TblSeparation t WHERE t.id = :id")
+    , @NamedQuery(name = "TblSeparation.findByDate", query = "SELECT t FROM TblSeparation t WHERE t.date = :date")})
 public class TblSeparation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +53,7 @@ public class TblSeparation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -61,27 +62,27 @@ public class TblSeparation implements Serializable {
     @Column(name = "annotation")
     private String annotation;
     @JoinColumn(name = "separation_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblSeparationType separationTypeId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "derivative_vegetative_id", referencedColumnName = "derivative_vegetative_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblDerivativeVegetative derivativeVegetativeId;
 
     public TblSeparation() {
     }
 
-    public TblSeparation(Integer id) {
+    public TblSeparation(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

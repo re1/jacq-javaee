@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,10 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_index_seminum_person")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIndexSeminumPerson.findAll", query = "SELECT t FROM TblIndexSeminumPerson t"),
-    @NamedQuery(name = "TblIndexSeminumPerson.findByIndexSeminumPersonId", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.indexSeminumPersonId = :indexSeminumPersonId"),
-    @NamedQuery(name = "TblIndexSeminumPerson.findByName", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.name = :name"),
-    @NamedQuery(name = "TblIndexSeminumPerson.findByTimestamp", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblIndexSeminumPerson.findAll", query = "SELECT t FROM TblIndexSeminumPerson t")
+    , @NamedQuery(name = "TblIndexSeminumPerson.findByIndexSeminumPersonId", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.indexSeminumPersonId = :indexSeminumPersonId")
+    , @NamedQuery(name = "TblIndexSeminumPerson.findByName", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.name = :name")
+    , @NamedQuery(name = "TblIndexSeminumPerson.findByTimestamp", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.timestamp = :timestamp")})
 public class TblIndexSeminumPerson implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class TblIndexSeminumPerson implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "index_seminum_person_id")
-    private Integer indexSeminumPersonId;
+    private Long indexSeminumPersonId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -65,27 +66,27 @@ public class TblIndexSeminumPerson implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "index_seminum_content_id", referencedColumnName = "index_seminum_content_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblIndexSeminumContent indexSeminumContentId;
 
     public TblIndexSeminumPerson() {
     }
 
-    public TblIndexSeminumPerson(Integer indexSeminumPersonId) {
+    public TblIndexSeminumPerson(Long indexSeminumPersonId) {
         this.indexSeminumPersonId = indexSeminumPersonId;
     }
 
-    public TblIndexSeminumPerson(Integer indexSeminumPersonId, String name, Date timestamp) {
+    public TblIndexSeminumPerson(Long indexSeminumPersonId, String name, Date timestamp) {
         this.indexSeminumPersonId = indexSeminumPersonId;
         this.name = name;
         this.timestamp = timestamp;
     }
 
-    public Integer getIndexSeminumPersonId() {
+    public Long getIndexSeminumPersonId() {
         return indexSeminumPersonId;
     }
 
-    public void setIndexSeminumPersonId(Integer indexSeminumPersonId) {
+    public void setIndexSeminumPersonId(Long indexSeminumPersonId) {
         this.indexSeminumPersonId = indexSeminumPersonId;
     }
 

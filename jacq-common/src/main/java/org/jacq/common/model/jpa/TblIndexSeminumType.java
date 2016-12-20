@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_index_seminum_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIndexSeminumType.findAll", query = "SELECT t FROM TblIndexSeminumType t"),
-    @NamedQuery(name = "TblIndexSeminumType.findById", query = "SELECT t FROM TblIndexSeminumType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblIndexSeminumType.findByType", query = "SELECT t FROM TblIndexSeminumType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblIndexSeminumType.findAll", query = "SELECT t FROM TblIndexSeminumType t")
+    , @NamedQuery(name = "TblIndexSeminumType.findById", query = "SELECT t FROM TblIndexSeminumType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblIndexSeminumType.findByType", query = "SELECT t FROM TblIndexSeminumType t WHERE t.type = :type")})
 public class TblIndexSeminumType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,32 +51,32 @@ public class TblIndexSeminumType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
     @Column(name = "type")
     private String type;
-    @OneToMany(mappedBy = "indexSeminumTypeId")
+    @OneToMany(mappedBy = "indexSeminumTypeId", fetch = FetchType.LAZY)
     private Collection<TblLivingPlant> tblLivingPlantCollection;
 
     public TblIndexSeminumType() {
     }
 
-    public TblIndexSeminumType(Integer id) {
+    public TblIndexSeminumType(Long id) {
         this.id = id;
     }
 
-    public TblIndexSeminumType(Integer id, String type) {
+    public TblIndexSeminumType(Long id, String type) {
         this.id = id;
         this.type = type;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

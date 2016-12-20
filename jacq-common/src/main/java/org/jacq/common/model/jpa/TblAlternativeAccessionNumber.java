@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,9 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_alternative_accession_number")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAlternativeAccessionNumber.findAll", query = "SELECT t FROM TblAlternativeAccessionNumber t"),
-    @NamedQuery(name = "TblAlternativeAccessionNumber.findById", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAlternativeAccessionNumber.findByNumber", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.number = :number")})
+    @NamedQuery(name = "TblAlternativeAccessionNumber.findAll", query = "SELECT t FROM TblAlternativeAccessionNumber t")
+    , @NamedQuery(name = "TblAlternativeAccessionNumber.findById", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.id = :id")
+    , @NamedQuery(name = "TblAlternativeAccessionNumber.findByNumber", query = "SELECT t FROM TblAlternativeAccessionNumber t WHERE t.number = :number")})
 public class TblAlternativeAccessionNumber implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,33 +50,33 @@ public class TblAlternativeAccessionNumber implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "number")
     private String number;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
 
     public TblAlternativeAccessionNumber() {
     }
 
-    public TblAlternativeAccessionNumber(Integer id) {
+    public TblAlternativeAccessionNumber(Long id) {
         this.id = id;
     }
 
-    public TblAlternativeAccessionNumber(Integer id, String number) {
+    public TblAlternativeAccessionNumber(Long id, String number) {
         this.id = id;
         this.number = number;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

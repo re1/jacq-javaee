@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -43,9 +44,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_AuthItem")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkAuthItem.findAll", query = "SELECT f FROM FrmwrkAuthItem f"),
-    @NamedQuery(name = "FrmwrkAuthItem.findByName", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.name = :name"),
-    @NamedQuery(name = "FrmwrkAuthItem.findByType", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkAuthItem.findAll", query = "SELECT f FROM FrmwrkAuthItem f")
+    , @NamedQuery(name = "FrmwrkAuthItem.findByName", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.name = :name")
+    , @NamedQuery(name = "FrmwrkAuthItem.findByType", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.type = :type")})
 public class FrmwrkAuthItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,17 +75,17 @@ public class FrmwrkAuthItem implements Serializable {
     @JoinTable(name = "frmwrk_AuthItemChild", joinColumns = {
         @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
         @JoinColumn(name = "child", referencedColumnName = "name")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection;
-    @ManyToMany(mappedBy = "frmwrkAuthItemCollection")
+    @ManyToMany(mappedBy = "frmwrkAuthItemCollection", fetch = FetchType.LAZY)
     private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection1;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem", fetch = FetchType.LAZY)
     private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
 
     public FrmwrkAuthItem() {

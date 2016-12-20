@@ -2,23 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jacq</groupId>
-        <artifactId>jacq</artifactId>
-        <version>${jacq.version}</version>
-        <relativePath>../jacq/pom.xml</relativePath>
-    </parent>
-
+    <groupId>org.jacq</groupId>
     <artifactId>jacq-common</artifactId>
+    <version>0.3.0</version>
+
     <name>jacq-common</name>
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>3.0.10.Final</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

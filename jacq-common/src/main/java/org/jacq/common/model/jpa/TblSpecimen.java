@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,10 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_specimen")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSpecimen.findAll", query = "SELECT t FROM TblSpecimen t"),
-    @NamedQuery(name = "TblSpecimen.findBySpecimenId", query = "SELECT t FROM TblSpecimen t WHERE t.specimenId = :specimenId"),
-    @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber"),
-    @NamedQuery(name = "TblSpecimen.findByTimestamp", query = "SELECT t FROM TblSpecimen t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblSpecimen.findAll", query = "SELECT t FROM TblSpecimen t")
+    , @NamedQuery(name = "TblSpecimen.findBySpecimenId", query = "SELECT t FROM TblSpecimen t WHERE t.specimenId = :specimenId")
+    , @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber")
+    , @NamedQuery(name = "TblSpecimen.findByTimestamp", query = "SELECT t FROM TblSpecimen t WHERE t.timestamp = :timestamp")})
 public class TblSpecimen implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class TblSpecimen implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "specimen_id")
-    private Integer specimenId;
+    private Long specimenId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -65,27 +66,27 @@ public class TblSpecimen implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
 
     public TblSpecimen() {
     }
 
-    public TblSpecimen(Integer specimenId) {
+    public TblSpecimen(Long specimenId) {
         this.specimenId = specimenId;
     }
 
-    public TblSpecimen(Integer specimenId, String herbarNumber, Date timestamp) {
+    public TblSpecimen(Long specimenId, String herbarNumber, Date timestamp) {
         this.specimenId = specimenId;
         this.herbarNumber = herbarNumber;
         this.timestamp = timestamp;
     }
 
-    public Integer getSpecimenId() {
+    public Long getSpecimenId() {
         return specimenId;
     }
 
-    public void setSpecimenId(Integer specimenId) {
+    public void setSpecimenId(Long specimenId) {
         this.specimenId = specimenId;
     }
 

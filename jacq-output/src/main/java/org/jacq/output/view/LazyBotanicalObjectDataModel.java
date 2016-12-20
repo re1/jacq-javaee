@@ -69,7 +69,11 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
 
     @Override
     public List<BotanicalObjectResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return this.botanicalObjectService.search("Annona", "", Boolean.FALSE);
+        List<BotanicalObjectResult> results = this.botanicalObjectService.search("Annona", "", Boolean.FALSE, 0, 10);
+
+        this.setRowCount(results.size());
+
+        return results;
     }
 
 }

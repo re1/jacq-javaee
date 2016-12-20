@@ -19,7 +19,6 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -44,5 +43,5 @@ public interface BotanicalObjectService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage);
+    public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 }

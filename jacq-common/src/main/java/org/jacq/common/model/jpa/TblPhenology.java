@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_phenology")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblPhenology.findAll", query = "SELECT t FROM TblPhenology t"),
-    @NamedQuery(name = "TblPhenology.findById", query = "SELECT t FROM TblPhenology t WHERE t.id = :id"),
-    @NamedQuery(name = "TblPhenology.findByPhenology", query = "SELECT t FROM TblPhenology t WHERE t.phenology = :phenology")})
+    @NamedQuery(name = "TblPhenology.findAll", query = "SELECT t FROM TblPhenology t")
+    , @NamedQuery(name = "TblPhenology.findById", query = "SELECT t FROM TblPhenology t WHERE t.id = :id")
+    , @NamedQuery(name = "TblPhenology.findByPhenology", query = "SELECT t FROM TblPhenology t WHERE t.phenology = :phenology")})
 public class TblPhenology implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,27 +51,27 @@ public class TblPhenology implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 45)
     @Column(name = "phenology")
     private String phenology;
-    @OneToMany(mappedBy = "phenologyId")
+    @OneToMany(mappedBy = "phenologyId", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId", fetch = FetchType.LAZY)
     private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
 
     public TblPhenology() {
     }
 
-    public TblPhenology(Integer id) {
+    public TblPhenology(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

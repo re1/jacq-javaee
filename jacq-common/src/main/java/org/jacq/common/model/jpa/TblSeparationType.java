@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
@@ -22,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_separation_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSeparationType.findAll", query = "SELECT t FROM TblSeparationType t"),
-    @NamedQuery(name = "TblSeparationType.findById", query = "SELECT t FROM TblSeparationType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblSeparationType.findByType", query = "SELECT t FROM TblSeparationType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblSeparationType.findAll", query = "SELECT t FROM TblSeparationType t")
+    , @NamedQuery(name = "TblSeparationType.findById", query = "SELECT t FROM TblSeparationType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblSeparationType.findByType", query = "SELECT t FROM TblSeparationType t WHERE t.type = :type")})
 public class TblSeparationType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,25 +51,25 @@ public class TblSeparationType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 25)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "separationTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "separationTypeId", fetch = FetchType.LAZY)
     private Collection<TblSeparation> tblSeparationCollection;
 
     public TblSeparationType() {
     }
 
-    public TblSeparationType(Integer id) {
+    public TblSeparationType(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

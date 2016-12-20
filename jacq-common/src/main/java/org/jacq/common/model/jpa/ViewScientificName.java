@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,11 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "view_scientificName")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ViewscientificName.findAll", query = "SELECT v FROM ViewscientificName v"),
-    @NamedQuery(name = "ViewscientificName.findByScientificNameId", query = "SELECT v FROM ViewscientificName v WHERE v.scientificNameId = :scientificNameId")})
-public class ViewscientificName implements Serializable {
+    @NamedQuery(name = "ViewScientificName.findAll", query = "SELECT v FROM ViewScientificName v")
+    , @NamedQuery(name = "ViewScientificName.findByScientificNameId", query = "SELECT v FROM ViewScientificName v WHERE v.scientificNameId = :scientificNameId")})
+public class ViewScientificName implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
@@ -53,7 +55,7 @@ public class ViewscientificName implements Serializable {
     @Column(name = "scientific_name_no_author")
     private String scientificNameNoAuthor;
 
-    public ViewscientificName() {
+    public ViewScientificName() {
     }
 
     public int getScientificNameId() {

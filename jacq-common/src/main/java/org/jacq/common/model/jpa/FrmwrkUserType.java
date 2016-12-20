@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_user_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkUserType.findAll", query = "SELECT f FROM FrmwrkUserType f"),
-    @NamedQuery(name = "FrmwrkUserType.findByUserTypeId", query = "SELECT f FROM FrmwrkUserType f WHERE f.userTypeId = :userTypeId"),
-    @NamedQuery(name = "FrmwrkUserType.findByType", query = "SELECT f FROM FrmwrkUserType f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkUserType.findAll", query = "SELECT f FROM FrmwrkUserType f")
+    , @NamedQuery(name = "FrmwrkUserType.findByUserTypeId", query = "SELECT f FROM FrmwrkUserType f WHERE f.userTypeId = :userTypeId")
+    , @NamedQuery(name = "FrmwrkUserType.findByType", query = "SELECT f FROM FrmwrkUserType f WHERE f.type = :type")})
 public class FrmwrkUserType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,32 +52,32 @@ public class FrmwrkUserType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "user_type_id")
-    private Integer userTypeId;
+    private Long userTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId", fetch = FetchType.LAZY)
     private Collection<FrmwrkUser> frmwrkUserCollection;
 
     public FrmwrkUserType() {
     }
 
-    public FrmwrkUserType(Integer userTypeId) {
+    public FrmwrkUserType(Long userTypeId) {
         this.userTypeId = userTypeId;
     }
 
-    public FrmwrkUserType(Integer userTypeId, String type) {
+    public FrmwrkUserType(Long userTypeId, String type) {
         this.userTypeId = userTypeId;
         this.type = type;
     }
 
-    public Integer getUserTypeId() {
+    public Long getUserTypeId() {
         return userTypeId;
     }
 
-    public void setUserTypeId(Integer userTypeId) {
+    public void setUserTypeId(Long userTypeId) {
         this.userTypeId = userTypeId;
     }
 
