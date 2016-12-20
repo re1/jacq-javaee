@@ -37,4 +37,9 @@ public class BotanitcalObjectServiceImpl implements BotanicalObjectService {
     public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage, Integer offset, Integer limit) {
         return botanicalObjectManager.search(scientificName, organization, hasImage, offset, limit);
     }
+
+    @Override
+    public int searchCount(String scientificName, String organization, Boolean hasImage) {
+        return botanicalObjectManager.searchCount(scientificName, organization, hasImage);
+    }
 }

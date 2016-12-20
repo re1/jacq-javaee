@@ -37,6 +37,8 @@ public interface BotanicalObjectService {
      * @param scientificName Scientific name to search for
      * @param organization Organization to filter for
      * @param hasImage Only display results containing images
+     * @param offset Return result with an offset
+     * @param limit Limit total count of results
      * @return
      */
     @GET
@@ -44,4 +46,16 @@ public interface BotanicalObjectService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     * Search the database using the given filter and return the count
+     *
+     * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Integer,
+     * java.lang.Integer)
+     */
+    @GET
+    @Path("/searchCount")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int searchCount(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage);
 }

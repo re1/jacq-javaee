@@ -41,6 +41,16 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
     protected List<BotanicalObjectResult> botanicalObjectResults = new ArrayList<>();
 
     /**
+     * Scientific name to search for
+     */
+    protected String scientificName;
+
+    /**
+     * Organization to search for
+     */
+    protected String organization;
+
+    /**
      * Default constructor, needs a reference to the botanical object service for later querying
      *
      * @param botanicalObjectService
@@ -69,11 +79,32 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
 
     @Override
     public List<BotanicalObjectResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        List<BotanicalObjectResult> results = this.botanicalObjectService.search("Annona", "", Boolean.FALSE, 0, 10);
+        // get count first
+        int rowCount = this.botanicalObjectService.searchCount(getScientificName(), getOrganization(), Boolean.FALSE);
+        this.setRowCount(rowCount);
 
-        this.setRowCount(results.size());
+        List<BotanicalObjectResult> results = new ArrayList<>();
+        if (rowCount > 0) {
+            results = this.botanicalObjectService.search(getScientificName(), getOrganization(), Boolean.FALSE, first, pageSize);
+        }
 
         return results;
+    }
+
+    public String getScientificName() {
+        return scientificName;
+    }
+
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
 }

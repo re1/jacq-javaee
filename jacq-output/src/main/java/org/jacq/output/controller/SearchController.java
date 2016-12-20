@@ -17,6 +17,8 @@ package org.jacq.output.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.output.SessionManager;
@@ -29,7 +31,7 @@ import org.jacq.output.view.LazyBotanicalObjectDataModel;
  * @author wkoller
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class SearchController {
 
     protected LazyBotanicalObjectDataModel dataModel;
@@ -43,11 +45,11 @@ public class SearchController {
     }
 
     public String getScientificName() {
-        return sessionManager.getScientificName();
+        return this.dataModel.getScientificName();
     }
 
     public void setScientificName(String scientificName) {
-        sessionManager.setScientificName(scientificName);
+        this.dataModel.setScientificName(scientificName);
     }
 
     public String getOrganization() {

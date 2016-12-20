@@ -61,7 +61,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible")
     , @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine")
     , @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")
-    , @NamedQuery(name = "TblBotanicalObject.findByScientificName", query = "SELECT t FROM TblBotanicalObject t WHERE LOWER(t.viewScientificName.scientificName) LIKE :scientificName")
 })
 public class TblBotanicalObject implements Serializable {
 
