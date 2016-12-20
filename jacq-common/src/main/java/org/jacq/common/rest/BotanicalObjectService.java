@@ -19,7 +19,6 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -38,11 +37,25 @@ public interface BotanicalObjectService {
      * @param scientificName Scientific name to search for
      * @param organization Organization to filter for
      * @param hasImage Only display results containing images
+     * @param offset Return result with an offset
+     * @param limit Limit total count of results
      * @return
      */
     @GET
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage);
+    public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     * Search the database using the given filter and return the count
+     *
+     * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Integer,
+     * java.lang.Integer)
+     */
+    @GET
+    @Path("/searchCount")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int searchCount(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage);
 }

@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_habitus_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblHabitusType.findAll", query = "SELECT t FROM TblHabitusType t"),
-    @NamedQuery(name = "TblHabitusType.findByHabitusTypeId", query = "SELECT t FROM TblHabitusType t WHERE t.habitusTypeId = :habitusTypeId"),
-    @NamedQuery(name = "TblHabitusType.findByHabitus", query = "SELECT t FROM TblHabitusType t WHERE t.habitus = :habitus")})
+    @NamedQuery(name = "TblHabitusType.findAll", query = "SELECT t FROM TblHabitusType t")
+    , @NamedQuery(name = "TblHabitusType.findByHabitusTypeId", query = "SELECT t FROM TblHabitusType t WHERE t.habitusTypeId = :habitusTypeId")
+    , @NamedQuery(name = "TblHabitusType.findByHabitus", query = "SELECT t FROM TblHabitusType t WHERE t.habitus = :habitus")})
 public class TblHabitusType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,32 +51,32 @@ public class TblHabitusType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "habitus_type_id")
-    private Integer habitusTypeId;
+    private Long habitusTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "habitus")
     private String habitus;
-    @OneToMany(mappedBy = "habitusTypeId")
+    @OneToMany(mappedBy = "habitusTypeId", fetch = FetchType.LAZY)
     private Collection<TblScientificNameInformation> tblScientificNameInformationCollection;
 
     public TblHabitusType() {
     }
 
-    public TblHabitusType(Integer habitusTypeId) {
+    public TblHabitusType(Long habitusTypeId) {
         this.habitusTypeId = habitusTypeId;
     }
 
-    public TblHabitusType(Integer habitusTypeId, String habitus) {
+    public TblHabitusType(Long habitusTypeId, String habitus) {
         this.habitusTypeId = habitusTypeId;
         this.habitus = habitus;
     }
 
-    public Integer getHabitusTypeId() {
+    public Long getHabitusTypeId() {
         return habitusTypeId;
     }
 
-    public void setHabitusTypeId(Integer habitusTypeId) {
+    public void setHabitusTypeId(Long habitusTypeId) {
         this.habitusTypeId = habitusTypeId;
     }
 

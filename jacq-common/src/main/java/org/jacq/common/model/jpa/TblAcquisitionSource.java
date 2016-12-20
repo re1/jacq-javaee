@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_source")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionSource.findAll", query = "SELECT t FROM TblAcquisitionSource t"),
-    @NamedQuery(name = "TblAcquisitionSource.findByAcquisitionSourceId", query = "SELECT t FROM TblAcquisitionSource t WHERE t.acquisitionSourceId = :acquisitionSourceId"),
-    @NamedQuery(name = "TblAcquisitionSource.findByName", query = "SELECT t FROM TblAcquisitionSource t WHERE t.name = :name")})
+    @NamedQuery(name = "TblAcquisitionSource.findAll", query = "SELECT t FROM TblAcquisitionSource t")
+    , @NamedQuery(name = "TblAcquisitionSource.findByAcquisitionSourceId", query = "SELECT t FROM TblAcquisitionSource t WHERE t.acquisitionSourceId = :acquisitionSourceId")
+    , @NamedQuery(name = "TblAcquisitionSource.findByName", query = "SELECT t FROM TblAcquisitionSource t WHERE t.name = :name")})
 public class TblAcquisitionSource implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,32 +52,32 @@ public class TblAcquisitionSource implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "acquisition_source_id")
-    private Integer acquisitionSourceId;
+    private Long acquisitionSourceId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
 
     public TblAcquisitionSource() {
     }
 
-    public TblAcquisitionSource(Integer acquisitionSourceId) {
+    public TblAcquisitionSource(Long acquisitionSourceId) {
         this.acquisitionSourceId = acquisitionSourceId;
     }
 
-    public TblAcquisitionSource(Integer acquisitionSourceId, String name) {
+    public TblAcquisitionSource(Long acquisitionSourceId, String name) {
         this.acquisitionSourceId = acquisitionSourceId;
         this.name = name;
     }
 
-    public Integer getAcquisitionSourceId() {
+    public Long getAcquisitionSourceId() {
         return acquisitionSourceId;
     }
 
-    public void setAcquisitionSourceId(Integer acquisitionSourceId) {
+    public void setAcquisitionSourceId(Long acquisitionSourceId) {
         this.acquisitionSourceId = acquisitionSourceId;
     }
 

@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,9 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_cultivar")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCultivar.findAll", query = "SELECT t FROM TblCultivar t"),
-    @NamedQuery(name = "TblCultivar.findByCultivarId", query = "SELECT t FROM TblCultivar t WHERE t.cultivarId = :cultivarId"),
-    @NamedQuery(name = "TblCultivar.findByCultivar", query = "SELECT t FROM TblCultivar t WHERE t.cultivar = :cultivar")})
+    @NamedQuery(name = "TblCultivar.findAll", query = "SELECT t FROM TblCultivar t")
+    , @NamedQuery(name = "TblCultivar.findByCultivarId", query = "SELECT t FROM TblCultivar t WHERE t.cultivarId = :cultivarId")
+    , @NamedQuery(name = "TblCultivar.findByCultivar", query = "SELECT t FROM TblCultivar t WHERE t.cultivar = :cultivar")})
 public class TblCultivar implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,35 +53,35 @@ public class TblCultivar implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cultivar_id")
-    private Integer cultivarId;
+    private Long cultivarId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "cultivar")
     private String cultivar;
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblScientificNameInformation scientificNameId;
-    @OneToMany(mappedBy = "cultivarId")
+    @OneToMany(mappedBy = "cultivarId", fetch = FetchType.LAZY)
     private Collection<TblLivingPlant> tblLivingPlantCollection;
 
     public TblCultivar() {
     }
 
-    public TblCultivar(Integer cultivarId) {
+    public TblCultivar(Long cultivarId) {
         this.cultivarId = cultivarId;
     }
 
-    public TblCultivar(Integer cultivarId, String cultivar) {
+    public TblCultivar(Long cultivarId, String cultivar) {
         this.cultivarId = cultivarId;
         this.cultivar = cultivar;
     }
 
-    public Integer getCultivarId() {
+    public Long getCultivarId() {
         return cultivarId;
     }
 
-    public void setCultivarId(Integer cultivarId) {
+    public void setCultivarId(Long cultivarId) {
         this.cultivarId = cultivarId;
     }
 

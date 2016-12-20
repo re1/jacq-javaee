@@ -28,7 +28,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String JACQ_SERVICE_URL = "http://localhost:8080/jacq-service-0.3.0/";
+    private static final String JACQ_SERVICE_URL = "http://localhost:8080/jacq-service/rest/";
 
     public static BotanicalObjectService getBotanicalObjectService() {
         return getProxy(BotanicalObjectService.class, JACQ_SERVICE_URL);
@@ -36,7 +36,7 @@ public class ServicesUtil {
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
-        resteasyClient.register(new ContentTypeResponseFilter());
+        //resteasyClient.register(new ContentTypeResponseFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }

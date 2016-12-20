@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,64 +36,65 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "view_taxon")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ViewTaxon.findAll", query = "SELECT v FROM ViewTaxon v"),
-    @NamedQuery(name = "ViewTaxon.findByTaxonID", query = "SELECT v FROM ViewTaxon v WHERE v.taxonID = :taxonID"),
-    @NamedQuery(name = "ViewTaxon.findBySynID", query = "SELECT v FROM ViewTaxon v WHERE v.synID = :synID"),
-    @NamedQuery(name = "ViewTaxon.findByBasID", query = "SELECT v FROM ViewTaxon v WHERE v.basID = :basID"),
-    @NamedQuery(name = "ViewTaxon.findByGenID", query = "SELECT v FROM ViewTaxon v WHERE v.genID = :genID"),
-    @NamedQuery(name = "ViewTaxon.findByExternal", query = "SELECT v FROM ViewTaxon v WHERE v.external = :external"),
-    @NamedQuery(name = "ViewTaxon.findByGenus", query = "SELECT v FROM ViewTaxon v WHERE v.genus = :genus"),
-    @NamedQuery(name = "ViewTaxon.findByDallaTorreIDs", query = "SELECT v FROM ViewTaxon v WHERE v.dallaTorreIDs = :dallaTorreIDs"),
-    @NamedQuery(name = "ViewTaxon.findByDallaTorreZusatzIDs", query = "SELECT v FROM ViewTaxon v WHERE v.dallaTorreZusatzIDs = :dallaTorreZusatzIDs"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorG", query = "SELECT v FROM ViewTaxon v WHERE v.authorG = :authorG"),
-    @NamedQuery(name = "ViewTaxon.findByFamily", query = "SELECT v FROM ViewTaxon v WHERE v.family = :family"),
-    @NamedQuery(name = "ViewTaxon.findByCategory", query = "SELECT v FROM ViewTaxon v WHERE v.category = :category"),
-    @NamedQuery(name = "ViewTaxon.findByStatus", query = "SELECT v FROM ViewTaxon v WHERE v.status = :status"),
-    @NamedQuery(name = "ViewTaxon.findByStatusID", query = "SELECT v FROM ViewTaxon v WHERE v.statusID = :statusID"),
-    @NamedQuery(name = "ViewTaxon.findByRank", query = "SELECT v FROM ViewTaxon v WHERE v.rank = :rank"),
-    @NamedQuery(name = "ViewTaxon.findByTaxrankID", query = "SELECT v FROM ViewTaxon v WHERE v.taxrankID = :taxrankID"),
-    @NamedQuery(name = "ViewTaxon.findByRankAbbr", query = "SELECT v FROM ViewTaxon v WHERE v.rankAbbr = :rankAbbr"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor", query = "SELECT v FROM ViewTaxon v WHERE v.author = :author"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID", query = "SELECT v FROM ViewTaxon v WHERE v.authorID = :authorID"),
-    @NamedQuery(name = "ViewTaxon.findByBrummitPowellfull", query = "SELECT v FROM ViewTaxon v WHERE v.brummitPowellfull = :brummitPowellfull"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor1", query = "SELECT v FROM ViewTaxon v WHERE v.author1 = :author1"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID1", query = "SELECT v FROM ViewTaxon v WHERE v.authorID1 = :authorID1"),
-    @NamedQuery(name = "ViewTaxon.findByBpf1", query = "SELECT v FROM ViewTaxon v WHERE v.bpf1 = :bpf1"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor2", query = "SELECT v FROM ViewTaxon v WHERE v.author2 = :author2"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID2", query = "SELECT v FROM ViewTaxon v WHERE v.authorID2 = :authorID2"),
-    @NamedQuery(name = "ViewTaxon.findByBpf2", query = "SELECT v FROM ViewTaxon v WHERE v.bpf2 = :bpf2"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor3", query = "SELECT v FROM ViewTaxon v WHERE v.author3 = :author3"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID3", query = "SELECT v FROM ViewTaxon v WHERE v.authorID3 = :authorID3"),
-    @NamedQuery(name = "ViewTaxon.findByBpf3", query = "SELECT v FROM ViewTaxon v WHERE v.bpf3 = :bpf3"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor4", query = "SELECT v FROM ViewTaxon v WHERE v.author4 = :author4"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID4", query = "SELECT v FROM ViewTaxon v WHERE v.authorID4 = :authorID4"),
-    @NamedQuery(name = "ViewTaxon.findByBpf4", query = "SELECT v FROM ViewTaxon v WHERE v.bpf4 = :bpf4"),
-    @NamedQuery(name = "ViewTaxon.findByAuthor5", query = "SELECT v FROM ViewTaxon v WHERE v.author5 = :author5"),
-    @NamedQuery(name = "ViewTaxon.findByAuthorID5", query = "SELECT v FROM ViewTaxon v WHERE v.authorID5 = :authorID5"),
-    @NamedQuery(name = "ViewTaxon.findByBpf5", query = "SELECT v FROM ViewTaxon v WHERE v.bpf5 = :bpf5"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet", query = "SELECT v FROM ViewTaxon v WHERE v.epithet = :epithet"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID = :epithetID"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet1", query = "SELECT v FROM ViewTaxon v WHERE v.epithet1 = :epithet1"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID1", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID1 = :epithetID1"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet2", query = "SELECT v FROM ViewTaxon v WHERE v.epithet2 = :epithet2"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID2", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID2 = :epithetID2"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet3", query = "SELECT v FROM ViewTaxon v WHERE v.epithet3 = :epithet3"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID3", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID3 = :epithetID3"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet4", query = "SELECT v FROM ViewTaxon v WHERE v.epithet4 = :epithet4"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID4", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID4 = :epithetID4"),
-    @NamedQuery(name = "ViewTaxon.findByEpithet5", query = "SELECT v FROM ViewTaxon v WHERE v.epithet5 = :epithet5"),
-    @NamedQuery(name = "ViewTaxon.findByEpithetID5", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID5 = :epithetID5")})
+    @NamedQuery(name = "ViewTaxon.findAll", query = "SELECT v FROM ViewTaxon v")
+    , @NamedQuery(name = "ViewTaxon.findByTaxonID", query = "SELECT v FROM ViewTaxon v WHERE v.taxonID = :taxonID")
+    , @NamedQuery(name = "ViewTaxon.findBySynID", query = "SELECT v FROM ViewTaxon v WHERE v.synID = :synID")
+    , @NamedQuery(name = "ViewTaxon.findByBasID", query = "SELECT v FROM ViewTaxon v WHERE v.basID = :basID")
+    , @NamedQuery(name = "ViewTaxon.findByGenID", query = "SELECT v FROM ViewTaxon v WHERE v.genID = :genID")
+    , @NamedQuery(name = "ViewTaxon.findByExternal", query = "SELECT v FROM ViewTaxon v WHERE v.external = :external")
+    , @NamedQuery(name = "ViewTaxon.findByGenus", query = "SELECT v FROM ViewTaxon v WHERE v.genus = :genus")
+    , @NamedQuery(name = "ViewTaxon.findByDallaTorreIDs", query = "SELECT v FROM ViewTaxon v WHERE v.dallaTorreIDs = :dallaTorreIDs")
+    , @NamedQuery(name = "ViewTaxon.findByDallaTorreZusatzIDs", query = "SELECT v FROM ViewTaxon v WHERE v.dallaTorreZusatzIDs = :dallaTorreZusatzIDs")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorG", query = "SELECT v FROM ViewTaxon v WHERE v.authorG = :authorG")
+    , @NamedQuery(name = "ViewTaxon.findByFamily", query = "SELECT v FROM ViewTaxon v WHERE v.family = :family")
+    , @NamedQuery(name = "ViewTaxon.findByCategory", query = "SELECT v FROM ViewTaxon v WHERE v.category = :category")
+    , @NamedQuery(name = "ViewTaxon.findByStatus", query = "SELECT v FROM ViewTaxon v WHERE v.status = :status")
+    , @NamedQuery(name = "ViewTaxon.findByStatusID", query = "SELECT v FROM ViewTaxon v WHERE v.statusID = :statusID")
+    , @NamedQuery(name = "ViewTaxon.findByRank", query = "SELECT v FROM ViewTaxon v WHERE v.rank = :rank")
+    , @NamedQuery(name = "ViewTaxon.findByTaxrankID", query = "SELECT v FROM ViewTaxon v WHERE v.taxrankID = :taxrankID")
+    , @NamedQuery(name = "ViewTaxon.findByRankAbbr", query = "SELECT v FROM ViewTaxon v WHERE v.rankAbbr = :rankAbbr")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor", query = "SELECT v FROM ViewTaxon v WHERE v.author = :author")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID", query = "SELECT v FROM ViewTaxon v WHERE v.authorID = :authorID")
+    , @NamedQuery(name = "ViewTaxon.findByBrummitPowellfull", query = "SELECT v FROM ViewTaxon v WHERE v.brummitPowellfull = :brummitPowellfull")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor1", query = "SELECT v FROM ViewTaxon v WHERE v.author1 = :author1")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID1", query = "SELECT v FROM ViewTaxon v WHERE v.authorID1 = :authorID1")
+    , @NamedQuery(name = "ViewTaxon.findByBpf1", query = "SELECT v FROM ViewTaxon v WHERE v.bpf1 = :bpf1")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor2", query = "SELECT v FROM ViewTaxon v WHERE v.author2 = :author2")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID2", query = "SELECT v FROM ViewTaxon v WHERE v.authorID2 = :authorID2")
+    , @NamedQuery(name = "ViewTaxon.findByBpf2", query = "SELECT v FROM ViewTaxon v WHERE v.bpf2 = :bpf2")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor3", query = "SELECT v FROM ViewTaxon v WHERE v.author3 = :author3")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID3", query = "SELECT v FROM ViewTaxon v WHERE v.authorID3 = :authorID3")
+    , @NamedQuery(name = "ViewTaxon.findByBpf3", query = "SELECT v FROM ViewTaxon v WHERE v.bpf3 = :bpf3")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor4", query = "SELECT v FROM ViewTaxon v WHERE v.author4 = :author4")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID4", query = "SELECT v FROM ViewTaxon v WHERE v.authorID4 = :authorID4")
+    , @NamedQuery(name = "ViewTaxon.findByBpf4", query = "SELECT v FROM ViewTaxon v WHERE v.bpf4 = :bpf4")
+    , @NamedQuery(name = "ViewTaxon.findByAuthor5", query = "SELECT v FROM ViewTaxon v WHERE v.author5 = :author5")
+    , @NamedQuery(name = "ViewTaxon.findByAuthorID5", query = "SELECT v FROM ViewTaxon v WHERE v.authorID5 = :authorID5")
+    , @NamedQuery(name = "ViewTaxon.findByBpf5", query = "SELECT v FROM ViewTaxon v WHERE v.bpf5 = :bpf5")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet", query = "SELECT v FROM ViewTaxon v WHERE v.epithet = :epithet")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID = :epithetID")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet1", query = "SELECT v FROM ViewTaxon v WHERE v.epithet1 = :epithet1")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID1", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID1 = :epithetID1")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet2", query = "SELECT v FROM ViewTaxon v WHERE v.epithet2 = :epithet2")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID2", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID2 = :epithetID2")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet3", query = "SELECT v FROM ViewTaxon v WHERE v.epithet3 = :epithet3")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID3", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID3 = :epithetID3")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet4", query = "SELECT v FROM ViewTaxon v WHERE v.epithet4 = :epithet4")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID4", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID4 = :epithetID4")
+    , @NamedQuery(name = "ViewTaxon.findByEpithet5", query = "SELECT v FROM ViewTaxon v WHERE v.epithet5 = :epithet5")
+    , @NamedQuery(name = "ViewTaxon.findByEpithetID5", query = "SELECT v FROM ViewTaxon v WHERE v.epithetID5 = :epithetID5")})
 public class ViewTaxon implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "taxonID")
     private int taxonID;
     @Column(name = "synID")
-    private Integer synID;
+    private Long synID;
     @Column(name = "basID")
-    private Integer basID;
+    private Long basID;
     @Basic(optional = false)
     @NotNull
     @Column(name = "genID")
@@ -109,7 +111,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "genus")
     private String genus;
     @Column(name = "DallaTorreIDs")
-    private Integer dallaTorreIDs;
+    private Long dallaTorreIDs;
     @Column(name = "DallaTorreZusatzIDs")
     private Character dallaTorreZusatzIDs;
     @Size(max = 255)
@@ -125,12 +127,12 @@ public class ViewTaxon implements Serializable {
     @Column(name = "status")
     private String status;
     @Column(name = "statusID")
-    private Integer statusID;
+    private Long statusID;
     @Size(max = 255)
     @Column(name = "rank")
     private String rank;
     @Column(name = "tax_rankID")
-    private Integer taxrankID;
+    private Long taxrankID;
     @Size(max = 10)
     @Column(name = "rank_abbr")
     private String rankAbbr;
@@ -138,7 +140,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author")
     private String author;
     @Column(name = "authorID")
-    private Integer authorID;
+    private Long authorID;
     @Size(max = 250)
     @Column(name = "Brummit_Powell_full")
     private String brummitPowellfull;
@@ -146,7 +148,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author1")
     private String author1;
     @Column(name = "authorID1")
-    private Integer authorID1;
+    private Long authorID1;
     @Size(max = 250)
     @Column(name = "bpf1")
     private String bpf1;
@@ -154,7 +156,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author2")
     private String author2;
     @Column(name = "authorID2")
-    private Integer authorID2;
+    private Long authorID2;
     @Size(max = 250)
     @Column(name = "bpf2")
     private String bpf2;
@@ -162,7 +164,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author3")
     private String author3;
     @Column(name = "authorID3")
-    private Integer authorID3;
+    private Long authorID3;
     @Size(max = 250)
     @Column(name = "bpf3")
     private String bpf3;
@@ -170,7 +172,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author4")
     private String author4;
     @Column(name = "authorID4")
-    private Integer authorID4;
+    private Long authorID4;
     @Size(max = 250)
     @Column(name = "bpf4")
     private String bpf4;
@@ -178,7 +180,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "author5")
     private String author5;
     @Column(name = "authorID5")
-    private Integer authorID5;
+    private Long authorID5;
     @Size(max = 250)
     @Column(name = "bpf5")
     private String bpf5;
@@ -186,32 +188,32 @@ public class ViewTaxon implements Serializable {
     @Column(name = "epithet")
     private String epithet;
     @Column(name = "epithetID")
-    private Integer epithetID;
+    private Long epithetID;
     @Size(max = 50)
     @Column(name = "epithet1")
     private String epithet1;
     @Column(name = "epithetID1")
-    private Integer epithetID1;
+    private Long epithetID1;
     @Size(max = 50)
     @Column(name = "epithet2")
     private String epithet2;
     @Column(name = "epithetID2")
-    private Integer epithetID2;
+    private Long epithetID2;
     @Size(max = 50)
     @Column(name = "epithet3")
     private String epithet3;
     @Column(name = "epithetID3")
-    private Integer epithetID3;
+    private Long epithetID3;
     @Size(max = 50)
     @Column(name = "epithet4")
     private String epithet4;
     @Column(name = "epithetID4")
-    private Integer epithetID4;
+    private Long epithetID4;
     @Size(max = 50)
     @Column(name = "epithet5")
     private String epithet5;
     @Column(name = "epithetID5")
-    private Integer epithetID5;
+    private Long epithetID5;
 
     public ViewTaxon() {
     }
@@ -224,19 +226,19 @@ public class ViewTaxon implements Serializable {
         this.taxonID = taxonID;
     }
 
-    public Integer getSynID() {
+    public Long getSynID() {
         return synID;
     }
 
-    public void setSynID(Integer synID) {
+    public void setSynID(Long synID) {
         this.synID = synID;
     }
 
-    public Integer getBasID() {
+    public Long getBasID() {
         return basID;
     }
 
-    public void setBasID(Integer basID) {
+    public void setBasID(Long basID) {
         this.basID = basID;
     }
 
@@ -272,11 +274,11 @@ public class ViewTaxon implements Serializable {
         this.genus = genus;
     }
 
-    public Integer getDallaTorreIDs() {
+    public Long getDallaTorreIDs() {
         return dallaTorreIDs;
     }
 
-    public void setDallaTorreIDs(Integer dallaTorreIDs) {
+    public void setDallaTorreIDs(Long dallaTorreIDs) {
         this.dallaTorreIDs = dallaTorreIDs;
     }
 
@@ -320,11 +322,11 @@ public class ViewTaxon implements Serializable {
         this.status = status;
     }
 
-    public Integer getStatusID() {
+    public Long getStatusID() {
         return statusID;
     }
 
-    public void setStatusID(Integer statusID) {
+    public void setStatusID(Long statusID) {
         this.statusID = statusID;
     }
 
@@ -336,11 +338,11 @@ public class ViewTaxon implements Serializable {
         this.rank = rank;
     }
 
-    public Integer getTaxrankID() {
+    public Long getTaxrankID() {
         return taxrankID;
     }
 
-    public void setTaxrankID(Integer taxrankID) {
+    public void setTaxrankID(Long taxrankID) {
         this.taxrankID = taxrankID;
     }
 
@@ -360,11 +362,11 @@ public class ViewTaxon implements Serializable {
         this.author = author;
     }
 
-    public Integer getAuthorID() {
+    public Long getAuthorID() {
         return authorID;
     }
 
-    public void setAuthorID(Integer authorID) {
+    public void setAuthorID(Long authorID) {
         this.authorID = authorID;
     }
 
@@ -384,11 +386,11 @@ public class ViewTaxon implements Serializable {
         this.author1 = author1;
     }
 
-    public Integer getAuthorID1() {
+    public Long getAuthorID1() {
         return authorID1;
     }
 
-    public void setAuthorID1(Integer authorID1) {
+    public void setAuthorID1(Long authorID1) {
         this.authorID1 = authorID1;
     }
 
@@ -408,11 +410,11 @@ public class ViewTaxon implements Serializable {
         this.author2 = author2;
     }
 
-    public Integer getAuthorID2() {
+    public Long getAuthorID2() {
         return authorID2;
     }
 
-    public void setAuthorID2(Integer authorID2) {
+    public void setAuthorID2(Long authorID2) {
         this.authorID2 = authorID2;
     }
 
@@ -432,11 +434,11 @@ public class ViewTaxon implements Serializable {
         this.author3 = author3;
     }
 
-    public Integer getAuthorID3() {
+    public Long getAuthorID3() {
         return authorID3;
     }
 
-    public void setAuthorID3(Integer authorID3) {
+    public void setAuthorID3(Long authorID3) {
         this.authorID3 = authorID3;
     }
 
@@ -456,11 +458,11 @@ public class ViewTaxon implements Serializable {
         this.author4 = author4;
     }
 
-    public Integer getAuthorID4() {
+    public Long getAuthorID4() {
         return authorID4;
     }
 
-    public void setAuthorID4(Integer authorID4) {
+    public void setAuthorID4(Long authorID4) {
         this.authorID4 = authorID4;
     }
 
@@ -480,11 +482,11 @@ public class ViewTaxon implements Serializable {
         this.author5 = author5;
     }
 
-    public Integer getAuthorID5() {
+    public Long getAuthorID5() {
         return authorID5;
     }
 
-    public void setAuthorID5(Integer authorID5) {
+    public void setAuthorID5(Long authorID5) {
         this.authorID5 = authorID5;
     }
 
@@ -504,11 +506,11 @@ public class ViewTaxon implements Serializable {
         this.epithet = epithet;
     }
 
-    public Integer getEpithetID() {
+    public Long getEpithetID() {
         return epithetID;
     }
 
-    public void setEpithetID(Integer epithetID) {
+    public void setEpithetID(Long epithetID) {
         this.epithetID = epithetID;
     }
 
@@ -520,11 +522,11 @@ public class ViewTaxon implements Serializable {
         this.epithet1 = epithet1;
     }
 
-    public Integer getEpithetID1() {
+    public Long getEpithetID1() {
         return epithetID1;
     }
 
-    public void setEpithetID1(Integer epithetID1) {
+    public void setEpithetID1(Long epithetID1) {
         this.epithetID1 = epithetID1;
     }
 
@@ -536,11 +538,11 @@ public class ViewTaxon implements Serializable {
         this.epithet2 = epithet2;
     }
 
-    public Integer getEpithetID2() {
+    public Long getEpithetID2() {
         return epithetID2;
     }
 
-    public void setEpithetID2(Integer epithetID2) {
+    public void setEpithetID2(Long epithetID2) {
         this.epithetID2 = epithetID2;
     }
 
@@ -552,11 +554,11 @@ public class ViewTaxon implements Serializable {
         this.epithet3 = epithet3;
     }
 
-    public Integer getEpithetID3() {
+    public Long getEpithetID3() {
         return epithetID3;
     }
 
-    public void setEpithetID3(Integer epithetID3) {
+    public void setEpithetID3(Long epithetID3) {
         this.epithetID3 = epithetID3;
     }
 
@@ -568,11 +570,11 @@ public class ViewTaxon implements Serializable {
         this.epithet4 = epithet4;
     }
 
-    public Integer getEpithetID4() {
+    public Long getEpithetID4() {
         return epithetID4;
     }
 
-    public void setEpithetID4(Integer epithetID4) {
+    public void setEpithetID4(Long epithetID4) {
         this.epithetID4 = epithetID4;
     }
 
@@ -584,11 +586,11 @@ public class ViewTaxon implements Serializable {
         this.epithet5 = epithet5;
     }
 
-    public Integer getEpithetID5() {
+    public Long getEpithetID5() {
         return epithetID5;
     }
 
-    public void setEpithetID5(Integer epithetID5) {
+    public void setEpithetID5(Long epithetID5) {
         this.epithetID5 = epithetID5;
     }
 

@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,19 +41,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_location_coordinates")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLocationCoordinates.findAll", query = "SELECT t FROM TblLocationCoordinates t"),
-    @NamedQuery(name = "TblLocationCoordinates.findById", query = "SELECT t FROM TblLocationCoordinates t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLocationCoordinates.findByAltitudeMin", query = "SELECT t FROM TblLocationCoordinates t WHERE t.altitudeMin = :altitudeMin"),
-    @NamedQuery(name = "TblLocationCoordinates.findByAltitudeMax", query = "SELECT t FROM TblLocationCoordinates t WHERE t.altitudeMax = :altitudeMax"),
-    @NamedQuery(name = "TblLocationCoordinates.findByExactness", query = "SELECT t FROM TblLocationCoordinates t WHERE t.exactness = :exactness"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLatitudeDegrees", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeDegrees = :latitudeDegrees"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLatitudeMinutes", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeMinutes = :latitudeMinutes"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLatitudeSeconds", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeSeconds = :latitudeSeconds"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLatitudeHalf", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeHalf = :latitudeHalf"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLongitudeDegrees", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeDegrees = :longitudeDegrees"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLongitudeMinutes", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeMinutes = :longitudeMinutes"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLongitudeSeconds", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeSeconds = :longitudeSeconds"),
-    @NamedQuery(name = "TblLocationCoordinates.findByLongitudeHalf", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeHalf = :longitudeHalf")})
+    @NamedQuery(name = "TblLocationCoordinates.findAll", query = "SELECT t FROM TblLocationCoordinates t")
+    , @NamedQuery(name = "TblLocationCoordinates.findById", query = "SELECT t FROM TblLocationCoordinates t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLocationCoordinates.findByAltitudeMin", query = "SELECT t FROM TblLocationCoordinates t WHERE t.altitudeMin = :altitudeMin")
+    , @NamedQuery(name = "TblLocationCoordinates.findByAltitudeMax", query = "SELECT t FROM TblLocationCoordinates t WHERE t.altitudeMax = :altitudeMax")
+    , @NamedQuery(name = "TblLocationCoordinates.findByExactness", query = "SELECT t FROM TblLocationCoordinates t WHERE t.exactness = :exactness")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLatitudeDegrees", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeDegrees = :latitudeDegrees")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLatitudeMinutes", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeMinutes = :latitudeMinutes")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLatitudeSeconds", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeSeconds = :latitudeSeconds")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLatitudeHalf", query = "SELECT t FROM TblLocationCoordinates t WHERE t.latitudeHalf = :latitudeHalf")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLongitudeDegrees", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeDegrees = :longitudeDegrees")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLongitudeMinutes", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeMinutes = :longitudeMinutes")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLongitudeSeconds", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeSeconds = :longitudeSeconds")
+    , @NamedQuery(name = "TblLocationCoordinates.findByLongitudeHalf", query = "SELECT t FROM TblLocationCoordinates t WHERE t.longitudeHalf = :longitudeHalf")})
 public class TblLocationCoordinates implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,94 +61,94 @@ public class TblLocationCoordinates implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "altitude_min")
-    private Integer altitudeMin;
+    private Long altitudeMin;
     @Column(name = "altitude_max")
-    private Integer altitudeMax;
+    private Long altitudeMax;
     @Column(name = "exactness")
-    private Integer exactness;
+    private Long exactness;
     @Column(name = "latitude_degrees")
-    private Integer latitudeDegrees;
+    private Long latitudeDegrees;
     @Column(name = "latitude_minutes")
-    private Integer latitudeMinutes;
+    private Long latitudeMinutes;
     @Column(name = "latitude_seconds")
-    private Integer latitudeSeconds;
+    private Long latitudeSeconds;
     @Size(max = 2)
     @Column(name = "latitude_half")
     private String latitudeHalf;
     @Column(name = "longitude_degrees")
-    private Integer longitudeDegrees;
+    private Long longitudeDegrees;
     @Column(name = "longitude_minutes")
-    private Integer longitudeMinutes;
+    private Long longitudeMinutes;
     @Column(name = "longitude_seconds")
-    private Integer longitudeSeconds;
+    private Long longitudeSeconds;
     @Size(max = 2)
     @Column(name = "longitude_half")
     private String longitudeHalf;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationCoordinatesId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationCoordinatesId", fetch = FetchType.LAZY)
     private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
 
     public TblLocationCoordinates() {
     }
 
-    public TblLocationCoordinates(Integer id) {
+    public TblLocationCoordinates(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getAltitudeMin() {
+    public Long getAltitudeMin() {
         return altitudeMin;
     }
 
-    public void setAltitudeMin(Integer altitudeMin) {
+    public void setAltitudeMin(Long altitudeMin) {
         this.altitudeMin = altitudeMin;
     }
 
-    public Integer getAltitudeMax() {
+    public Long getAltitudeMax() {
         return altitudeMax;
     }
 
-    public void setAltitudeMax(Integer altitudeMax) {
+    public void setAltitudeMax(Long altitudeMax) {
         this.altitudeMax = altitudeMax;
     }
 
-    public Integer getExactness() {
+    public Long getExactness() {
         return exactness;
     }
 
-    public void setExactness(Integer exactness) {
+    public void setExactness(Long exactness) {
         this.exactness = exactness;
     }
 
-    public Integer getLatitudeDegrees() {
+    public Long getLatitudeDegrees() {
         return latitudeDegrees;
     }
 
-    public void setLatitudeDegrees(Integer latitudeDegrees) {
+    public void setLatitudeDegrees(Long latitudeDegrees) {
         this.latitudeDegrees = latitudeDegrees;
     }
 
-    public Integer getLatitudeMinutes() {
+    public Long getLatitudeMinutes() {
         return latitudeMinutes;
     }
 
-    public void setLatitudeMinutes(Integer latitudeMinutes) {
+    public void setLatitudeMinutes(Long latitudeMinutes) {
         this.latitudeMinutes = latitudeMinutes;
     }
 
-    public Integer getLatitudeSeconds() {
+    public Long getLatitudeSeconds() {
         return latitudeSeconds;
     }
 
-    public void setLatitudeSeconds(Integer latitudeSeconds) {
+    public void setLatitudeSeconds(Long latitudeSeconds) {
         this.latitudeSeconds = latitudeSeconds;
     }
 
@@ -159,27 +160,27 @@ public class TblLocationCoordinates implements Serializable {
         this.latitudeHalf = latitudeHalf;
     }
 
-    public Integer getLongitudeDegrees() {
+    public Long getLongitudeDegrees() {
         return longitudeDegrees;
     }
 
-    public void setLongitudeDegrees(Integer longitudeDegrees) {
+    public void setLongitudeDegrees(Long longitudeDegrees) {
         this.longitudeDegrees = longitudeDegrees;
     }
 
-    public Integer getLongitudeMinutes() {
+    public Long getLongitudeMinutes() {
         return longitudeMinutes;
     }
 
-    public void setLongitudeMinutes(Integer longitudeMinutes) {
+    public void setLongitudeMinutes(Long longitudeMinutes) {
         this.longitudeMinutes = longitudeMinutes;
     }
 
-    public Integer getLongitudeSeconds() {
+    public Long getLongitudeSeconds() {
         return longitudeSeconds;
     }
 
-    public void setLongitudeSeconds(Integer longitudeSeconds) {
+    public void setLongitudeSeconds(Long longitudeSeconds) {
         this.longitudeSeconds = longitudeSeconds;
     }
 

@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,10 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "srvc_uuid_minter_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SrvcUuidMinterType.findAll", query = "SELECT s FROM SrvcUuidMinterType s"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByUuidMinterTypeId", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.uuidMinterTypeId = :uuidMinterTypeId"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByDescription", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.description = :description"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByTimestamp", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.timestamp = :timestamp")})
+    @NamedQuery(name = "SrvcUuidMinterType.findAll", query = "SELECT s FROM SrvcUuidMinterType s")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByUuidMinterTypeId", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.uuidMinterTypeId = :uuidMinterTypeId")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByDescription", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.description = :description")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByTimestamp", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.timestamp = :timestamp")})
 public class SrvcUuidMinterType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class SrvcUuidMinterType implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "uuid_minter_type_id")
-    private Integer uuidMinterTypeId;
+    private Long uuidMinterTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -64,27 +65,27 @@ public class SrvcUuidMinterType implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId", fetch = FetchType.LAZY)
     private Collection<SrvcUuidMinter> srvcUuidMinterCollection;
 
     public SrvcUuidMinterType() {
     }
 
-    public SrvcUuidMinterType(Integer uuidMinterTypeId) {
+    public SrvcUuidMinterType(Long uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
     }
 
-    public SrvcUuidMinterType(Integer uuidMinterTypeId, String description, Date timestamp) {
+    public SrvcUuidMinterType(Long uuidMinterTypeId, String description, Date timestamp) {
         this.uuidMinterTypeId = uuidMinterTypeId;
         this.description = description;
         this.timestamp = timestamp;
     }
 
-    public Integer getUuidMinterTypeId() {
+    public Long getUuidMinterTypeId() {
         return uuidMinterTypeId;
     }
 
-    public void setUuidMinterTypeId(Integer uuidMinterTypeId) {
+    public void setUuidMinterTypeId(Long uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
     }
 

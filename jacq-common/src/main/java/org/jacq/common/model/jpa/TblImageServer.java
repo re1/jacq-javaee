@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -38,9 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_image_server")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t"),
-    @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId"),
-    @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
+    @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t")
+    , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
+    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
 public class TblImageServer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +49,7 @@ public class TblImageServer implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "organisation_id")
-    private Integer organisationId;
+    private Long organisationId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -61,27 +62,27 @@ public class TblImageServer implements Serializable {
     @Column(name = "key")
     private String key;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
 
     public TblImageServer() {
     }
 
-    public TblImageServer(Integer organisationId) {
+    public TblImageServer(Long organisationId) {
         this.organisationId = organisationId;
     }
 
-    public TblImageServer(Integer organisationId, String baseUrl, String key) {
+    public TblImageServer(Long organisationId, String baseUrl, String key) {
         this.organisationId = organisationId;
         this.baseUrl = baseUrl;
         this.key = key;
     }
 
-    public Integer getOrganisationId() {
+    public Long getOrganisationId() {
         return organisationId;
     }
 
-    public void setOrganisationId(Integer organisationId) {
+    public void setOrganisationId(Long organisationId) {
         this.organisationId = organisationId;
     }
 

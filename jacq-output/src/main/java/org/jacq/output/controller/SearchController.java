@@ -17,9 +17,12 @@ package org.jacq.output.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.output.SessionManager;
+import org.jacq.output.util.ServicesUtil;
 import org.jacq.output.view.LazyBotanicalObjectDataModel;
 
 /**
@@ -28,7 +31,7 @@ import org.jacq.output.view.LazyBotanicalObjectDataModel;
  * @author wkoller
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class SearchController {
 
     protected LazyBotanicalObjectDataModel dataModel;
@@ -38,23 +41,23 @@ public class SearchController {
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyBotanicalObjectDataModel(null);
+        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getBotanicalObjectService());
     }
 
     public String getScientificName() {
-        return sessionManager.getScientificName();
+        return this.dataModel.getScientificName();
     }
 
     public void setScientificName(String scientificName) {
-        sessionManager.setScientificName(scientificName);
+        this.dataModel.setScientificName(scientificName);
     }
 
     public String getOrganization() {
-        return sessionManager.getOrganization();
+        return this.dataModel.getOrganization();
     }
 
     public void setOrganization(String organization) {
-        sessionManager.setOrganization(organization);
+        this.dataModel.setOrganization(organization);
     }
 
     public Boolean getHasImage() {

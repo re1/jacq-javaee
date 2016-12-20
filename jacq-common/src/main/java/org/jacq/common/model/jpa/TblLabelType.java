@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_label_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLabelType.findAll", query = "SELECT t FROM TblLabelType t"),
-    @NamedQuery(name = "TblLabelType.findByLabelTypeId", query = "SELECT t FROM TblLabelType t WHERE t.labelTypeId = :labelTypeId"),
-    @NamedQuery(name = "TblLabelType.findByType", query = "SELECT t FROM TblLabelType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblLabelType.findAll", query = "SELECT t FROM TblLabelType t")
+    , @NamedQuery(name = "TblLabelType.findByLabelTypeId", query = "SELECT t FROM TblLabelType t WHERE t.labelTypeId = :labelTypeId")
+    , @NamedQuery(name = "TblLabelType.findByType", query = "SELECT t FROM TblLabelType t WHERE t.type = :type")})
 public class TblLabelType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,32 +51,32 @@ public class TblLabelType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "label_type_id")
-    private Integer labelTypeId;
+    private Long labelTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
     @Column(name = "type")
     private String type;
-    @ManyToMany(mappedBy = "tblLabelTypeCollection")
+    @ManyToMany(mappedBy = "tblLabelTypeCollection", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
 
     public TblLabelType() {
     }
 
-    public TblLabelType(Integer labelTypeId) {
+    public TblLabelType(Long labelTypeId) {
         this.labelTypeId = labelTypeId;
     }
 
-    public TblLabelType(Integer labelTypeId, String type) {
+    public TblLabelType(Long labelTypeId, String type) {
         this.labelTypeId = labelTypeId;
         this.type = type;
     }
 
-    public Integer getLabelTypeId() {
+    public Long getLabelTypeId() {
         return labelTypeId;
     }
 
-    public void setLabelTypeId(Integer labelTypeId) {
+    public void setLabelTypeId(Long labelTypeId) {
         this.labelTypeId = labelTypeId;
     }
 

@@ -38,9 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_config")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkConfig.findAll", query = "SELECT f FROM FrmwrkConfig f"),
-    @NamedQuery(name = "FrmwrkConfig.findByFcId", query = "SELECT f FROM FrmwrkConfig f WHERE f.fcId = :fcId"),
-    @NamedQuery(name = "FrmwrkConfig.findByFcName", query = "SELECT f FROM FrmwrkConfig f WHERE f.fcName = :fcName")})
+    @NamedQuery(name = "FrmwrkConfig.findAll", query = "SELECT f FROM FrmwrkConfig f")
+    , @NamedQuery(name = "FrmwrkConfig.findByFcId", query = "SELECT f FROM FrmwrkConfig f WHERE f.fcId = :fcId")
+    , @NamedQuery(name = "FrmwrkConfig.findByFcName", query = "SELECT f FROM FrmwrkConfig f WHERE f.fcName = :fcName")})
 public class FrmwrkConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class FrmwrkConfig implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "fc_id")
-    private Integer fcId;
+    private Long fcId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -62,20 +62,20 @@ public class FrmwrkConfig implements Serializable {
     public FrmwrkConfig() {
     }
 
-    public FrmwrkConfig(Integer fcId) {
+    public FrmwrkConfig(Long fcId) {
         this.fcId = fcId;
     }
 
-    public FrmwrkConfig(Integer fcId, String fcName) {
+    public FrmwrkConfig(Long fcId, String fcName) {
         this.fcId = fcId;
         this.fcName = fcName;
     }
 
-    public Integer getFcId() {
+    public Long getFcId() {
         return fcId;
     }
 
-    public void setFcId(Integer fcId) {
+    public void setFcId(Long fcId) {
         this.fcId = fcId;
     }
 

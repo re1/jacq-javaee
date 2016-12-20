@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,8 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_certificate")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCertificate.findAll", query = "SELECT t FROM TblCertificate t"),
-    @NamedQuery(name = "TblCertificate.findById", query = "SELECT t FROM TblCertificate t WHERE t.id = :id")})
+    @NamedQuery(name = "TblCertificate.findAll", query = "SELECT t FROM TblCertificate t")
+    , @NamedQuery(name = "TblCertificate.findById", query = "SELECT t FROM TblCertificate t WHERE t.id = :id")})
 public class TblCertificate implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +49,7 @@ public class TblCertificate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Lob
     @Size(max = 65535)
     @Column(name = "number")
@@ -58,24 +59,24 @@ public class TblCertificate implements Serializable {
     @Column(name = "annotation")
     private String annotation;
     @JoinColumn(name = "certificate_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblCertificateType certificateTypeId;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
 
     public TblCertificate() {
     }
 
-    public TblCertificate(Integer id) {
+    public TblCertificate(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

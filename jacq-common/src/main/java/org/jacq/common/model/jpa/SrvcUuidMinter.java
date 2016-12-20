@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,11 +43,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "srvc_uuid_minter")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SrvcUuidMinter.findAll", query = "SELECT s FROM SrvcUuidMinter s"),
-    @NamedQuery(name = "SrvcUuidMinter.findByUuidMinterId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuidMinterId = :uuidMinterId"),
-    @NamedQuery(name = "SrvcUuidMinter.findByInternalId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.internalId = :internalId"),
-    @NamedQuery(name = "SrvcUuidMinter.findByUuid", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuid = :uuid"),
-    @NamedQuery(name = "SrvcUuidMinter.findByTimestamp", query = "SELECT s FROM SrvcUuidMinter s WHERE s.timestamp = :timestamp")})
+    @NamedQuery(name = "SrvcUuidMinter.findAll", query = "SELECT s FROM SrvcUuidMinter s")
+    , @NamedQuery(name = "SrvcUuidMinter.findByUuidMinterId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuidMinterId = :uuidMinterId")
+    , @NamedQuery(name = "SrvcUuidMinter.findByInternalId", query = "SELECT s FROM SrvcUuidMinter s WHERE s.internalId = :internalId")
+    , @NamedQuery(name = "SrvcUuidMinter.findByUuid", query = "SELECT s FROM SrvcUuidMinter s WHERE s.uuid = :uuid")
+    , @NamedQuery(name = "SrvcUuidMinter.findByTimestamp", query = "SELECT s FROM SrvcUuidMinter s WHERE s.timestamp = :timestamp")})
 public class SrvcUuidMinter implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +55,7 @@ public class SrvcUuidMinter implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "uuid_minter_id")
-    private Integer uuidMinterId;
+    private Long uuidMinterId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "internal_id")
@@ -70,28 +71,28 @@ public class SrvcUuidMinter implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinterType uuidMinterTypeId;
 
     public SrvcUuidMinter() {
     }
 
-    public SrvcUuidMinter(Integer uuidMinterId) {
+    public SrvcUuidMinter(Long uuidMinterId) {
         this.uuidMinterId = uuidMinterId;
     }
 
-    public SrvcUuidMinter(Integer uuidMinterId, int internalId, String uuid, Date timestamp) {
+    public SrvcUuidMinter(Long uuidMinterId, int internalId, String uuid, Date timestamp) {
         this.uuidMinterId = uuidMinterId;
         this.internalId = internalId;
         this.uuid = uuid;
         this.timestamp = timestamp;
     }
 
-    public Integer getUuidMinterId() {
+    public Long getUuidMinterId() {
         return uuidMinterId;
     }
 
-    public void setUuidMinterId(Integer uuidMinterId) {
+    public void setUuidMinterId(Long uuidMinterId) {
         this.uuidMinterId = uuidMinterId;
     }
 

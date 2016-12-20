@@ -36,9 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_template")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkTemplate.findAll", query = "SELECT f FROM FrmwrkTemplate f"),
-    @NamedQuery(name = "FrmwrkTemplate.findByFtId", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftId = :ftId"),
-    @NamedQuery(name = "FrmwrkTemplate.findByFtName", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftName = :ftName")})
+    @NamedQuery(name = "FrmwrkTemplate.findAll", query = "SELECT f FROM FrmwrkTemplate f")
+    , @NamedQuery(name = "FrmwrkTemplate.findByFtId", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftId = :ftId")
+    , @NamedQuery(name = "FrmwrkTemplate.findByFtName", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftName = :ftName")})
 public class FrmwrkTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class FrmwrkTemplate implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ft_id")
-    private Integer ftId;
+    private Long ftId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -61,21 +61,21 @@ public class FrmwrkTemplate implements Serializable {
     public FrmwrkTemplate() {
     }
 
-    public FrmwrkTemplate(Integer ftId) {
+    public FrmwrkTemplate(Long ftId) {
         this.ftId = ftId;
     }
 
-    public FrmwrkTemplate(Integer ftId, String ftName, byte[] ftTemplate) {
+    public FrmwrkTemplate(Long ftId, String ftName, byte[] ftTemplate) {
         this.ftId = ftId;
         this.ftName = ftName;
         this.ftTemplate = ftTemplate;
     }
 
-    public Integer getFtId() {
+    public Long getFtId() {
         return ftId;
     }
 
-    public void setFtId(Integer ftId) {
+    public void setFtId(Long ftId) {
         this.ftId = ftId;
     }
 

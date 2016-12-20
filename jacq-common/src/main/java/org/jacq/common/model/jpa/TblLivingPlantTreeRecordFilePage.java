@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,10 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_living_plant_tree_record_file_page")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findAll", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findById", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDone", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDone = :correctionsDone"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDate", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDate = :correctionsDate")})
+    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findAll", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findById", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDone", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDone = :correctionsDone")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDate", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDate = :correctionsDate")})
 public class TblLivingPlantTreeRecordFilePage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +53,7 @@ public class TblLivingPlantTreeRecordFilePage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "corrections_done")
@@ -61,29 +62,29 @@ public class TblLivingPlantTreeRecordFilePage implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date correctionsDate;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
     @JoinColumn(name = "tree_record_file_page_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblTreeRecordFilePage treeRecordFilePageId;
 
     public TblLivingPlantTreeRecordFilePage() {
     }
 
-    public TblLivingPlantTreeRecordFilePage(Integer id) {
+    public TblLivingPlantTreeRecordFilePage(Long id) {
         this.id = id;
     }
 
-    public TblLivingPlantTreeRecordFilePage(Integer id, boolean correctionsDone) {
+    public TblLivingPlantTreeRecordFilePage(Long id, boolean correctionsDone) {
         this.id = id;
         this.correctionsDone = correctionsDone;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

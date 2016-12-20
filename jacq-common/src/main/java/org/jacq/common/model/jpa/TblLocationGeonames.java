@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -38,10 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_location_geonames")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLocationGeonames.findAll", query = "SELECT t FROM TblLocationGeonames t"),
-    @NamedQuery(name = "TblLocationGeonames.findById", query = "SELECT t FROM TblLocationGeonames t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLocationGeonames.findByGeonameId", query = "SELECT t FROM TblLocationGeonames t WHERE t.geonameId = :geonameId"),
-    @NamedQuery(name = "TblLocationGeonames.findByCountryCode", query = "SELECT t FROM TblLocationGeonames t WHERE t.countryCode = :countryCode")})
+    @NamedQuery(name = "TblLocationGeonames.findAll", query = "SELECT t FROM TblLocationGeonames t")
+    , @NamedQuery(name = "TblLocationGeonames.findById", query = "SELECT t FROM TblLocationGeonames t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLocationGeonames.findByGeonameId", query = "SELECT t FROM TblLocationGeonames t WHERE t.geonameId = :geonameId")
+    , @NamedQuery(name = "TblLocationGeonames.findByCountryCode", query = "SELECT t FROM TblLocationGeonames t WHERE t.countryCode = :countryCode")})
 public class TblLocationGeonames implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +50,7 @@ public class TblLocationGeonames implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -66,28 +67,28 @@ public class TblLocationGeonames implements Serializable {
     @Column(name = "countryCode")
     private String countryCode;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblLocation tblLocation;
 
     public TblLocationGeonames() {
     }
 
-    public TblLocationGeonames(Integer id) {
+    public TblLocationGeonames(Long id) {
         this.id = id;
     }
 
-    public TblLocationGeonames(Integer id, String serviceData, int geonameId, String countryCode) {
+    public TblLocationGeonames(Long id, String serviceData, int geonameId, String countryCode) {
         this.id = id;
         this.serviceData = serviceData;
         this.geonameId = geonameId;
         this.countryCode = countryCode;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

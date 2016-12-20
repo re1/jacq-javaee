@@ -84,8 +84,13 @@ public class BotanicalObjectResult {
     public BotanicalObjectResult(TblBotanicalObject botanicalObject) {
         this.scientificName = botanicalObject.getViewScientificName().getScientificName();
         this.organization = botanicalObject.getOrganisationId().getDescription();
-        this.accessionNumber = botanicalObject.getTblLivingPlant().getAccessionNumber();
+
+        if (botanicalObject.getTblLivingPlant() != null) {
+            this.accessionNumber = botanicalObject.getTblLivingPlant().getAccessionNumber();
+        }
         this.botanicalObjectId = botanicalObject.getId();
+        this.commonNames = new ArrayList<>();
+        this.commonNames.add(botanicalObject.getTblScientificNameInformation().getCommonNames());
     }
 
     /**

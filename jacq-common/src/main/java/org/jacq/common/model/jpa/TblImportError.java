@@ -38,9 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_import_error")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImportError.findAll", query = "SELECT t FROM TblImportError t"),
-    @NamedQuery(name = "TblImportError.findById", query = "SELECT t FROM TblImportError t WHERE t.id = :id"),
-    @NamedQuery(name = "TblImportError.findByIDPflanze", query = "SELECT t FROM TblImportError t WHERE t.iDPflanze = :iDPflanze")})
+    @NamedQuery(name = "TblImportError.findAll", query = "SELECT t FROM TblImportError t")
+    , @NamedQuery(name = "TblImportError.findById", query = "SELECT t FROM TblImportError t WHERE t.id = :id")
+    , @NamedQuery(name = "TblImportError.findByIDPflanze", query = "SELECT t FROM TblImportError t WHERE t.iDPflanze = :iDPflanze")})
 public class TblImportError implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class TblImportError implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDPflanze")
@@ -63,21 +63,21 @@ public class TblImportError implements Serializable {
     public TblImportError() {
     }
 
-    public TblImportError(Integer id) {
+    public TblImportError(Long id) {
         this.id = id;
     }
 
-    public TblImportError(Integer id, int iDPflanze, String message) {
+    public TblImportError(Long id, int iDPflanze, String message) {
         this.id = id;
         this.iDPflanze = iDPflanze;
         this.message = message;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

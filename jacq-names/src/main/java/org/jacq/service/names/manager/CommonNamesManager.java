@@ -15,6 +15,7 @@
  */
 package org.jacq.service.names.manager;
 
+import org.jacq.common.manager.NameParserManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ import org.jacq.common.model.jpa.openup.TblScientificNameCache;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
-import org.jacq.service.names.model.NameParserResponse;
+import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 import org.jacq.service.names.sources.util.SourceQueryThread;
 import org.jacq.service.names.sources.ylist.YListSource;

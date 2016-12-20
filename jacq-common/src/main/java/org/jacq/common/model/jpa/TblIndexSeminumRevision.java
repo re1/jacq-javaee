@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,10 +47,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_index_seminum_revision")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIndexSeminumRevision.findAll", query = "SELECT t FROM TblIndexSeminumRevision t"),
-    @NamedQuery(name = "TblIndexSeminumRevision.findByIndexSeminumRevisionId", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.indexSeminumRevisionId = :indexSeminumRevisionId"),
-    @NamedQuery(name = "TblIndexSeminumRevision.findByName", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.name = :name"),
-    @NamedQuery(name = "TblIndexSeminumRevision.findByTimestamp", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblIndexSeminumRevision.findAll", query = "SELECT t FROM TblIndexSeminumRevision t")
+    , @NamedQuery(name = "TblIndexSeminumRevision.findByIndexSeminumRevisionId", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.indexSeminumRevisionId = :indexSeminumRevisionId")
+    , @NamedQuery(name = "TblIndexSeminumRevision.findByName", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.name = :name")
+    , @NamedQuery(name = "TblIndexSeminumRevision.findByTimestamp", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.timestamp = :timestamp")})
 public class TblIndexSeminumRevision implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,7 +58,7 @@ public class TblIndexSeminumRevision implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "index_seminum_revision_id")
-    private Integer indexSeminumRevisionId;
+    private Long indexSeminumRevisionId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -68,30 +69,30 @@ public class TblIndexSeminumRevision implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
     private Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser userId;
 
     public TblIndexSeminumRevision() {
     }
 
-    public TblIndexSeminumRevision(Integer indexSeminumRevisionId) {
+    public TblIndexSeminumRevision(Long indexSeminumRevisionId) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 
-    public TblIndexSeminumRevision(Integer indexSeminumRevisionId, String name, Date timestamp) {
+    public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name, Date timestamp) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
         this.name = name;
         this.timestamp = timestamp;
     }
 
-    public Integer getIndexSeminumRevisionId() {
+    public Long getIndexSeminumRevisionId() {
         return indexSeminumRevisionId;
     }
 
-    public void setIndexSeminumRevisionId(Integer indexSeminumRevisionId) {
+    public void setIndexSeminumRevisionId(Long indexSeminumRevisionId) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 

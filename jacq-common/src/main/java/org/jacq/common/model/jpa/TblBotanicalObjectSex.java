@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_botanical_object_sex")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblBotanicalObjectSex.findAll", query = "SELECT t FROM TblBotanicalObjectSex t"),
-    @NamedQuery(name = "TblBotanicalObjectSex.findById", query = "SELECT t FROM TblBotanicalObjectSex t WHERE t.id = :id")})
+    @NamedQuery(name = "TblBotanicalObjectSex.findAll", query = "SELECT t FROM TblBotanicalObjectSex t")
+    , @NamedQuery(name = "TblBotanicalObjectSex.findById", query = "SELECT t FROM TblBotanicalObjectSex t WHERE t.id = :id")})
 public class TblBotanicalObjectSex implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,26 +47,26 @@ public class TblBotanicalObjectSex implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "sex_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblSex sexId;
 
     public TblBotanicalObjectSex() {
     }
 
-    public TblBotanicalObjectSex(Integer id) {
+    public TblBotanicalObjectSex(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

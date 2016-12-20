@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,10 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_scientific_name_information")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblScientificNameInformation.findAll", query = "SELECT t FROM TblScientificNameInformation t"),
-    @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId"),
-    @NamedQuery(name = "TblScientificNameInformation.findBySpatialDistribution", query = "SELECT t FROM TblScientificNameInformation t WHERE t.spatialDistribution = :spatialDistribution"),
-    @NamedQuery(name = "TblScientificNameInformation.findByCommonNames", query = "SELECT t FROM TblScientificNameInformation t WHERE t.commonNames = :commonNames")})
+    @NamedQuery(name = "TblScientificNameInformation.findAll", query = "SELECT t FROM TblScientificNameInformation t")
+    , @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "TblScientificNameInformation.findBySpatialDistribution", query = "SELECT t FROM TblScientificNameInformation t WHERE t.spatialDistribution = :spatialDistribution")
+    , @NamedQuery(name = "TblScientificNameInformation.findByCommonNames", query = "SELECT t FROM TblScientificNameInformation t WHERE t.commonNames = :commonNames")})
 public class TblScientificNameInformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class TblScientificNameInformation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "scientific_name_id")
-    private Integer scientificNameId;
+    private Long scientificNameId;
     @Size(max = 255)
     @Column(name = "spatial_distribution")
     private String spatialDistribution;
@@ -61,23 +62,23 @@ public class TblScientificNameInformation implements Serializable {
     @Column(name = "common_names")
     private String commonNames;
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblHabitusType habitusTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY)
     private Collection<TblCultivar> tblCultivarCollection;
 
     public TblScientificNameInformation() {
     }
 
-    public TblScientificNameInformation(Integer scientificNameId) {
+    public TblScientificNameInformation(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
-    public Integer getScientificNameId() {
+    public Long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(Integer scientificNameId) {
+    public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 

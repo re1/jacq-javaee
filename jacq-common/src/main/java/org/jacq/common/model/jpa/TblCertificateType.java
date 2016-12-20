@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_certificate_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCertificateType.findAll", query = "SELECT t FROM TblCertificateType t"),
-    @NamedQuery(name = "TblCertificateType.findById", query = "SELECT t FROM TblCertificateType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblCertificateType.findByType", query = "SELECT t FROM TblCertificateType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblCertificateType.findAll", query = "SELECT t FROM TblCertificateType t")
+    , @NamedQuery(name = "TblCertificateType.findById", query = "SELECT t FROM TblCertificateType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblCertificateType.findByType", query = "SELECT t FROM TblCertificateType t WHERE t.type = :type")})
 public class TblCertificateType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,32 +52,32 @@ public class TblCertificateType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "certificateTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "certificateTypeId", fetch = FetchType.LAZY)
     private Collection<TblCertificate> tblCertificateCollection;
 
     public TblCertificateType() {
     }
 
-    public TblCertificateType(Integer id) {
+    public TblCertificateType(Long id) {
         this.id = id;
     }
 
-    public TblCertificateType(Integer id, String type) {
+    public TblCertificateType(Long id, String type) {
         this.id = id;
         this.type = type;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

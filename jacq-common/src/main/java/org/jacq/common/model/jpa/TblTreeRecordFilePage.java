@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,9 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_tree_record_file_page")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTreeRecordFilePage.findAll", query = "SELECT t FROM TblTreeRecordFilePage t"),
-    @NamedQuery(name = "TblTreeRecordFilePage.findById", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.id = :id"),
-    @NamedQuery(name = "TblTreeRecordFilePage.findByPage", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.page = :page")})
+    @NamedQuery(name = "TblTreeRecordFilePage.findAll", query = "SELECT t FROM TblTreeRecordFilePage t")
+    , @NamedQuery(name = "TblTreeRecordFilePage.findById", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.id = :id")
+    , @NamedQuery(name = "TblTreeRecordFilePage.findByPage", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.page = :page")})
 public class TblTreeRecordFilePage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,34 +53,34 @@ public class TblTreeRecordFilePage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "page")
     private int page;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId", fetch = FetchType.LAZY)
     private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
     @JoinColumn(name = "tree_record_file_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblTreeRecordFile treeRecordFileId;
 
     public TblTreeRecordFilePage() {
     }
 
-    public TblTreeRecordFilePage(Integer id) {
+    public TblTreeRecordFilePage(Long id) {
         this.id = id;
     }
 
-    public TblTreeRecordFilePage(Integer id, int page) {
+    public TblTreeRecordFilePage(Long id, int page) {
         this.id = id;
         this.page = page;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

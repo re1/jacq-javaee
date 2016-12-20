@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_ident_status")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIdentStatus.findAll", query = "SELECT t FROM TblIdentStatus t"),
-    @NamedQuery(name = "TblIdentStatus.findByIdentStatusId", query = "SELECT t FROM TblIdentStatus t WHERE t.identStatusId = :identStatusId"),
-    @NamedQuery(name = "TblIdentStatus.findByStatus", query = "SELECT t FROM TblIdentStatus t WHERE t.status = :status")})
+    @NamedQuery(name = "TblIdentStatus.findAll", query = "SELECT t FROM TblIdentStatus t")
+    , @NamedQuery(name = "TblIdentStatus.findByIdentStatusId", query = "SELECT t FROM TblIdentStatus t WHERE t.identStatusId = :identStatusId")
+    , @NamedQuery(name = "TblIdentStatus.findByStatus", query = "SELECT t FROM TblIdentStatus t WHERE t.status = :status")})
 public class TblIdentStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,32 +51,32 @@ public class TblIdentStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ident_status_id")
-    private Integer identStatusId;
+    private Long identStatusId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "identStatusId")
+    @OneToMany(mappedBy = "identStatusId", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
 
     public TblIdentStatus() {
     }
 
-    public TblIdentStatus(Integer identStatusId) {
+    public TblIdentStatus(Long identStatusId) {
         this.identStatusId = identStatusId;
     }
 
-    public TblIdentStatus(Integer identStatusId, String status) {
+    public TblIdentStatus(Long identStatusId, String status) {
         this.identStatusId = identStatusId;
         this.status = status;
     }
 
-    public Integer getIdentStatusId() {
+    public Long getIdentStatusId() {
         return identStatusId;
     }
 
-    public void setIdentStatusId(Integer identStatusId) {
+    public void setIdentStatusId(Long identStatusId) {
         this.identStatusId = identStatusId;
     }
 

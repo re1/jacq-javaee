@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_acquisition_event_source")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionEventSource.findAll", query = "SELECT t FROM TblAcquisitionEventSource t"),
-    @NamedQuery(name = "TblAcquisitionEventSource.findByAcquisitionEventSourceId", query = "SELECT t FROM TblAcquisitionEventSource t WHERE t.acquisitionEventSourceId = :acquisitionEventSourceId"),
-    @NamedQuery(name = "TblAcquisitionEventSource.findBySourceDate", query = "SELECT t FROM TblAcquisitionEventSource t WHERE t.sourceDate = :sourceDate")})
+    @NamedQuery(name = "TblAcquisitionEventSource.findAll", query = "SELECT t FROM TblAcquisitionEventSource t")
+    , @NamedQuery(name = "TblAcquisitionEventSource.findByAcquisitionEventSourceId", query = "SELECT t FROM TblAcquisitionEventSource t WHERE t.acquisitionEventSourceId = :acquisitionEventSourceId")
+    , @NamedQuery(name = "TblAcquisitionEventSource.findBySourceDate", query = "SELECT t FROM TblAcquisitionEventSource t WHERE t.sourceDate = :sourceDate")})
 public class TblAcquisitionEventSource implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,29 +51,29 @@ public class TblAcquisitionEventSource implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "acquisition_event_source_id")
-    private Integer acquisitionEventSourceId;
+    private Long acquisitionEventSourceId;
     @Column(name = "source_date")
     @Temporal(TemporalType.DATE)
     private Date sourceDate;
     @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionEvent acquisitionEventId;
     @JoinColumn(name = "acquisition_source_id", referencedColumnName = "acquisition_source_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionSource acquisitionSourceId;
 
     public TblAcquisitionEventSource() {
     }
 
-    public TblAcquisitionEventSource(Integer acquisitionEventSourceId) {
+    public TblAcquisitionEventSource(Long acquisitionEventSourceId) {
         this.acquisitionEventSourceId = acquisitionEventSourceId;
     }
 
-    public Integer getAcquisitionEventSourceId() {
+    public Long getAcquisitionEventSourceId() {
         return acquisitionEventSourceId;
     }
 
-    public void setAcquisitionEventSourceId(Integer acquisitionEventSourceId) {
+    public void setAcquisitionEventSourceId(Long acquisitionEventSourceId) {
         this.acquisitionEventSourceId = acquisitionEventSourceId;
     }
 

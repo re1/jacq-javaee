@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,11 +44,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_tree_record_file")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTreeRecordFile.findAll", query = "SELECT t FROM TblTreeRecordFile t"),
-    @NamedQuery(name = "TblTreeRecordFile.findById", query = "SELECT t FROM TblTreeRecordFile t WHERE t.id = :id"),
-    @NamedQuery(name = "TblTreeRecordFile.findByYear", query = "SELECT t FROM TblTreeRecordFile t WHERE t.year = :year"),
-    @NamedQuery(name = "TblTreeRecordFile.findByName", query = "SELECT t FROM TblTreeRecordFile t WHERE t.name = :name"),
-    @NamedQuery(name = "TblTreeRecordFile.findByDocumentNumber", query = "SELECT t FROM TblTreeRecordFile t WHERE t.documentNumber = :documentNumber")})
+    @NamedQuery(name = "TblTreeRecordFile.findAll", query = "SELECT t FROM TblTreeRecordFile t")
+    , @NamedQuery(name = "TblTreeRecordFile.findById", query = "SELECT t FROM TblTreeRecordFile t WHERE t.id = :id")
+    , @NamedQuery(name = "TblTreeRecordFile.findByYear", query = "SELECT t FROM TblTreeRecordFile t WHERE t.year = :year")
+    , @NamedQuery(name = "TblTreeRecordFile.findByName", query = "SELECT t FROM TblTreeRecordFile t WHERE t.name = :name")
+    , @NamedQuery(name = "TblTreeRecordFile.findByDocumentNumber", query = "SELECT t FROM TblTreeRecordFile t WHERE t.documentNumber = :documentNumber")})
 public class TblTreeRecordFile implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +56,7 @@ public class TblTreeRecordFile implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "year")
     @Temporal(TemporalType.DATE)
     private Date year;
@@ -65,21 +66,21 @@ public class TblTreeRecordFile implements Serializable {
     @Size(max = 20)
     @Column(name = "document_number")
     private String documentNumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFileId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFileId", fetch = FetchType.LAZY)
     private Collection<TblTreeRecordFilePage> tblTreeRecordFilePageCollection;
 
     public TblTreeRecordFile() {
     }
 
-    public TblTreeRecordFile(Integer id) {
+    public TblTreeRecordFile(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

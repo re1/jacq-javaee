@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -46,19 +47,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_living_plant")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLivingPlant.findAll", query = "SELECT t FROM TblLivingPlant t"),
-    @NamedQuery(name = "TblLivingPlant.findById", query = "SELECT t FROM TblLivingPlant t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLivingPlant.findByAccessionNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber = :accessionNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIpenNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenNumber = :ipenNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIpenLocked", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenLocked = :ipenLocked"),
-    @NamedQuery(name = "TblLivingPlant.findByIpenType", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenType = :ipenType"),
-    @NamedQuery(name = "TblLivingPlant.findByPhytoControl", query = "SELECT t FROM TblLivingPlant t WHERE t.phytoControl = :phytoControl"),
-    @NamedQuery(name = "TblLivingPlant.findByPlaceNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.placeNumber = :placeNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIndexSeminum", query = "SELECT t FROM TblLivingPlant t WHERE t.indexSeminum = :indexSeminum"),
-    @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate"),
-    @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId"),
-    @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci"),
-    @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")})
+    @NamedQuery(name = "TblLivingPlant.findAll", query = "SELECT t FROM TblLivingPlant t")
+    , @NamedQuery(name = "TblLivingPlant.findById", query = "SELECT t FROM TblLivingPlant t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLivingPlant.findByAccessionNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber = :accessionNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenNumber = :ipenNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenLocked", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenLocked = :ipenLocked")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenType", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenType = :ipenType")
+    , @NamedQuery(name = "TblLivingPlant.findByPhytoControl", query = "SELECT t FROM TblLivingPlant t WHERE t.phytoControl = :phytoControl")
+    , @NamedQuery(name = "TblLivingPlant.findByPlaceNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.placeNumber = :placeNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIndexSeminum", query = "SELECT t FROM TblLivingPlant t WHERE t.indexSeminum = :indexSeminum")
+    , @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate")
+    , @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId")
+    , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
+    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")})
 public class TblLivingPlant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -112,29 +113,29 @@ public class TblLivingPlant implements Serializable {
     private boolean bgci;
     @Column(name = "reviewed")
     private Boolean reviewed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private Collection<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private Collection<TblRelevancy> tblRelevancyCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private Collection<TblCertificate> tblCertificateCollection;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject tblBotanicalObject;
     @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblAcquisitionDate incomingDateId;
     @JoinColumn(name = "cultivar_id", referencedColumnName = "cultivar_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblCultivar cultivarId;
     @JoinColumn(name = "index_seminum_type_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblIndexSeminumType indexSeminumTypeId;
 
     public TblLivingPlant() {

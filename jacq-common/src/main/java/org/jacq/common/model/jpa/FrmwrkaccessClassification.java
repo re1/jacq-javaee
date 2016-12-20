@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,10 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_accessClassification")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkaccessClassification.findAll", query = "SELECT f FROM FrmwrkaccessClassification f"),
-    @NamedQuery(name = "FrmwrkaccessClassification.findByAccessClassificationId", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.accessClassificationId = :accessClassificationId"),
-    @NamedQuery(name = "FrmwrkaccessClassification.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.allowDeny = :allowDeny"),
-    @NamedQuery(name = "FrmwrkaccessClassification.findByTaxsynID", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.taxsynID = :taxsynID")})
+    @NamedQuery(name = "FrmwrkaccessClassification.findAll", query = "SELECT f FROM FrmwrkaccessClassification f")
+    , @NamedQuery(name = "FrmwrkaccessClassification.findByAccessClassificationId", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.accessClassificationId = :accessClassificationId")
+    , @NamedQuery(name = "FrmwrkaccessClassification.findByAllowDeny", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.allowDeny = :allowDeny")
+    , @NamedQuery(name = "FrmwrkaccessClassification.findByTaxsynID", query = "SELECT f FROM FrmwrkaccessClassification f WHERE f.taxsynID = :taxsynID")})
 public class FrmwrkaccessClassification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +50,7 @@ public class FrmwrkaccessClassification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "access_classification_id")
-    private Integer accessClassificationId;
+    private Long accessClassificationId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "allowDeny")
@@ -59,30 +60,30 @@ public class FrmwrkaccessClassification implements Serializable {
     @Column(name = "tax_syn_ID")
     private int taxsynID;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser userId;
 
     public FrmwrkaccessClassification() {
     }
 
-    public FrmwrkaccessClassification(Integer accessClassificationId) {
+    public FrmwrkaccessClassification(Long accessClassificationId) {
         this.accessClassificationId = accessClassificationId;
     }
 
-    public FrmwrkaccessClassification(Integer accessClassificationId, boolean allowDeny, int taxsynID) {
+    public FrmwrkaccessClassification(Long accessClassificationId, boolean allowDeny, int taxsynID) {
         this.accessClassificationId = accessClassificationId;
         this.allowDeny = allowDeny;
         this.taxsynID = taxsynID;
     }
 
-    public Integer getAccessClassificationId() {
+    public Long getAccessClassificationId() {
         return accessClassificationId;
     }
 
-    public void setAccessClassificationId(Integer accessClassificationId) {
+    public void setAccessClassificationId(Long accessClassificationId) {
         this.accessClassificationId = accessClassificationId;
     }
 

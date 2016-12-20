@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,10 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_inventory_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblInventoryType.findAll", query = "SELECT t FROM TblInventoryType t"),
-    @NamedQuery(name = "TblInventoryType.findByInventoryTypeId", query = "SELECT t FROM TblInventoryType t WHERE t.inventoryTypeId = :inventoryTypeId"),
-    @NamedQuery(name = "TblInventoryType.findByType", query = "SELECT t FROM TblInventoryType t WHERE t.type = :type"),
-    @NamedQuery(name = "TblInventoryType.findByTimestamp", query = "SELECT t FROM TblInventoryType t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblInventoryType.findAll", query = "SELECT t FROM TblInventoryType t")
+    , @NamedQuery(name = "TblInventoryType.findByInventoryTypeId", query = "SELECT t FROM TblInventoryType t WHERE t.inventoryTypeId = :inventoryTypeId")
+    , @NamedQuery(name = "TblInventoryType.findByType", query = "SELECT t FROM TblInventoryType t WHERE t.type = :type")
+    , @NamedQuery(name = "TblInventoryType.findByTimestamp", query = "SELECT t FROM TblInventoryType t WHERE t.timestamp = :timestamp")})
 public class TblInventoryType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +56,7 @@ public class TblInventoryType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "inventory_type_id")
-    private Integer inventoryTypeId;
+    private Long inventoryTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -66,27 +67,27 @@ public class TblInventoryType implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
     private Collection<TblInventory> tblInventoryCollection;
 
     public TblInventoryType() {
     }
 
-    public TblInventoryType(Integer inventoryTypeId) {
+    public TblInventoryType(Long inventoryTypeId) {
         this.inventoryTypeId = inventoryTypeId;
     }
 
-    public TblInventoryType(Integer inventoryTypeId, String type, Date timestamp) {
+    public TblInventoryType(Long inventoryTypeId, String type, Date timestamp) {
         this.inventoryTypeId = inventoryTypeId;
         this.type = type;
         this.timestamp = timestamp;
     }
 
-    public Integer getInventoryTypeId() {
+    public Long getInventoryTypeId() {
         return inventoryTypeId;
     }
 
-    public void setInventoryTypeId(Integer inventoryTypeId) {
+    public void setInventoryTypeId(Long inventoryTypeId) {
         this.inventoryTypeId = inventoryTypeId;
     }
 

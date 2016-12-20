@@ -51,16 +51,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_botanical_object")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblBotanicalObject.findAll", query = "SELECT t FROM TblBotanicalObject t"),
-    @NamedQuery(name = "TblBotanicalObject.findById", query = "SELECT t FROM TblBotanicalObject t WHERE t.id = :id"),
-    @NamedQuery(name = "TblBotanicalObject.findByScientificNameId", query = "SELECT t FROM TblBotanicalObject t WHERE t.scientificNameId = :scientificNameId"),
-    @NamedQuery(name = "TblBotanicalObject.findByDeterminationDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.determinationDate = :determinationDate"),
-    @NamedQuery(name = "TblBotanicalObject.findByHabitat", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitat = :habitat"),
-    @NamedQuery(name = "TblBotanicalObject.findByHabitus", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitus = :habitus"),
-    @NamedQuery(name = "TblBotanicalObject.findByRecordingDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.recordingDate = :recordingDate"),
-    @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible"),
-    @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine"),
-    @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
+    @NamedQuery(name = "TblBotanicalObject.findAll", query = "SELECT t FROM TblBotanicalObject t")
+    , @NamedQuery(name = "TblBotanicalObject.findById", query = "SELECT t FROM TblBotanicalObject t WHERE t.id = :id")
+    , @NamedQuery(name = "TblBotanicalObject.findByScientificNameId", query = "SELECT t FROM TblBotanicalObject t WHERE t.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "TblBotanicalObject.findByDeterminationDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.determinationDate = :determinationDate")
+    , @NamedQuery(name = "TblBotanicalObject.findByHabitat", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitat = :habitat")
+    , @NamedQuery(name = "TblBotanicalObject.findByHabitus", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitus = :habitus")
+    , @NamedQuery(name = "TblBotanicalObject.findByRecordingDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.recordingDate = :recordingDate")
+    , @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible")
+    , @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine")
+    , @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")
+})
 public class TblBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -106,38 +107,36 @@ public class TblBotanicalObject implements Serializable {
     @JoinTable(name = "tbl_botanical_object_label", joinColumns = {
         @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<TblLabelType> tblLabelTypeCollection;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
     @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblIdentStatus identStatusId;
     @JoinColumn(name = "determined_by_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblPerson determinedById;
     @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionEvent acquisitionEventId;
     @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblPhenology phenologyId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject")
-    private TblDiaspora tblDiaspora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblSpecimen> tblSpecimenCollection;
-    @OneToMany(mappedBy = "botanicalObjectId")
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblSeparation> tblSeparationCollection;
-    @OneToMany(mappedBy = "botanicalObjectId")
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblInventoryObject> tblInventoryObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObjectSex> tblBotanicalObjectSexCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private Collection<TblImportProperties> tblImportPropertiesCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject", fetch = FetchType.LAZY)
     private TblLivingPlant tblLivingPlant;
 
     public TblBotanicalObject() {
@@ -285,14 +284,6 @@ public class TblBotanicalObject implements Serializable {
         this.phenologyId = phenologyId;
     }
 
-    public TblDiaspora getTblDiaspora() {
-        return tblDiaspora;
-    }
-
-    public void setTblDiaspora(TblDiaspora tblDiaspora) {
-        this.tblDiaspora = tblDiaspora;
-    }
-
     @XmlTransient
     public Collection<TblSpecimen> getTblSpecimenCollection() {
         return tblSpecimenCollection;
@@ -385,9 +376,9 @@ public class TblBotanicalObject implements Serializable {
      */
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private ViewscientificName viewScientificName;
+    private ViewScientificName viewScientificName;
 
-    public ViewscientificName getViewScientificName() {
+    public ViewScientificName getViewScientificName() {
         return viewScientificName;
     }
 
@@ -397,5 +388,13 @@ public class TblBotanicalObject implements Serializable {
 
     public ViewTaxon getViewTaxon() {
         return viewTaxon;
+    }
+
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblScientificNameInformation tblScientificNameInformation;
+
+    public TblScientificNameInformation getTblScientificNameInformation() {
+        return tblScientificNameInformation;
     }
 }

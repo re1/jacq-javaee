@@ -35,8 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_sequence")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSequence.findAll", query = "SELECT t FROM TblSequence t"),
-    @NamedQuery(name = "TblSequence.findById", query = "SELECT t FROM TblSequence t WHERE t.id = :id")})
+    @NamedQuery(name = "TblSequence.findAll", query = "SELECT t FROM TblSequence t")
+    , @NamedQuery(name = "TblSequence.findById", query = "SELECT t FROM TblSequence t WHERE t.id = :id")})
 public class TblSequence implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,20 +44,20 @@ public class TblSequence implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     public TblSequence() {
     }
 
-    public TblSequence(Integer id) {
+    public TblSequence(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

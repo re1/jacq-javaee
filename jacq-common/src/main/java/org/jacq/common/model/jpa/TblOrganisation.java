@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,12 +45,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_organisation")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblOrganisation.findAll", query = "SELECT t FROM TblOrganisation t"),
-    @NamedQuery(name = "TblOrganisation.findById", query = "SELECT t FROM TblOrganisation t WHERE t.id = :id"),
-    @NamedQuery(name = "TblOrganisation.findByDescription", query = "SELECT t FROM TblOrganisation t WHERE t.description = :description"),
-    @NamedQuery(name = "TblOrganisation.findByDepartment", query = "SELECT t FROM TblOrganisation t WHERE t.department = :department"),
-    @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse"),
-    @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")})
+    @NamedQuery(name = "TblOrganisation.findAll", query = "SELECT t FROM TblOrganisation t")
+    , @NamedQuery(name = "TblOrganisation.findById", query = "SELECT t FROM TblOrganisation t WHERE t.id = :id")
+    , @NamedQuery(name = "TblOrganisation.findByDescription", query = "SELECT t FROM TblOrganisation t WHERE t.description = :description")
+    , @NamedQuery(name = "TblOrganisation.findByDepartment", query = "SELECT t FROM TblOrganisation t WHERE t.department = :department")
+    , @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse")
+    , @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")})
 public class TblOrganisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,7 +58,7 @@ public class TblOrganisation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 255)
     @Column(name = "description")
     private String description;
@@ -71,42 +72,42 @@ public class TblOrganisation implements Serializable {
     @Size(max = 5)
     @Column(name = "ipen_code")
     private String ipenCode;
-    @OneToMany(mappedBy = "organisationId")
+    @OneToMany(mappedBy = "organisationId", fetch = FetchType.LAZY)
     private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
-    @OneToMany(mappedBy = "parentOrganisationId")
+    @OneToMany(mappedBy = "parentOrganisationId", fetch = FetchType.LAZY)
     private Collection<TblOrganisation> tblOrganisationCollection;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblOrganisation parentOrganisationId;
     @JoinColumn(name = "gardener_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser gardenerId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
     private TblImageServer tblImageServer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private Collection<FrmwrkUser> frmwrkUserCollection;
 
     public TblOrganisation() {
     }
 
-    public TblOrganisation(Integer id) {
+    public TblOrganisation(Long id) {
         this.id = id;
     }
 
-    public TblOrganisation(Integer id, boolean greenhouse) {
+    public TblOrganisation(Long id, boolean greenhouse) {
         this.id = id;
         this.greenhouse = greenhouse;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
