@@ -90,7 +90,6 @@ public class BotanicalObjectResult {
         }
         this.botanicalObjectId = botanicalObject.getId();
         this.commonNames = new ArrayList<>();
-        this.commonNames.add(botanicalObject.getTblScientificNameInformation().getCommonNames());
     }
 
     /**

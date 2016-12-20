@@ -18,6 +18,7 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -388,13 +389,5 @@ public class TblBotanicalObject implements Serializable {
 
     public ViewTaxon getViewTaxon() {
         return viewTaxon;
-    }
-
-    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblScientificNameInformation tblScientificNameInformation;
-
-    public TblScientificNameInformation getTblScientificNameInformation() {
-        return tblScientificNameInformation;
     }
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,6 +35,7 @@ import org.jacq.common.manager.NameParserManager;
 import org.jacq.common.model.BotanicalObjectResult;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.model.jpa.TblScientificNameInformation;
 import org.jacq.common.model.jpa.ViewScientificName;
 import org.jacq.common.model.jpa.ViewTaxon;
 import org.jacq.common.model.names.NameParserResponse;
@@ -120,8 +122,24 @@ public class BotanicalObjectManager {
             botanicalObjectSearchQuery.setMaxResults(limit);
         }
 
-        // finally fetch the result
-        return BotanicalObjectResult.fromList(botanicalObjectSearchQuery.getResultList());
+        // finally fetch the results
+        ArrayList<BotanicalObjectResult> results = new ArrayList<>();
+        List<TblBotanicalObject> botanicalObjectResults = botanicalObjectSearchQuery.getResultList();
+        for (TblBotanicalObject botanicalObject : botanicalObjectResults) {
+            BotanicalObjectResult botanicalObjectResult = new BotanicalObjectResult(botanicalObject);
+
+            TypedQuery<TblScientificNameInformation> scientificNameInformationQuery = em.createNamedQuery("TblScientificNameInformation.findByScientificNameId", TblScientificNameInformation.class);
+            scientificNameInformationQuery.setParameter("scientificNameId", botanicalObject.getScientificNameId());
+            try {
+                TblScientificNameInformation scientificNameInformation = scientificNameInformationQuery.getSingleResult();
+                botanicalObjectResult.getCommonNames().add(scientificNameInformation.getCommonNames());
+            } catch (NoResultException e) {
+            }
+
+            results.add(botanicalObjectResult);
+        }
+
+        return results;
     }
 
     /**
