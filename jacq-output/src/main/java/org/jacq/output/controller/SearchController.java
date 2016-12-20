@@ -53,11 +53,11 @@ public class SearchController {
     }
 
     public String getOrganization() {
-        return sessionManager.getOrganization();
+        return this.dataModel.getOrganization();
     }
 
     public void setOrganization(String organization) {
-        sessionManager.setOrganization(organization);
+        this.dataModel.setOrganization(organization);
     }
 
     public Boolean getHasImage() {

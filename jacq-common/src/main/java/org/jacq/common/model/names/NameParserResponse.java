@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.model;
+package org.jacq.common.model.names;
 
 /**
  * Model for holding relevant information of the name-parser response

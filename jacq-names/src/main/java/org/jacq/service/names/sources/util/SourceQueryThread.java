@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jacq.common.model.names.CommonName;
-import org.jacq.service.names.model.NameParserResponse;
+import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 
 /**

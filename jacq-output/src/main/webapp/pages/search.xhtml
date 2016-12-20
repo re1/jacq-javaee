@@ -13,18 +13,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p:inputText id="scientific_name" placeholder="Scientific Name" value="#{searchController.scientificName}">
-                            <f:validateLength minimum="3" />
                         </p:inputText>
                         <p:message for="scientific_name" />
                     </div>
                     <div class="col-md-6">
                         <p:inputText id="organization" placeholder="Organization" value="#{searchController.organization}" />
+                        <p:message for="organization" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <p:outputLabel for="has_image" value="With images" />
                         <p:selectBooleanCheckbox id="has_image" value="#{searchController.hasImage}" />
+                        <p:message for="has_image" />
                     </div>
                     <div class="col-md-6">
 

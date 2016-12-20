@@ -15,7 +15,9 @@
  */
 package org.jacq.service.manager;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -28,10 +30,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.manager.NameParserManager;
 import org.jacq.common.model.BotanicalObjectResult;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.ViewScientificName;
+import org.jacq.common.model.jpa.ViewTaxon;
+import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.rest.BotanicalObjectService;
 
 /**
@@ -43,14 +48,18 @@ public class BotanicalObjectManager {
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
+    @Inject
+    protected NameParserManager nameParserManager;
+
     /**
      * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean)
      */
     @Transactional
     public List<BotanicalObjectResult> search(String scientificName, String organization, Boolean hasImage, Integer offset, Integer limit) {
-        // SELECT t FROM TblBotanicalObject t WHERE LOWER(t.viewScientificName.scientificName) LIKE :scientificName AND t.organisationId.greenhouse = 0
         // helper variable for handling different paths
         Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TblBotanicalObject> cq = cb.createQuery(TblBotanicalObject.class);
@@ -58,24 +67,52 @@ public class BotanicalObjectManager {
 
         // select result list
         cq.select(bo);
+
+        // join organisation table and filter on greenhouse only
         Join<TblBotanicalObject, TblOrganisation> tblOrganisation = bo.join("organisationId", JoinType.LEFT);
         path = tblOrganisation.get("greenhouse");
-        cq.where(cb.equal(path, "0"));
+        predicates.add(cb.equal(path, 0));
 
-        // check if searching for scientifc name
+        // check for presence of scientific name
         if (!StringUtils.isEmpty(scientificName)) {
-            Join<TblBotanicalObject, ViewScientificName> viewScientificName = bo.join("viewScientificName", JoinType.LEFT);
-            path = viewScientificName.get("scientificName");
-            cq.where(cb.like(path, scientificName.toLowerCase() + "%"));
+            // clean and parse the scientific name
+            NameParserResponse nameParserResponse = nameParserManager.parseName(scientificName);
+            // check for scientific name components
+            if (!StringUtils.isEmpty(nameParserResponse.getUninomial())) {
+                Join<TblBotanicalObject, ViewTaxon> viewTaxon = bo.join("viewTaxon", JoinType.LEFT);
+                path = viewTaxon.get("genus");
+                predicates.add(cb.like(path, nameParserResponse.getUninomial() + "%"));
+            }
+            // check for species
+            else if (!StringUtils.isEmpty(nameParserResponse.getGenus())) {
+                Join<TblBotanicalObject, ViewTaxon> viewTaxon = bo.join("viewTaxon", JoinType.LEFT);
+                path = viewTaxon.get("genus");
+                predicates.add(cb.like(path, nameParserResponse.getGenus() + "%"));
+
+                if (!StringUtils.isEmpty(nameParserResponse.getSpecies())) {
+                    path = viewTaxon.get("epithet");
+                    predicates.add(cb.like(path, nameParserResponse.getSpecies() + "%"));
+                }
+            }
+            // fallback to full scientific name matching if something went wrong
+            else {
+                Join<TblBotanicalObject, ViewScientificName> viewScientificName = bo.join("viewScientificName", JoinType.LEFT);
+                path = viewScientificName.get("scientificName");
+                predicates.add(cb.like(path, nameParserResponse.getScientificName() + "%"));
+            }
         }
+
         // check if searching for organization
         if (!StringUtils.isEmpty(organization)) {
             path = tblOrganisation.get("description");
-            cq.where(cb.like(path, organization.toLowerCase() + "%"));
+            predicates.add(cb.like(path, organization.toLowerCase() + "%"));
         }
 
-        TypedQuery<TblBotanicalObject> botanicalObjectSearchQuery = em.createQuery(cq);
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
 
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblBotanicalObject> botanicalObjectSearchQuery = em.createQuery(cq);
         if (offset != null) {
             botanicalObjectSearchQuery.setFirstResult(offset);
         }
@@ -83,6 +120,7 @@ public class BotanicalObjectManager {
             botanicalObjectSearchQuery.setMaxResults(limit);
         }
 
+        // finally fetch the result
         return BotanicalObjectResult.fromList(botanicalObjectSearchQuery.getResultList());
     }
 
@@ -93,6 +131,8 @@ public class BotanicalObjectManager {
     public int searchCount(String scientificName, String organization, Boolean hasImage) {
         // helper variable for handling different paths
         Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -100,21 +140,49 @@ public class BotanicalObjectManager {
 
         // count result
         cq.select(cb.count(bo));
+
+        // join organisation table and filter on greenhouse only
         Join<TblBotanicalObject, TblOrganisation> tblOrganisation = bo.join("organisationId", JoinType.LEFT);
         path = tblOrganisation.get("greenhouse");
-        cq.where(cb.equal(path, "0"));
+        predicates.add(cb.equal(path, 0));
 
-        // check if searching for scientifc name
+        // check for presence of scientific name
         if (!StringUtils.isEmpty(scientificName)) {
-            Join<TblBotanicalObject, ViewScientificName> viewScientificName = bo.join("viewScientificName", JoinType.LEFT);
-            path = viewScientificName.get("scientificName");
-            cq.where(cb.like(path, scientificName.toLowerCase() + "%"));
+            // clean and parse the scientific name
+            NameParserResponse nameParserResponse = nameParserManager.parseName(scientificName);
+            // check for scientific name components
+            if (!StringUtils.isEmpty(nameParserResponse.getUninomial())) {
+                Join<TblBotanicalObject, ViewTaxon> viewTaxon = bo.join("viewTaxon", JoinType.LEFT);
+                path = viewTaxon.get("genus");
+                predicates.add(cb.like(path, nameParserResponse.getUninomial() + "%"));
+            }
+            // check for species
+            else if (!StringUtils.isEmpty(nameParserResponse.getGenus())) {
+                Join<TblBotanicalObject, ViewTaxon> viewTaxon = bo.join("viewTaxon", JoinType.LEFT);
+                path = viewTaxon.get("genus");
+                predicates.add(cb.like(path, nameParserResponse.getGenus() + "%"));
+
+                if (!StringUtils.isEmpty(nameParserResponse.getSpecies())) {
+                    path = viewTaxon.get("epithet");
+                    predicates.add(cb.like(path, nameParserResponse.getSpecies() + "%"));
+                }
+            }
+            // fallback to full scientific name matching if something went wrong
+            else {
+                Join<TblBotanicalObject, ViewScientificName> viewScientificName = bo.join("viewScientificName", JoinType.LEFT);
+                path = viewScientificName.get("scientificName");
+                predicates.add(cb.like(path, nameParserResponse.getScientificName() + "%"));
+            }
         }
+
         // check if searching for organization
         if (!StringUtils.isEmpty(organization)) {
             path = tblOrganisation.get("description");
-            cq.where(cb.like(path, organization.toLowerCase() + "%"));
+            predicates.add(cb.like(path, organization.toLowerCase() + "%"));
         }
+
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
 
         return em.createQuery(cq).getSingleResult().intValue();
 

@@ -73,7 +73,7 @@ public class TblBotanicalObject implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private int scientificNameId;
+    private Long scientificNameId;
     @Column(name = "determination_date")
     @Temporal(TemporalType.DATE)
     private Date determinationDate;
@@ -146,7 +146,7 @@ public class TblBotanicalObject implements Serializable {
         this.id = id;
     }
 
-    public TblBotanicalObject(Long id, int scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
+    public TblBotanicalObject(Long id, Long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
         this.id = id;
         this.scientificNameId = scientificNameId;
         this.recordingDate = recordingDate;
@@ -163,11 +163,11 @@ public class TblBotanicalObject implements Serializable {
         this.id = id;
     }
 
-    public int getScientificNameId() {
+    public Long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(int scientificNameId) {
+    public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -388,5 +388,13 @@ public class TblBotanicalObject implements Serializable {
 
     public ViewTaxon getViewTaxon() {
         return viewTaxon;
+    }
+
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblScientificNameInformation tblScientificNameInformation;
+
+    public TblScientificNameInformation getTblScientificNameInformation() {
+        return tblScientificNameInformation;
     }
 }

@@ -11,7 +11,13 @@
         <ui:define name="content">
             <h:form styleClass="jacq-resultform">
                 <p:dataTable id="resultList" lazy="true" var="botanicalObject" value="#{searchController.dataModel}" paginator="true" rows="10">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{botanicalObject.botanicalObjectId}" />
+                    </p:column>
                     <p:column headerText="Common Name">
+                        <ui:repeat value="#{botanicalObject.commonNames}" var="commonName">
+                            <h:outputText value="#{commonName}" />&nbsp;
+                        </ui:repeat>
                     </p:column>
                     <p:column headerText="Scientific Name">
                         <h:outputText value="#{botanicalObject.scientificName}" />

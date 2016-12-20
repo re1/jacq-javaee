@@ -25,7 +25,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
-import org.jacq.service.names.model.NameParserResponse;
+import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.manager;
+package org.jacq.common.manager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -31,11 +31,11 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import org.jacq.service.names.model.NameParserResponse;
+import org.jacq.common.model.names.NameParserResponse;
 
 /**
- * Provides easy access to the biodiversity nameParser Note: the parser needs to
- * be started manually using the parserver command:
+ * Provides easy access to the biodiversity nameParser Note: the parser needs to be started manually using the parserver
+ * command:
  *
  * ~ # parserver -r -o json
  *
