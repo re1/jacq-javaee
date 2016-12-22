@@ -14,20 +14,22 @@
                     <p:column headerText="ID">
                         <h:outputText value="#{botanicalObject.botanicalObjectId}" />
                     </p:column>
-                    <p:column headerText="Common Name">
+                    <p:column headerText="Volksname">
                         <ui:repeat value="#{botanicalObject.commonNames}" var="commonName">
                             <h:outputText value="#{commonName}" />&nbsp;
                         </ui:repeat>
                     </p:column>
-                    <p:column headerText="Scientific Name">
+                    <p:column headerText="Wissenschaftlicher Name">
                         <h:outputText value="#{botanicalObject.scientificName}" />
                     </p:column>
-                    <p:column headerText="Organization">
-                        <h:outputText value="#{botanicalObject.organization}" />
+                    <p:column headerText="Standort im Garten">
+                        <a target="_blank" href="http://www.botanik.univie.ac.at/hbv/download/plan_hbv_aktuell_mit_numm.pdf">
+                            <h:outputText value="#{botanicalObject.organization}" />
+                        </a>
                     </p:column>
-                    <p:column headerText="Images">
+                    <p:column headerText="Bilder">
                     </p:column>
-                    <p:column headerText="Accession Number">
+                    <p:column headerText="Akzessions Nummer">
                         <h:outputText value="#{botanicalObject.accessionNumber}">
                             <f:convertNumber pattern="0000000" />
                         </h:outputText>

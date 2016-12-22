@@ -53,6 +53,9 @@ public class BotanicalObjectManager {
     @Inject
     protected NameParserManager nameParserManager;
 
+    @Inject
+    protected ImageServerManager imageServerManager;
+
     /**
      * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean)
      */
@@ -135,6 +138,9 @@ public class BotanicalObjectManager {
                 botanicalObjectResult.getCommonNames().add(scientificNameInformation.getCommonNames());
             } catch (NoResultException e) {
             }
+
+            // fetch image information and add it to result
+            imageServerManager.getBaseImageUrl(botanicalObject);
 
             results.add(botanicalObjectResult);
         }
