@@ -28,6 +28,11 @@
                         </a>
                     </p:column>
                     <p:column headerText="Bilder">
+                        <ui:repeat value="#{botanicalObject.imageServerResources}" var="imageServerResource">
+                            <a href="#{imageServerResource.imageUrl}" target="_blank">
+                                <h:outputText value="#{imageServerResource.identifier}" />
+                            </a>
+                        </ui:repeat>
                     </p:column>
                     <p:column headerText="Akzessions Nummer">
                         <h:outputText value="#{botanicalObject.accessionNumber}">

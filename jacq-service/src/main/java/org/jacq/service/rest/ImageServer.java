@@ -42,5 +42,5 @@ public interface ImageServer {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ImageServer")
     @GET
-    public JsonObject request(@QueryParam("request") JsonObject request);
+    public Response request(@QueryParam("request") JsonObject request);
 }

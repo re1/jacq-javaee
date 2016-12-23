@@ -15,11 +15,17 @@
  */
 package org.jacq.service.manager;
 
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
+import org.jacq.common.model.ImageServerResource;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblImageServer;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -37,28 +43,59 @@ public class ImageServerManager {
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
-    public String getBaseImageUrl(TblBotanicalObject botanicalObject) {
+    public List<ImageServerResource> getResources(TblBotanicalObject botanicalObject) {
+        // search for matching image server first
         TblImageServer tblImageServer = findImageServer(botanicalObject.getOrganisationId());
+        ArrayList<ImageServerResource> imageServerResources = new ArrayList<>();
 
         // {"id":"1","method":"importImages","params":[12345]}
+        // check if the botanical object has an image server assigned
         if (tblImageServer != null) {
+            // create image server proxy object
             ImageServer imageServer = ServicesUtil.getImageServer(tblImageServer.getBaseUrl());
 
+            // format identifier
+            String identifier = String.format("%07d", botanicalObject.getTblLivingPlant().getAccessionNumber());
+
+            // prepare request to image server
             JsonObject request = Json.createObjectBuilder()
                     .add("id", "1")
                     .add("method", "listResources")
                     .add("params", Json.createArrayBuilder()
                             .add(tblImageServer.getKey())
-                            .add(botanicalObject.getTblLivingPlant().getAccessionNumber())
+                            .add(Json.createArrayBuilder()
+                                    .add(identifier)
+                                    .add(identifier + "_%")
+                                    .build()
+                            )
                             .build()
                     )
                     .build();
 
-            JsonObject response = imageServer.request(request);
-            //response.toString();
+            // parse the response
+            Response response = imageServer.request(request);
+            String responseString = response.readEntity(String.class);
+            JsonObject responseObject = Json.createReader(new StringReader(responseString)).readObject();
+            if (responseObject != null) {
+                JsonArray foundResources = responseObject.getJsonArray("result");
+                if (foundResources != null) {
+                    for (int i = 0; i < foundResources.size(); i++) {
+                        JsonObject resourceInfo = foundResources.getJsonObject(i);
+                        if (resourceInfo.getString("public").equals("1")) {
+                            ImageServerResource imageServerResource = new ImageServerResource();
+                            imageServerResource.setIdentifier(resourceInfo.getString("identifier"));
+                            imageServerResource.setThumbnailUrl(tblImageServer.getBaseUrl() + "/adore-djatoka/resolver?url_ver=Z39.88-2004&rft_id=" + imageServerResource.getIdentifier() + "&svc_id=info:lanl-repo/svc/getRegion&svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&svc.format=image/jpeg&svc.scale=160,0");
+                            imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + imageServerResource.getIdentifier());
+
+                            imageServerResources.add(imageServerResource);
+                        }
+                    }
+                }
+            }
+
         }
 
-        return null;
+        return imageServerResources;
     }
 
     /**

@@ -140,8 +140,9 @@ public class BotanicalObjectManager {
             }
 
             // fetch image information and add it to result
-            imageServerManager.getBaseImageUrl(botanicalObject);
+            botanicalObjectResult.getImageServerResources().addAll(imageServerManager.getResources(botanicalObject));
 
+            // add botanical object to result list
             results.add(botanicalObjectResult);
         }
 
