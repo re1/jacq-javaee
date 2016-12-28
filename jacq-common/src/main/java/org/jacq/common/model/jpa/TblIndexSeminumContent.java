@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -125,7 +125,7 @@ public class TblIndexSeminumContent implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
-    private Collection<TblIndexSeminumPerson> tblIndexSeminumPersonCollection;
+    private List<TblIndexSeminumPerson> tblIndexSeminumPersonList;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
@@ -271,12 +271,12 @@ public class TblIndexSeminumContent implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblIndexSeminumPerson> getTblIndexSeminumPersonCollection() {
-        return tblIndexSeminumPersonCollection;
+    public List<TblIndexSeminumPerson> getTblIndexSeminumPersonList() {
+        return tblIndexSeminumPersonList;
     }
 
-    public void setTblIndexSeminumPersonCollection(Collection<TblIndexSeminumPerson> tblIndexSeminumPersonCollection) {
-        this.tblIndexSeminumPersonCollection = tblIndexSeminumPersonCollection;
+    public void setTblIndexSeminumPersonList(List<TblIndexSeminumPerson> tblIndexSeminumPersonList) {
+        this.tblIndexSeminumPersonList = tblIndexSeminumPersonList;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

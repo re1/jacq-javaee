@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +59,7 @@ public class TblTreeRecordFilePage implements Serializable {
     @Column(name = "page")
     private int page;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId", fetch = FetchType.LAZY)
-    private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
+    private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @JoinColumn(name = "tree_record_file_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblTreeRecordFile treeRecordFileId;
@@ -93,12 +93,12 @@ public class TblTreeRecordFilePage implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageCollection() {
-        return tblLivingPlantTreeRecordFilePageCollection;
+    public List<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageList() {
+        return tblLivingPlantTreeRecordFilePageList;
     }
 
-    public void setTblLivingPlantTreeRecordFilePageCollection(Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection) {
-        this.tblLivingPlantTreeRecordFilePageCollection = tblLivingPlantTreeRecordFilePageCollection;
+    public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
+        this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
     }
 
     public TblTreeRecordFile getTreeRecordFileId() {

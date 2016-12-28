@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -76,17 +76,17 @@ public class FrmwrkAuthItem implements Serializable {
         @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
         @JoinColumn(name = "child", referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection;
-    @ManyToMany(mappedBy = "frmwrkAuthItemCollection", fetch = FetchType.LAZY)
-    private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection1;
+    private List<FrmwrkAuthItem> frmwrkAuthItemList;
+    @ManyToMany(mappedBy = "frmwrkAuthItemList", fetch = FetchType.LAZY)
+    private List<FrmwrkAuthItem> frmwrkAuthItemList1;
     @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
+    private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
     @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
+    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem", fetch = FetchType.LAZY)
-    private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
     @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
 
     public FrmwrkAuthItem() {
     }
@@ -141,57 +141,57 @@ public class FrmwrkAuthItem implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkAuthItem> getFrmwrkAuthItemCollection() {
-        return frmwrkAuthItemCollection;
+    public List<FrmwrkAuthItem> getFrmwrkAuthItemList() {
+        return frmwrkAuthItemList;
     }
 
-    public void setFrmwrkAuthItemCollection(Collection<FrmwrkAuthItem> frmwrkAuthItemCollection) {
-        this.frmwrkAuthItemCollection = frmwrkAuthItemCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkAuthItem> getFrmwrkAuthItemCollection1() {
-        return frmwrkAuthItemCollection1;
-    }
-
-    public void setFrmwrkAuthItemCollection1(Collection<FrmwrkAuthItem> frmwrkAuthItemCollection1) {
-        this.frmwrkAuthItemCollection1 = frmwrkAuthItemCollection1;
+    public void setFrmwrkAuthItemList(List<FrmwrkAuthItem> frmwrkAuthItemList) {
+        this.frmwrkAuthItemList = frmwrkAuthItemList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessClassification> getFrmwrkaccessClassificationCollection() {
-        return frmwrkaccessClassificationCollection;
+    public List<FrmwrkAuthItem> getFrmwrkAuthItemList1() {
+        return frmwrkAuthItemList1;
     }
 
-    public void setFrmwrkaccessClassificationCollection(Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection) {
-        this.frmwrkaccessClassificationCollection = frmwrkaccessClassificationCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
-        return frmwrkaccessOrganisationCollection;
-    }
-
-    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
-        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
+    public void setFrmwrkAuthItemList1(List<FrmwrkAuthItem> frmwrkAuthItemList1) {
+        this.frmwrkAuthItemList1 = frmwrkAuthItemList1;
     }
 
     @XmlTransient
-    public Collection<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentCollection() {
-        return frmwrkAuthAssignmentCollection;
+    public List<FrmwrkaccessClassification> getFrmwrkaccessClassificationList() {
+        return frmwrkaccessClassificationList;
     }
 
-    public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
-        this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
+    public void setFrmwrkaccessClassificationList(List<FrmwrkaccessClassification> frmwrkaccessClassificationList) {
+        this.frmwrkaccessClassificationList = frmwrkaccessClassificationList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
+    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
+        return frmwrkaccessOrganisationList;
     }
 
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
+        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentList() {
+        return frmwrkAuthAssignmentList;
+    }
+
+    public void setFrmwrkAuthAssignmentList(List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList) {
+        this.frmwrkAuthAssignmentList = frmwrkAuthAssignmentList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
     }
 
     @Override

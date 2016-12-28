@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +58,7 @@ public class TblIndexSeminumType implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(mappedBy = "indexSeminumTypeId", fetch = FetchType.LAZY)
-    private Collection<TblLivingPlant> tblLivingPlantCollection;
+    private List<TblLivingPlant> tblLivingPlantList;
 
     public TblIndexSeminumType() {
     }
@@ -89,12 +89,12 @@ public class TblIndexSeminumType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
-        return tblLivingPlantCollection;
+    public List<TblLivingPlant> getTblLivingPlantList() {
+        return tblLivingPlantList;
     }
 
-    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
-        this.tblLivingPlantCollection = tblLivingPlantCollection;
+    public void setTblLivingPlantList(List<TblLivingPlant> tblLivingPlantList) {
+        this.tblLivingPlantList = tblLivingPlantList;
     }
 
     @Override

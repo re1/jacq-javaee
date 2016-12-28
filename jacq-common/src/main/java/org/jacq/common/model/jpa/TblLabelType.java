@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,8 +57,8 @@ public class TblLabelType implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "type")
     private String type;
-    @ManyToMany(mappedBy = "tblLabelTypeCollection", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    @ManyToMany(mappedBy = "tblLabelTypeList", fetch = FetchType.LAZY)
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblLabelType() {
     }
@@ -89,12 +89,12 @@ public class TblLabelType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

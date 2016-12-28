@@ -16,6 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,6 +46,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
     , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
 public class TblImageServer implements Serializable {
+
+    @Column(name = "last_synchronized")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastSynchronized;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -133,6 +140,14 @@ public class TblImageServer implements Serializable {
     @Override
     public String toString() {
         return "org.jacq.common.model.jpa.TblImageServer[ organisationId=" + organisationId + " ]";
+    }
+
+    public Date getLastSynchronized() {
+        return lastSynchronized;
+    }
+
+    public void setLastSynchronized(Date lastSynchronized) {
+        this.lastSynchronized = lastSynchronized;
     }
 
 }

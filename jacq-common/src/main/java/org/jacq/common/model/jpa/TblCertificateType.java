@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +59,7 @@ public class TblCertificateType implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "certificateTypeId", fetch = FetchType.LAZY)
-    private Collection<TblCertificate> tblCertificateCollection;
+    private List<TblCertificate> tblCertificateList;
 
     public TblCertificateType() {
     }
@@ -90,12 +90,12 @@ public class TblCertificateType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblCertificate> getTblCertificateCollection() {
-        return tblCertificateCollection;
+    public List<TblCertificate> getTblCertificateList() {
+        return tblCertificateList;
     }
 
-    public void setTblCertificateCollection(Collection<TblCertificate> tblCertificateCollection) {
-        this.tblCertificateCollection = tblCertificateCollection;
+    public void setTblCertificateList(List<TblCertificate> tblCertificateList) {
+        this.tblCertificateList = tblCertificateList;
     }
 
     @Override

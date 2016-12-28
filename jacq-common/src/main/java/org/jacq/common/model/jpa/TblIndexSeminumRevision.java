@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,7 +70,7 @@ public class TblIndexSeminumRevision implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
-    private Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection;
+    private List<TblIndexSeminumContent> tblIndexSeminumContentList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser userId;
@@ -113,12 +113,12 @@ public class TblIndexSeminumRevision implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblIndexSeminumContent> getTblIndexSeminumContentCollection() {
-        return tblIndexSeminumContentCollection;
+    public List<TblIndexSeminumContent> getTblIndexSeminumContentList() {
+        return tblIndexSeminumContentList;
     }
 
-    public void setTblIndexSeminumContentCollection(Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection) {
-        this.tblIndexSeminumContentCollection = tblIndexSeminumContentCollection;
+    public void setTblIndexSeminumContentList(List<TblIndexSeminumContent> tblIndexSeminumContentList) {
+        this.tblIndexSeminumContentList = tblIndexSeminumContentList;
     }
 
     public FrmwrkUser getUserId() {

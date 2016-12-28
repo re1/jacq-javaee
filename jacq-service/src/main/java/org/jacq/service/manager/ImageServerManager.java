@@ -18,6 +18,8 @@ package org.jacq.service.manager;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -40,62 +42,88 @@ import org.jacq.service.util.ServicesUtil;
 @ManagedBean
 public class ImageServerManager {
 
+    private static final Logger LOGGER = Logger.getLogger(ImageServerManager.class.getName());
+
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
+    /**
+     * Search for resources for a given botanical object
+     *
+     * @param botanicalObject
+     * @return
+     */
     public List<ImageServerResource> getResources(TblBotanicalObject botanicalObject) {
         // search for matching image server first
         TblImageServer tblImageServer = findImageServer(botanicalObject.getOrganisationId());
         ArrayList<ImageServerResource> imageServerResources = new ArrayList<>();
 
-        // {"id":"1","method":"importImages","params":[12345]}
         // check if the botanical object has an image server assigned
         if (tblImageServer != null) {
-            // create image server proxy object
-            ImageServer imageServer = ServicesUtil.getImageServer(tblImageServer.getBaseUrl());
+            // wrap image server communication in order to gracefully fall back on error
+            try {
+                // create image server proxy object
+                ImageServer imageServer = ServicesUtil.getImageServer(tblImageServer.getBaseUrl());
 
-            // format identifier
-            String identifier = String.format("%07d", botanicalObject.getTblLivingPlant().getAccessionNumber());
+                // format identifier
+                String identifier = "";
 
-            // prepare request to image server
-            JsonObject request = Json.createObjectBuilder()
-                    .add("id", "1")
-                    .add("method", "listResources")
-                    .add("params", Json.createArrayBuilder()
-                            .add(tblImageServer.getKey())
-                            .add(Json.createArrayBuilder()
-                                    .add(identifier)
-                                    .add(identifier + "_%")
-                                    .build()
-                            )
-                            .build()
-                    )
-                    .build();
+                // check if derivative is a living plant
+                if (botanicalObject.getTblLivingPlant() != null) {
+                    identifier = String.format("%07d", botanicalObject.getTblLivingPlant().getAccessionNumber());
+                }
 
-            // parse the response
-            Response response = imageServer.request(request);
-            String responseString = response.readEntity(String.class);
-            JsonObject responseObject = Json.createReader(new StringReader(responseString)).readObject();
-            if (responseObject != null) {
-                JsonArray foundResources = responseObject.getJsonArray("result");
-                if (foundResources != null) {
-                    for (int i = 0; i < foundResources.size(); i++) {
-                        JsonObject resourceInfo = foundResources.getJsonObject(i);
-                        if (resourceInfo.getString("public").equals("1")) {
-                            ImageServerResource imageServerResource = new ImageServerResource();
-                            imageServerResource.setIdentifier(resourceInfo.getString("identifier"));
-                            imageServerResource.setThumbnailUrl(tblImageServer.getBaseUrl() + "/adore-djatoka/resolver?url_ver=Z39.88-2004&rft_id=" + imageServerResource.getIdentifier() + "&svc_id=info:lanl-repo/svc/getRegion&svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&svc.format=image/jpeg&svc.scale=160,0");
-                            imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + imageServerResource.getIdentifier());
+                // prepare request to image server
+                JsonObject request = Json.createObjectBuilder()
+                        .add("id", "1")
+                        .add("method", "listResources")
+                        .add("params", Json.createArrayBuilder()
+                                .add(tblImageServer.getKey())
+                                .add(Json.createArrayBuilder()
+                                        .add(identifier)
+                                        .add(identifier + "_%")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build();
 
-                            imageServerResources.add(imageServerResource);
+                // parse the response
+                Response response = imageServer.request(request);
+                String responseString = response.readEntity(String.class);
+                JsonObject responseObject = Json.createReader(new StringReader(responseString)).readObject();
+                if (responseObject != null) {
+                    JsonArray foundResources = responseObject.getJsonArray("result");
+                    if (foundResources != null) {
+                        for (int i = 0; i < foundResources.size(); i++) {
+                            JsonObject resourceInfo = foundResources.getJsonObject(i);
+                            if (resourceInfo.getString("public").equals("1")) {
+                                ImageServerResource imageServerResource = new ImageServerResource();
+                                imageServerResource.setIdentifier(resourceInfo.getString("identifier"));
+                                imageServerResource.setThumbnailUrl(tblImageServer.getBaseUrl() + "/adore-djatoka/resolver?url_ver=Z39.88-2004&rft_id=" + imageServerResource.getIdentifier() + "&svc_id=info:lanl-repo/svc/getRegion&svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&svc.format=image/jpeg&svc.scale=160,0");
+                                imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + imageServerResource.getIdentifier());
+
+                                imageServerResources.add(imageServerResource);
+                            }
                         }
                     }
                 }
+
+            } // in case of an error, log it but continue serving content
+            catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error during communication with image server - ignoring & continuing", e);
             }
 
         }
 
         return imageServerResources;
+    }
+
+    /**
+     * Helper function for synchronizing image server content with has-image flags in botanical object list
+     */
+    public void synchronizeImageFlags() {
+
     }
 
     /**

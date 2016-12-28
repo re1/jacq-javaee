@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,7 +56,7 @@ public class TblSeparationType implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "separationTypeId", fetch = FetchType.LAZY)
-    private Collection<TblSeparation> tblSeparationCollection;
+    private List<TblSeparation> tblSeparationList;
 
     public TblSeparationType() {
     }
@@ -82,12 +82,12 @@ public class TblSeparationType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblSeparation> getTblSeparationCollection() {
-        return tblSeparationCollection;
+    public List<TblSeparation> getTblSeparationList() {
+        return tblSeparationList;
     }
 
-    public void setTblSeparationCollection(Collection<TblSeparation> tblSeparationCollection) {
-        this.tblSeparationCollection = tblSeparationCollection;
+    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
+        this.tblSeparationList = tblSeparationList;
     }
 
     @Override

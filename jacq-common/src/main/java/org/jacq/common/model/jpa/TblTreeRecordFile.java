@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,7 +67,7 @@ public class TblTreeRecordFile implements Serializable {
     @Column(name = "document_number")
     private String documentNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFileId", fetch = FetchType.LAZY)
-    private Collection<TblTreeRecordFilePage> tblTreeRecordFilePageCollection;
+    private List<TblTreeRecordFilePage> tblTreeRecordFilePageList;
 
     public TblTreeRecordFile() {
     }
@@ -109,12 +109,12 @@ public class TblTreeRecordFile implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblTreeRecordFilePage> getTblTreeRecordFilePageCollection() {
-        return tblTreeRecordFilePageCollection;
+    public List<TblTreeRecordFilePage> getTblTreeRecordFilePageList() {
+        return tblTreeRecordFilePageList;
     }
 
-    public void setTblTreeRecordFilePageCollection(Collection<TblTreeRecordFilePage> tblTreeRecordFilePageCollection) {
-        this.tblTreeRecordFilePageCollection = tblTreeRecordFilePageCollection;
+    public void setTblTreeRecordFilePageList(List<TblTreeRecordFilePage> tblTreeRecordFilePageList) {
+        this.tblTreeRecordFilePageList = tblTreeRecordFilePageList;
     }
 
     @Override

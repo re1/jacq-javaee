@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +59,7 @@ public class TblSex implements Serializable {
     @Column(name = "sex")
     private String sex;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sexId", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObjectSex> tblBotanicalObjectSexCollection;
+    private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
 
     public TblSex() {
     }
@@ -90,12 +90,12 @@ public class TblSex implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObjectSex> getTblBotanicalObjectSexCollection() {
-        return tblBotanicalObjectSexCollection;
+    public List<TblBotanicalObjectSex> getTblBotanicalObjectSexList() {
+        return tblBotanicalObjectSexList;
     }
 
-    public void setTblBotanicalObjectSexCollection(Collection<TblBotanicalObjectSex> tblBotanicalObjectSexCollection) {
-        this.tblBotanicalObjectSexCollection = tblBotanicalObjectSexCollection;
+    public void setTblBotanicalObjectSexList(List<TblBotanicalObjectSex> tblBotanicalObjectSexList) {
+        this.tblBotanicalObjectSexList = tblBotanicalObjectSexList;
     }
 
     @Override

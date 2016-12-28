@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,11 +68,11 @@ public class TblAcquisitionEvent implements Serializable {
         @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "person_id", referencedColumnName = "id")})
     @ManyToMany(fetch = FetchType.LAZY)
-    private Collection<TblPerson> tblPersonCollection;
+    private List<TblPerson> tblPersonList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    private List<TblBotanicalObject> tblBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
-    private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
+    private List<TblAcquisitionEventSource> tblAcquisitionEventSourceList;
     @JoinColumn(name = "acquisition_date_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionDate acquisitionDateId;
@@ -118,30 +118,30 @@ public class TblAcquisitionEvent implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblPerson> getTblPersonCollection() {
-        return tblPersonCollection;
+    public List<TblPerson> getTblPersonList() {
+        return tblPersonList;
     }
 
-    public void setTblPersonCollection(Collection<TblPerson> tblPersonCollection) {
-        this.tblPersonCollection = tblPersonCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
-    }
-
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblPersonList(List<TblPerson> tblPersonList) {
+        this.tblPersonList = tblPersonList;
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEventSource> getTblAcquisitionEventSourceCollection() {
-        return tblAcquisitionEventSourceCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblAcquisitionEventSourceCollection(Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection) {
-        this.tblAcquisitionEventSourceCollection = tblAcquisitionEventSourceCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
+    }
+
+    @XmlTransient
+    public List<TblAcquisitionEventSource> getTblAcquisitionEventSourceList() {
+        return tblAcquisitionEventSourceList;
+    }
+
+    public void setTblAcquisitionEventSourceList(List<TblAcquisitionEventSource> tblAcquisitionEventSourceList) {
+        this.tblAcquisitionEventSourceList = tblAcquisitionEventSourceList;
     }
 
     public TblAcquisitionDate getAcquisitionDateId() {

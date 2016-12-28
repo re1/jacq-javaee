@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +58,7 @@ public class TblHabitusType implements Serializable {
     @Column(name = "habitus")
     private String habitus;
     @OneToMany(mappedBy = "habitusTypeId", fetch = FetchType.LAZY)
-    private Collection<TblScientificNameInformation> tblScientificNameInformationCollection;
+    private List<TblScientificNameInformation> tblScientificNameInformationList;
 
     public TblHabitusType() {
     }
@@ -89,12 +89,12 @@ public class TblHabitusType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblScientificNameInformation> getTblScientificNameInformationCollection() {
-        return tblScientificNameInformationCollection;
+    public List<TblScientificNameInformation> getTblScientificNameInformationList() {
+        return tblScientificNameInformationList;
     }
 
-    public void setTblScientificNameInformationCollection(Collection<TblScientificNameInformation> tblScientificNameInformationCollection) {
-        this.tblScientificNameInformationCollection = tblScientificNameInformationCollection;
+    public void setTblScientificNameInformationList(List<TblScientificNameInformation> tblScientificNameInformationList) {
+        this.tblScientificNameInformationList = tblScientificNameInformationList;
     }
 
     @Override

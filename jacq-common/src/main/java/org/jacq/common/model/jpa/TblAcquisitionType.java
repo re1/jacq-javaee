@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,7 +56,7 @@ public class TblAcquisitionType implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionTypeId", fetch = FetchType.LAZY)
-    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    private List<TblAcquisitionEvent> tblAcquisitionEventList;
 
     public TblAcquisitionType() {
     }
@@ -82,12 +82,12 @@ public class TblAcquisitionType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
-        return tblAcquisitionEventCollection;
+    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
+        return tblAcquisitionEventList;
     }
 
-    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
-        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
+        this.tblAcquisitionEventList = tblAcquisitionEventList;
     }
 
     @Override
