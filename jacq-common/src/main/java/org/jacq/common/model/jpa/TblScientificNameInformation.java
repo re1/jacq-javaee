@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,7 +65,7 @@ public class TblScientificNameInformation implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private TblHabitusType habitusTypeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY)
-    private Collection<TblCultivar> tblCultivarCollection;
+    private List<TblCultivar> tblCultivarList;
 
     public TblScientificNameInformation() {
     }
@@ -107,12 +107,12 @@ public class TblScientificNameInformation implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblCultivar> getTblCultivarCollection() {
-        return tblCultivarCollection;
+    public List<TblCultivar> getTblCultivarList() {
+        return tblCultivarList;
     }
 
-    public void setTblCultivarCollection(Collection<TblCultivar> tblCultivarCollection) {
-        this.tblCultivarCollection = tblCultivarCollection;
+    public void setTblCultivarList(List<TblCultivar> tblCultivarList) {
+        this.tblCultivarList = tblCultivarList;
     }
 
     @Override

@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -73,9 +73,9 @@ public class TblOrganisation implements Serializable {
     @Column(name = "ipen_code")
     private String ipenCode;
     @OneToMany(mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    private List<TblBotanicalObject> tblBotanicalObjectList;
     @OneToMany(mappedBy = "parentOrganisationId", fetch = FetchType.LAZY)
-    private Collection<TblOrganisation> tblOrganisationCollection;
+    private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblOrganisation parentOrganisationId;
@@ -85,11 +85,11 @@ public class TblOrganisation implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
     private TblImageServer tblImageServer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
+    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
+    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkUser> frmwrkUserCollection;
+    private List<FrmwrkUser> frmwrkUserList;
 
     public TblOrganisation() {
     }
@@ -144,21 +144,21 @@ public class TblOrganisation implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @XmlTransient
-    public Collection<TblOrganisation> getTblOrganisationCollection() {
-        return tblOrganisationCollection;
+    public List<TblOrganisation> getTblOrganisationList() {
+        return tblOrganisationList;
     }
 
-    public void setTblOrganisationCollection(Collection<TblOrganisation> tblOrganisationCollection) {
-        this.tblOrganisationCollection = tblOrganisationCollection;
+    public void setTblOrganisationList(List<TblOrganisation> tblOrganisationList) {
+        this.tblOrganisationList = tblOrganisationList;
     }
 
     public TblOrganisation getParentOrganisationId() {
@@ -186,30 +186,30 @@ public class TblOrganisation implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
-        return frmwrkaccessOrganisationCollection;
+    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
+        return frmwrkaccessOrganisationList;
     }
 
-    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
-        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblDerivativeVegetative> getTblDerivativeVegetativeCollection() {
-        return tblDerivativeVegetativeCollection;
-    }
-
-    public void setTblDerivativeVegetativeCollection(Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection) {
-        this.tblDerivativeVegetativeCollection = tblDerivativeVegetativeCollection;
+    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
+        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
-        return frmwrkUserCollection;
+    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
+        return tblDerivativeVegetativeList;
     }
 
-    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
-        this.frmwrkUserCollection = frmwrkUserCollection;
+    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
+        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkUser> getFrmwrkUserList() {
+        return frmwrkUserList;
+    }
+
+    public void setFrmwrkUserList(List<FrmwrkUser> frmwrkUserList) {
+        this.frmwrkUserList = frmwrkUserList;
     }
 
     @Override

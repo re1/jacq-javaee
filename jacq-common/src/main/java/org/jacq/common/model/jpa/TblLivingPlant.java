@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +59,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate")
     , @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId")
     , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
-    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")})
+    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")
+    , @NamedQuery(name = "TblLivingPlant.findByHasImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasImage = :hasImage")
+    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")
+    , @NamedQuery(name = "TblLivingPlant.resetImageStatus", query = "UPDATE TblLivingPlant t SET t.hasImage = FALSE, t.hasPublicImage = FALSE WHERE t.tblBotanicalObject IN ( SELECT tbo FROM TblBotanicalObject tbo WHERE tbo.organisationId IN (:organisations) )")})
 public class TblLivingPlant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -111,20 +114,30 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "bgci")
     private boolean bgci;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "reviewed")
-    private Boolean reviewed;
+    private boolean reviewed;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_image")
+    private boolean hasImage;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_public_image")
+    private boolean hasPublicImage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private Collection<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberCollection;
+    private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
+    private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
+    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private Collection<TblRelevancy> tblRelevancyCollection;
+    private List<TblRelevancy> tblRelevancyList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private Collection<TblCertificate> tblCertificateCollection;
+    private List<TblCertificate> tblCertificateList;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject tblBotanicalObject;
@@ -145,7 +158,7 @@ public class TblLivingPlant implements Serializable {
         this.id = id;
     }
 
-    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci) {
+    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -153,6 +166,9 @@ public class TblLivingPlant implements Serializable {
         this.phytoControl = phytoControl;
         this.indexSeminum = indexSeminum;
         this.bgci = bgci;
+        this.reviewed = reviewed;
+        this.hasImage = hasImage;
+        this.hasPublicImage = hasPublicImage;
     }
 
     public Long getId() {
@@ -259,66 +275,82 @@ public class TblLivingPlant implements Serializable {
         this.bgci = bgci;
     }
 
-    public Boolean getReviewed() {
+    public boolean getReviewed() {
         return reviewed;
     }
 
-    public void setReviewed(Boolean reviewed) {
+    public void setReviewed(boolean reviewed) {
         this.reviewed = reviewed;
     }
 
-    @XmlTransient
-    public Collection<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberCollection() {
-        return tblAlternativeAccessionNumberCollection;
+    public boolean getHasImage() {
+        return hasImage;
     }
 
-    public void setTblAlternativeAccessionNumberCollection(Collection<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberCollection) {
-        this.tblAlternativeAccessionNumberCollection = tblAlternativeAccessionNumberCollection;
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
     }
 
-    @XmlTransient
-    public Collection<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageCollection() {
-        return tblLivingPlantTreeRecordFilePageCollection;
+    public boolean getHasPublicImage() {
+        return hasPublicImage;
     }
 
-    public void setTblLivingPlantTreeRecordFilePageCollection(Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection) {
-        this.tblLivingPlantTreeRecordFilePageCollection = tblLivingPlantTreeRecordFilePageCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblDerivativeVegetative> getTblDerivativeVegetativeCollection() {
-        return tblDerivativeVegetativeCollection;
-    }
-
-    public void setTblDerivativeVegetativeCollection(Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection) {
-        this.tblDerivativeVegetativeCollection = tblDerivativeVegetativeCollection;
+    public void setHasPublicImage(boolean hasPublicImage) {
+        this.hasPublicImage = hasPublicImage;
     }
 
     @XmlTransient
-    public Collection<TblRelevancy> getTblRelevancyCollection() {
-        return tblRelevancyCollection;
+    public List<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberList() {
+        return tblAlternativeAccessionNumberList;
     }
 
-    public void setTblRelevancyCollection(Collection<TblRelevancy> tblRelevancyCollection) {
-        this.tblRelevancyCollection = tblRelevancyCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    public void setTblAlternativeAccessionNumberList(List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList) {
+        this.tblAlternativeAccessionNumberList = tblAlternativeAccessionNumberList;
     }
 
     @XmlTransient
-    public Collection<TblCertificate> getTblCertificateCollection() {
-        return tblCertificateCollection;
+    public List<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageList() {
+        return tblLivingPlantTreeRecordFilePageList;
     }
 
-    public void setTblCertificateCollection(Collection<TblCertificate> tblCertificateCollection) {
-        this.tblCertificateCollection = tblCertificateCollection;
+    public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
+        this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
+    }
+
+    @XmlTransient
+    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
+        return tblDerivativeVegetativeList;
+    }
+
+    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
+        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
+    }
+
+    @XmlTransient
+    public List<TblRelevancy> getTblRelevancyList() {
+        return tblRelevancyList;
+    }
+
+    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
+        this.tblRelevancyList = tblRelevancyList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
+    }
+
+    @XmlTransient
+    public List<TblCertificate> getTblCertificateList() {
+        return tblCertificateList;
+    }
+
+    public void setTblCertificateList(List<TblCertificate> tblCertificateList) {
+        this.tblCertificateList = tblCertificateList;
     }
 
     public TblBotanicalObject getTblBotanicalObject() {

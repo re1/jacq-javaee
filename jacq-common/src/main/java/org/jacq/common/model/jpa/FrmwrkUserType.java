@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +59,7 @@ public class FrmwrkUserType implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkUser> frmwrkUserCollection;
+    private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkUserType() {
     }
@@ -90,12 +90,12 @@ public class FrmwrkUserType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
-        return frmwrkUserCollection;
+    public List<FrmwrkUser> getFrmwrkUserList() {
+        return frmwrkUserList;
     }
 
-    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
-        this.frmwrkUserCollection = frmwrkUserCollection;
+    public void setFrmwrkUserList(List<FrmwrkUser> frmwrkUserList) {
+        this.frmwrkUserList = frmwrkUserList;
     }
 
     @Override

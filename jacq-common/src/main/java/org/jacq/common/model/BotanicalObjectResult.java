@@ -37,6 +37,7 @@ public class BotanicalObjectResult {
     protected String scientificName;
     protected String organization;
     protected Integer accessionNumber;
+    protected List<ImageServerResource> imageServerResources;
 
     public List<String> getCommonNames() {
         return commonNames;
@@ -78,6 +79,14 @@ public class BotanicalObjectResult {
         this.botanicalObjectId = botanicalObjectId;
     }
 
+    public List<ImageServerResource> getImageServerResources() {
+        return imageServerResources;
+    }
+
+    public void setImageServerResources(List<ImageServerResource> imageServerResources) {
+        this.imageServerResources = imageServerResources;
+    }
+
     public BotanicalObjectResult() {
     }
 
@@ -90,6 +99,7 @@ public class BotanicalObjectResult {
         }
         this.botanicalObjectId = botanicalObject.getId();
         this.commonNames = new ArrayList<>();
+        this.imageServerResources = new ArrayList<>();
     }
 
     /**

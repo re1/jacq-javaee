@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -76,7 +76,7 @@ public class TblDerivativeVegetative implements Serializable {
     @Column(name = "annotation")
     private String annotation;
     @OneToMany(mappedBy = "derivativeVegetativeId", fetch = FetchType.LAZY)
-    private Collection<TblSeparation> tblSeparationCollection;
+    private List<TblSeparation> tblSeparationList;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
@@ -141,12 +141,12 @@ public class TblDerivativeVegetative implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblSeparation> getTblSeparationCollection() {
-        return tblSeparationCollection;
+    public List<TblSeparation> getTblSeparationList() {
+        return tblSeparationList;
     }
 
-    public void setTblSeparationCollection(Collection<TblSeparation> tblSeparationCollection) {
-        this.tblSeparationCollection = tblSeparationCollection;
+    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
+        this.tblSeparationList = tblSeparationList;
     }
 
     public TblLivingPlant getLivingPlantId() {

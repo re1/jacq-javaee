@@ -25,13 +25,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,12 +38,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_location")
+@Table(name = "tbl_diaspora_bank")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLocation.findAll", query = "SELECT t FROM TblLocation t")
-    , @NamedQuery(name = "TblLocation.findById", query = "SELECT t FROM TblLocation t WHERE t.id = :id")})
-public class TblLocation implements Serializable {
+    @NamedQuery(name = "TblDiasporaBank.findAll", query = "SELECT t FROM TblDiasporaBank t")
+    , @NamedQuery(name = "TblDiasporaBank.findById", query = "SELECT t FROM TblDiasporaBank t WHERE t.id = :id")
+    , @NamedQuery(name = "TblDiasporaBank.findByName", query = "SELECT t FROM TblDiasporaBank t WHERE t.name = :name")})
+public class TblDiasporaBank implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,27 +52,17 @@ public class TblLocation implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "location")
-    private String location;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblLocation", fetch = FetchType.LAZY)
-    private TblLocationGeonames tblLocationGeonames;
-    @OneToMany(mappedBy = "locationId", fetch = FetchType.LAZY)
-    private List<TblAcquisitionEvent> tblAcquisitionEventList;
+    @Size(max = 45)
+    @Column(name = "name")
+    private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diasporaBankId", fetch = FetchType.LAZY)
+    private List<TblDiaspora> tblDiasporaList;
 
-    public TblLocation() {
+    public TblDiasporaBank() {
     }
 
-    public TblLocation(Long id) {
+    public TblDiasporaBank(Long id) {
         this.id = id;
-    }
-
-    public TblLocation(Long id, String location) {
-        this.id = id;
-        this.location = location;
     }
 
     public Long getId() {
@@ -85,29 +73,21 @@ public class TblLocation implements Serializable {
         this.id = id;
     }
 
-    public String getLocation() {
-        return location;
+    public String getName() {
+        return name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public TblLocationGeonames getTblLocationGeonames() {
-        return tblLocationGeonames;
-    }
-
-    public void setTblLocationGeonames(TblLocationGeonames tblLocationGeonames) {
-        this.tblLocationGeonames = tblLocationGeonames;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
-    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
-        return tblAcquisitionEventList;
+    public List<TblDiaspora> getTblDiasporaList() {
+        return tblDiasporaList;
     }
 
-    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
-        this.tblAcquisitionEventList = tblAcquisitionEventList;
+    public void setTblDiasporaList(List<TblDiaspora> tblDiasporaList) {
+        this.tblDiasporaList = tblDiasporaList;
     }
 
     @Override
@@ -120,10 +100,10 @@ public class TblLocation implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblLocation)) {
+        if (!(object instanceof TblDiasporaBank)) {
             return false;
         }
-        TblLocation other = (TblLocation) object;
+        TblDiasporaBank other = (TblDiasporaBank) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -132,7 +112,7 @@ public class TblLocation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblLocation[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblDiasporaBank[ id=" + id + " ]";
     }
 
 }

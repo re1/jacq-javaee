@@ -16,6 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +44,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t")
     , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
-    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
+    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")
+    , @NamedQuery(name = "TblImageServer.findByLastSynchronized", query = "SELECT t FROM TblImageServer t WHERE t.lastSynchronized = :lastSynchronized")})
 public class TblImageServer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,6 +65,9 @@ public class TblImageServer implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "key")
     private String key;
+    @Column(name = "last_synchronized")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastSynchronized;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
@@ -100,6 +107,14 @@ public class TblImageServer implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public Date getLastSynchronized() {
+        return lastSynchronized;
+    }
+
+    public void setLastSynchronized(Date lastSynchronized) {
+        this.lastSynchronized = lastSynchronized;
     }
 
     public TblOrganisation getTblOrganisation() {

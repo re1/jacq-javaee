@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +68,7 @@ public class TblInventoryType implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
-    private Collection<TblInventory> tblInventoryCollection;
+    private List<TblInventory> tblInventoryList;
 
     public TblInventoryType() {
     }
@@ -108,12 +108,12 @@ public class TblInventoryType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblInventory> getTblInventoryCollection() {
-        return tblInventoryCollection;
+    public List<TblInventory> getTblInventoryList() {
+        return tblInventoryList;
     }
 
-    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
-        this.tblInventoryCollection = tblInventoryCollection;
+    public void setTblInventoryList(List<TblInventory> tblInventoryList) {
+        this.tblInventoryList = tblInventoryList;
     }
 
     @Override

@@ -51,6 +51,11 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
     protected String organization;
 
     /**
+     * Filter for records with images only
+     */
+    protected Boolean hasImage;
+
+    /**
      * Default constructor, needs a reference to the botanical object service for later querying
      *
      * @param botanicalObjectService
@@ -80,12 +85,12 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
     @Override
     public List<BotanicalObjectResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
-        int rowCount = this.botanicalObjectService.searchCount(getScientificName(), getOrganization(), Boolean.FALSE);
+        int rowCount = this.botanicalObjectService.searchCount(getScientificName(), getOrganization(), hasImage);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.botanicalObjectService.search(getScientificName(), getOrganization(), Boolean.FALSE, first, pageSize);
+            results = this.botanicalObjectService.search(getScientificName(), getOrganization(), hasImage, first, pageSize);
         }
 
         return results;
@@ -107,4 +112,11 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
         this.organization = organization;
     }
 
+    public Boolean getHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(Boolean hasImage) {
+        this.hasImage = hasImage;
+    }
 }

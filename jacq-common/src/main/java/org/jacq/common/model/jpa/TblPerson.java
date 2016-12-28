@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,10 +58,10 @@ public class TblPerson implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "tblPersonCollection", fetch = FetchType.LAZY)
-    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
+    private List<TblAcquisitionEvent> tblAcquisitionEventList;
     @OneToMany(mappedBy = "determinedById", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblPerson() {
     }
@@ -92,21 +92,21 @@ public class TblPerson implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
-        return tblAcquisitionEventCollection;
+    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
+        return tblAcquisitionEventList;
     }
 
-    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
-        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
+        this.tblAcquisitionEventList = tblAcquisitionEventList;
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

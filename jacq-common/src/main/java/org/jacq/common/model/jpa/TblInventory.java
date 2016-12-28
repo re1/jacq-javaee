@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -63,7 +63,7 @@ public class TblInventory implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId", fetch = FetchType.LAZY)
-    private Collection<TblInventoryObject> tblInventoryObjectCollection;
+    private List<TblInventoryObject> tblInventoryObjectList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser userId;
@@ -100,12 +100,12 @@ public class TblInventory implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblInventoryObject> getTblInventoryObjectCollection() {
-        return tblInventoryObjectCollection;
+    public List<TblInventoryObject> getTblInventoryObjectList() {
+        return tblInventoryObjectList;
     }
 
-    public void setTblInventoryObjectCollection(Collection<TblInventoryObject> tblInventoryObjectCollection) {
-        this.tblInventoryObjectCollection = tblInventoryObjectCollection;
+    public void setTblInventoryObjectList(List<TblInventoryObject> tblInventoryObjectList) {
+        this.tblInventoryObjectList = tblInventoryObjectList;
     }
 
     public FrmwrkUser getUserId() {

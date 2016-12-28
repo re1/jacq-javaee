@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,7 +62,7 @@ public class TblRelevancyType implements Serializable {
     @Column(name = "important")
     private boolean important;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId", fetch = FetchType.LAZY)
-    private Collection<TblRelevancy> tblRelevancyCollection;
+    private List<TblRelevancy> tblRelevancyList;
 
     public TblRelevancyType() {
     }
@@ -101,12 +101,12 @@ public class TblRelevancyType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRelevancy> getTblRelevancyCollection() {
-        return tblRelevancyCollection;
+    public List<TblRelevancy> getTblRelevancyList() {
+        return tblRelevancyList;
     }
 
-    public void setTblRelevancyCollection(Collection<TblRelevancy> tblRelevancyCollection) {
-        this.tblRelevancyCollection = tblRelevancyCollection;
+    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
+        this.tblRelevancyList = tblRelevancyList;
     }
 
     @Override

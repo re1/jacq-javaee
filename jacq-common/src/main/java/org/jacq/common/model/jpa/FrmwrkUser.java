@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -105,19 +105,19 @@ public class FrmwrkUser implements Serializable {
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
+    private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
     @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
-    private Collection<TblOrganisation> tblOrganisationCollection;
+    private List<TblOrganisation> tblOrganisationList;
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
+    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<TblInventory> tblInventoryCollection;
+    private List<TblInventory> tblInventoryList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser", fetch = FetchType.LAZY)
-    private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection;
+    private List<TblIndexSeminumRevision> tblIndexSeminumRevisionList;
     @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkEmploymentType employmentTypeId;
@@ -226,66 +226,66 @@ public class FrmwrkUser implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessClassification> getFrmwrkaccessClassificationCollection() {
-        return frmwrkaccessClassificationCollection;
+    public List<FrmwrkaccessClassification> getFrmwrkaccessClassificationList() {
+        return frmwrkaccessClassificationList;
     }
 
-    public void setFrmwrkaccessClassificationCollection(Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection) {
-        this.frmwrkaccessClassificationCollection = frmwrkaccessClassificationCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblOrganisation> getTblOrganisationCollection() {
-        return tblOrganisationCollection;
-    }
-
-    public void setTblOrganisationCollection(Collection<TblOrganisation> tblOrganisationCollection) {
-        this.tblOrganisationCollection = tblOrganisationCollection;
+    public void setFrmwrkaccessClassificationList(List<FrmwrkaccessClassification> frmwrkaccessClassificationList) {
+        this.frmwrkaccessClassificationList = frmwrkaccessClassificationList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
-        return frmwrkaccessOrganisationCollection;
+    public List<TblOrganisation> getTblOrganisationList() {
+        return tblOrganisationList;
     }
 
-    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
-        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblInventory> getTblInventoryCollection() {
-        return tblInventoryCollection;
-    }
-
-    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
-        this.tblInventoryCollection = tblInventoryCollection;
+    public void setTblOrganisationList(List<TblOrganisation> tblOrganisationList) {
+        this.tblOrganisationList = tblOrganisationList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentCollection() {
-        return frmwrkAuthAssignmentCollection;
+    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
+        return frmwrkaccessOrganisationList;
     }
 
-    public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
-        this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
+        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
     }
 
     @XmlTransient
-    public Collection<TblIndexSeminumRevision> getTblIndexSeminumRevisionCollection() {
-        return tblIndexSeminumRevisionCollection;
+    public List<TblInventory> getTblInventoryList() {
+        return tblInventoryList;
     }
 
-    public void setTblIndexSeminumRevisionCollection(Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection) {
-        this.tblIndexSeminumRevisionCollection = tblIndexSeminumRevisionCollection;
+    public void setTblInventoryList(List<TblInventory> tblInventoryList) {
+        this.tblInventoryList = tblInventoryList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentList() {
+        return frmwrkAuthAssignmentList;
+    }
+
+    public void setFrmwrkAuthAssignmentList(List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList) {
+        this.frmwrkAuthAssignmentList = frmwrkAuthAssignmentList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
+    }
+
+    @XmlTransient
+    public List<TblIndexSeminumRevision> getTblIndexSeminumRevisionList() {
+        return tblIndexSeminumRevisionList;
+    }
+
+    public void setTblIndexSeminumRevisionList(List<TblIndexSeminumRevision> tblIndexSeminumRevisionList) {
+        this.tblIndexSeminumRevisionList = tblIndexSeminumRevisionList;
     }
 
     public FrmwrkEmploymentType getEmploymentTypeId() {

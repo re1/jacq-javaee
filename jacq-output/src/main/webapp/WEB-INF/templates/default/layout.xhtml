@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 jacq-header">
-                        Virtual Herbaria
+                        Botanischer Garten Wien
                     </div>
                 </div>
             </div>
@@ -25,9 +25,11 @@
                 <div class="row">
                     <div class="col-md-12 jacq-menu">
                         <h:link outcome="home" styleClass="jacq-link">Home</h:link>
-                        <h:link outcome="home" styleClass="jacq-link">General Information</h:link>
-                        <h:link outcome="home" styleClass="jacq-link">Collections</h:link>
-                        <h:link outcome="home" styleClass="jacq-link">Reference Systems</h:link>
+                        <ui:remove>
+                            <h:link outcome="home" styleClass="jacq-link">General Information</h:link>
+                            <h:link outcome="home" styleClass="jacq-link">Collections</h:link>
+                            <h:link outcome="home" styleClass="jacq-link">Reference Systems</h:link>
+                        </ui:remove>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +58,7 @@ public class TblIdentStatus implements Serializable {
     @Column(name = "status")
     private String status;
     @OneToMany(mappedBy = "identStatusId", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblIdentStatus() {
     }
@@ -89,12 +89,12 @@ public class TblIdentStatus implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,9 +56,9 @@ public class TblPhenology implements Serializable {
     @Column(name = "phenology")
     private String phenology;
     @OneToMany(mappedBy = "phenologyId", fetch = FetchType.LAZY)
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    private List<TblBotanicalObject> tblBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId", fetch = FetchType.LAZY)
-    private Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection;
+    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
 
     public TblPhenology() {
     }
@@ -84,21 +84,21 @@ public class TblPhenology implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @XmlTransient
-    public Collection<TblDerivativeVegetative> getTblDerivativeVegetativeCollection() {
-        return tblDerivativeVegetativeCollection;
+    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
+        return tblDerivativeVegetativeList;
     }
 
-    public void setTblDerivativeVegetativeCollection(Collection<TblDerivativeVegetative> tblDerivativeVegetativeCollection) {
-        this.tblDerivativeVegetativeCollection = tblDerivativeVegetativeCollection;
+    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
+        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
     }
 
     @Override

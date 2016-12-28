@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,7 +87,7 @@ public class TblLocationCoordinates implements Serializable {
     @Column(name = "longitude_half")
     private String longitudeHalf;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationCoordinatesId", fetch = FetchType.LAZY)
-    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    private List<TblAcquisitionEvent> tblAcquisitionEventList;
 
     public TblLocationCoordinates() {
     }
@@ -193,12 +193,12 @@ public class TblLocationCoordinates implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
-        return tblAcquisitionEventCollection;
+    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
+        return tblAcquisitionEventList;
     }
 
-    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
-        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
+        this.tblAcquisitionEventList = tblAcquisitionEventList;
     }
 
     @Override

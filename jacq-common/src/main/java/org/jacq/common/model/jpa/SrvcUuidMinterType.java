@@ -16,8 +16,8 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,7 +66,7 @@ public class SrvcUuidMinterType implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId", fetch = FetchType.LAZY)
-    private Collection<SrvcUuidMinter> srvcUuidMinterCollection;
+    private List<SrvcUuidMinter> srvcUuidMinterList;
 
     public SrvcUuidMinterType() {
     }
@@ -106,12 +106,12 @@ public class SrvcUuidMinterType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SrvcUuidMinter> getSrvcUuidMinterCollection() {
-        return srvcUuidMinterCollection;
+    public List<SrvcUuidMinter> getSrvcUuidMinterList() {
+        return srvcUuidMinterList;
     }
 
-    public void setSrvcUuidMinterCollection(Collection<SrvcUuidMinter> srvcUuidMinterCollection) {
-        this.srvcUuidMinterCollection = srvcUuidMinterCollection;
+    public void setSrvcUuidMinterList(List<SrvcUuidMinter> srvcUuidMinterList) {
+        this.srvcUuidMinterList = srvcUuidMinterList;
     }
 
     @Override

@@ -16,7 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,9 +68,9 @@ public class TblAcquisitionDate implements Serializable {
     @Column(name = "custom")
     private String custom;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionDateId", fetch = FetchType.LAZY)
-    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    private List<TblAcquisitionEvent> tblAcquisitionEventList;
     @OneToMany(mappedBy = "incomingDateId", fetch = FetchType.LAZY)
-    private Collection<TblLivingPlant> tblLivingPlantCollection;
+    private List<TblLivingPlant> tblLivingPlantList;
 
     public TblAcquisitionDate() {
     }
@@ -120,21 +120,21 @@ public class TblAcquisitionDate implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
-        return tblAcquisitionEventCollection;
+    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
+        return tblAcquisitionEventList;
     }
 
-    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
-        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
+        this.tblAcquisitionEventList = tblAcquisitionEventList;
     }
 
     @XmlTransient
-    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
-        return tblLivingPlantCollection;
+    public List<TblLivingPlant> getTblLivingPlantList() {
+        return tblLivingPlantList;
     }
 
-    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
-        this.tblLivingPlantCollection = tblLivingPlantCollection;
+    public void setTblLivingPlantList(List<TblLivingPlant> tblLivingPlantList) {
+        this.tblLivingPlantList = tblLivingPlantList;
     }
 
     @Override

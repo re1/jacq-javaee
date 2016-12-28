@@ -12,18 +12,18 @@
             <h:form id="jacq_searchform" styleClass="jacq-searchform">
                 <div class="row">
                     <div class="col-md-6">
-                        <p:inputText id="scientific_name" placeholder="Scientific Name" value="#{searchController.scientificName}">
+                        <p:inputText id="scientific_name" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}">
                         </p:inputText>
                         <p:message for="scientific_name" />
                     </div>
                     <div class="col-md-6">
-                        <p:inputText id="organization" placeholder="Organization" value="#{searchController.organization}" />
+                        <p:inputText id="organization" placeholder="Standort im Garten" value="#{searchController.organization}" />
                         <p:message for="organization" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <p:outputLabel for="has_image" value="With images" />
+                        <p:outputLabel for="has_image" value="Mit Bildern" />
                         <p:selectBooleanCheckbox id="has_image" value="#{searchController.hasImage}" />
                         <p:message for="has_image" />
                     </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <p:commandButton id="search_button" value="Search" action="#{searchController.search()}" />
+                        <p:commandButton id="search_button" value="Suche" action="#{searchController.search()}" />
                     </div>
                 </div>
 
