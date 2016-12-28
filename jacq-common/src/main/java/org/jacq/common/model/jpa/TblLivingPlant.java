@@ -59,7 +59,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate")
     , @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId")
     , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
-    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")})
+    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")
+    , @NamedQuery(name = "TblLivingPlant.findByHasImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasImage = :hasImage")
+    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")
+    , @NamedQuery(name = "TblLivingPlant.resetImageStatus", query = "UPDATE TblLivingPlant t SET t.hasImage = FALSE, t.hasPublicImage = FALSE WHERE t.tblBotanicalObject IN ( SELECT tbo FROM TblBotanicalObject tbo WHERE tbo.organisationId IN (:organisations) )")})
 public class TblLivingPlant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -115,6 +118,14 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "reviewed")
     private boolean reviewed;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_image")
+    private boolean hasImage;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_public_image")
+    private boolean hasPublicImage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
@@ -147,7 +158,7 @@ public class TblLivingPlant implements Serializable {
         this.id = id;
     }
 
-    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed) {
+    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -156,6 +167,8 @@ public class TblLivingPlant implements Serializable {
         this.indexSeminum = indexSeminum;
         this.bgci = bgci;
         this.reviewed = reviewed;
+        this.hasImage = hasImage;
+        this.hasPublicImage = hasPublicImage;
     }
 
     public Long getId() {
@@ -268,6 +281,22 @@ public class TblLivingPlant implements Serializable {
 
     public void setReviewed(boolean reviewed) {
         this.reviewed = reviewed;
+    }
+
+    public boolean getHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public boolean getHasPublicImage() {
+        return hasPublicImage;
+    }
+
+    public void setHasPublicImage(boolean hasPublicImage) {
+        this.hasPublicImage = hasPublicImage;
     }
 
     @XmlTransient

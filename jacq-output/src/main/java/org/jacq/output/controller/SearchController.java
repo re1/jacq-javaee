@@ -61,11 +61,11 @@ public class SearchController {
     }
 
     public Boolean getHasImage() {
-        return sessionManager.getHasImage();
+        return this.dataModel.getHasImage();
     }
 
     public void setHasImage(Boolean hasImage) {
-        sessionManager.setHasImage(hasImage);
+        this.dataModel.setHasImage(hasImage);
     }
 
     public LazyBotanicalObjectDataModel getDataModel() {

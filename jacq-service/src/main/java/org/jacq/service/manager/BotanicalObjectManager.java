@@ -111,6 +111,9 @@ public class BotanicalObjectManager {
      */
     @Transactional
     public int searchCount(String scientificName, String organization, Boolean hasImage) {
+        // synchronize image server flags
+        imageServerManager.synchronizeImageFlags();
+
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -188,7 +191,8 @@ public class BotanicalObjectManager {
 
         // check if we are searching for results which only contain images
         if (hasImage) {
-            path = bo.get("hasImage");
+            Join<TblBotanicalObject, TblLivingPlant> tblLivingPlant = bo.join("tblLivingPlant", JoinType.LEFT);
+            path = tblLivingPlant.get("hasPublicImage");
             predicates.add(cb.equal(path, 1));
         }
 

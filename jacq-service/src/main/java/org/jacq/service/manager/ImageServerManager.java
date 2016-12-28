@@ -28,10 +28,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.ImageServerResource;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblImageServer;
+import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.service.rest.ImageServer;
 import org.jacq.service.util.ServicesUtil;
@@ -124,6 +126,7 @@ public class ImageServerManager {
     /**
      * Helper function for synchronizing image server content with has-image flags in botanical object list
      */
+    @Transactional
     public void synchronizeImageFlags() {
         // find all image servers
         TypedQuery<TblImageServer> imageServerQuery = em.createNamedQuery("TblImageServer.findAll", TblImageServer.class);
@@ -160,9 +163,11 @@ public class ImageServerManager {
                 // check if resources were returned
                 if (foundResources != null) {
                     // reset has image info for all objects within this image server hierarchy
-                    Query resetImageStatusQuery = em.createNamedQuery("TblBotanicalObject.resetImageStatus");
+                    Query resetImageStatusQuery = em.createNamedQuery("TblLivingPlant.resetImageStatus");
+                    resetImageStatusQuery.setParameter("organisations", findOrganisations(tblImageServer));
                     resetImageStatusQuery.executeUpdate();
 
+                    // now iterate over returned resources and update image status for those objects
                     for (int i = 0; i < foundResources.size(); i++) {
                         JsonObject resourceInfo = foundResources.getJsonObject(i);
                         // resourceInfo.getString("public")
@@ -170,6 +175,17 @@ public class ImageServerManager {
 
                         // TODO: this logic only works for living plants right now, we need to define this in a more generic way
                         String identifier = resourceInfo.getString("identifier");
+                        identifier = identifier.split("_")[0];
+
+                        // find living plant for identifier and update image status
+                        TypedQuery<TblLivingPlant> livingPlantQuery = em.createNamedQuery("TblLivingPlant.findByAccessionNumber", TblLivingPlant.class);
+                        livingPlantQuery.setParameter("accessionNumber", Integer.parseInt(identifier));
+                        TblLivingPlant livingPlant = livingPlantQuery.getSingleResult();
+                        livingPlant.setHasImage(true);
+                        if (resourceInfo.getString("public").equals("1")) {
+                            livingPlant.setHasPublicImage(true);
+                        }
+                        em.persist(livingPlant);
                     }
                 }
             }

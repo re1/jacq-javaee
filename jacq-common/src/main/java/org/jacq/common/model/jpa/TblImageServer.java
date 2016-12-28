@@ -44,12 +44,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t")
     , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
-    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
+    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")
+    , @NamedQuery(name = "TblImageServer.findByLastSynchronized", query = "SELECT t FROM TblImageServer t WHERE t.lastSynchronized = :lastSynchronized")})
 public class TblImageServer implements Serializable {
-
-    @Column(name = "last_synchronized")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastSynchronized;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,6 +65,9 @@ public class TblImageServer implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "key")
     private String key;
+    @Column(name = "last_synchronized")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastSynchronized;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
@@ -109,6 +109,14 @@ public class TblImageServer implements Serializable {
         this.key = key;
     }
 
+    public Date getLastSynchronized() {
+        return lastSynchronized;
+    }
+
+    public void setLastSynchronized(Date lastSynchronized) {
+        this.lastSynchronized = lastSynchronized;
+    }
+
     public TblOrganisation getTblOrganisation() {
         return tblOrganisation;
     }
@@ -140,14 +148,6 @@ public class TblImageServer implements Serializable {
     @Override
     public String toString() {
         return "org.jacq.common.model.jpa.TblImageServer[ organisationId=" + organisationId + " ]";
-    }
-
-    public Date getLastSynchronized() {
-        return lastSynchronized;
-    }
-
-    public void setLastSynchronized(Date lastSynchronized) {
-        this.lastSynchronized = lastSynchronized;
     }
 
 }
