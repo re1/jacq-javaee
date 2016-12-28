@@ -26,6 +26,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.ImageServerResource;
 import org.jacq.common.model.jpa.TblBotanicalObject;
@@ -123,7 +125,55 @@ public class ImageServerManager {
      * Helper function for synchronizing image server content with has-image flags in botanical object list
      */
     public void synchronizeImageFlags() {
+        // find all image servers
+        TypedQuery<TblImageServer> imageServerQuery = em.createNamedQuery("TblImageServer.findAll", TblImageServer.class);
+        List<TblImageServer> imageServers = imageServerQuery.getResultList();
 
+        // now process each server
+        for (TblImageServer tblImageServer : imageServers) {
+            // create proxy object to image server
+            ImageServer imageServer = ServicesUtil.getImageServer(tblImageServer.getBaseUrl());
+
+            // query image server for all resources
+            JsonObject request = Json.createObjectBuilder()
+                    .add("id", "1")
+                    .add("method", "listResources")
+                    .add("params", Json.createArrayBuilder()
+                            .add(tblImageServer.getKey())
+                            .add(Json.createArrayBuilder()
+                                    .add("%")
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build();
+
+            // run query & parse response
+            Response response = imageServer.request(request);
+            String responseString = response.readEntity(String.class);
+            JsonObject responseObject = Json.createReader(new StringReader(responseString)).readObject();
+
+            // check for valid response
+            if (responseObject != null) {
+                JsonArray foundResources = responseObject.getJsonArray("result");
+
+                // check if resources were returned
+                if (foundResources != null) {
+                    // reset has image info for all objects within this image server hierarchy
+                    Query resetImageStatusQuery = em.createNamedQuery("TblBotanicalObject.resetImageStatus");
+                    resetImageStatusQuery.executeUpdate();
+
+                    for (int i = 0; i < foundResources.size(); i++) {
+                        JsonObject resourceInfo = foundResources.getJsonObject(i);
+                        // resourceInfo.getString("public")
+                        // resourceInfo.getString("identifier")
+
+                        // TODO: this logic only works for living plants right now, we need to define this in a more generic way
+                        String identifier = resourceInfo.getString("identifier");
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -144,5 +194,45 @@ public class ImageServerManager {
         else {
             return findImageServer(organisation.getParentOrganisationId());
         }
+    }
+
+    /**
+     * Finds all organisations handled by an image server
+     *
+     * @param imageServer
+     * @return
+     */
+    protected List<TblOrganisation> findOrganisations(TblImageServer imageServer) {
+        List<TblOrganisation> organisations = new ArrayList<>();
+
+        // start with the organisation directly assigned
+        organisations.add(imageServer.getTblOrganisation());
+
+        // now handle all assigned organisations
+        organisations.addAll(traverseOrganisations(imageServer.getTblOrganisation()));
+
+        return organisations;
+    }
+
+    /**
+     * Find all organisations belonging to a partial organisations tree, taking into account image-server assignments
+     *
+     * @param parentOrganisation
+     * @return
+     */
+    protected List<TblOrganisation> traverseOrganisations(TblOrganisation parentOrganisation) {
+        List<TblOrganisation> organisations = new ArrayList<>();
+
+        // iterate over childs and check for overwriting image server
+        for (TblOrganisation organisation : parentOrganisation.getTblOrganisationList()) {
+            if (organisation.getTblImageServer() == null) {
+                organisations.add(organisation);
+
+                // now add all childs
+                organisations.addAll(traverseOrganisations(organisation));
+            }
+        }
+
+        return organisations;
     }
 }

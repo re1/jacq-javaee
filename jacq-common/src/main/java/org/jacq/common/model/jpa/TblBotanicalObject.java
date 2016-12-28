@@ -61,7 +61,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible")
     , @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine")
     , @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")
-    , @NamedQuery(name = "TblBotanicalObject.findByHasImage", query = "SELECT t FROM TblBotanicalObject t WHERE t.hasImage = :hasImage")})
+    , @NamedQuery(name = "TblBotanicalObject.findByHasImage", query = "SELECT t FROM TblBotanicalObject t WHERE t.hasImage = :hasImage")
+    , @NamedQuery(name = "TblBotanicalObject.findByHasPublicImage", query = "SELECT t FROM TblBotanicalObject t WHERE t.hasPublicImage = :hasPublicImage")
+    , @NamedQuery(name = "TblBotanicalObject.resetImageStatus", query = "UPDATE TblBotanicalObject t SET t.hasImage = FALSE, t.hasPublicImage = FALSE")
+})
 public class TblBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -108,6 +111,10 @@ public class TblBotanicalObject implements Serializable {
     @NotNull
     @Column(name = "has_image")
     private boolean hasImage;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_public_image")
+    private boolean hasPublicImage;
     @JoinTable(name = "tbl_botanical_object_label", joinColumns = {
         @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
@@ -152,7 +159,7 @@ public class TblBotanicalObject implements Serializable {
         this.id = id;
     }
 
-    public TblBotanicalObject(Long id, int scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated, boolean hasImage) {
+    public TblBotanicalObject(Long id, int scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated, boolean hasImage, boolean hasPublicImage) {
         this.id = id;
         this.scientificNameId = scientificNameId;
         this.recordingDate = recordingDate;
@@ -160,6 +167,7 @@ public class TblBotanicalObject implements Serializable {
         this.redetermine = redetermine;
         this.separated = separated;
         this.hasImage = hasImage;
+        this.hasPublicImage = hasPublicImage;
     }
 
     public Long getId() {
@@ -248,6 +256,14 @@ public class TblBotanicalObject implements Serializable {
 
     public void setHasImage(boolean hasImage) {
         this.hasImage = hasImage;
+    }
+
+    public boolean getHasPublicImage() {
+        return hasPublicImage;
+    }
+
+    public void setHasPublicImage(boolean hasPublicImage) {
+        this.hasPublicImage = hasPublicImage;
     }
 
     @XmlTransient
