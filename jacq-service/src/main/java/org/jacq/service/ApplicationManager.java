@@ -11,6 +11,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.IReportEngine;
@@ -35,6 +36,12 @@ public class ApplicationManager {
     protected IReportEngine reportEngine;
 
     /**
+     * Application scoped timer manager for running schedulded jobs
+     */
+    @Inject
+    protected TimerManager timerManager;
+
+    /**
      * Construct and initiate the required components for application wide use
      */
     @PostConstruct
@@ -44,7 +51,7 @@ public class ApplicationManager {
             engineConfig = new EngineConfig();
             engineConfig.setEngineHome("/opt/birt-runtime-4_4_2");
             engineConfig.setLogConfig("/tmp/birt", Level.FINE);
-            
+
             Platform.startup(engineConfig);
 
             final IReportEngineFactory FACTORY = (IReportEngineFactory) Platform.
