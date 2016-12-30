@@ -111,9 +111,6 @@ public class BotanicalObjectManager {
      */
     @Transactional
     public int searchCount(String scientificName, String organization, Boolean hasImage) {
-        // synchronize image server flags
-        imageServerManager.synchronizeImageFlags();
-
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);

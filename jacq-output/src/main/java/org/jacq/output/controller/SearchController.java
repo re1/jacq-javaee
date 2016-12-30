@@ -17,9 +17,7 @@ package org.jacq.output.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.output.SessionManager;
 import org.jacq.output.util.ServicesUtil;
@@ -79,6 +77,15 @@ public class SearchController {
      */
     public String search() {
         return "results";
+    }
+
+    /**
+     * Noop action listener for refreshing the row count after loading the data-table
+     *
+     * @return
+     */
+    public String updateRowCount() {
+        return null;
     }
 
 }
