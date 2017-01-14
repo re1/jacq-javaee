@@ -16,11 +16,12 @@
 package org.jacq.common.model.names;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Transient;
 import javax.validation.Valid;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Pojo for all information of a common name
@@ -29,25 +30,25 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CommonName {
 
-    public String id;
+    public Long id;
     public String name;
     @Valid
-    public List<String> type = new ArrayList<>();
+    public List<String> type = Arrays.asList("/name/common");
     public String language;
     public String geography;
     public String period;
     public String taxon;
     public Long score;
     public Boolean match;
-    public String taxonId;
+    public Long taxonId;
     @Valid
     public List<String> references = new ArrayList<>();
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -115,11 +116,11 @@ public class CommonName {
         this.match = match;
     }
 
-    public String getTaxonId() {
+    public Long getTaxonId() {
         return taxonId;
     }
 
-    public void setTaxonId(String taxonId) {
+    public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
     }
 
@@ -136,8 +137,7 @@ public class CommonName {
     }
 
     /**
-     * Helper function for creating a unique hash which is used for quickly
-     * deduplicating during result fetching
+     * Helper function for creating a unique hash which is used for quickly deduplicating during result fetching
      *
      * @return
      */

@@ -1,17 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,24 +47,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_user")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkUser.findAll", query = "SELECT f FROM FrmwrkUser f"),
-    @NamedQuery(name = "FrmwrkUser.findById", query = "SELECT f FROM FrmwrkUser f WHERE f.id = :id"),
-    @NamedQuery(name = "FrmwrkUser.findByUsername", query = "SELECT f FROM FrmwrkUser f WHERE f.username = :username"),
-    @NamedQuery(name = "FrmwrkUser.findByPassword", query = "SELECT f FROM FrmwrkUser f WHERE f.password = :password"),
-    @NamedQuery(name = "FrmwrkUser.findBySalt", query = "SELECT f FROM FrmwrkUser f WHERE f.salt = :salt"),
-    @NamedQuery(name = "FrmwrkUser.findByTitlePrefix", query = "SELECT f FROM FrmwrkUser f WHERE f.titlePrefix = :titlePrefix"),
-    @NamedQuery(name = "FrmwrkUser.findByFirstname", query = "SELECT f FROM FrmwrkUser f WHERE f.firstname = :firstname"),
-    @NamedQuery(name = "FrmwrkUser.findByLastname", query = "SELECT f FROM FrmwrkUser f WHERE f.lastname = :lastname"),
-    @NamedQuery(name = "FrmwrkUser.findByTitleSuffix", query = "SELECT f FROM FrmwrkUser f WHERE f.titleSuffix = :titleSuffix"),
-    @NamedQuery(name = "FrmwrkUser.findByBirthdate", query = "SELECT f FROM FrmwrkUser f WHERE f.birthdate = :birthdate"),
-    @NamedQuery(name = "FrmwrkUser.findByForcePasswordChange", query = "SELECT f FROM FrmwrkUser f WHERE f.forcePasswordChange = :forcePasswordChange")})
+    @NamedQuery(name = "FrmwrkUser.findAll", query = "SELECT f FROM FrmwrkUser f")
+    , @NamedQuery(name = "FrmwrkUser.findById", query = "SELECT f FROM FrmwrkUser f WHERE f.id = :id")
+    , @NamedQuery(name = "FrmwrkUser.findByUsername", query = "SELECT f FROM FrmwrkUser f WHERE f.username = :username")
+    , @NamedQuery(name = "FrmwrkUser.findByPassword", query = "SELECT f FROM FrmwrkUser f WHERE f.password = :password")
+    , @NamedQuery(name = "FrmwrkUser.findBySalt", query = "SELECT f FROM FrmwrkUser f WHERE f.salt = :salt")
+    , @NamedQuery(name = "FrmwrkUser.findByTitlePrefix", query = "SELECT f FROM FrmwrkUser f WHERE f.titlePrefix = :titlePrefix")
+    , @NamedQuery(name = "FrmwrkUser.findByFirstname", query = "SELECT f FROM FrmwrkUser f WHERE f.firstname = :firstname")
+    , @NamedQuery(name = "FrmwrkUser.findByLastname", query = "SELECT f FROM FrmwrkUser f WHERE f.lastname = :lastname")
+    , @NamedQuery(name = "FrmwrkUser.findByTitleSuffix", query = "SELECT f FROM FrmwrkUser f WHERE f.titleSuffix = :titleSuffix")
+    , @NamedQuery(name = "FrmwrkUser.findByBirthdate", query = "SELECT f FROM FrmwrkUser f WHERE f.birthdate = :birthdate")
+    , @NamedQuery(name = "FrmwrkUser.findByForcePasswordChange", query = "SELECT f FROM FrmwrkUser f WHERE f.forcePasswordChange = :forcePasswordChange")})
 public class FrmwrkUser implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
@@ -92,40 +104,38 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblOrganisation organisationId;
-    @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
-    @ManyToOne(optional = false)
-    private FrmwrkUserType userTypeId;
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
+    @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
+    private List<TblOrganisation> tblOrganisationList;
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<TblInventory> tblInventoryList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser", fetch = FetchType.LAZY)
+    private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<TblIndexSeminumRevision> tblIndexSeminumRevisionList;
     @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkEmploymentType employmentTypeId;
-    @OneToMany(mappedBy = "userId")
-    private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<TblInventory> tblInventoryCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
-    private Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection;
-    @OneToMany(mappedBy = "gardenerId")
-    private Collection<TblOrganisation> tblOrganisationCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
-    private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private FrmwrkUserType userTypeId;
+    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblOrganisation organisationId;
 
     public FrmwrkUser() {
     }
 
-    public FrmwrkUser(Integer id) {
+    public FrmwrkUser(Long id) {
         this.id = id;
     }
 
-    public FrmwrkUser(Integer id, String username, String password, String salt, String firstname, String lastname, boolean forcePasswordChange) {
+    public FrmwrkUser(Long id, String username, String password, String salt, String firstname, String lastname, boolean forcePasswordChange) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -135,11 +145,11 @@ public class FrmwrkUser implements Serializable {
         this.forcePasswordChange = forcePasswordChange;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -215,20 +225,67 @@ public class FrmwrkUser implements Serializable {
         this.forcePasswordChange = forcePasswordChange;
     }
 
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
+    @XmlTransient
+    public List<FrmwrkaccessClassification> getFrmwrkaccessClassificationList() {
+        return frmwrkaccessClassificationList;
     }
 
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
+    public void setFrmwrkaccessClassificationList(List<FrmwrkaccessClassification> frmwrkaccessClassificationList) {
+        this.frmwrkaccessClassificationList = frmwrkaccessClassificationList;
     }
 
-    public FrmwrkUserType getUserTypeId() {
-        return userTypeId;
+    @XmlTransient
+    public List<TblOrganisation> getTblOrganisationList() {
+        return tblOrganisationList;
     }
 
-    public void setUserTypeId(FrmwrkUserType userTypeId) {
-        this.userTypeId = userTypeId;
+    public void setTblOrganisationList(List<TblOrganisation> tblOrganisationList) {
+        this.tblOrganisationList = tblOrganisationList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
+        return frmwrkaccessOrganisationList;
+    }
+
+    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
+        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
+    }
+
+    @XmlTransient
+    public List<TblInventory> getTblInventoryList() {
+        return tblInventoryList;
+    }
+
+    public void setTblInventoryList(List<TblInventory> tblInventoryList) {
+        this.tblInventoryList = tblInventoryList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentList() {
+        return frmwrkAuthAssignmentList;
+    }
+
+    public void setFrmwrkAuthAssignmentList(List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList) {
+        this.frmwrkAuthAssignmentList = frmwrkAuthAssignmentList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
+    }
+
+    @XmlTransient
+    public List<TblIndexSeminumRevision> getTblIndexSeminumRevisionList() {
+        return tblIndexSeminumRevisionList;
+    }
+
+    public void setTblIndexSeminumRevisionList(List<TblIndexSeminumRevision> tblIndexSeminumRevisionList) {
+        this.tblIndexSeminumRevisionList = tblIndexSeminumRevisionList;
     }
 
     public FrmwrkEmploymentType getEmploymentTypeId() {
@@ -239,76 +296,20 @@ public class FrmwrkUser implements Serializable {
         this.employmentTypeId = employmentTypeId;
     }
 
-    @XmlTransient
-    public Collection<FrmwrkaccessClassification> getFrmwrkaccessClassificationCollection() {
-        return frmwrkaccessClassificationCollection;
+    public FrmwrkUserType getUserTypeId() {
+        return userTypeId;
     }
 
-    public void setFrmwrkaccessClassificationCollection(Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection) {
-        this.frmwrkaccessClassificationCollection = frmwrkaccessClassificationCollection;
+    public void setUserTypeId(FrmwrkUserType userTypeId) {
+        this.userTypeId = userTypeId;
     }
 
-    @XmlTransient
-    public Collection<TblInventory> getTblInventoryCollection() {
-        return tblInventoryCollection;
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
     }
 
-    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
-        this.tblInventoryCollection = tblInventoryCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblIndexSeminumRevision> getTblIndexSeminumRevisionCollection() {
-        return tblIndexSeminumRevisionCollection;
-    }
-
-    public void setTblIndexSeminumRevisionCollection(Collection<TblIndexSeminumRevision> tblIndexSeminumRevisionCollection) {
-        this.tblIndexSeminumRevisionCollection = tblIndexSeminumRevisionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Frmwrk2AuthAssignment> getFrmwrk2AuthAssignmentCollection() {
-        return frmwrk2AuthAssignmentCollection;
-    }
-
-    public void setFrmwrk2AuthAssignmentCollection(Collection<Frmwrk2AuthAssignment> frmwrk2AuthAssignmentCollection) {
-        this.frmwrk2AuthAssignmentCollection = frmwrk2AuthAssignmentCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblOrganisation> getTblOrganisationCollection() {
-        return tblOrganisationCollection;
-    }
-
-    public void setTblOrganisationCollection(Collection<TblOrganisation> tblOrganisationCollection) {
-        this.tblOrganisationCollection = tblOrganisationCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
-        return frmwrkaccessOrganisationCollection;
-    }
-
-    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
-        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentCollection() {
-        return frmwrkAuthAssignmentCollection;
-    }
-
-    public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
-        this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
     }
 
     @Override

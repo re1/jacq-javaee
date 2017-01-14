@@ -1,15 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,41 +41,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_label_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLabelType.findAll", query = "SELECT t FROM TblLabelType t"),
-    @NamedQuery(name = "TblLabelType.findByLabelTypeId", query = "SELECT t FROM TblLabelType t WHERE t.labelTypeId = :labelTypeId"),
-    @NamedQuery(name = "TblLabelType.findByType", query = "SELECT t FROM TblLabelType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblLabelType.findAll", query = "SELECT t FROM TblLabelType t")
+    , @NamedQuery(name = "TblLabelType.findByLabelTypeId", query = "SELECT t FROM TblLabelType t WHERE t.labelTypeId = :labelTypeId")
+    , @NamedQuery(name = "TblLabelType.findByType", query = "SELECT t FROM TblLabelType t WHERE t.type = :type")})
 public class TblLabelType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "label_type_id")
-    private Integer labelTypeId;
+    private Long labelTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
     @Column(name = "type")
     private String type;
-    @ManyToMany(mappedBy = "tblLabelTypeCollection")
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    @ManyToMany(mappedBy = "tblLabelTypeList", fetch = FetchType.LAZY)
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblLabelType() {
     }
 
-    public TblLabelType(Integer labelTypeId) {
+    public TblLabelType(Long labelTypeId) {
         this.labelTypeId = labelTypeId;
     }
 
-    public TblLabelType(Integer labelTypeId, String type) {
+    public TblLabelType(Long labelTypeId, String type) {
         this.labelTypeId = labelTypeId;
         this.type = type;
     }
 
-    public Integer getLabelTypeId() {
+    public Long getLabelTypeId() {
         return labelTypeId;
     }
 
-    public void setLabelTypeId(Integer labelTypeId) {
+    public void setLabelTypeId(Long labelTypeId) {
         this.labelTypeId = labelTypeId;
     }
 
@@ -77,12 +89,12 @@ public class TblLabelType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,41 +42,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_employment_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkEmploymentType.findAll", query = "SELECT f FROM FrmwrkEmploymentType f"),
-    @NamedQuery(name = "FrmwrkEmploymentType.findByEmploymentTypeId", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.employmentTypeId = :employmentTypeId"),
-    @NamedQuery(name = "FrmwrkEmploymentType.findByType", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkEmploymentType.findAll", query = "SELECT f FROM FrmwrkEmploymentType f")
+    , @NamedQuery(name = "FrmwrkEmploymentType.findByEmploymentTypeId", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.employmentTypeId = :employmentTypeId")
+    , @NamedQuery(name = "FrmwrkEmploymentType.findByType", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.type = :type")})
 public class FrmwrkEmploymentType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "employment_type_id")
-    private Integer employmentTypeId;
+    private Long employmentTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employmentTypeId")
-    private Collection<FrmwrkUser> frmwrkUserCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employmentTypeId", fetch = FetchType.LAZY)
+    private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkEmploymentType() {
     }
 
-    public FrmwrkEmploymentType(Integer employmentTypeId) {
+    public FrmwrkEmploymentType(Long employmentTypeId) {
         this.employmentTypeId = employmentTypeId;
     }
 
-    public FrmwrkEmploymentType(Integer employmentTypeId, String type) {
+    public FrmwrkEmploymentType(Long employmentTypeId, String type) {
         this.employmentTypeId = employmentTypeId;
         this.type = type;
     }
 
-    public Integer getEmploymentTypeId() {
+    public Long getEmploymentTypeId() {
         return employmentTypeId;
     }
 
-    public void setEmploymentTypeId(Integer employmentTypeId) {
+    public void setEmploymentTypeId(Long employmentTypeId) {
         this.employmentTypeId = employmentTypeId;
     }
 
@@ -78,12 +90,12 @@ public class FrmwrkEmploymentType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
-        return frmwrkUserCollection;
+    public List<FrmwrkUser> getFrmwrkUserList() {
+        return frmwrkUserList;
     }
 
-    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
-        this.frmwrkUserCollection = frmwrkUserCollection;
+    public void setFrmwrkUserList(List<FrmwrkUser> frmwrkUserList) {
+        this.frmwrkUserList = frmwrkUserList;
     }
 
     @Override

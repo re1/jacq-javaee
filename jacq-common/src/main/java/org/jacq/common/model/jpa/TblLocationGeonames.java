@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -9,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -28,17 +39,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_location_geonames")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLocationGeonames.findAll", query = "SELECT t FROM TblLocationGeonames t"),
-    @NamedQuery(name = "TblLocationGeonames.findById", query = "SELECT t FROM TblLocationGeonames t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLocationGeonames.findByGeonameId", query = "SELECT t FROM TblLocationGeonames t WHERE t.geonameId = :geonameId"),
-    @NamedQuery(name = "TblLocationGeonames.findByCountryCode", query = "SELECT t FROM TblLocationGeonames t WHERE t.countryCode = :countryCode")})
+    @NamedQuery(name = "TblLocationGeonames.findAll", query = "SELECT t FROM TblLocationGeonames t")
+    , @NamedQuery(name = "TblLocationGeonames.findById", query = "SELECT t FROM TblLocationGeonames t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLocationGeonames.findByGeonameId", query = "SELECT t FROM TblLocationGeonames t WHERE t.geonameId = :geonameId")
+    , @NamedQuery(name = "TblLocationGeonames.findByCountryCode", query = "SELECT t FROM TblLocationGeonames t WHERE t.countryCode = :countryCode")})
 public class TblLocationGeonames implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -55,28 +67,28 @@ public class TblLocationGeonames implements Serializable {
     @Column(name = "countryCode")
     private String countryCode;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblLocation tblLocation;
 
     public TblLocationGeonames() {
     }
 
-    public TblLocationGeonames(Integer id) {
+    public TblLocationGeonames(Long id) {
         this.id = id;
     }
 
-    public TblLocationGeonames(Integer id, String serviceData, int geonameId, String countryCode) {
+    public TblLocationGeonames(Long id, String serviceData, int geonameId, String countryCode) {
         this.id = id;
         this.serviceData = serviceData;
         this.geonameId = geonameId;
         this.countryCode = countryCode;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

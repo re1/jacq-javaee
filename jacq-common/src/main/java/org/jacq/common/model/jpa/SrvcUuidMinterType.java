@@ -1,17 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,17 +43,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "srvc_uuid_minter_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SrvcUuidMinterType.findAll", query = "SELECT s FROM SrvcUuidMinterType s"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByUuidMinterTypeId", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.uuidMinterTypeId = :uuidMinterTypeId"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByDescription", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.description = :description"),
-    @NamedQuery(name = "SrvcUuidMinterType.findByTimestamp", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.timestamp = :timestamp")})
+    @NamedQuery(name = "SrvcUuidMinterType.findAll", query = "SELECT s FROM SrvcUuidMinterType s")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByUuidMinterTypeId", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.uuidMinterTypeId = :uuidMinterTypeId")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByDescription", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.description = :description")
+    , @NamedQuery(name = "SrvcUuidMinterType.findByTimestamp", query = "SELECT s FROM SrvcUuidMinterType s WHERE s.timestamp = :timestamp")})
 public class SrvcUuidMinterType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "uuid_minter_type_id")
-    private Integer uuidMinterTypeId;
+    private Long uuidMinterTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -53,27 +65,27 @@ public class SrvcUuidMinterType implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId")
-    private Collection<SrvcUuidMinter> srvcUuidMinterCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId", fetch = FetchType.LAZY)
+    private List<SrvcUuidMinter> srvcUuidMinterList;
 
     public SrvcUuidMinterType() {
     }
 
-    public SrvcUuidMinterType(Integer uuidMinterTypeId) {
+    public SrvcUuidMinterType(Long uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
     }
 
-    public SrvcUuidMinterType(Integer uuidMinterTypeId, String description, Date timestamp) {
+    public SrvcUuidMinterType(Long uuidMinterTypeId, String description, Date timestamp) {
         this.uuidMinterTypeId = uuidMinterTypeId;
         this.description = description;
         this.timestamp = timestamp;
     }
 
-    public Integer getUuidMinterTypeId() {
+    public Long getUuidMinterTypeId() {
         return uuidMinterTypeId;
     }
 
-    public void setUuidMinterTypeId(Integer uuidMinterTypeId) {
+    public void setUuidMinterTypeId(Long uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
     }
 
@@ -94,12 +106,12 @@ public class SrvcUuidMinterType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SrvcUuidMinter> getSrvcUuidMinterCollection() {
-        return srvcUuidMinterCollection;
+    public List<SrvcUuidMinter> getSrvcUuidMinterList() {
+        return srvcUuidMinterList;
     }
 
-    public void setSrvcUuidMinterCollection(Collection<SrvcUuidMinter> srvcUuidMinterCollection) {
-        this.srvcUuidMinterCollection = srvcUuidMinterCollection;
+    public void setSrvcUuidMinterList(List<SrvcUuidMinter> srvcUuidMinterList) {
+        this.srvcUuidMinterList = srvcUuidMinterList;
     }
 
     @Override

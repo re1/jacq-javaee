@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,34 +41,35 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionType.findAll", query = "SELECT t FROM TblAcquisitionType t"),
-    @NamedQuery(name = "TblAcquisitionType.findById", query = "SELECT t FROM TblAcquisitionType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAcquisitionType.findByType", query = "SELECT t FROM TblAcquisitionType t WHERE t.type = :type")})
+    @NamedQuery(name = "TblAcquisitionType.findAll", query = "SELECT t FROM TblAcquisitionType t")
+    , @NamedQuery(name = "TblAcquisitionType.findById", query = "SELECT t FROM TblAcquisitionType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblAcquisitionType.findByType", query = "SELECT t FROM TblAcquisitionType t WHERE t.type = :type")})
 public class TblAcquisitionType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionTypeId")
-    private Collection<TblAcquisitionEvent> tblAcquisitionEventCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionTypeId", fetch = FetchType.LAZY)
+    private List<TblAcquisitionEvent> tblAcquisitionEventList;
 
     public TblAcquisitionType() {
     }
 
-    public TblAcquisitionType(Integer id) {
+    public TblAcquisitionType(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -70,12 +82,12 @@ public class TblAcquisitionType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEvent> getTblAcquisitionEventCollection() {
-        return tblAcquisitionEventCollection;
+    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
+        return tblAcquisitionEventList;
     }
 
-    public void setTblAcquisitionEventCollection(Collection<TblAcquisitionEvent> tblAcquisitionEventCollection) {
-        this.tblAcquisitionEventCollection = tblAcquisitionEventCollection;
+    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
+        this.tblAcquisitionEventList = tblAcquisitionEventList;
     }
 
     @Override

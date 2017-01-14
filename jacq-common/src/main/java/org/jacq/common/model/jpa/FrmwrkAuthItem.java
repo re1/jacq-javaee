@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,10 +44,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_AuthItem")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkAuthItem.findAll", query = "SELECT f FROM FrmwrkAuthItem f"),
-    @NamedQuery(name = "FrmwrkAuthItem.findByName", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.name = :name"),
-    @NamedQuery(name = "FrmwrkAuthItem.findByType", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkAuthItem.findAll", query = "SELECT f FROM FrmwrkAuthItem f")
+    , @NamedQuery(name = "FrmwrkAuthItem.findByName", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.name = :name")
+    , @NamedQuery(name = "FrmwrkAuthItem.findByType", query = "SELECT f FROM FrmwrkAuthItem f WHERE f.type = :type")})
 public class FrmwrkAuthItem implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -63,18 +75,18 @@ public class FrmwrkAuthItem implements Serializable {
     @JoinTable(name = "frmwrk_AuthItemChild", joinColumns = {
         @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
         @JoinColumn(name = "child", referencedColumnName = "name")})
-    @ManyToMany
-    private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection;
-    @ManyToMany(mappedBy = "frmwrkAuthItemCollection")
-    private Collection<FrmwrkAuthItem> frmwrkAuthItemCollection1;
-    @OneToMany(mappedBy = "authItemname")
-    private Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection;
-    @OneToMany(mappedBy = "authItemname")
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
-    @OneToMany(mappedBy = "authItemname")
-    private Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem")
-    private Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<FrmwrkAuthItem> frmwrkAuthItemList;
+    @ManyToMany(mappedBy = "frmwrkAuthItemList", fetch = FetchType.LAZY)
+    private List<FrmwrkAuthItem> frmwrkAuthItemList1;
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem", fetch = FetchType.LAZY)
+    private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
 
     public FrmwrkAuthItem() {
     }
@@ -129,57 +141,57 @@ public class FrmwrkAuthItem implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkAuthItem> getFrmwrkAuthItemCollection() {
-        return frmwrkAuthItemCollection;
+    public List<FrmwrkAuthItem> getFrmwrkAuthItemList() {
+        return frmwrkAuthItemList;
     }
 
-    public void setFrmwrkAuthItemCollection(Collection<FrmwrkAuthItem> frmwrkAuthItemCollection) {
-        this.frmwrkAuthItemCollection = frmwrkAuthItemCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkAuthItem> getFrmwrkAuthItemCollection1() {
-        return frmwrkAuthItemCollection1;
-    }
-
-    public void setFrmwrkAuthItemCollection1(Collection<FrmwrkAuthItem> frmwrkAuthItemCollection1) {
-        this.frmwrkAuthItemCollection1 = frmwrkAuthItemCollection1;
+    public void setFrmwrkAuthItemList(List<FrmwrkAuthItem> frmwrkAuthItemList) {
+        this.frmwrkAuthItemList = frmwrkAuthItemList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessClassification> getFrmwrkaccessClassificationCollection() {
-        return frmwrkaccessClassificationCollection;
+    public List<FrmwrkAuthItem> getFrmwrkAuthItemList1() {
+        return frmwrkAuthItemList1;
     }
 
-    public void setFrmwrkaccessClassificationCollection(Collection<FrmwrkaccessClassification> frmwrkaccessClassificationCollection) {
-        this.frmwrkaccessClassificationCollection = frmwrkaccessClassificationCollection;
-    }
-
-    @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    public void setFrmwrkAuthItemList1(List<FrmwrkAuthItem> frmwrkAuthItemList1) {
+        this.frmwrkAuthItemList1 = frmwrkAuthItemList1;
     }
 
     @XmlTransient
-    public Collection<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationCollection() {
-        return frmwrkaccessOrganisationCollection;
+    public List<FrmwrkaccessClassification> getFrmwrkaccessClassificationList() {
+        return frmwrkaccessClassificationList;
     }
 
-    public void setFrmwrkaccessOrganisationCollection(Collection<FrmwrkaccessOrganisation> frmwrkaccessOrganisationCollection) {
-        this.frmwrkaccessOrganisationCollection = frmwrkaccessOrganisationCollection;
+    public void setFrmwrkaccessClassificationList(List<FrmwrkaccessClassification> frmwrkaccessClassificationList) {
+        this.frmwrkaccessClassificationList = frmwrkaccessClassificationList;
     }
 
     @XmlTransient
-    public Collection<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentCollection() {
-        return frmwrkAuthAssignmentCollection;
+    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
+        return frmwrkaccessOrganisationList;
     }
 
-    public void setFrmwrkAuthAssignmentCollection(Collection<FrmwrkAuthAssignment> frmwrkAuthAssignmentCollection) {
-        this.frmwrkAuthAssignmentCollection = frmwrkAuthAssignmentCollection;
+    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
+        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentList() {
+        return frmwrkAuthAssignmentList;
+    }
+
+    public void setFrmwrkAuthAssignmentList(List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList) {
+        this.frmwrkAuthAssignmentList = frmwrkAuthAssignmentList;
+    }
+
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
+    }
+
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
     }
 
     @Override

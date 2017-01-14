@@ -17,6 +17,7 @@ package org.jacq.common.rest.filter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -34,6 +35,8 @@ public class RequestDebugFilter implements ClientRequestFilter {
 
     @Override
     public void filter(ClientRequestContext crc) throws IOException {
+        LOGGER.log(Level.WARNING, "Request-URL: ''{0}''", crc.getUri().toString());
+
         for (String key : crc.getHeaders().keySet()) {
             List<Object> headers = crc.getHeaders().get(key);
 

@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -9,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,43 +39,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_diaspora")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblDiaspora.findAll", query = "SELECT t FROM TblDiaspora t"),
-    @NamedQuery(name = "TblDiaspora.findById", query = "SELECT t FROM TblDiaspora t WHERE t.id = :id")})
+    @NamedQuery(name = "TblDiaspora.findAll", query = "SELECT t FROM TblDiaspora t")
+    , @NamedQuery(name = "TblDiaspora.findById", query = "SELECT t FROM TblDiaspora t WHERE t.id = :id")})
 public class TblDiaspora implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private TblBotanicalObject tblBotanicalObject;
+    private Long id;
     @JoinColumn(name = "diaspora_bank_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblDiasporaBank diasporaBankId;
+    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private TblBotanicalObject tblBotanicalObject;
 
     public TblDiaspora() {
     }
 
-    public TblDiaspora(Integer id) {
+    public TblDiaspora(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public TblBotanicalObject getTblBotanicalObject() {
-        return tblBotanicalObject;
-    }
-
-    public void setTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-        this.tblBotanicalObject = tblBotanicalObject;
     }
 
     public TblDiasporaBank getDiasporaBankId() {
@@ -73,6 +77,14 @@ public class TblDiaspora implements Serializable {
 
     public void setDiasporaBankId(TblDiasporaBank diasporaBankId) {
         this.diasporaBankId = diasporaBankId;
+    }
+
+    public TblBotanicalObject getTblBotanicalObject() {
+        return tblBotanicalObject;
+    }
+
+    public void setTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
+        this.tblBotanicalObject = tblBotanicalObject;
     }
 
     @Override

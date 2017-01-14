@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form id="jacq_searchform" styleClass="jacq-searchform">
+                <div class="row jacq-search-row">
+                    <div class="col-md-6">
+                        <p:inputText id="scientific_name" styleClass="jacq-search-full" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}"/>
+                        <p:message for="scientific_name" />
+                    </div>
+                    <div class="col-md-6">
+                        <p:inputText id="organization" styleClass="jacq-search-full" placeholder="Standort im Garten" value="#{searchController.organization}" />
+                        <p:message for="organization" />
+                    </div>
+                </div>
+                <div class="row jacq-search-row">
+                    <div class="col-md-6">
+                        <p:selectBooleanCheckbox id="has_image" value="#{searchController.hasImage}" />
+                        <p:outputLabel for="has_image" value="&nbsp; Nur mit Bildern" />
+                        <p:message for="has_image" />
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+                <div class="row jacq-search-row">
+                    <div class="col-md-12">
+                        <p:commandButton id="search_button" value="Suche" action="#{searchController.search()}" />
+                    </div>
+                </div>
+
+                <p:blockUI block="jacq_searchform" trigger="search_button" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

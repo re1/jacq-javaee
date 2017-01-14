@@ -28,7 +28,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://jacq-dev.botanik.univie.ac.at/jacq-legacy/";
+    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://131.130.131.9/";
 
     public static ScientificNamesService getScientificNamesService() {
         return getProxy(ScientificNamesService.class, SCIENTIFIC_NAMES_SERVICE_URL);

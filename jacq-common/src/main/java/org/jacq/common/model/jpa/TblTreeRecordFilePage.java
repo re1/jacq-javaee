@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,43 +43,44 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_tree_record_file_page")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTreeRecordFilePage.findAll", query = "SELECT t FROM TblTreeRecordFilePage t"),
-    @NamedQuery(name = "TblTreeRecordFilePage.findById", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.id = :id"),
-    @NamedQuery(name = "TblTreeRecordFilePage.findByPage", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.page = :page")})
+    @NamedQuery(name = "TblTreeRecordFilePage.findAll", query = "SELECT t FROM TblTreeRecordFilePage t")
+    , @NamedQuery(name = "TblTreeRecordFilePage.findById", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.id = :id")
+    , @NamedQuery(name = "TblTreeRecordFilePage.findByPage", query = "SELECT t FROM TblTreeRecordFilePage t WHERE t.page = :page")})
 public class TblTreeRecordFilePage implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "page")
     private int page;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId", fetch = FetchType.LAZY)
+    private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @JoinColumn(name = "tree_record_file_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblTreeRecordFile treeRecordFileId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId")
-    private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
 
     public TblTreeRecordFilePage() {
     }
 
-    public TblTreeRecordFilePage(Integer id) {
+    public TblTreeRecordFilePage(Long id) {
         this.id = id;
     }
 
-    public TblTreeRecordFilePage(Integer id, int page) {
+    public TblTreeRecordFilePage(Long id, int page) {
         this.id = id;
         this.page = page;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -80,21 +92,21 @@ public class TblTreeRecordFilePage implements Serializable {
         this.page = page;
     }
 
+    @XmlTransient
+    public List<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageList() {
+        return tblLivingPlantTreeRecordFilePageList;
+    }
+
+    public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
+        this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
+    }
+
     public TblTreeRecordFile getTreeRecordFileId() {
         return treeRecordFileId;
     }
 
     public void setTreeRecordFileId(TblTreeRecordFile treeRecordFileId) {
         this.treeRecordFileId = treeRecordFileId;
-    }
-
-    @XmlTransient
-    public Collection<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageCollection() {
-        return tblLivingPlantTreeRecordFilePageCollection;
-    }
-
-    public void setTblLivingPlantTreeRecordFilePageCollection(Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection) {
-        this.tblLivingPlantTreeRecordFilePageCollection = tblLivingPlantTreeRecordFilePageCollection;
     }
 
     @Override

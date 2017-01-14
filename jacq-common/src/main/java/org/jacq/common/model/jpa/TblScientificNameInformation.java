@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,41 +43,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_scientific_name_information")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblScientificNameInformation.findAll", query = "SELECT t FROM TblScientificNameInformation t"),
-    @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId"),
-    @NamedQuery(name = "TblScientificNameInformation.findBySpatialDistribution", query = "SELECT t FROM TblScientificNameInformation t WHERE t.spatialDistribution = :spatialDistribution"),
-    @NamedQuery(name = "TblScientificNameInformation.findByCommonNames", query = "SELECT t FROM TblScientificNameInformation t WHERE t.commonNames = :commonNames")})
+    @NamedQuery(name = "TblScientificNameInformation.findAll", query = "SELECT t FROM TblScientificNameInformation t")
+    , @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "TblScientificNameInformation.findBySpatialDistribution", query = "SELECT t FROM TblScientificNameInformation t WHERE t.spatialDistribution = :spatialDistribution")
+    , @NamedQuery(name = "TblScientificNameInformation.findByCommonNames", query = "SELECT t FROM TblScientificNameInformation t WHERE t.commonNames = :commonNames")})
 public class TblScientificNameInformation implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "scientific_name_id")
-    private Integer scientificNameId;
+    private Long scientificNameId;
     @Size(max = 255)
     @Column(name = "spatial_distribution")
     private String spatialDistribution;
     @Size(max = 255)
     @Column(name = "common_names")
     private String commonNames;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId")
-    private Collection<TblCultivar> tblCultivarCollection;
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblHabitusType habitusTypeId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY)
+    private List<TblCultivar> tblCultivarList;
 
     public TblScientificNameInformation() {
     }
 
-    public TblScientificNameInformation(Integer scientificNameId) {
+    public TblScientificNameInformation(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
-    public Integer getScientificNameId() {
+    public Long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(Integer scientificNameId) {
+    public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -86,21 +98,21 @@ public class TblScientificNameInformation implements Serializable {
         this.commonNames = commonNames;
     }
 
-    @XmlTransient
-    public Collection<TblCultivar> getTblCultivarCollection() {
-        return tblCultivarCollection;
-    }
-
-    public void setTblCultivarCollection(Collection<TblCultivar> tblCultivarCollection) {
-        this.tblCultivarCollection = tblCultivarCollection;
-    }
-
     public TblHabitusType getHabitusTypeId() {
         return habitusTypeId;
     }
 
     public void setHabitusTypeId(TblHabitusType habitusTypeId) {
         this.habitusTypeId = habitusTypeId;
+    }
+
+    @XmlTransient
+    public List<TblCultivar> getTblCultivarList() {
+        return tblCultivarList;
+    }
+
+    public void setTblCultivarList(List<TblCultivar> tblCultivarList) {
+        this.tblCultivarList = tblCultivarList;
     }
 
     @Override

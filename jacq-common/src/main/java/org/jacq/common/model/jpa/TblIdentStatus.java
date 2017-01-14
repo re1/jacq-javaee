@@ -1,15 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,41 +41,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_ident_status")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIdentStatus.findAll", query = "SELECT t FROM TblIdentStatus t"),
-    @NamedQuery(name = "TblIdentStatus.findByIdentStatusId", query = "SELECT t FROM TblIdentStatus t WHERE t.identStatusId = :identStatusId"),
-    @NamedQuery(name = "TblIdentStatus.findByStatus", query = "SELECT t FROM TblIdentStatus t WHERE t.status = :status")})
+    @NamedQuery(name = "TblIdentStatus.findAll", query = "SELECT t FROM TblIdentStatus t")
+    , @NamedQuery(name = "TblIdentStatus.findByIdentStatusId", query = "SELECT t FROM TblIdentStatus t WHERE t.identStatusId = :identStatusId")
+    , @NamedQuery(name = "TblIdentStatus.findByStatus", query = "SELECT t FROM TblIdentStatus t WHERE t.status = :status")})
 public class TblIdentStatus implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ident_status_id")
-    private Integer identStatusId;
+    private Long identStatusId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "identStatusId")
-    private Collection<TblBotanicalObject> tblBotanicalObjectCollection;
+    @OneToMany(mappedBy = "identStatusId", fetch = FetchType.LAZY)
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblIdentStatus() {
     }
 
-    public TblIdentStatus(Integer identStatusId) {
+    public TblIdentStatus(Long identStatusId) {
         this.identStatusId = identStatusId;
     }
 
-    public TblIdentStatus(Integer identStatusId, String status) {
+    public TblIdentStatus(Long identStatusId, String status) {
         this.identStatusId = identStatusId;
         this.status = status;
     }
 
-    public Integer getIdentStatusId() {
+    public Long getIdentStatusId() {
         return identStatusId;
     }
 
-    public void setIdentStatusId(Integer identStatusId) {
+    public void setIdentStatusId(Long identStatusId) {
         this.identStatusId = identStatusId;
     }
 
@@ -77,12 +89,12 @@ public class TblIdentStatus implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblBotanicalObject> getTblBotanicalObjectCollection() {
-        return tblBotanicalObjectCollection;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectCollection(Collection<TblBotanicalObject> tblBotanicalObjectCollection) {
-        this.tblBotanicalObjectCollection = tblBotanicalObjectCollection;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

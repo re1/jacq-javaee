@@ -1,17 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,29 +48,31 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_index_seminum_content")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblIndexSeminumContent.findAll", query = "SELECT t FROM TblIndexSeminumContent t"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumContentId", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumContentId = :indexSeminumContentId"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByAccessionNumber", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.accessionNumber = :accessionNumber"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumType", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumType = :indexSeminumType"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByIpenNumber", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.ipenNumber = :ipenNumber"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByHabitat", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.habitat = :habitat"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByAltitudeMin", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.altitudeMin = :altitudeMin"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByAltitudeMax", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.altitudeMax = :altitudeMax"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByLatitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.latitude = :latitude"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByLongitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.longitude = :longitude"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByAcquisitionDate", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.acquisitionDate = :acquisitionDate"),
-    @NamedQuery(name = "TblIndexSeminumContent.findByTimestamp", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblIndexSeminumContent.findAll", query = "SELECT t FROM TblIndexSeminumContent t")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumContentId", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumContentId = :indexSeminumContentId")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByIndexSeminumType", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.indexSeminumType = :indexSeminumType")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByIpenNumber", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.ipenNumber = :ipenNumber")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByHabitat", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.habitat = :habitat")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByAltitudeMin", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.altitudeMin = :altitudeMin")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByAltitudeMax", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.altitudeMax = :altitudeMax")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByLatitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.latitude = :latitude")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByLongitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.longitude = :longitude")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByAcquisitionDate", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.acquisitionDate = :acquisitionDate")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByTimestamp", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.timestamp = :timestamp")})
 public class TblIndexSeminumContent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "index_seminum_content_id")
-    private Integer indexSeminumContentId;
+    private Long indexSeminumContentId;
     @Basic(optional = false)
     @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
     @Column(name = "accession_number")
-    private int accessionNumber;
+    private String accessionNumber;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -94,9 +107,9 @@ public class TblIndexSeminumContent implements Serializable {
     @Column(name = "habitat")
     private String habitat;
     @Column(name = "altitude_min")
-    private Integer altitudeMin;
+    private Long altitudeMin;
     @Column(name = "altitude_max")
-    private Integer altitudeMax;
+    private Long altitudeMax;
     @Size(max = 14)
     @Column(name = "latitude")
     private String latitude;
@@ -111,23 +124,23 @@ public class TblIndexSeminumContent implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId")
-    private Collection<TblIndexSeminumPerson> tblIndexSeminumPersonCollection;
-    @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
-    @ManyToOne(optional = false)
-    private TblIndexSeminumRevision indexSeminumRevisionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
+    private List<TblIndexSeminumPerson> tblIndexSeminumPersonList;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblIndexSeminumRevision indexSeminumRevisionId;
 
     public TblIndexSeminumContent() {
     }
 
-    public TblIndexSeminumContent(Integer indexSeminumContentId) {
+    public TblIndexSeminumContent(Long indexSeminumContentId) {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public TblIndexSeminumContent(Integer indexSeminumContentId, int accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
+    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
         this.indexSeminumContentId = indexSeminumContentId;
         this.accessionNumber = accessionNumber;
         this.family = family;
@@ -137,19 +150,19 @@ public class TblIndexSeminumContent implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Integer getIndexSeminumContentId() {
+    public Long getIndexSeminumContentId() {
         return indexSeminumContentId;
     }
 
-    public void setIndexSeminumContentId(Integer indexSeminumContentId) {
+    public void setIndexSeminumContentId(Long indexSeminumContentId) {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public int getAccessionNumber() {
+    public String getAccessionNumber() {
         return accessionNumber;
     }
 
-    public void setAccessionNumber(int accessionNumber) {
+    public void setAccessionNumber(String accessionNumber) {
         this.accessionNumber = accessionNumber;
     }
 
@@ -209,19 +222,19 @@ public class TblIndexSeminumContent implements Serializable {
         this.habitat = habitat;
     }
 
-    public Integer getAltitudeMin() {
+    public Long getAltitudeMin() {
         return altitudeMin;
     }
 
-    public void setAltitudeMin(Integer altitudeMin) {
+    public void setAltitudeMin(Long altitudeMin) {
         this.altitudeMin = altitudeMin;
     }
 
-    public Integer getAltitudeMax() {
+    public Long getAltitudeMax() {
         return altitudeMax;
     }
 
-    public void setAltitudeMax(Integer altitudeMax) {
+    public void setAltitudeMax(Long altitudeMax) {
         this.altitudeMax = altitudeMax;
     }
 
@@ -258,20 +271,12 @@ public class TblIndexSeminumContent implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblIndexSeminumPerson> getTblIndexSeminumPersonCollection() {
-        return tblIndexSeminumPersonCollection;
+    public List<TblIndexSeminumPerson> getTblIndexSeminumPersonList() {
+        return tblIndexSeminumPersonList;
     }
 
-    public void setTblIndexSeminumPersonCollection(Collection<TblIndexSeminumPerson> tblIndexSeminumPersonCollection) {
-        this.tblIndexSeminumPersonCollection = tblIndexSeminumPersonCollection;
-    }
-
-    public TblIndexSeminumRevision getIndexSeminumRevisionId() {
-        return indexSeminumRevisionId;
-    }
-
-    public void setIndexSeminumRevisionId(TblIndexSeminumRevision indexSeminumRevisionId) {
-        this.indexSeminumRevisionId = indexSeminumRevisionId;
+    public void setTblIndexSeminumPersonList(List<TblIndexSeminumPerson> tblIndexSeminumPersonList) {
+        this.tblIndexSeminumPersonList = tblIndexSeminumPersonList;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {
@@ -280,6 +285,14 @@ public class TblIndexSeminumContent implements Serializable {
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
+    }
+
+    public TblIndexSeminumRevision getIndexSeminumRevisionId() {
+        return indexSeminumRevisionId;
+    }
+
+    public void setIndexSeminumRevisionId(TblIndexSeminumRevision indexSeminumRevisionId) {
+        this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 
     @Override

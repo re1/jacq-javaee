@@ -1,5 +1,6 @@
 package org.jacq.service.manager;
 
+import org.jacq.service.ApplicationManager;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.logging.Logger;

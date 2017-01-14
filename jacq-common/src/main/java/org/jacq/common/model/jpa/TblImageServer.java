@@ -1,14 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -16,6 +28,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,16 +42,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_image_server")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t"),
-    @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId"),
-    @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")})
+    @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t")
+    , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
+    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")
+    , @NamedQuery(name = "TblImageServer.findByLastSynchronized", query = "SELECT t FROM TblImageServer t WHERE t.lastSynchronized = :lastSynchronized")})
 public class TblImageServer implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "organisation_id")
-    private Integer organisationId;
+    private Long organisationId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -49,28 +65,31 @@ public class TblImageServer implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "key")
     private String key;
+    @Column(name = "last_synchronized")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastSynchronized;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
 
     public TblImageServer() {
     }
 
-    public TblImageServer(Integer organisationId) {
+    public TblImageServer(Long organisationId) {
         this.organisationId = organisationId;
     }
 
-    public TblImageServer(Integer organisationId, String baseUrl, String key) {
+    public TblImageServer(Long organisationId, String baseUrl, String key) {
         this.organisationId = organisationId;
         this.baseUrl = baseUrl;
         this.key = key;
     }
 
-    public Integer getOrganisationId() {
+    public Long getOrganisationId() {
         return organisationId;
     }
 
-    public void setOrganisationId(Integer organisationId) {
+    public void setOrganisationId(Long organisationId) {
         this.organisationId = organisationId;
     }
 
@@ -88,6 +107,14 @@ public class TblImageServer implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public Date getLastSynchronized() {
+        return lastSynchronized;
+    }
+
+    public void setLastSynchronized(Date lastSynchronized) {
+        this.lastSynchronized = lastSynchronized;
     }
 
     public TblOrganisation getTblOrganisation() {

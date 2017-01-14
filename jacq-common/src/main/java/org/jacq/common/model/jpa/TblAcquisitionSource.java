@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,41 +42,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_acquisition_source")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAcquisitionSource.findAll", query = "SELECT t FROM TblAcquisitionSource t"),
-    @NamedQuery(name = "TblAcquisitionSource.findByAcquisitionSourceId", query = "SELECT t FROM TblAcquisitionSource t WHERE t.acquisitionSourceId = :acquisitionSourceId"),
-    @NamedQuery(name = "TblAcquisitionSource.findByName", query = "SELECT t FROM TblAcquisitionSource t WHERE t.name = :name")})
+    @NamedQuery(name = "TblAcquisitionSource.findAll", query = "SELECT t FROM TblAcquisitionSource t")
+    , @NamedQuery(name = "TblAcquisitionSource.findByAcquisitionSourceId", query = "SELECT t FROM TblAcquisitionSource t WHERE t.acquisitionSourceId = :acquisitionSourceId")
+    , @NamedQuery(name = "TblAcquisitionSource.findByName", query = "SELECT t FROM TblAcquisitionSource t WHERE t.name = :name")})
 public class TblAcquisitionSource implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "acquisition_source_id")
-    private Integer acquisitionSourceId;
+    private Long acquisitionSourceId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId")
-    private Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY)
+    private List<TblAcquisitionEventSource> tblAcquisitionEventSourceList;
 
     public TblAcquisitionSource() {
     }
 
-    public TblAcquisitionSource(Integer acquisitionSourceId) {
+    public TblAcquisitionSource(Long acquisitionSourceId) {
         this.acquisitionSourceId = acquisitionSourceId;
     }
 
-    public TblAcquisitionSource(Integer acquisitionSourceId, String name) {
+    public TblAcquisitionSource(Long acquisitionSourceId, String name) {
         this.acquisitionSourceId = acquisitionSourceId;
         this.name = name;
     }
 
-    public Integer getAcquisitionSourceId() {
+    public Long getAcquisitionSourceId() {
         return acquisitionSourceId;
     }
 
-    public void setAcquisitionSourceId(Integer acquisitionSourceId) {
+    public void setAcquisitionSourceId(Long acquisitionSourceId) {
         this.acquisitionSourceId = acquisitionSourceId;
     }
 
@@ -78,12 +90,12 @@ public class TblAcquisitionSource implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAcquisitionEventSource> getTblAcquisitionEventSourceCollection() {
-        return tblAcquisitionEventSourceCollection;
+    public List<TblAcquisitionEventSource> getTblAcquisitionEventSourceList() {
+        return tblAcquisitionEventSourceList;
     }
 
-    public void setTblAcquisitionEventSourceCollection(Collection<TblAcquisitionEventSource> tblAcquisitionEventSourceCollection) {
-        this.tblAcquisitionEventSourceCollection = tblAcquisitionEventSourceCollection;
+    public void setTblAcquisitionEventSourceList(List<TblAcquisitionEventSource> tblAcquisitionEventSourceList) {
+        this.tblAcquisitionEventSourceList = tblAcquisitionEventSourceList;
     }
 
     @Override

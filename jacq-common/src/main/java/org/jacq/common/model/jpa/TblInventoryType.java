@@ -1,17 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,17 +45,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_inventory_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblInventoryType.findAll", query = "SELECT t FROM TblInventoryType t"),
-    @NamedQuery(name = "TblInventoryType.findByInventoryTypeId", query = "SELECT t FROM TblInventoryType t WHERE t.inventoryTypeId = :inventoryTypeId"),
-    @NamedQuery(name = "TblInventoryType.findByType", query = "SELECT t FROM TblInventoryType t WHERE t.type = :type"),
-    @NamedQuery(name = "TblInventoryType.findByTimestamp", query = "SELECT t FROM TblInventoryType t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblInventoryType.findAll", query = "SELECT t FROM TblInventoryType t")
+    , @NamedQuery(name = "TblInventoryType.findByInventoryTypeId", query = "SELECT t FROM TblInventoryType t WHERE t.inventoryTypeId = :inventoryTypeId")
+    , @NamedQuery(name = "TblInventoryType.findByType", query = "SELECT t FROM TblInventoryType t WHERE t.type = :type")
+    , @NamedQuery(name = "TblInventoryType.findByTimestamp", query = "SELECT t FROM TblInventoryType t WHERE t.timestamp = :timestamp")})
 public class TblInventoryType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "inventory_type_id")
-    private Integer inventoryTypeId;
+    private Long inventoryTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -55,27 +67,27 @@ public class TblInventoryType implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId")
-    private Collection<TblInventory> tblInventoryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
+    private List<TblInventory> tblInventoryList;
 
     public TblInventoryType() {
     }
 
-    public TblInventoryType(Integer inventoryTypeId) {
+    public TblInventoryType(Long inventoryTypeId) {
         this.inventoryTypeId = inventoryTypeId;
     }
 
-    public TblInventoryType(Integer inventoryTypeId, String type, Date timestamp) {
+    public TblInventoryType(Long inventoryTypeId, String type, Date timestamp) {
         this.inventoryTypeId = inventoryTypeId;
         this.type = type;
         this.timestamp = timestamp;
     }
 
-    public Integer getInventoryTypeId() {
+    public Long getInventoryTypeId() {
         return inventoryTypeId;
     }
 
-    public void setInventoryTypeId(Integer inventoryTypeId) {
+    public void setInventoryTypeId(Long inventoryTypeId) {
         this.inventoryTypeId = inventoryTypeId;
     }
 
@@ -96,12 +108,12 @@ public class TblInventoryType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblInventory> getTblInventoryCollection() {
-        return tblInventoryCollection;
+    public List<TblInventory> getTblInventoryList() {
+        return tblInventoryList;
     }
 
-    public void setTblInventoryCollection(Collection<TblInventory> tblInventoryCollection) {
-        this.tblInventoryCollection = tblInventoryCollection;
+    public void setTblInventoryList(List<TblInventory> tblInventoryList) {
+        this.tblInventoryList = tblInventoryList;
     }
 
     @Override

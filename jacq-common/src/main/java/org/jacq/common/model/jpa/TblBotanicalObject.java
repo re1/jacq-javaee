@@ -1,13 +1,23 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,16 +51,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_botanical_object")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblBotanicalObject.findAll", query = "SELECT t FROM TblBotanicalObject t"),
-    @NamedQuery(name = "TblBotanicalObject.findById", query = "SELECT t FROM TblBotanicalObject t WHERE t.id = :id"),
-    @NamedQuery(name = "TblBotanicalObject.findByScientificNameId", query = "SELECT t FROM TblBotanicalObject t WHERE t.scientificNameId = :scientificNameId"),
-    @NamedQuery(name = "TblBotanicalObject.findByDeterminationDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.determinationDate = :determinationDate"),
-    @NamedQuery(name = "TblBotanicalObject.findByHabitat", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitat = :habitat"),
-    @NamedQuery(name = "TblBotanicalObject.findByHabitus", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitus = :habitus"),
-    @NamedQuery(name = "TblBotanicalObject.findByRecordingDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.recordingDate = :recordingDate"),
-    @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible"),
-    @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine"),
-    @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
+    @NamedQuery(name = "TblBotanicalObject.findAll", query = "SELECT t FROM TblBotanicalObject t")
+    , @NamedQuery(name = "TblBotanicalObject.findById", query = "SELECT t FROM TblBotanicalObject t WHERE t.id = :id")
+    , @NamedQuery(name = "TblBotanicalObject.findByScientificNameId", query = "SELECT t FROM TblBotanicalObject t WHERE t.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "TblBotanicalObject.findByDeterminationDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.determinationDate = :determinationDate")
+    , @NamedQuery(name = "TblBotanicalObject.findByHabitat", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitat = :habitat")
+    , @NamedQuery(name = "TblBotanicalObject.findByHabitus", query = "SELECT t FROM TblBotanicalObject t WHERE t.habitus = :habitus")
+    , @NamedQuery(name = "TblBotanicalObject.findByRecordingDate", query = "SELECT t FROM TblBotanicalObject t WHERE t.recordingDate = :recordingDate")
+    , @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible")
+    , @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine")
+    , @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")})
 public class TblBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,11 +68,11 @@ public class TblBotanicalObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private Long scientificNameId;
+    private long scientificNameId;
     @Column(name = "determination_date")
     @Temporal(TemporalType.DATE)
     private Date determinationDate;
@@ -83,7 +93,7 @@ public class TblBotanicalObject implements Serializable {
     private Date recordingDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "[accessible]")
+    @Column(name = "accessible")
     private boolean accessible;
     @Basic(optional = false)
     @NotNull
@@ -96,48 +106,48 @@ public class TblBotanicalObject implements Serializable {
     @JoinTable(name = "tbl_botanical_object_label", joinColumns = {
         @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
-    @ManyToMany
-    private Collection<TblLabelType> tblLabelTypeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<TblSpecimen> tblSpecimenCollection;
-    @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblPhenology phenologyId;
-    @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblAcquisitionEvent acquisitionEventId;
-    @JoinColumn(name = "determined_by_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblPerson determinedById;
-    @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
-    @ManyToOne
-    private TblIdentStatus identStatusId;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TblLabelType> tblLabelTypeList;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<TblBotanicalObjectSex> tblBotanicalObjectSexCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<TblImportProperties> tblImportPropertiesCollection;
-    @OneToMany(mappedBy = "botanicalObjectId")
-    private Collection<TblInventoryObject> tblInventoryObjectCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject")
-    private TblLivingPlant tblLivingPlant;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject")
+    @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblIdentStatus identStatusId;
+    @JoinColumn(name = "determined_by_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblPerson determinedById;
+    @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblAcquisitionEvent acquisitionEventId;
+    @JoinColumn(name = "phenology_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblPhenology phenologyId;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject", fetch = FetchType.LAZY)
     private TblDiaspora tblDiaspora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<TblSeparation> tblSeparationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblSpecimen> tblSpecimenList;
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblSeparation> tblSeparationList;
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblInventoryObject> tblInventoryObjectList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblIndexSeminumContent> tblIndexSeminumContentList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<TblImportProperties> tblImportPropertiesList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject", fetch = FetchType.LAZY)
+    private TblLivingPlant tblLivingPlant;
 
     public TblBotanicalObject() {
     }
 
-    public TblBotanicalObject(Integer id) {
+    public TblBotanicalObject(Long id) {
         this.id = id;
     }
 
-    public TblBotanicalObject(Integer id, Long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
+    public TblBotanicalObject(Long id, long scientificNameId, Date recordingDate, boolean accessible, boolean redetermine, boolean separated) {
         this.id = id;
         this.scientificNameId = scientificNameId;
         this.recordingDate = recordingDate;
@@ -146,19 +156,19 @@ public class TblBotanicalObject implements Serializable {
         this.separated = separated;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getScientificNameId() {
+    public long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(Long scientificNameId) {
+    public void setScientificNameId(long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -227,53 +237,12 @@ public class TblBotanicalObject implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblLabelType> getTblLabelTypeCollection() {
-        return tblLabelTypeCollection;
+    public List<TblLabelType> getTblLabelTypeList() {
+        return tblLabelTypeList;
     }
 
-    public void setTblLabelTypeCollection(Collection<TblLabelType> tblLabelTypeCollection) {
-        this.tblLabelTypeCollection = tblLabelTypeCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblSpecimen> getTblSpecimenCollection() {
-        return tblSpecimenCollection;
-    }
-
-    public void setTblSpecimenCollection(Collection<TblSpecimen> tblSpecimenCollection) {
-        this.tblSpecimenCollection = tblSpecimenCollection;
-    }
-
-    public TblPhenology getPhenologyId() {
-        return phenologyId;
-    }
-
-    public void setPhenologyId(TblPhenology phenologyId) {
-        this.phenologyId = phenologyId;
-    }
-
-    public TblAcquisitionEvent getAcquisitionEventId() {
-        return acquisitionEventId;
-    }
-
-    public void setAcquisitionEventId(TblAcquisitionEvent acquisitionEventId) {
-        this.acquisitionEventId = acquisitionEventId;
-    }
-
-    public TblPerson getDeterminedById() {
-        return determinedById;
-    }
-
-    public void setDeterminedById(TblPerson determinedById) {
-        this.determinedById = determinedById;
-    }
-
-    public TblIdentStatus getIdentStatusId() {
-        return identStatusId;
-    }
-
-    public void setIdentStatusId(TblIdentStatus identStatusId) {
-        this.identStatusId = identStatusId;
+    public void setTblLabelTypeList(List<TblLabelType> tblLabelTypeList) {
+        this.tblLabelTypeList = tblLabelTypeList;
     }
 
     public TblOrganisation getOrganisationId() {
@@ -284,48 +253,36 @@ public class TblBotanicalObject implements Serializable {
         this.organisationId = organisationId;
     }
 
-    @XmlTransient
-    public Collection<TblBotanicalObjectSex> getTblBotanicalObjectSexCollection() {
-        return tblBotanicalObjectSexCollection;
+    public TblIdentStatus getIdentStatusId() {
+        return identStatusId;
     }
 
-    public void setTblBotanicalObjectSexCollection(Collection<TblBotanicalObjectSex> tblBotanicalObjectSexCollection) {
-        this.tblBotanicalObjectSexCollection = tblBotanicalObjectSexCollection;
+    public void setIdentStatusId(TblIdentStatus identStatusId) {
+        this.identStatusId = identStatusId;
     }
 
-    @XmlTransient
-    public Collection<TblImportProperties> getTblImportPropertiesCollection() {
-        return tblImportPropertiesCollection;
+    public TblPerson getDeterminedById() {
+        return determinedById;
     }
 
-    public void setTblImportPropertiesCollection(Collection<TblImportProperties> tblImportPropertiesCollection) {
-        this.tblImportPropertiesCollection = tblImportPropertiesCollection;
+    public void setDeterminedById(TblPerson determinedById) {
+        this.determinedById = determinedById;
     }
 
-    @XmlTransient
-    public Collection<TblInventoryObject> getTblInventoryObjectCollection() {
-        return tblInventoryObjectCollection;
+    public TblAcquisitionEvent getAcquisitionEventId() {
+        return acquisitionEventId;
     }
 
-    public void setTblInventoryObjectCollection(Collection<TblInventoryObject> tblInventoryObjectCollection) {
-        this.tblInventoryObjectCollection = tblInventoryObjectCollection;
+    public void setAcquisitionEventId(TblAcquisitionEvent acquisitionEventId) {
+        this.acquisitionEventId = acquisitionEventId;
     }
 
-    @XmlTransient
-    public Collection<TblIndexSeminumContent> getTblIndexSeminumContentCollection() {
-        return tblIndexSeminumContentCollection;
+    public TblPhenology getPhenologyId() {
+        return phenologyId;
     }
 
-    public void setTblIndexSeminumContentCollection(Collection<TblIndexSeminumContent> tblIndexSeminumContentCollection) {
-        this.tblIndexSeminumContentCollection = tblIndexSeminumContentCollection;
-    }
-
-    public TblLivingPlant getTblLivingPlant() {
-        return tblLivingPlant;
-    }
-
-    public void setTblLivingPlant(TblLivingPlant tblLivingPlant) {
-        this.tblLivingPlant = tblLivingPlant;
+    public void setPhenologyId(TblPhenology phenologyId) {
+        this.phenologyId = phenologyId;
     }
 
     public TblDiaspora getTblDiaspora() {
@@ -337,12 +294,65 @@ public class TblBotanicalObject implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblSeparation> getTblSeparationCollection() {
-        return tblSeparationCollection;
+    public List<TblSpecimen> getTblSpecimenList() {
+        return tblSpecimenList;
     }
 
-    public void setTblSeparationCollection(Collection<TblSeparation> tblSeparationCollection) {
-        this.tblSeparationCollection = tblSeparationCollection;
+    public void setTblSpecimenList(List<TblSpecimen> tblSpecimenList) {
+        this.tblSpecimenList = tblSpecimenList;
+    }
+
+    @XmlTransient
+    public List<TblSeparation> getTblSeparationList() {
+        return tblSeparationList;
+    }
+
+    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
+        this.tblSeparationList = tblSeparationList;
+    }
+
+    @XmlTransient
+    public List<TblInventoryObject> getTblInventoryObjectList() {
+        return tblInventoryObjectList;
+    }
+
+    public void setTblInventoryObjectList(List<TblInventoryObject> tblInventoryObjectList) {
+        this.tblInventoryObjectList = tblInventoryObjectList;
+    }
+
+    @XmlTransient
+    public List<TblIndexSeminumContent> getTblIndexSeminumContentList() {
+        return tblIndexSeminumContentList;
+    }
+
+    public void setTblIndexSeminumContentList(List<TblIndexSeminumContent> tblIndexSeminumContentList) {
+        this.tblIndexSeminumContentList = tblIndexSeminumContentList;
+    }
+
+    @XmlTransient
+    public List<TblBotanicalObjectSex> getTblBotanicalObjectSexList() {
+        return tblBotanicalObjectSexList;
+    }
+
+    public void setTblBotanicalObjectSexList(List<TblBotanicalObjectSex> tblBotanicalObjectSexList) {
+        this.tblBotanicalObjectSexList = tblBotanicalObjectSexList;
+    }
+
+    @XmlTransient
+    public List<TblImportProperties> getTblImportPropertiesList() {
+        return tblImportPropertiesList;
+    }
+
+    public void setTblImportPropertiesList(List<TblImportProperties> tblImportPropertiesList) {
+        this.tblImportPropertiesList = tblImportPropertiesList;
+    }
+
+    public TblLivingPlant getTblLivingPlant() {
+        return tblLivingPlant;
+    }
+
+    public void setTblLivingPlant(TblLivingPlant tblLivingPlant) {
+        this.tblLivingPlant = tblLivingPlant;
     }
 
     @Override

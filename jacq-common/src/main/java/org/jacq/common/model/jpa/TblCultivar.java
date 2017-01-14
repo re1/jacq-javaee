@@ -1,15 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,44 +43,45 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_cultivar")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCultivar.findAll", query = "SELECT t FROM TblCultivar t"),
-    @NamedQuery(name = "TblCultivar.findByCultivarId", query = "SELECT t FROM TblCultivar t WHERE t.cultivarId = :cultivarId"),
-    @NamedQuery(name = "TblCultivar.findByCultivar", query = "SELECT t FROM TblCultivar t WHERE t.cultivar = :cultivar")})
+    @NamedQuery(name = "TblCultivar.findAll", query = "SELECT t FROM TblCultivar t")
+    , @NamedQuery(name = "TblCultivar.findByCultivarId", query = "SELECT t FROM TblCultivar t WHERE t.cultivarId = :cultivarId")
+    , @NamedQuery(name = "TblCultivar.findByCultivar", query = "SELECT t FROM TblCultivar t WHERE t.cultivar = :cultivar")})
 public class TblCultivar implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cultivar_id")
-    private Integer cultivarId;
+    private Long cultivarId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "cultivar")
     private String cultivar;
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblScientificNameInformation scientificNameId;
-    @OneToMany(mappedBy = "cultivarId")
-    private Collection<TblLivingPlant> tblLivingPlantCollection;
+    @OneToMany(mappedBy = "cultivarId", fetch = FetchType.LAZY)
+    private List<TblLivingPlant> tblLivingPlantList;
 
     public TblCultivar() {
     }
 
-    public TblCultivar(Integer cultivarId) {
+    public TblCultivar(Long cultivarId) {
         this.cultivarId = cultivarId;
     }
 
-    public TblCultivar(Integer cultivarId, String cultivar) {
+    public TblCultivar(Long cultivarId, String cultivar) {
         this.cultivarId = cultivarId;
         this.cultivar = cultivar;
     }
 
-    public Integer getCultivarId() {
+    public Long getCultivarId() {
         return cultivarId;
     }
 
-    public void setCultivarId(Integer cultivarId) {
+    public void setCultivarId(Long cultivarId) {
         this.cultivarId = cultivarId;
     }
 
@@ -90,12 +102,12 @@ public class TblCultivar implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblLivingPlant> getTblLivingPlantCollection() {
-        return tblLivingPlantCollection;
+    public List<TblLivingPlant> getTblLivingPlantList() {
+        return tblLivingPlantList;
     }
 
-    public void setTblLivingPlantCollection(Collection<TblLivingPlant> tblLivingPlantCollection) {
-        this.tblLivingPlantCollection = tblLivingPlantCollection;
+    public void setTblLivingPlantList(List<TblLivingPlant> tblLivingPlantList) {
+        this.tblLivingPlantList = tblLivingPlantList;
     }
 
     @Override

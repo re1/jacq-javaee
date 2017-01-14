@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,41 +42,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "frmwrk_user_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkUserType.findAll", query = "SELECT f FROM FrmwrkUserType f"),
-    @NamedQuery(name = "FrmwrkUserType.findByUserTypeId", query = "SELECT f FROM FrmwrkUserType f WHERE f.userTypeId = :userTypeId"),
-    @NamedQuery(name = "FrmwrkUserType.findByType", query = "SELECT f FROM FrmwrkUserType f WHERE f.type = :type")})
+    @NamedQuery(name = "FrmwrkUserType.findAll", query = "SELECT f FROM FrmwrkUserType f")
+    , @NamedQuery(name = "FrmwrkUserType.findByUserTypeId", query = "SELECT f FROM FrmwrkUserType f WHERE f.userTypeId = :userTypeId")
+    , @NamedQuery(name = "FrmwrkUserType.findByType", query = "SELECT f FROM FrmwrkUserType f WHERE f.type = :type")})
 public class FrmwrkUserType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "user_type_id")
-    private Integer userTypeId;
+    private Long userTypeId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId")
-    private Collection<FrmwrkUser> frmwrkUserCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId", fetch = FetchType.LAZY)
+    private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkUserType() {
     }
 
-    public FrmwrkUserType(Integer userTypeId) {
+    public FrmwrkUserType(Long userTypeId) {
         this.userTypeId = userTypeId;
     }
 
-    public FrmwrkUserType(Integer userTypeId, String type) {
+    public FrmwrkUserType(Long userTypeId, String type) {
         this.userTypeId = userTypeId;
         this.type = type;
     }
 
-    public Integer getUserTypeId() {
+    public Long getUserTypeId() {
         return userTypeId;
     }
 
-    public void setUserTypeId(Integer userTypeId) {
+    public void setUserTypeId(Long userTypeId) {
         this.userTypeId = userTypeId;
     }
 
@@ -78,12 +90,12 @@ public class FrmwrkUserType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<FrmwrkUser> getFrmwrkUserCollection() {
-        return frmwrkUserCollection;
+    public List<FrmwrkUser> getFrmwrkUserList() {
+        return frmwrkUserList;
     }
 
-    public void setFrmwrkUserCollection(Collection<FrmwrkUser> frmwrkUserCollection) {
-        this.frmwrkUserCollection = frmwrkUserCollection;
+    public void setFrmwrkUserList(List<FrmwrkUser> frmwrkUserList) {
+        this.frmwrkUserList = frmwrkUserList;
     }
 
     @Override

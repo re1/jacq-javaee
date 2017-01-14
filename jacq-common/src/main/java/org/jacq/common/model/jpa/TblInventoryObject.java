@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -10,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,16 +44,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_inventory_object")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblInventoryObject.findAll", query = "SELECT t FROM TblInventoryObject t"),
-    @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId"),
-    @NamedQuery(name = "TblInventoryObject.findByTimestamp", query = "SELECT t FROM TblInventoryObject t WHERE t.timestamp = :timestamp")})
+    @NamedQuery(name = "TblInventoryObject.findAll", query = "SELECT t FROM TblInventoryObject t")
+    , @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId")
+    , @NamedQuery(name = "TblInventoryObject.findByTimestamp", query = "SELECT t FROM TblInventoryObject t WHERE t.timestamp = :timestamp")})
 public class TblInventoryObject implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "inventory_object_id")
-    private Integer inventoryObjectId;
+    private Long inventoryObjectId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -54,31 +66,31 @@ public class TblInventoryObject implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
-    @ManyToOne(optional = false)
-    private TblInventory inventoryId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblInventory inventoryId;
 
     public TblInventoryObject() {
     }
 
-    public TblInventoryObject(Integer inventoryObjectId) {
+    public TblInventoryObject(Long inventoryObjectId) {
         this.inventoryObjectId = inventoryObjectId;
     }
 
-    public TblInventoryObject(Integer inventoryObjectId, String message, Date timestamp) {
+    public TblInventoryObject(Long inventoryObjectId, String message, Date timestamp) {
         this.inventoryObjectId = inventoryObjectId;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    public Integer getInventoryObjectId() {
+    public Long getInventoryObjectId() {
         return inventoryObjectId;
     }
 
-    public void setInventoryObjectId(Integer inventoryObjectId) {
+    public void setInventoryObjectId(Long inventoryObjectId) {
         this.inventoryObjectId = inventoryObjectId;
     }
 
@@ -98,20 +110,20 @@ public class TblInventoryObject implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public TblInventory getInventoryId() {
-        return inventoryId;
-    }
-
-    public void setInventoryId(TblInventory inventoryId) {
-        this.inventoryId = inventoryId;
-    }
-
     public TblBotanicalObject getBotanicalObjectId() {
         return botanicalObjectId;
     }
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
+    }
+
+    public TblInventory getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(TblInventory inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
     @Override

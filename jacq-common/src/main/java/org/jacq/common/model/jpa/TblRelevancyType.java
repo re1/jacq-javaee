@@ -1,16 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,17 +42,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_relevancy_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRelevancyType.findAll", query = "SELECT t FROM TblRelevancyType t"),
-    @NamedQuery(name = "TblRelevancyType.findById", query = "SELECT t FROM TblRelevancyType t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRelevancyType.findByType", query = "SELECT t FROM TblRelevancyType t WHERE t.type = :type"),
-    @NamedQuery(name = "TblRelevancyType.findByImportant", query = "SELECT t FROM TblRelevancyType t WHERE t.important = :important")})
+    @NamedQuery(name = "TblRelevancyType.findAll", query = "SELECT t FROM TblRelevancyType t")
+    , @NamedQuery(name = "TblRelevancyType.findById", query = "SELECT t FROM TblRelevancyType t WHERE t.id = :id")
+    , @NamedQuery(name = "TblRelevancyType.findByType", query = "SELECT t FROM TblRelevancyType t WHERE t.type = :type")
+    , @NamedQuery(name = "TblRelevancyType.findByImportant", query = "SELECT t FROM TblRelevancyType t WHERE t.important = :important")})
 public class TblRelevancyType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Size(max = 25)
     @Column(name = "type")
     private String type;
@@ -49,26 +61,26 @@ public class TblRelevancyType implements Serializable {
     @NotNull
     @Column(name = "important")
     private boolean important;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId")
-    private Collection<TblRelevancy> tblRelevancyCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId", fetch = FetchType.LAZY)
+    private List<TblRelevancy> tblRelevancyList;
 
     public TblRelevancyType() {
     }
 
-    public TblRelevancyType(Integer id) {
+    public TblRelevancyType(Long id) {
         this.id = id;
     }
 
-    public TblRelevancyType(Integer id, boolean important) {
+    public TblRelevancyType(Long id, boolean important) {
         this.id = id;
         this.important = important;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,12 +101,12 @@ public class TblRelevancyType implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRelevancy> getTblRelevancyCollection() {
-        return tblRelevancyCollection;
+    public List<TblRelevancy> getTblRelevancyList() {
+        return tblRelevancyList;
     }
 
-    public void setTblRelevancyCollection(Collection<TblRelevancy> tblRelevancyCollection) {
-        this.tblRelevancyCollection = tblRelevancyCollection;
+    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
+        this.tblRelevancyList = tblRelevancyList;
     }
 
     @Override

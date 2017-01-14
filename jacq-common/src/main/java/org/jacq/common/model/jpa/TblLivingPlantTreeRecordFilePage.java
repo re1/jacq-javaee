@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -10,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,17 +42,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_living_plant_tree_record_file_page")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findAll", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findById", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDone", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDone = :correctionsDone"),
-    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDate", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDate = :correctionsDate")})
+    @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findAll", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findById", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDone", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDone = :correctionsDone")
+    , @NamedQuery(name = "TblLivingPlantTreeRecordFilePage.findByCorrectionsDate", query = "SELECT t FROM TblLivingPlantTreeRecordFilePage t WHERE t.correctionsDate = :correctionsDate")})
 public class TblLivingPlantTreeRecordFilePage implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "corrections_done")
@@ -49,30 +61,30 @@ public class TblLivingPlantTreeRecordFilePage implements Serializable {
     @Column(name = "corrections_date")
     @Temporal(TemporalType.DATE)
     private Date correctionsDate;
-    @JoinColumn(name = "tree_record_file_page_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblTreeRecordFilePage treeRecordFilePageId;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
+    @JoinColumn(name = "tree_record_file_page_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblTreeRecordFilePage treeRecordFilePageId;
 
     public TblLivingPlantTreeRecordFilePage() {
     }
 
-    public TblLivingPlantTreeRecordFilePage(Integer id) {
+    public TblLivingPlantTreeRecordFilePage(Long id) {
         this.id = id;
     }
 
-    public TblLivingPlantTreeRecordFilePage(Integer id, boolean correctionsDone) {
+    public TblLivingPlantTreeRecordFilePage(Long id, boolean correctionsDone) {
         this.id = id;
         this.correctionsDone = correctionsDone;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,20 +104,20 @@ public class TblLivingPlantTreeRecordFilePage implements Serializable {
         this.correctionsDate = correctionsDate;
     }
 
-    public TblTreeRecordFilePage getTreeRecordFilePageId() {
-        return treeRecordFilePageId;
-    }
-
-    public void setTreeRecordFilePageId(TblTreeRecordFilePage treeRecordFilePageId) {
-        this.treeRecordFilePageId = treeRecordFilePageId;
-    }
-
     public TblLivingPlant getLivingPlantId() {
         return livingPlantId;
     }
 
     public void setLivingPlantId(TblLivingPlant livingPlantId) {
         this.livingPlantId = livingPlantId;
+    }
+
+    public TblTreeRecordFilePage getTreeRecordFilePageId() {
+        return treeRecordFilePageId;
+    }
+
+    public void setTreeRecordFilePageId(TblTreeRecordFilePage treeRecordFilePageId) {
+        this.treeRecordFilePageId = treeRecordFilePageId;
     }
 
     @Override

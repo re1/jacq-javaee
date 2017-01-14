@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -26,16 +36,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "frmwrk_template")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkTemplate.findAll", query = "SELECT f FROM FrmwrkTemplate f"),
-    @NamedQuery(name = "FrmwrkTemplate.findByFtId", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftId = :ftId"),
-    @NamedQuery(name = "FrmwrkTemplate.findByFtName", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftName = :ftName")})
+    @NamedQuery(name = "FrmwrkTemplate.findAll", query = "SELECT f FROM FrmwrkTemplate f")
+    , @NamedQuery(name = "FrmwrkTemplate.findByFtId", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftId = :ftId")
+    , @NamedQuery(name = "FrmwrkTemplate.findByFtName", query = "SELECT f FROM FrmwrkTemplate f WHERE f.ftName = :ftName")})
 public class FrmwrkTemplate implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ft_id")
-    private Integer ftId;
+    private Long ftId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -50,21 +61,21 @@ public class FrmwrkTemplate implements Serializable {
     public FrmwrkTemplate() {
     }
 
-    public FrmwrkTemplate(Integer ftId) {
+    public FrmwrkTemplate(Long ftId) {
         this.ftId = ftId;
     }
 
-    public FrmwrkTemplate(Integer ftId, String ftName, byte[] ftTemplate) {
+    public FrmwrkTemplate(Long ftId, String ftName, byte[] ftTemplate) {
         this.ftId = ftId;
         this.ftName = ftName;
         this.ftTemplate = ftTemplate;
     }
 
-    public Integer getFtId() {
+    public Long getFtId() {
         return ftId;
     }
 
-    public void setFtId(Integer ftId) {
+    public void setFtId(Long ftId) {
         this.ftId = ftId;
     }
 
@@ -108,5 +119,5 @@ public class FrmwrkTemplate implements Serializable {
     public String toString() {
         return "org.jacq.common.model.jpa.FrmwrkTemplate[ ftId=" + ftId + " ]";
     }
-    
+
 }

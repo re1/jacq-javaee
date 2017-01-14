@@ -1,17 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -36,24 +47,30 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tbl_living_plant")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblLivingPlant.findAll", query = "SELECT t FROM TblLivingPlant t"),
-    @NamedQuery(name = "TblLivingPlant.findById", query = "SELECT t FROM TblLivingPlant t WHERE t.id = :id"),
-    @NamedQuery(name = "TblLivingPlant.findByAccessionNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber = :accessionNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIpenNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenNumber = :ipenNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIpenLocked", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenLocked = :ipenLocked"),
-    @NamedQuery(name = "TblLivingPlant.findByPhytoControl", query = "SELECT t FROM TblLivingPlant t WHERE t.phytoControl = :phytoControl"),
-    @NamedQuery(name = "TblLivingPlant.findByPlaceNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.placeNumber = :placeNumber"),
-    @NamedQuery(name = "TblLivingPlant.findByIndexSeminum", query = "SELECT t FROM TblLivingPlant t WHERE t.indexSeminum = :indexSeminum"),
-    @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate"),
-    @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId"),
-    @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")})
+    @NamedQuery(name = "TblLivingPlant.findAll", query = "SELECT t FROM TblLivingPlant t")
+    , @NamedQuery(name = "TblLivingPlant.findById", query = "SELECT t FROM TblLivingPlant t WHERE t.id = :id")
+    , @NamedQuery(name = "TblLivingPlant.findByAccessionNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber = :accessionNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenNumber = :ipenNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenLocked", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenLocked = :ipenLocked")
+    , @NamedQuery(name = "TblLivingPlant.findByIpenType", query = "SELECT t FROM TblLivingPlant t WHERE t.ipenType = :ipenType")
+    , @NamedQuery(name = "TblLivingPlant.findByPhytoControl", query = "SELECT t FROM TblLivingPlant t WHERE t.phytoControl = :phytoControl")
+    , @NamedQuery(name = "TblLivingPlant.findByPlaceNumber", query = "SELECT t FROM TblLivingPlant t WHERE t.placeNumber = :placeNumber")
+    , @NamedQuery(name = "TblLivingPlant.findByIndexSeminum", query = "SELECT t FROM TblLivingPlant t WHERE t.indexSeminum = :indexSeminum")
+    , @NamedQuery(name = "TblLivingPlant.findByCultivationDate", query = "SELECT t FROM TblLivingPlant t WHERE t.cultivationDate = :cultivationDate")
+    , @NamedQuery(name = "TblLivingPlant.findByLabelSynonymScientificNameId", query = "SELECT t FROM TblLivingPlant t WHERE t.labelSynonymScientificNameId = :labelSynonymScientificNameId")
+    , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
+    , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")
+    , @NamedQuery(name = "TblLivingPlant.findByHasImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasImage = :hasImage")
+    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")
+    , @NamedQuery(name = "TblLivingPlant.resetImageStatus", query = "UPDATE TblLivingPlant t SET t.hasImage = FALSE, t.hasPublicImage = FALSE WHERE t.tblBotanicalObject IN ( SELECT tbo FROM TblBotanicalObject tbo WHERE tbo.organisationId IN (:organisations) )")})
 public class TblLivingPlant implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "accession_number")
     private int accessionNumber;
@@ -64,6 +81,11 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "ipen_locked")
     private boolean ipenLocked;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 8)
+    @Column(name = "ipen_type")
+    private String ipenType;
     @Basic(optional = false)
     @NotNull
     @Column(name = "phyto_control")
@@ -83,7 +105,7 @@ public class TblLivingPlant implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date cultivationDate;
     @Column(name = "label_synonym_scientific_name_id")
-    private Integer labelSynonymScientificNameId;
+    private Long labelSynonymScientificNameId;
     @Lob
     @Size(max = 65535)
     @Column(name = "label_annotation")
@@ -92,50 +114,68 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "bgci")
     private boolean bgci;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
-    private Collection<TblCertificate> tblCertificateCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
-    private Collection<TblRelevancy> tblRelevancyCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
-    private Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection;
-    @JoinColumn(name = "index_seminum_type_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblIndexSeminumType indexSeminumTypeId;
-    @JoinColumn(name = "cultivar_id", referencedColumnName = "cultivar_id")
-    @ManyToOne
-    private TblCultivar cultivarId;
-    @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblAcquisitionDate incomingDateId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "reviewed")
+    private boolean reviewed;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_image")
+    private boolean hasImage;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "has_public_image")
+    private boolean hasPublicImage;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    private List<TblRelevancy> tblRelevancyList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
+    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    private List<TblCertificate> tblCertificateList;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject tblBotanicalObject;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
-    private Collection<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection;
+    @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblAcquisitionDate incomingDateId;
+    @JoinColumn(name = "cultivar_id", referencedColumnName = "cultivar_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblCultivar cultivarId;
+    @JoinColumn(name = "index_seminum_type_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblIndexSeminumType indexSeminumTypeId;
 
     public TblLivingPlant() {
     }
 
-    public TblLivingPlant(Integer id) {
+    public TblLivingPlant(Long id) {
         this.id = id;
     }
 
-    public TblLivingPlant(Integer id, int accessionNumber, boolean ipenLocked, boolean phytoControl, boolean indexSeminum, boolean bgci) {
+    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
+        this.ipenType = ipenType;
         this.phytoControl = phytoControl;
         this.indexSeminum = indexSeminum;
         this.bgci = bgci;
+        this.reviewed = reviewed;
+        this.hasImage = hasImage;
+        this.hasPublicImage = hasPublicImage;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -161,6 +201,14 @@ public class TblLivingPlant implements Serializable {
 
     public void setIpenLocked(boolean ipenLocked) {
         this.ipenLocked = ipenLocked;
+    }
+
+    public String getIpenType() {
+        return ipenType;
+    }
+
+    public void setIpenType(String ipenType) {
+        this.ipenType = ipenType;
     }
 
     public boolean getPhytoControl() {
@@ -203,11 +251,11 @@ public class TblLivingPlant implements Serializable {
         this.cultivationDate = cultivationDate;
     }
 
-    public Integer getLabelSynonymScientificNameId() {
+    public Long getLabelSynonymScientificNameId() {
         return labelSynonymScientificNameId;
     }
 
-    public void setLabelSynonymScientificNameId(Integer labelSynonymScientificNameId) {
+    public void setLabelSynonymScientificNameId(Long labelSynonymScientificNameId) {
         this.labelSynonymScientificNameId = labelSynonymScientificNameId;
     }
 
@@ -227,55 +275,82 @@ public class TblLivingPlant implements Serializable {
         this.bgci = bgci;
     }
 
+    public boolean getReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
+    }
+
+    public boolean getHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public boolean getHasPublicImage() {
+        return hasPublicImage;
+    }
+
+    public void setHasPublicImage(boolean hasPublicImage) {
+        this.hasPublicImage = hasPublicImage;
+    }
+
     @XmlTransient
-    public Collection<TblCertificate> getTblCertificateCollection() {
-        return tblCertificateCollection;
+    public List<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberList() {
+        return tblAlternativeAccessionNumberList;
     }
 
-    public void setTblCertificateCollection(Collection<TblCertificate> tblCertificateCollection) {
-        this.tblCertificateCollection = tblCertificateCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblRelevancy> getTblRelevancyCollection() {
-        return tblRelevancyCollection;
-    }
-
-    public void setTblRelevancyCollection(Collection<TblRelevancy> tblRelevancyCollection) {
-        this.tblRelevancyCollection = tblRelevancyCollection;
+    public void setTblAlternativeAccessionNumberList(List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList) {
+        this.tblAlternativeAccessionNumberList = tblAlternativeAccessionNumberList;
     }
 
     @XmlTransient
-    public Collection<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageCollection() {
-        return tblLivingPlantTreeRecordFilePageCollection;
+    public List<TblLivingPlantTreeRecordFilePage> getTblLivingPlantTreeRecordFilePageList() {
+        return tblLivingPlantTreeRecordFilePageList;
     }
 
-    public void setTblLivingPlantTreeRecordFilePageCollection(Collection<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageCollection) {
-        this.tblLivingPlantTreeRecordFilePageCollection = tblLivingPlantTreeRecordFilePageCollection;
+    public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
+        this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
     }
 
-    public TblIndexSeminumType getIndexSeminumTypeId() {
-        return indexSeminumTypeId;
+    @XmlTransient
+    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
+        return tblDerivativeVegetativeList;
     }
 
-    public void setIndexSeminumTypeId(TblIndexSeminumType indexSeminumTypeId) {
-        this.indexSeminumTypeId = indexSeminumTypeId;
+    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
+        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
     }
 
-    public TblCultivar getCultivarId() {
-        return cultivarId;
+    @XmlTransient
+    public List<TblRelevancy> getTblRelevancyList() {
+        return tblRelevancyList;
     }
 
-    public void setCultivarId(TblCultivar cultivarId) {
-        this.cultivarId = cultivarId;
+    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
+        this.tblRelevancyList = tblRelevancyList;
     }
 
-    public TblAcquisitionDate getIncomingDateId() {
-        return incomingDateId;
+    @XmlTransient
+    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
+        return frmwrkaccessBotanicalObjectList;
     }
 
-    public void setIncomingDateId(TblAcquisitionDate incomingDateId) {
-        this.incomingDateId = incomingDateId;
+    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
+        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
+    }
+
+    @XmlTransient
+    public List<TblCertificate> getTblCertificateList() {
+        return tblCertificateList;
+    }
+
+    public void setTblCertificateList(List<TblCertificate> tblCertificateList) {
+        this.tblCertificateList = tblCertificateList;
     }
 
     public TblBotanicalObject getTblBotanicalObject() {
@@ -286,22 +361,28 @@ public class TblLivingPlant implements Serializable {
         this.tblBotanicalObject = tblBotanicalObject;
     }
 
-    @XmlTransient
-    public Collection<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberCollection() {
-        return tblAlternativeAccessionNumberCollection;
+    public TblAcquisitionDate getIncomingDateId() {
+        return incomingDateId;
     }
 
-    public void setTblAlternativeAccessionNumberCollection(Collection<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberCollection) {
-        this.tblAlternativeAccessionNumberCollection = tblAlternativeAccessionNumberCollection;
+    public void setIncomingDateId(TblAcquisitionDate incomingDateId) {
+        this.incomingDateId = incomingDateId;
     }
 
-    @XmlTransient
-    public Collection<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectCollection() {
-        return frmwrkaccessBotanicalObjectCollection;
+    public TblCultivar getCultivarId() {
+        return cultivarId;
     }
 
-    public void setFrmwrkaccessBotanicalObjectCollection(Collection<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectCollection) {
-        this.frmwrkaccessBotanicalObjectCollection = frmwrkaccessBotanicalObjectCollection;
+    public void setCultivarId(TblCultivar cultivarId) {
+        this.cultivarId = cultivarId;
+    }
+
+    public TblIndexSeminumType getIndexSeminumTypeId() {
+        return indexSeminumTypeId;
+    }
+
+    public void setIndexSeminumTypeId(TblIndexSeminumType indexSeminumTypeId) {
+        this.indexSeminumTypeId = indexSeminumTypeId;
     }
 
     @Override

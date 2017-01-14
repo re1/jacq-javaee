@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2016 wkoller.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.jacq.common.model.jpa;
 
@@ -28,16 +38,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "tbl_import_error")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImportError.findAll", query = "SELECT t FROM TblImportError t"),
-    @NamedQuery(name = "TblImportError.findById", query = "SELECT t FROM TblImportError t WHERE t.id = :id"),
-    @NamedQuery(name = "TblImportError.findByIDPflanze", query = "SELECT t FROM TblImportError t WHERE t.iDPflanze = :iDPflanze")})
+    @NamedQuery(name = "TblImportError.findAll", query = "SELECT t FROM TblImportError t")
+    , @NamedQuery(name = "TblImportError.findById", query = "SELECT t FROM TblImportError t WHERE t.id = :id")
+    , @NamedQuery(name = "TblImportError.findByIDPflanze", query = "SELECT t FROM TblImportError t WHERE t.iDPflanze = :iDPflanze")})
 public class TblImportError implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDPflanze")
@@ -52,21 +63,21 @@ public class TblImportError implements Serializable {
     public TblImportError() {
     }
 
-    public TblImportError(Integer id) {
+    public TblImportError(Long id) {
         this.id = id;
     }
 
-    public TblImportError(Integer id, int iDPflanze, String message) {
+    public TblImportError(Long id, int iDPflanze, String message) {
         this.id = id;
         this.iDPflanze = iDPflanze;
         this.message = message;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
