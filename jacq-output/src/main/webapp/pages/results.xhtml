@@ -10,10 +10,11 @@
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
             <h:form styleClass="jacq-resultform">
+                <h:panelGroup layout="block" id="resultCountTop">
+                    <h:outputText value="#{searchController.dataModel.rowCount}" /> Records found
+                </h:panelGroup>
+
                 <p:dataTable id="resultList" lazy="true" var="botanicalObject" value="#{searchController.dataModel}" paginator="true" rows="10">
-                    <p:column headerText="ID">
-                        <h:outputText value="#{botanicalObject.botanicalObjectId}" />
-                    </p:column>
                     <p:column headerText="Volksname">
                         <ui:repeat value="#{botanicalObject.commonNames}" var="commonName">
                             <h:outputText value="#{commonName}" />&nbsp;
@@ -34,14 +35,20 @@
                             </a>
                         </ui:repeat>
                     </p:column>
-                    <p:column headerText="Akzessions Nummer">
+                    <p:column headerText="Akzessionsnummer">
                         <h:outputText value="#{botanicalObject.accessionNumber}">
                             <f:convertNumber pattern="0000000" />
                         </h:outputText>
                     </p:column>
                 </p:dataTable>
 
+                <h:panelGroup layout="block" id="resultCountBottom">
+                    <h:outputText value="#{searchController.dataModel.rowCount}" /> Records found
+                </h:panelGroup>
+
                 <p:blockUI block="resultList" trigger="resultList" />
+
+                <p:remoteCommand update="resultCountTop resultCountBottom" action="#{searchController.updateRowCount()}" autoRun="true" />
             </h:form>
         </ui:define>
     </ui:composition>

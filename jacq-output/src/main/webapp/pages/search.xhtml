@@ -10,28 +10,27 @@
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
             <h:form id="jacq_searchform" styleClass="jacq-searchform">
-                <div class="row">
+                <div class="row jacq-search-row">
                     <div class="col-md-6">
-                        <p:inputText id="scientific_name" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}">
-                        </p:inputText>
+                        <p:inputText id="scientific_name" styleClass="jacq-search-full" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}"/>
                         <p:message for="scientific_name" />
                     </div>
                     <div class="col-md-6">
-                        <p:inputText id="organization" placeholder="Standort im Garten" value="#{searchController.organization}" />
+                        <p:inputText id="organization" styleClass="jacq-search-full" placeholder="Standort im Garten" value="#{searchController.organization}" />
                         <p:message for="organization" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="row jacq-search-row">
                     <div class="col-md-6">
-                        <p:outputLabel for="has_image" value="Mit Bildern" />
                         <p:selectBooleanCheckbox id="has_image" value="#{searchController.hasImage}" />
+                        <p:outputLabel for="has_image" value="&nbsp; Nur mit Bildern" />
                         <p:message for="has_image" />
                     </div>
                     <div class="col-md-6">
 
                     </div>
                 </div>
-                <div class="row">
+                <div class="row jacq-search-row">
                     <div class="col-md-12">
                         <p:commandButton id="search_button" value="Suche" action="#{searchController.search()}" />
                     </div>

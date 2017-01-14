@@ -39,3 +39,15 @@
     color: rgb(218, 232, 174);
     margin-right: 1.0em;
 }
+
+.jacq-search-full {
+    width: 100%;
+}
+
+.jacq-content {
+    padding-top: 1.0em;
+}
+
+.jacq-search-row {
+    margin-bottom: 0.5em;
+}
