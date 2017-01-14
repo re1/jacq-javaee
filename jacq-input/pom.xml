@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jacq</groupId>
         <artifactId>jacq</artifactId>
-        <version>${jacq.version}</version>
+        <version>0.3.0</version>
         <relativePath>../jacq/pom.xml</relativePath>
     </parent>
 
@@ -19,9 +19,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.parent.groupId}</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jacq-common</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
