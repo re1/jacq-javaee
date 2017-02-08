@@ -15,6 +15,7 @@
  */
 package org.jacq.common.rest;
 
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.jpa.TblClassification;
 
 /**
  * Service interface for accessing classification based information
@@ -37,10 +39,11 @@ public interface ClassificationService {
      * @param source Source of classification (Citation, Person, etc.)
      * @param sourceId Reference to use for looking up
      * @param parentId Parent to look for. Can be NULL to provide top-level entries
+     * @return
      */
     @GET
     @Path("/entries")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void getEntries(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId, @QueryParam("parentId") Long parentId);
+    public List<TblClassification> getEntries(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId, @QueryParam("parentId") Long parentId);
 }

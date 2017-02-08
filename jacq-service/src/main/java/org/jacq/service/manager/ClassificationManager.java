@@ -35,7 +35,7 @@ public class ClassificationManager {
     /**
      * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
      */
-    public void getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
+    public List<TblClassification> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
         TypedQuery<TblClassification> classificationQuery = null;
 
         if (parentId == null) {
@@ -50,6 +50,6 @@ public class ClassificationManager {
             classificationQuery.setParameter("parentScientificNameId", parentId);
         }
 
-        List<TblClassification> classificationResults = classificationQuery.getResultList();
+        return classificationQuery.getResultList();
     }
 }

@@ -15,8 +15,16 @@
  */
 package org.jacq.service.rest.impl;
 
+import java.util.List;
+import java.util.logging.Logger;
+import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.rest.ClassificationService;
+import org.jacq.service.manager.ClassificationManager;
+import org.jboss.logmanager.Level;
 
 /**
  *
@@ -24,12 +32,22 @@ import org.jacq.common.rest.ClassificationService;
  */
 public class ClassificationServiceImpl implements ClassificationService {
 
+    private static final Logger LOGGER = Logger.getLogger(ClassificationServiceImpl.class.getName());
+
+    @Inject
+    protected ClassificationManager classificationManager;
+
     /**
      * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
      */
     @Override
-    public void getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public List<TblClassification> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
+        try {
+            return classificationManager.getEntries(source, sourceId, parentId);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
+    }
 }
