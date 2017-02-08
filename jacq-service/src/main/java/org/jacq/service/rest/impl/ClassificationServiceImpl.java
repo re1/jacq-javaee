@@ -16,15 +16,15 @@
 package org.jacq.service.rest.impl;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.ClassificationSourceType;
-import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.service.manager.ClassificationManager;
-import org.jboss.logmanager.Level;
 
 /**
  *
@@ -41,7 +41,7 @@ public class ClassificationServiceImpl implements ClassificationService {
      * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
      */
     @Override
-    public List<TblClassification> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
+    public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
         try {
             return classificationManager.getEntries(source, sourceId, parentId);
         } catch (Exception e) {

@@ -23,7 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.ClassificationSourceType;
-import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.ViewClassificationResult;
 
 /**
  * Service interface for accessing classification based information
@@ -45,5 +45,5 @@ public interface ClassificationService {
     @Path("/entries")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TblClassification> getEntries(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId, @QueryParam("parentId") Long parentId);
+    public List<ViewClassificationResult> getEntries(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId, @QueryParam("parentId") Long parentId);
 }

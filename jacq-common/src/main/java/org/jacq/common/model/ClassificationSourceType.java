@@ -24,5 +24,5 @@ public enum ClassificationSourceType {
     CITATION,
     PERSON,
     SERVICE,
-    SPECIMEN
+    SPECIMEN;
 }

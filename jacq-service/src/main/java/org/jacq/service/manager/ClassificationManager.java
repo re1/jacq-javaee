@@ -19,8 +19,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import org.jacq.common.model.ClassificationSourceType;
 import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 
 /**
@@ -35,17 +37,18 @@ public class ClassificationManager {
     /**
      * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
      */
-    public List<TblClassification> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
-        TypedQuery<TblClassification> classificationQuery = null;
+    @Transactional
+    public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
+        TypedQuery<ViewClassificationResult> classificationQuery = null;
 
         if (parentId == null) {
-            classificationQuery = em.createNamedQuery("TblClassification.findTopLevelBySource", TblClassification.class);
-            classificationQuery.setParameter("source", source);
+            classificationQuery = em.createNamedQuery("ViewClassificationResult.findTopLevelBySource", ViewClassificationResult.class);
+            classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
         }
         else {
-            classificationQuery = em.createNamedQuery("TblClassification.findBySourceAndParent", TblClassification.class);
-            classificationQuery.setParameter("source", source);
+            classificationQuery = em.createNamedQuery("ViewClassificationResult.findBySourceAndParent", ViewClassificationResult.class);
+            classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
             classificationQuery.setParameter("parentScientificNameId", parentId);
         }

@@ -16,48 +16,45 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.jacq.common.model.ClassificationSourceType;
 
 /**
  *
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_classification")
+@Table(name = "view_classification_result")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblClassification.findAll", query = "SELECT t FROM TblClassification t")
-    , @NamedQuery(name = "TblClassification.findByClassificationId", query = "SELECT t FROM TblClassification t WHERE t.classificationId = :classificationId")
-    , @NamedQuery(name = "TblClassification.findByScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.scientificNameId = :scientificNameId")
-    , @NamedQuery(name = "TblClassification.findByAccScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.accScientificNameId = :accScientificNameId")
-    , @NamedQuery(name = "TblClassification.findByPreferredTaxonomy", query = "SELECT t FROM TblClassification t WHERE t.preferredTaxonomy = :preferredTaxonomy")
-    , @NamedQuery(name = "TblClassification.findByLocked", query = "SELECT t FROM TblClassification t WHERE t.locked = :locked")
-    , @NamedQuery(name = "TblClassification.findBySource", query = "SELECT t FROM TblClassification t WHERE t.source = :source")
-    , @NamedQuery(name = "TblClassification.findBySourceId", query = "SELECT t FROM TblClassification t WHERE t.sourceId = :sourceId")
-    , @NamedQuery(name = "TblClassification.findByUserId", query = "SELECT t FROM TblClassification t WHERE t.userId = :userId")
-    , @NamedQuery(name = "TblClassification.findByParentScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.parentScientificNameId = :parentScientificNameId")
-    , @NamedQuery(name = "TblClassification.findByNumber", query = "SELECT t FROM TblClassification t WHERE t.number = :number")
-    , @NamedQuery(name = "TblClassification.findByOrder", query = "SELECT t FROM TblClassification t WHERE t.order = :order")
-    , @NamedQuery(name = "TblClassification.findTopLevelBySource", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId IS NULL")
-    , @NamedQuery(name = "TblClassification.findBySourceAndParent", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId = :parentScientificNameId")
+    @NamedQuery(name = "ViewClassificationResult.findAll", query = "SELECT v FROM ViewClassificationResult v")
+    , @NamedQuery(name = "ViewClassificationResult.findByClassificationId", query = "SELECT v FROM ViewClassificationResult v WHERE v.classificationId = :classificationId")
+    , @NamedQuery(name = "ViewClassificationResult.findByScientificNameId", query = "SELECT v FROM ViewClassificationResult v WHERE v.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "ViewClassificationResult.findByAccScientificNameId", query = "SELECT v FROM ViewClassificationResult v WHERE v.accScientificNameId = :accScientificNameId")
+    , @NamedQuery(name = "ViewClassificationResult.findByPreferredTaxonomy", query = "SELECT v FROM ViewClassificationResult v WHERE v.preferredTaxonomy = :preferredTaxonomy")
+    , @NamedQuery(name = "ViewClassificationResult.findByLocked", query = "SELECT v FROM ViewClassificationResult v WHERE v.locked = :locked")
+    , @NamedQuery(name = "ViewClassificationResult.findBySource", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source")
+    , @NamedQuery(name = "ViewClassificationResult.findBySourceId", query = "SELECT v FROM ViewClassificationResult v WHERE v.sourceId = :sourceId")
+    , @NamedQuery(name = "ViewClassificationResult.findByUserId", query = "SELECT v FROM ViewClassificationResult v WHERE v.userId = :userId")
+    , @NamedQuery(name = "ViewClassificationResult.findByParentScientificNameId", query = "SELECT v FROM ViewClassificationResult v WHERE v.parentScientificNameId = :parentScientificNameId")
+    , @NamedQuery(name = "ViewClassificationResult.findByNumber", query = "SELECT v FROM ViewClassificationResult v WHERE v.number = :number")
+    , @NamedQuery(name = "ViewClassificationResult.findByOrder", query = "SELECT v FROM ViewClassificationResult v WHERE v.order = :order")
+    , @NamedQuery(name = "ViewClassificationResult.findTopLevelBySource", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId IS NULL")
+    , @NamedQuery(name = "ViewClassificationResult.findBySourceAndParent", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId = :parentScientificNameId")
 })
-public class TblClassification implements Serializable {
+public class ViewClassificationResult implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,7 +67,7 @@ public class TblClassification implements Serializable {
     @Column(name = "scientific_name_id")
     private long scientificNameId;
     @Column(name = "acc_scientific_name_id")
-    private Integer accScientificNameId;
+    private Long accScientificNameId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "preferred_taxonomy")
@@ -83,9 +80,7 @@ public class TblClassification implements Serializable {
     @NotNull
     @Column(name = "locked")
     private short locked;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "source")
     private String source;
     @Column(name = "source_id")
@@ -95,14 +90,22 @@ public class TblClassification implements Serializable {
     @Column(name = "user_id")
     private long userId;
     @Column(name = "parent_scientific_name_id")
-    private Integer parentScientificNameId;
+    private Long parentScientificNameId;
     @Size(max = 15)
     @Column(name = "number")
     private String number;
     @Column(name = "order")
-    private Integer order;
+    private Long order;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "scientific_name")
+    private String scientificName;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "scientific_name_no_author")
+    private String scientificNameNoAuthor;
 
-    public TblClassification() {
+    public ViewClassificationResult() {
     }
 
     public long getClassificationId() {
@@ -121,11 +124,11 @@ public class TblClassification implements Serializable {
         this.scientificNameId = scientificNameId;
     }
 
-    public Integer getAccScientificNameId() {
+    public Long getAccScientificNameId() {
         return accScientificNameId;
     }
 
-    public void setAccScientificNameId(Integer accScientificNameId) {
+    public void setAccScientificNameId(Long accScientificNameId) {
         this.accScientificNameId = accScientificNameId;
     }
 
@@ -177,11 +180,11 @@ public class TblClassification implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getParentScientificNameId() {
+    public Long getParentScientificNameId() {
         return parentScientificNameId;
     }
 
-    public void setParentScientificNameId(Integer parentScientificNameId) {
+    public void setParentScientificNameId(Long parentScientificNameId) {
         this.parentScientificNameId = parentScientificNameId;
     }
 
@@ -193,11 +196,28 @@ public class TblClassification implements Serializable {
         this.number = number;
     }
 
-    public Integer getOrder() {
+    public Long getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
+
+    public String getScientificName() {
+        return scientificName;
+    }
+
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
+    }
+
+    public String getScientificNameNoAuthor() {
+        return scientificNameNoAuthor;
+    }
+
+    public void setScientificNameNoAuthor(String scientificNameNoAuthor) {
+        this.scientificNameNoAuthor = scientificNameNoAuthor;
+    }
+
 }
