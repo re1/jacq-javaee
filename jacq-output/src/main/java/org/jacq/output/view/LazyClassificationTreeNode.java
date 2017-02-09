@@ -30,22 +30,18 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
 
     protected ClassificationService classificationService;
 
-    protected ViewClassificationResult classificationResult;
-
     protected boolean bChildrenFetched = false;
 
     public LazyClassificationTreeNode(ClassificationService classificationService) {
-        super("root", null);
+        super(null);
 
         this.classificationService = classificationService;
-        this.classificationResult = null;
     }
 
     public LazyClassificationTreeNode(ClassificationService classificationService, ViewClassificationResult data) {
-        super(data.getScientificName(), data, null);
+        super(data, null);
 
         this.classificationService = classificationService;
-        this.classificationResult = data;
     }
 
     @Override
@@ -71,13 +67,15 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
 
     protected void fetchChildren() {
         if (!this.bChildrenFetched) {
-            List<ViewClassificationResult> classificationResults = this.classificationService.getEntries(ClassificationSourceType.CITATION, 10400, (this.classificationResult != null) ? this.classificationResult.getScientificNameId() : null);
-
-            for (ViewClassificationResult classificationResultEntry : classificationResults) {
-                super.getChildren().add(new LazyClassificationTreeNode(this.classificationService, classificationResultEntry));
-            }
-
             this.bChildrenFetched = true;
+
+            if (this.getData() == null) {
+                List<ViewClassificationResult> classificationResults = this.classificationService.getAccepted(ClassificationSourceType.CITATION, 10400);
+
+                for (ViewClassificationResult classificationResult : classificationResults) {
+                    super.getChildren().add(new LazyClassificationTreeNode(this.classificationService, classificationResult));
+                }
+            }
         }
     }
 

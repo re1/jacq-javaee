@@ -46,4 +46,17 @@ public interface ClassificationService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<ViewClassificationResult> getEntries(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId, @QueryParam("parentId") Long parentId);
+
+    /**
+     * Receive a list of all accepted names for the given classification
+     *
+     * @param source
+     * @param sourceId
+     * @return
+     */
+    @GET
+    @Path("/accepted")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ViewClassificationResult> getAccepted(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId);
 }

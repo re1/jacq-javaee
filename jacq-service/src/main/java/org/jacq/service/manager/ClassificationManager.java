@@ -55,4 +55,14 @@ public class ClassificationManager {
 
         return classificationQuery.getResultList();
     }
+
+    public List<ViewClassificationResult> getAccepted(ClassificationSourceType source, long sourceId) {
+        TypedQuery<ViewClassificationResult> classificationQuery = null;
+
+        classificationQuery = em.createNamedQuery("ViewClassificationResult.findBySourceAndAccepted", ViewClassificationResult.class);
+        classificationQuery.setParameter("source", source.toString());
+        classificationQuery.setParameter("sourceId", sourceId);
+
+        return classificationQuery.getResultList();
+    }
 }

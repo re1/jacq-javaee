@@ -51,8 +51,9 @@ import org.jacq.common.model.ClassificationSourceType;
     , @NamedQuery(name = "ViewClassificationResult.findByParentScientificNameId", query = "SELECT v FROM ViewClassificationResult v WHERE v.parentScientificNameId = :parentScientificNameId")
     , @NamedQuery(name = "ViewClassificationResult.findByNumber", query = "SELECT v FROM ViewClassificationResult v WHERE v.number = :number")
     , @NamedQuery(name = "ViewClassificationResult.findByOrder", query = "SELECT v FROM ViewClassificationResult v WHERE v.order = :order")
-    , @NamedQuery(name = "ViewClassificationResult.findTopLevelBySource", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId IS NULL")
-    , @NamedQuery(name = "ViewClassificationResult.findBySourceAndParent", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId = :parentScientificNameId")
+    , @NamedQuery(name = "ViewClassificationResult.findTopLevelBySource", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId IS NULL AND v.accScientificNameId IS NULL")
+    , @NamedQuery(name = "ViewClassificationResult.findBySourceAndParent", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.parentScientificNameId = :parentScientificNameId AND v.accScientificNameId IS NULL")
+    , @NamedQuery(name = "ViewClassificationResult.findBySourceAndAccepted", query = "SELECT v FROM ViewClassificationResult v WHERE v.source = :source AND v.sourceId = :sourceId AND v.accScientificNameId IS NULL ORDER BY v.scientificName ASC")
 })
 public class ViewClassificationResult implements Serializable {
 

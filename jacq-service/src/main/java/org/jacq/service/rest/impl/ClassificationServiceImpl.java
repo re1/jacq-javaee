@@ -50,4 +50,15 @@ public class ClassificationServiceImpl implements ClassificationService {
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
     }
+
+    @Override
+    public List<ViewClassificationResult> getAccepted(ClassificationSourceType source, long sourceId) {
+        try {
+            return classificationManager.getAccepted(source, sourceId);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
+    }
 }
