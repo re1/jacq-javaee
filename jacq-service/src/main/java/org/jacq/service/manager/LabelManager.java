@@ -3,6 +3,7 @@ package org.jacq.service.manager;
 import org.jacq.service.ApplicationManager;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import org.eclipse.birt.report.engine.api.EngineConstants;
+import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
@@ -40,13 +42,13 @@ public class LabelManager {
 
     @Inject
     protected ApplicationManager applicationManager;
-    
+
     @Inject
     protected JacqConfig jacqConfig;
 
     // Context key for birt reporting
     public static final String APP_CONTEXT_KEY_LIVINGPLANTDATASET = "APP_CONTEXT_KEY_LIVINGPLANTDATASET";
-    
+
     @PostConstruct
     public void init() {
         LabelManager.REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_WORK_LABEL);
@@ -55,7 +57,7 @@ public class LabelManager {
     /**
      * @see LabelService#getWork()
      */
-    public Response getWork(int botanicalObjectId) throws Exception {
+    public Response getWork(long botanicalObjectId) throws Exception {
         // find the corresponding living plant entry for the passed botanical object
         TypedQuery<TblLivingPlant> query = em.createNamedQuery("TblLivingPlant.findById", TblLivingPlant.class);
         query.setParameter("id", botanicalObjectId);
@@ -75,7 +77,7 @@ public class LabelManager {
         IRunAndRenderTask task = reportEngine.createRunAndRenderTask(report);
         task.getAppContext().put(EngineConstants.APPCONTEXT_CLASSLOADER_KEY, LabelManager.class.getClassLoader());
         task.getAppContext().put(APP_CONTEXT_KEY_LIVINGPLANTDATASET, results.iterator());
-        
+
         // output stream for returning the rendered pdf
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -87,8 +89,15 @@ public class LabelManager {
 
         // finally run the task
         task.run();
+
+        // get exceptions
+        for (EngineException error : (List<EngineException>) task.getErrors()) {
+            LOGGER.log(Level.SEVERE, error.getMessage(), error);
+        }
+
+        // close task
         task.close();
-        
+
         // return the produces PDF
         return Response.ok(baos.toByteArray()).header("Content-Disposition", "attachment; filename=hbv_worklabel.pdf").build();
     }

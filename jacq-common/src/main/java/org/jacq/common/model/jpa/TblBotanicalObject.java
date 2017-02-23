@@ -384,7 +384,7 @@ public class TblBotanicalObject implements Serializable {
      * Custom mappings
      */
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ViewScientificName viewScientificName;
 
     public ViewScientificName getViewScientificName() {

@@ -33,7 +33,7 @@ public class LabelServiceImpl implements LabelService, Serializable {
      * @see LabelService#getWork()
      */
     @Override
-    public Response getWork(int botanicalObjectId) {
+    public Response getWork(long botanicalObjectId) {
         try {
             return labelManager.getWork(botanicalObjectId);
         } catch (Exception e) {
