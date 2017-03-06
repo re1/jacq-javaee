@@ -28,5 +28,5 @@ public interface LabelService {
     @Path("/work/{botanical_object_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_PDF)
-    public Response getWork(@PathParam("botanical_object_id") int botanicalObjectId);
+    public Response getWork(@PathParam("botanical_object_id") long botanicalObjectId);
 }

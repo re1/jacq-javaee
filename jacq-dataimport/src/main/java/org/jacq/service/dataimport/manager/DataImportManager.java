@@ -81,8 +81,7 @@ public class DataImportManager {
 
     /**
      * @throws java.io.IOException
-     * @see
-     * DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
+     * @see DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
      */
     public void dataImport(ImportFile importFile) throws IOException, ParseException {
         // Decode Base64 file content
@@ -110,6 +109,10 @@ public class DataImportManager {
             importRecord.setSeparationDate(separationDateFormat.parse(record.get(i++)));
             importRecord.setSeparationType(record.get(i++));
             importRecord.setLabelAnnotation(record.get(i++));
+            importRecord.setAlternativeLivingPlantNumber(record.get(i++));
+            importRecord.setSeparationAnnotation(record.get(i++));
+            importRecord.setMatchFamily(record.get(i++));
+            importRecord.setIpenNumber(record.get(i++));
         }
     }
 
