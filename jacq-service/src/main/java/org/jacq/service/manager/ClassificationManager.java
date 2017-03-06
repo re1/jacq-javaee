@@ -16,6 +16,7 @@
 package org.jacq.service.manager;
 
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -64,5 +65,13 @@ public class ClassificationManager {
         classificationQuery.setParameter("sourceId", sourceId);
 
         return classificationQuery.getResultList();
+    }
+
+    /**
+     * @see ClassificationService#addSnapshot(org.jacq.common.model.ClassificationSourceType, long)
+     */
+    @Transactional
+    public UUID addSnapshot(ClassificationSourceType source, long sourceId) {
+        // check if there is at least one entry for this classification
     }
 }

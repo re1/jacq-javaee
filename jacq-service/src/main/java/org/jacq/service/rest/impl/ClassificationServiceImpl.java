@@ -16,6 +16,7 @@
 package org.jacq.service.rest.impl;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -55,6 +56,20 @@ public class ClassificationServiceImpl implements ClassificationService {
     public List<ViewClassificationResult> getAccepted(ClassificationSourceType source, long sourceId) {
         try {
             return classificationManager.getAccepted(source, sourceId);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
+    }
+
+    /**
+     * @see ClassificationService#addSnapshot(org.jacq.common.model.ClassificationSourceType, long)
+     */
+    @Override
+    public UUID addSnapshot(ClassificationSourceType source, long sourceId) {
+        try {
+            return classificationManager.addSnapshot(source, sourceId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
