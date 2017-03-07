@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.jacq.common.model.ClassificationSourceType;
@@ -68,10 +69,14 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#addSnapshot(org.jacq.common.model.ClassificationSourceType, long)
+     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
      */
     @Transactional
-    public UUID addSnapshot(ClassificationSourceType source, long sourceId) {
-        // check if there is at least one entry for this classification
+    public UUID addRevision(ClassificationSourceType source, long sourceId) {
+        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("RevClassification.addRevision");
+        query.setParameter("i_source", source.toString());
+        query.setParameter("i_source_id", sourceId);
+        query.execute();
+        return UUID.fromString((String) query.getOutputParameterValue("o_uuid"));
     }
 }

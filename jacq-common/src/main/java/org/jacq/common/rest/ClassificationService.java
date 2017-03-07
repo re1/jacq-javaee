@@ -63,15 +63,15 @@ public interface ClassificationService {
     public List<ViewClassificationResult> getAccepted(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId);
 
     /**
-     * Create a new snapshot for the given classification
+     * Create a new revision for the given classification
      *
      * @param source
      * @param sourceId
-     * @return
+     * @return UUID of created revision
      */
     @POST
-    @Path("/snapshot")
+    @Path("/revision")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UUID addSnapshot(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId);
+    public UUID addRevision(@QueryParam("source") ClassificationSourceType source, @QueryParam("sourceId") long sourceId);
 }

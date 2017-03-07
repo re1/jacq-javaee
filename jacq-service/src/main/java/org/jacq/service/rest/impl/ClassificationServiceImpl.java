@@ -64,12 +64,12 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     /**
-     * @see ClassificationService#addSnapshot(org.jacq.common.model.ClassificationSourceType, long)
+     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
      */
     @Override
-    public UUID addSnapshot(ClassificationSourceType source, long sourceId) {
+    public UUID addRevision(ClassificationSourceType source, long sourceId) {
         try {
-            return classificationManager.addSnapshot(source, sourceId);
+            return classificationManager.addRevision(source, sourceId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
