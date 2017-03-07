@@ -7,12 +7,16 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <f:metadata>
+        <f:viewParam name="uuid" value="#{floraController.uuid}" />
+    </f:metadata>
+
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
             <h:form id="jacq_searchform" styleClass="jacq-floraform">
                 <div class="row">
                     <div class="col-md-12">
-                        <p:tree value="#{floraController.root}" var="node" dynamic="true">
+                        <p:tree value="#{floraController.root}" var="node" dynamic="true" style="width: 100%;">
                             <p:treeNode>
                                 <h:outputText value="#{node.scientificName}" />
                             </p:treeNode>

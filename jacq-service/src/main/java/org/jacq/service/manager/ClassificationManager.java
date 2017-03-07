@@ -15,15 +15,20 @@
  */
 package org.jacq.service.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import javax.ws.rs.QueryParam;
 import org.jacq.common.model.ClassificationSourceType;
-import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.RevClassification;
+import org.jacq.common.model.jpa.SrvcUuidMinter;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 
@@ -78,5 +83,25 @@ public class ClassificationManager {
         query.setParameter("i_source_id", sourceId);
         query.execute();
         return UUID.fromString((String) query.getOutputParameterValue("o_uuid"));
+    }
+
+    /**
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long)
+     */
+    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId) {
+        // load uuid-minter entry first
+        TypedQuery<SrvcUuidMinter> uuidMinterQuery = em.createNamedQuery("SrvcUuidMinter.findByUuid", SrvcUuidMinter.class);
+        uuidMinterQuery.setParameter("uuid", revision.toString());
+        try {
+            SrvcUuidMinter uuidMinter = uuidMinterQuery.getSingleResult();
+
+            // now load entries from revision table
+            TypedQuery<RevClassification> revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
+            revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
+
+            return revClassificationQuery.getResultList();
+        } catch (NoResultException | NonUniqueResultException e) {
+            return new ArrayList<>();
+        }
     }
 }

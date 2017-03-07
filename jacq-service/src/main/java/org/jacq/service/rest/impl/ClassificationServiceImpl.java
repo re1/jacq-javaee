@@ -20,9 +20,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.service.manager.ClassificationManager;
@@ -70,6 +72,21 @@ public class ClassificationServiceImpl implements ClassificationService {
     public UUID addRevision(ClassificationSourceType source, long sourceId) {
         try {
             return classificationManager.addRevision(source, sourceId);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+        }
+    }
+
+    /**
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long)
+     * @return
+     */
+    @Override
+    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId) {
+        try {
+            return classificationManager.getRevision(revision, parentId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

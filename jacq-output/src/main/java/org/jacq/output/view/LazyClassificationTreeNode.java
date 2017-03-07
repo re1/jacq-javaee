@@ -16,7 +16,9 @@
 package org.jacq.output.view;
 
 import java.util.List;
+import java.util.UUID;
 import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 import org.primefaces.model.DefaultTreeNode;
@@ -32,13 +34,15 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
 
     protected boolean bChildrenFetched = false;
 
+    protected String uuid;
+
     public LazyClassificationTreeNode(ClassificationService classificationService) {
         super(null);
 
         this.classificationService = classificationService;
     }
 
-    public LazyClassificationTreeNode(ClassificationService classificationService, ViewClassificationResult data) {
+    public LazyClassificationTreeNode(ClassificationService classificationService, RevClassification data) {
         super(data, null);
 
         this.classificationService = classificationService;
@@ -70,13 +74,22 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
             this.bChildrenFetched = true;
 
             if (this.getData() == null) {
-                List<ViewClassificationResult> classificationResults = this.classificationService.getAccepted(ClassificationSourceType.CITATION, 10400);
+                //List<ViewClassificationResult> classificationResults = this.classificationService.getAccepted(ClassificationSourceType.CITATION, 10400);
+                List<RevClassification> classificationResults = this.classificationService.getRevision(UUID.fromString(this.uuid), null);
 
-                for (ViewClassificationResult classificationResult : classificationResults) {
+                for (RevClassification classificationResult : classificationResults) {
                     super.getChildren().add(new LazyClassificationTreeNode(this.classificationService, classificationResult));
                 }
             }
         }
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
 }

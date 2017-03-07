@@ -15,6 +15,7 @@
  */
 package org.jacq.output.controller;
 
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -31,7 +32,7 @@ import org.primefaces.model.TreeNode;
 @ViewScoped
 public class FloraController {
 
-    protected TreeNode root;
+    protected LazyClassificationTreeNode root;
 
     @PostConstruct
     public void init() {
@@ -42,7 +43,16 @@ public class FloraController {
         return root;
     }
 
-    public void setRoot(TreeNode root) {
+    public void setRoot(LazyClassificationTreeNode root) {
         this.root = root;
     }
+
+    public String getUuid() {
+        return this.root.getUuid();
+    }
+
+    public void setUuid(String uuid) {
+        this.root.setUuid(uuid);
+    }
+
 }
