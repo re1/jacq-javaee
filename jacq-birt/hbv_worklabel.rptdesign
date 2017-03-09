@@ -718,7 +718,9 @@
                             <property name="paddingBottom">1pt</property>
                             <grid id="29">
                                 <column id="30"/>
-                                <column id="31"/>
+                                <column id="31">
+                                    <property name="width">30%</property>
+                                </column>
                                 <row id="32">
                                     <property name="fontSize">20pt</property>
                                     <cell id="33">

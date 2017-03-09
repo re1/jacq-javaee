@@ -139,7 +139,7 @@ public class TblLivingPlant implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblCertificate> tblCertificateList;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private TblBotanicalObject tblBotanicalObject;
     @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
