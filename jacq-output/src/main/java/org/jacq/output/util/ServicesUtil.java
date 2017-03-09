@@ -16,6 +16,7 @@
 package org.jacq.output.util;
 
 import org.jacq.common.rest.BotanicalObjectService;
+import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.filter.ContentTypeResponseFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -32,6 +33,10 @@ public class ServicesUtil {
 
     public static BotanicalObjectService getBotanicalObjectService() {
         return getProxy(BotanicalObjectService.class, JACQ_SERVICE_URL);
+    }
+
+    public static ClassificationService getClassificationService() {
+        return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
