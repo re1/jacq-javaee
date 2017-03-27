@@ -21,6 +21,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -183,6 +185,33 @@ public class TblClassificationChorolStatus implements Serializable {
 
     public void setLocked(int locked) {
         this.locked = locked;
+    }
+
+    /**
+     * Custom Mappings
+     */
+    @ManyToOne
+    @JoinColumn(name = "nation_id", updatable = false, insertable = false)
+    private TblGeoNation tblGeoNation;
+
+    public TblGeoNation getTblGeoNation() {
+        return tblGeoNation;
+    }
+
+    public void setTblGeoNation(TblGeoNation tblGeoNation) {
+        this.tblGeoNation = tblGeoNation;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "province_id", updatable = false, insertable = false)
+    private TblGeoProvince tblGeoProvince;
+
+    public TblGeoProvince getTblGeoProvince() {
+        return tblGeoProvince;
+    }
+
+    public void setTblGeoProvince(TblGeoProvince tblGeoProvince) {
+        this.tblGeoProvince = tblGeoProvince;
     }
 
 }
