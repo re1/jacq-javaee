@@ -80,13 +80,13 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
      * @return
      */
     @Override
-    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId) {
+    public List<RevClassification> getRevision(UUID revision, Long parentId, Integer provinceId) {
         try {
-            return classificationManager.getRevision(revision, parentId);
+            return classificationManager.getRevision(revision, parentId, provinceId);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

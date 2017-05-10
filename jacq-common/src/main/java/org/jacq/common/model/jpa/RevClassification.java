@@ -16,16 +16,17 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.NamedStoredProcedureQueries;
@@ -38,6 +39,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -62,6 +64,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "RevClassification.findByOrder", query = "SELECT r FROM RevClassification r WHERE r.order = :order")
     , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndParent", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId = :accScientificNameId ORDER BY r.order ASC, r.scientificName ASC")
     , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndTopLevel", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId IS NULL ORDER BY r.order ASC, r.scientificName ASC")
+    , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId IS NULL AND r.provinceIds LIKE :provinceId ORDER BY r.order ASC, r.scientificName ASC")
 })
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(name = "RevClassification.addRevision", procedureName = "AddRevClassification",
@@ -129,6 +132,14 @@ public class RevClassification implements Serializable {
     @Size(max = 65535)
     @Column(name = "scientific_name_no_author")
     private String scientificNameNoAuthor;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "province_ids")
+    private String provinceIds;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "province_codes")
+    private String provinceCodes;
     @Column(name = "uuid_minter_id")
     private Long uuidMinterId;
 
@@ -139,7 +150,7 @@ public class RevClassification implements Serializable {
         this.classificationBrowserRevisionId = classificationBrowserRevisionId;
     }
 
-    public RevClassification(Long classificationBrowserRevisionId, long classificationId, long scientificNameId, short preferredTaxonomy, short locked, String source, long userId) {
+    public RevClassification(Long classificationBrowserRevisionId, long classificationId, long scientificNameId, short preferredTaxonomy, short locked, String source, long userId, Date timestamp) {
         this.classificationBrowserRevisionId = classificationBrowserRevisionId;
         this.classificationId = classificationId;
         this.scientificNameId = scientificNameId;
@@ -269,6 +280,22 @@ public class RevClassification implements Serializable {
         this.scientificNameNoAuthor = scientificNameNoAuthor;
     }
 
+    public String getProvinceIds() {
+        return provinceIds;
+    }
+
+    public void setProvinceIds(String provinceIds) {
+        this.provinceIds = provinceIds;
+    }
+
+    public String getProvinceCodes() {
+        return provinceCodes;
+    }
+
+    public void setProvinceCodes(String provinceCodes) {
+        this.provinceCodes = provinceCodes;
+    }
+
     public Long getUuidMinterId() {
         return uuidMinterId;
     }
@@ -301,5 +328,4 @@ public class RevClassification implements Serializable {
     public String toString() {
         return "org.jacq.common.model.jpa.RevClassification[ classificationBrowserRevisionId=" + classificationBrowserRevisionId + " ]";
     }
-
 }

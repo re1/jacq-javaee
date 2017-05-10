@@ -21,6 +21,7 @@ import org.jacq.common.model.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
+import org.jacq.output.model.RevClassificationView;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -36,13 +37,15 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
 
     protected String uuid;
 
+    protected Integer provinceId;
+
     public LazyClassificationTreeNode(ClassificationService classificationService) {
         super(null);
 
         this.classificationService = classificationService;
     }
 
-    public LazyClassificationTreeNode(ClassificationService classificationService, RevClassification data) {
+    public LazyClassificationTreeNode(ClassificationService classificationService, RevClassificationView data) {
         super(data, null);
 
         this.classificationService = classificationService;
@@ -75,10 +78,10 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
 
             if (this.getData() == null) {
                 //List<ViewClassificationResult> classificationResults = this.classificationService.getAccepted(ClassificationSourceType.CITATION, 10400);
-                List<RevClassification> classificationResults = this.classificationService.getRevision(UUID.fromString(this.uuid), null);
+                List<RevClassification> classificationResults = this.classificationService.getRevision(UUID.fromString(this.uuid), null, this.provinceId);
 
                 for (RevClassification classificationResult : classificationResults) {
-                    super.getChildren().add(new LazyClassificationTreeNode(this.classificationService, classificationResult));
+                    super.getChildren().add(new LazyClassificationTreeNode(this.classificationService, new RevClassificationView(classificationResult)));
                 }
             }
         }
@@ -92,4 +95,18 @@ public class LazyClassificationTreeNode extends DefaultTreeNode {
         this.uuid = uuid;
     }
 
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public void applyFilter() {
+        this.getChildren().clear();
+        this.bChildrenFetched = false;
+
+        fetchChildren();
+    }
 }

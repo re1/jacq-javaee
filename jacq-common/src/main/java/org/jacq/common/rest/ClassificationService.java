@@ -87,5 +87,5 @@ public interface ClassificationService {
     @Path("/revision")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId);
+    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId, @QueryParam("provinceId") Integer provinceId);
 }
