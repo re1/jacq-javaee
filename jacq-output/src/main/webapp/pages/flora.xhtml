@@ -18,7 +18,20 @@
                     <div class="col-md-12">
                         <p:tree value="#{floraController.root}" var="node" dynamic="true" style="width: 100%;">
                             <p:treeNode>
-                                <h:outputText value="#{node.scientificName}" />
+                                <h:panelGroup layout="block">
+                                    <p:commandLink update="jacq_searchform" action="#{floraController.filterForProvince}">
+                                        Test
+                                    </p:commandLink>
+
+                                    <h:outputText value="#{node.scientificName}" />&nbsp;
+
+                                    <ui:repeat value="#{node.provinceList}" var="province">
+                                        <p:commandLink update="jacq_searchform" action="#{floraController.filterForProvince(province.provinceId)}" process="@this">
+                                            <h:outputText style="font-weight: bold; #{(province.provinceId == floraController.root.provinceId) ? 'color: #00FF00;' : ''}" value="#{province.provinzCode}" />
+                                        </p:commandLink>
+                                        &nbsp;
+                                    </ui:repeat>
+                                </h:panelGroup>
                             </p:treeNode>
                         </p:tree>
                     </div>

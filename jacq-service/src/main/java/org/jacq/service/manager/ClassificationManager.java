@@ -86,9 +86,9 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
      */
-    public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId) {
+    public List<RevClassification> getRevision(UUID revision, Long parentId, Integer provinceId) {
         // load uuid-minter entry first
         TypedQuery<SrvcUuidMinter> uuidMinterQuery = em.createNamedQuery("SrvcUuidMinter.findByUuid", SrvcUuidMinter.class);
         uuidMinterQuery.setParameter("uuid", revision.toString());
@@ -96,10 +96,21 @@ public class ClassificationManager {
             SrvcUuidMinter uuidMinter = uuidMinterQuery.getSingleResult();
 
             // now load entries from revision table
-            TypedQuery<RevClassification> revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
-            revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
+            TypedQuery<RevClassification> revClassificationQuery = null;
 
-            return revClassificationQuery.getResultList();
+            if (provinceId == null) {
+                revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
+                revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
+            }
+            else {
+                revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", RevClassification.class);
+                revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
+                revClassificationQuery.setParameter("provinceId", "%" + provinceId + "%");
+            }
+
+            List<RevClassification> results = revClassificationQuery.getResultList();
+
+            return results;
         } catch (NoResultException | NonUniqueResultException e) {
             return new ArrayList<>();
         }
