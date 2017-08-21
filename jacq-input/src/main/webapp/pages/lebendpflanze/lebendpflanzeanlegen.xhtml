@@ -148,8 +148,153 @@
                     <br />
                     <p:tabView dynamic="true" cache="true">
                         <p:tab title="Sammeldaten">
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="sammeldatum">Sammeldatum</label>
+                                    <p:inputText />
+                                    <label for="sammelnummer">Sammelnummer</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="freiessammeldatum">Freies Sammeldatum</label>
+                                    <p:inputText />
+                                    <label for="sammlernamen">Sammler-Name(n)</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="ort">Ort</label>
+                                    <p:inputText />
+                                    <label for="Altitude">Altitude</label>
+                                    <h:panelGrid columns="3" cellpadding="2">
+                                        <p:inputText style="width: 50px" />
+                                        -
+                                        <p:inputText style="width: 50px" />
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="genauigkeit">Genauigkeit</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <br />
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="latitude">Latitude</label>
+                                    <h:panelGrid columns="4" cellpadding="2">
+                                        <p:inputText style="width: 30px" />
+                                        <p:inputText style="width: 30px" />
+                                        <p:inputText style="width: 30px" />
+                                        <p:selectOneMenu id="latitudeselect">
+                                            <f:selectItem itemLabel="N" noSelectionOption="true" />
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="longitude">Longitude</label>
+                                    <h:panelGrid columns="4" cellpadding="2">
+                                        <p:inputText style="width: 30px" />
+                                        <p:inputText style="width: 30px" />
+                                        <p:inputText style="width: 30px" />
+                                        <p:selectOneMenu id="longitudeselect">
+                                            <f:selectItem itemLabel="E" noSelectionOption="true" />
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="bemerkung">Bemerkung</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="habitat">Habitat</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="indexseminum">Index Seminum</label>
+                                    <p:selectBooleanCheckbox value="indexseminum" />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="art">Art</label>
+                                    <p:selectOneMenu id="artselect">
+                                        <f:selectItem itemLabel="WS" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
                         </p:tab>
                         <p:tab title="Gärtnerische Daten">
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="aufnahmedatum">Aufnahmedatum *</label>
+                                    <p:inputText />
+                                    <label for="eingangsdatum">Eingangsdatum</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="Anbaudatum">Anbaudatum</label>
+                                    <p:inputText />
+                                    <label for="kulturhinweise">Kulturhinweise</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                    <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                        <h:outputText value="Bezugsdatum" />
+                                        <h:outputText value="Bezugsquelle *" />
+                                        <h:outputText value="Aktion" />
+                                        <p:inputText />
+                                        <p:inputText />
+                                        <p:inputText />
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="ipentyp">Name</label>
+                                    <p:selectOneMenu id="name">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="seite">Seite</label>
+                                    <p:selectOneMenu id="seite">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="Bemerkung">Bemerkung</label>
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                            <div class="jacq-panel-grid">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="">Phänologie</label>
+                                    <p:selectOneMenu id="phaenologie">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
                         </p:tab>
                         <p:tab title="Sammlungsmanagement">
                         </p:tab>
