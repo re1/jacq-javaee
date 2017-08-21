@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>Benutzer aktualisieren</h1>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2">
+                            <h:outputLabel for="password" value="Neues Passwort" />
+                            <p:password id="newPassword" value="" required="true" label="password" />
+                            <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                            <p:password id="newPasswordCheck" value="" required="true" label="password" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="Aktualisieren" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>Benutzer anlegen</h1>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="benutzername">Benutzername</label>
+                            <p:inputText />
+                            <h:outputLabel for="password" value="Neues Passwort" />
+                            <p:password id="newPassword" value="" required="true" label="password" />
+                            <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                            <p:password id="newPasswordCheck" value="" required="true" label="password" />
+                            <h:outputText value="Änderung bei Login" />
+                            <p:selectBooleanCheckbox value="changePassword" />
+                        </h:panelGrid>
+                    </div>
+                    <br />
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="benutzertyp">Benutzertyp</label>
+                            <p:selectOneMenu id="benutzertyp">
+                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="anstellungsverhealtnis">Anstellungsverhältnis</label>
+                            <p:selectOneMenu id="anstellungsverhealtnis">
+                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </div>
+                    <br />
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="vorname">Vorname</label>
+                            <p:inputText />
+                            <label for="nachname">Nachname</label>
+                            <p:inputText />
+                            <label for="geburtstag">Geburtstag</label>
+                            <p:inputText />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="titelprefix">Titel (vorangestellt)</label>
+                            <p:inputText />
+                            <label for="titelpostfix">Titel (nachgestellt)</label>
+                            <p:inputText />
+                            <label for="revier">Revier</label>
+                            <p:inputText />
+                        </h:panelGrid>
+                    </div>
+                    <br />
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="admin" />
+                            <p:selectBooleanCheckbox value="admin" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="gardener" />
+                            <p:selectBooleanCheckbox value="gardener" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="guest" />
+                            <p:selectBooleanCheckbox value="guest" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="inventory" />
+                            <p:selectBooleanCheckbox value="inventory" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="labelPrinters" />
+                            <p:selectBooleanCheckbox value="labelPrinters" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="leadGardener" />
+                            <p:selectBooleanCheckbox value="leadGardener" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="scientificNameEditor" />
+                            <p:selectBooleanCheckbox value="scientificNameEditor" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="Scientist" />
+                            <p:selectBooleanCheckbox value="Scientist" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2"  cellpadding="2">
+                            <h:outputText value="volunteers" />
+                            <p:selectBooleanCheckbox value="volunteers" />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="Anlegen" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

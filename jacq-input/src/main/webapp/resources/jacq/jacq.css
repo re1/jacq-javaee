@@ -1,0 +1,152 @@
+/*
+    Created on : Aug 2, 2017, 2:10:30 PM
+    Author     : fhafner
+*/
+html {
+    box-sizing: border-box;
+}
+
+/* Primefaces
+-------------------------*/
+.ui-button-text, .ui-widget {
+    font-family: 'Hammersmith One', sans-serif;
+    border: 0px;
+    text-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+}
+.ui-state-default, .ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    border: 1px solid #d6d6d6;
+    background: #fff;
+    font-weight: normal;
+    color: #555;
+}
+.ui-panelmenu .ui-panelmenu-header.ui-state-active,
+.ui-panelmenu .ui-panelmenu-header.ui-state-active a {
+    background: rgba(143, 147, 65, 0.25);
+    background-color: #E5CA97;
+    color: #fff;
+    border-color: rgba(143, 147, 65, 0.25);
+    border-color: #E5CA97;
+    text-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover, .ui-state-focus,
+.ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    border: 1px solid #c0c0c0;
+    background: #eee;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-inputfield {
+    width: 192px;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    padding: 0 6px!important;
+}
+
+
+/* Login Page
+-------------------------*/
+.jacq-login {
+    font-family: 'Hammersmith One', sans-serif;
+    margin: 5em auto;
+    width: 360px;
+    /*background-color: rgba(0, 0, 150, 0.25);*/
+    background-color: rgba(143, 147, 65, 0.25);
+    background-color: #E5CA97;
+    border-radius: 2%;
+    padding: 1em;
+    text-align: center;
+}
+
+/* Images
+-------------------------*/
+.jacq-logo-img {
+
+}
+/*H1 and H2
+-------------------------*/
+h1 {
+    margin: 5px;
+}
+
+/* Page Content
+-------------------------*/
+
+.jacq-pages {
+    font-family: 'Hammersmith One', sans-serif;
+}
+.jacq-header {
+    text-align: center;
+}
+.jacq-content-header {
+    text-align: center;
+    margin: 5px;
+    text-transform: uppercase;
+}
+.jacq-button-menu {
+    display: grid;
+}
+.jacq-panel-grid {
+    display:inline-table;
+    margin-bottom: 10px;
+}
+.jacq-data-table {
+    font: 12px 'Hammersmith One', sans-serif;
+    margin: 0px 20px 0px 20px;
+}
+.jacq-buttons {
+    text-align: center;
+    margin: 10px;
+}
+.firstColumn {
+    width: 200px;
+}
+.secondColumn {
+    width: 200px;
+}
+/* Non Mobile devices
+-------------------------*/
+@media (min-width: 700px) and (min-height: 475px) {
+    .jacq-panel-menu {
+        position: fixed;
+        width: 300px;
+        z-index: 2;
+    }
+    .jacq-button-menu {
+        position: fixed;
+        width: 300px;
+        margin-top: 275px;
+        z-index: 1;
+    }
+    .jacq-button-menu .ui-button .ui-button-text {
+        text-align: left;
+        padding: 10px;
+    }
+    .jacq-content {
+        margin-left: 310px;
+    }
+    .jacq-header {
+        right: 10px;
+        position: fixed;
+        top: 0;
+    }
+    .jacq-content-header {
+        text-align: left;
+        margin: 10px 0;
+        text-transform: uppercase;
+    }
+    .jacq-checkbox {
+        width: 100%;
+        float: left;
+        margin-top: 5px;
+    }
+    /*.column {
+        width: 25%;
+        float: left;
+        margin-top: 5px;
+    }*/
+}
+

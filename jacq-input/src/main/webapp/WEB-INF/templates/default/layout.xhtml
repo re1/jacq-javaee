@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>JACQ</title>
+        <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Poppins" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="jacq" name="jacq.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="jacq-content">
+                <div class="jacq-header">
+                    <header>
+                        <img class="jacq-logo-img" src="../../resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
+                    </header>
+                </div>
+            </div>
+            <div class="jacq-pages">
+                <div class="jacq-panel-menu">
+                    <h1 style="margin-bottom: 7px;">Navigation</h1>
+                    <p:panelMenu>
+                        <p:submenu label="Lebendpflanze">
+                            <p:menuitem value="Lebendpflanze anlegen" url="/faces/pages/lebendpflanze/lebendpflanzeanlegen.xhtml"/>
+                            <p:menuitem value="Lebendpflanzen verwalten" url="/faces/pages/lebendpflanze/lebendpflanzenverwalten.xhtml"/>
+                            <p:submenu label="Inventur">
+                                <p:menuitem value="Inventur anlegen" url="/faces/pages/lebendpflanze/inventuranlegen.xhtml"/>
+                                <p:menuitem value="Inventuren" url="/faces/pages/lebendpflanze/inventuren.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="Seminum">
+                                <p:menuitem value="Index Seminum" url="/faces/pages/lebendpflanze/indexseminum.xhtml"/>
+                                <p:menuitem value="Revision anlegen" url="/faces/pages/lebendpflanze/revisionanlegen.xhtml"/>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="Standort">
+                            <p:menuitem value="Standort anlegen" url="/faces/pages/standort/standortanlegen.xhtml"/>
+                            <p:menuitem value="Standorte verwalten" url="/faces/pages/standort/standortverwaltung.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="Baumkontrollblatt">
+                            <p:menuitem value="Baumkontrollblatt anlegen" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
+                            <p:menuitem value="Baumkontrollblatt verwalten" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="Daten Browser">
+                            <p:menuitem value="Klassifikations-Browser" url="/faces/pages/datenbrowser/klassifikationsbrowser.xhtml"/>
+                            <p:menuitem value="Statistik" url="/faces/pages/datenbrowser/statistik.xhtml"/>
+                        </p:submenu>
+                        <p:separator />
+                        <p:submenu label="Benutzer">
+                            <p:menuitem value="Benutzer anlegen" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
+                            <p:menuitem value="Benutzer aktualisieren" url="/faces/pages/benutzer/benutzeraktualisieren.xhtml"/>
+                            <p:menuitem value="Benutzer Verwalten" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
+                        </p:submenu>
+                    </p:panelMenu>
+                </div>
+                <ui:insert name="content"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

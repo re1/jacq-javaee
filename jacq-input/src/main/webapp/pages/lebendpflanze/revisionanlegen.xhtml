@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>Revision anlegen</h1>
+                    </div>
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                            <label for="indexSeminum">Index Seminum anlegen</label>
+                            <p:inputText />
+                        </h:panelGrid>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="Anlegen" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

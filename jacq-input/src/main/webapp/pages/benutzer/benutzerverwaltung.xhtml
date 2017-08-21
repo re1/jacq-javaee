@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>Benutzer verwalten</h1>
+                    </div>
+                    <div class="jacq-data-table">
+                        <p:dataTable var="item">
+                            <p:column headerText="ID">
+                                <h:outputText  />
+                            </p:column>
+                            <p:column headerText="Jahr">
+                                <h:outputText />
+                            </p:column>
+                            <p:column headerText="Name">
+                                <h:outputText />
+                            </p:column>
+                            <p:column headerText="Aktennummer">
+                                <h:outputText />
+                            </p:column>
+                            <p:column headerText="">
+                                <h:outputText />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
