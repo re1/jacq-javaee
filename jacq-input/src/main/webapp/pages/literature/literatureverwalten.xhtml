@@ -11,49 +11,38 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Lebendpflanzen Verwalten</h1>
+                        <h1>Literature Verwalten</h1>
                     </div>
                     <div class="jacq-panel-grid">
                         <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="wissenschaftlicher name">Wissenschaftlicher Name</label>
+                            <label for="title">Title</label>
                             <p:inputText />
-                            <label for="standort">Standort</label>
+                            <label for="author">Author</label>
                             <p:inputText />
-                            <label for="akzessionsnummer">Akzessionsnummer</label>
+                            <label for="listing">listing</label>
+                            <p:selectOneMenu id="listingselect">
+                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                            </p:selectOneMenu>
+                            <label for="volume">Volume</label>
+                            <p:inputText />
+                            <label for="page">Page</label>
                             <p:inputText />
                         </h:panelGrid>
                     </div>
                     <div class="jacq-panel-grid">
                         <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="platznummer">Platznummer</label>
+                            <label for="periodical">Periodical</label>
                             <p:inputText />
-                            <label for="ort">Ort</label>
+                            <label for="year">Year</label>
                             <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Ausgeschieden" />
-                            <p:selectBooleanCheckbox value="Ausgeschieden" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Etiketten Arbeit" />
-                            <p:selectBooleanCheckbox value="Etiketten Arbeit" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Index Seminum" />
-                            <p:selectBooleanCheckbox value="Index Seminum" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Ausstellung" />
-                            <p:selectBooleanCheckbox value="Ausstellung" />
+                            <label for="keywords">Keywords</label>
+                            <p:inputText />
+                            <label for="categories">Categories</label>
+                            <p:selectOneMenu id="categoriesselect">
+                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                            </p:selectOneMenu>
+                            <h:outputText value="list as containers" />
+                            <p:selectBooleanCheckbox value="listascontainers" />
                         </h:panelGrid>
                     </div>
                     <div class="jacq-buttons">
@@ -61,24 +50,20 @@
                     </div>
                     <br />
                     <div class="jacq-data-table">
-                        <p:dataTable var="item">
-                            <p:column filterBy="" headerText="Wissenschaftlicher Name">
+                        <p:dataTable var="literaturetable">
+                            <p:column filterBy="" headerText="Titel">
                                 <h:outputText  />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Standort">
+                            <p:column filterBy="" headerText="Periodical/Monograph">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Akzessionsnummer">
+                            <p:column filterBy="" headerText="Author">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Ort">
-                                <h:outputText />
-                            </p:column>
-
-                            <p:column headerText="Aktion">
+                            <p:column filterBy="" headerText="Date ">
                                 <h:outputText />
                             </p:column>
                         </p:dataTable>

@@ -22,42 +22,49 @@
                 </div>
             </div>
             <div class="jacq-pages">
-                <div class="jacq-panel-menu">
-                    <h1 style="margin-bottom: 7px;">Navigation</h1>
-                    <p:panelMenu>
-                        <p:submenu label="Lebendpflanze">
-                            <p:menuitem value="Lebendpflanze anlegen" url="/faces/pages/lebendpflanze/lebendpflanzeanlegen.xhtml"/>
-                            <p:menuitem value="Lebendpflanzen verwalten" url="/faces/pages/lebendpflanze/lebendpflanzenverwalten.xhtml"/>
-                            <p:submenu label="Inventur">
-                                <p:menuitem value="Inventur anlegen" url="/faces/pages/lebendpflanze/inventuranlegen.xhtml"/>
-                                <p:menuitem value="Inventuren" url="/faces/pages/lebendpflanze/inventuren.xhtml"/>
+                <div class="ui-g">
+                    <div class="ui-g-3">
+                        <p:panelMenu>
+                            <p:submenu label="Lebendpflanze">
+                                <p:menuitem value="Anlegen" url="/faces/pages/lebendpflanze/lebendpflanzeanlegen.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/lebendpflanze/lebendpflanzenverwalten.xhtml"/>
+                                <p:submenu label="Inventur">
+                                    <p:menuitem value="Anlegen" url="/faces/pages/lebendpflanze/inventuranlegen.xhtml"/>
+                                    <p:menuitem value="Verwalten" url="/faces/pages/lebendpflanze/inventuren.xhtml"/>
+                                </p:submenu>
+                                <p:submenu label="Seminum">
+                                    <p:menuitem value="Index Seminum" url="/faces/pages/lebendpflanze/indexseminum.xhtml"/>
+                                    <p:menuitem value="Revision anlegen" url="/faces/pages/lebendpflanze/revisionanlegen.xhtml"/>
+                                </p:submenu>
                             </p:submenu>
-                            <p:submenu label="Seminum">
-                                <p:menuitem value="Index Seminum" url="/faces/pages/lebendpflanze/indexseminum.xhtml"/>
-                                <p:menuitem value="Revision anlegen" url="/faces/pages/lebendpflanze/revisionanlegen.xhtml"/>
+                            <p:submenu label="Standort">
+                                <p:menuitem value="Anlegen" url="/faces/pages/standort/standortanlegen.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/standort/standortverwaltung.xhtml"/>
                             </p:submenu>
-                        </p:submenu>
-                        <p:submenu label="Standort">
-                            <p:menuitem value="Standort anlegen" url="/faces/pages/standort/standortanlegen.xhtml"/>
-                            <p:menuitem value="Standorte verwalten" url="/faces/pages/standort/standortverwaltung.xhtml"/>
-                        </p:submenu>
-                        <p:submenu label="Baumkontrollblatt">
-                            <p:menuitem value="Baumkontrollblatt anlegen" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
-                            <p:menuitem value="Baumkontrollblatt verwalten" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
-                        </p:submenu>
-                        <p:submenu label="Daten Browser">
-                            <p:menuitem value="Klassifikations-Browser" url="/faces/pages/datenbrowser/klassifikationsbrowser.xhtml"/>
-                            <p:menuitem value="Statistik" url="/faces/pages/datenbrowser/statistik.xhtml"/>
-                        </p:submenu>
-                        <p:separator />
-                        <p:submenu label="Benutzer">
-                            <p:menuitem value="Benutzer anlegen" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
-                            <p:menuitem value="Benutzer aktualisieren" url="/faces/pages/benutzer/benutzeraktualisieren.xhtml"/>
-                            <p:menuitem value="Benutzer Verwalten" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
-                        </p:submenu>
-                    </p:panelMenu>
+                            <p:submenu label="Baumkontrollblatt">
+                                <p:menuitem value="Anlegen" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="Daten Browser">
+                                <p:menuitem value="Klassifikations-Browser" url="/faces/pages/datenbrowser/klassifikationsbrowser.xhtml"/>
+                                <p:menuitem value="Statistik" url="/faces/pages/datenbrowser/statistik.xhtml"/>
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label="Benutzer">
+                                <p:menuitem value="Anlegen" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
+                                <p:menuitem value="Aktualisieren" url="/faces/pages/benutzer/benutzeraktualisieren.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="Literature">
+                                <p:menuitem value="Anlegen" url="/faces/pages/literature/literatureanlegen.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/literature/literatureverwalten.xhtml"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </div>
+                    <div class="ui-g-9 ui-g-nopad">
+                        <ui:insert name="content"/>
+                    </div>
                 </div>
-                <ui:insert name="content"/>
             </div>
         </h:form>
     </h:body>

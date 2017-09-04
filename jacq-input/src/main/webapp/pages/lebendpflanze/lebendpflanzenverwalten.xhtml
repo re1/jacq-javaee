@@ -13,76 +13,111 @@
                     <div class="jacq-content-header">
                         <h1>Lebendpflanzen Verwalten</h1>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="wissenschaftlicher name">Wissenschaftlicher Name</label>
-                            <p:inputText />
-                            <label for="standort">Standort</label>
-                            <p:inputText />
-                            <label for="akzessionsnummer">Akzessionsnummer</label>
-                            <p:inputText />
-                        </h:panelGrid>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="wissenschaftlicher name">Wissenschaftlicher Name</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="standort">#{messages['livingplant.location']}</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="platznummer">Platznummer</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="ort">Ort</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="akzessionsnummer">Akzessionsnummer</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="platznummer">Platznummer</label>
-                            <p:inputText />
-                            <label for="ort">Ort</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Ausgeschieden" />
-                            <p:selectBooleanCheckbox value="Ausgeschieden" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Etiketten Arbeit" />
-                            <p:selectBooleanCheckbox value="Etiketten Arbeit" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Index Seminum" />
-                            <p:selectBooleanCheckbox value="Index Seminum" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Ausstellung" />
-                            <p:selectBooleanCheckbox value="Ausstellung" />
-                        </h:panelGrid>
+                    <div class="row">
+                        <div class="col">
+                            <h:panelGrid columns="2"  cellpadding="2">
+                                <h:outputText value="Ausgeschieden" />
+                                <p:selectBooleanCheckbox value="Ausgeschieden" />
+                            </h:panelGrid>
+                        </div>
+                        <div class="col">
+                            <h:panelGrid columns="2"  cellpadding="2">
+                                <h:outputText value="Etiketten Arbeit" />
+                                <p:selectBooleanCheckbox value="Etiketten Arbeit" />
+                            </h:panelGrid>
+                        </div>
+                        <div class="col">
+                            <h:panelGrid columns="2"  cellpadding="2">
+                                <h:outputText value="Index Seminum" />
+                                <p:selectBooleanCheckbox value="Index Seminum" />
+                            </h:panelGrid>
+                        </div>
+                        <div class="col">
+                            <h:panelGrid columns="2"  cellpadding="2">
+                                <h:outputText value="Ausstellung" />
+                                <p:selectBooleanCheckbox value="Ausstellung" />
+                            </h:panelGrid>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Search" />
                     </div>
-                    <br />
-                    <div class="jacq-data-table">
-                        <p:dataTable var="item">
-                            <p:column filterBy="" headerText="Wissenschaftlicher Name">
-                                <h:outputText  />
-                            </p:column>
+                </div>
+                <br />
+                <div class="jacq-data-table">
+                    <p:dataTable var="item">
+                        <p:column filterBy="" headerText="Wissenschaftlicher Name">
+                            <h:outputText  />
+                        </p:column>
 
-                            <p:column filterBy="" headerText="Standort">
-                                <h:outputText />
-                            </p:column>
+                        <p:column filterBy="" headerText="Standort">
+                            <h:outputText />
+                        </p:column>
 
-                            <p:column filterBy="" headerText="Akzessionsnummer">
-                                <h:outputText />
-                            </p:column>
+                        <p:column filterBy="" headerText="Akzessionsnummer">
+                            <h:outputText />
+                        </p:column>
 
-                            <p:column filterBy="" headerText="Ort">
-                                <h:outputText />
-                            </p:column>
+                        <p:column filterBy="" headerText="Ort">
+                            <h:outputText />
+                        </p:column>
 
-                            <p:column headerText="Aktion">
-                                <h:outputText />
-                            </p:column>
-                        </p:dataTable>
-                    </div>
+                        <p:column headerText="Aktion">
+                            <h:outputText />
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </h:form>
         </ui:define>

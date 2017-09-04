@@ -2,12 +2,10 @@
     Created on : Aug 2, 2017, 2:10:30 PM
     Author     : fhafner
 */
-html {
-    box-sizing: border-box;
-}
 
 /* Primefaces
 -------------------------*/
+
 .ui-button-text, .ui-widget {
     font-family: 'Hammersmith One', sans-serif;
     border: 0px;
@@ -29,6 +27,23 @@ html {
     border-color: #E5CA97;
     text-shadow: 0px 0px 0px rgba(0,0,0,0.0);
 }
+.ui-widget-header {
+    border: 1px solid #a8a8a8;
+    color: #333;
+    font-weight: bold;
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+}
+.ui-tabs:not(.ui-ribbon) .ui-tabs-nav {
+    background: transparent;
+}
+.ui-tabs .ui-tabs-nav>li.ui-state-default {
+    background: #f6f7f9;
+}
+.ui-tabs .ui-tabs-nav>li.ui-state-default.ui-state-active {
+    background: #fff;
+    font-weight: normal;
+    color: black;
+}
 
 .ui-state-hover, .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover, .ui-state-focus,
@@ -44,6 +59,14 @@ html {
 }
 .ui-selectonemenu .ui-selectonemenu-trigger {
     padding: 0 6px!important;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: black;
+    text-decoration: none;
+}
+.ui-widget-content {
+    background: #ffffff;
+    color: black;
 }
 
 
@@ -92,6 +115,7 @@ h1 {
 .jacq-panel-grid {
     display:inline-table;
     margin-bottom: 10px;
+    font-size: medium;
 }
 .jacq-data-table {
     font: 12px 'Hammersmith One', sans-serif;
@@ -110,28 +134,15 @@ h1 {
 /* Non Mobile devices
 -------------------------*/
 @media (min-width: 700px) and (min-height: 475px) {
-    .jacq-panel-menu {
-        position: fixed;
-        width: 300px;
-        z-index: 2;
-    }
-    .jacq-button-menu {
-        position: fixed;
-        width: 300px;
-        margin-top: 275px;
-        z-index: 1;
-    }
     .jacq-button-menu .ui-button .ui-button-text {
         text-align: left;
         padding: 10px;
-    }
-    .jacq-content {
-        margin-left: 310px;
     }
     .jacq-header {
         right: 10px;
         position: fixed;
         top: 0;
+        z-index: 2;
     }
     .jacq-content-header {
         text-align: left;

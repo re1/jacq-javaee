@@ -13,298 +13,458 @@
                     <div class="jacq-content-header">
                         <h1>Lebendpflanze anlegen</h1>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="wissenschaftlichername">Wissenschaftlicher Name</label>
-                            <p:inputText />
-                            <label for="familie">Familie</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="Standort">Standort</label>
-                            <p:inputText />
-                            <label for="platznummer">Platznummer</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="sorte">Sorte</label>
-                            <p:selectOneMenu id="benutzertyp">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Abgearbeitet" />
-                            <p:selectBooleanCheckbox value="abgearbeitet" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="akzessionsnummer">Akzessionsnummer</label>
-                            <p:selectOneMenu id="auto">
-                                <f:selectItem itemLabel="auto" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="akzessionsnummer">Akzessionsnummer(n)</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="ipentyp">IPEN Typ</label>
-                            <p:selectOneMenu id="ipentyp">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="ipennummer">IPEN Nummer</label>
-                            <h:panelGrid columns="3" cellpadding="2">
-                                <p:inputText style="width: 50px" />
-                                <p:selectOneMenu id="ipennummerselect">
-                                    <f:selectItem itemLabel="X" noSelectionOption="true" />
-                                </p:selectOneMenu>
-                                <p:inputText style="width: 50px" />
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="IPEN gesperrt" />
-                            <p:selectBooleanCheckbox value="ipengesperrt" />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <h3>Geschlecht *</h3>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="männlich" />
-                            <p:selectBooleanCheckbox value="maennlich" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="weiblich" />
-                            <p:selectBooleanCheckbox value="weiblich" />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <h3>Etikett</h3>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Synonym für Etikett" />
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Anmerkung für Etikett" />
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Arbeit" />
-                            <p:selectBooleanCheckbox value="arbeit" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Ausstellung" />
-                            <p:selectBooleanCheckbox value="ausstellung" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <h:outputText value="Ausgeschieden" />
-                            <p:selectBooleanCheckbox value="ausgeschieden" />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="1"  cellpadding="2" width="100%">
-                            <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                <h:outputText value="Abgang" />
-                                <h:outputText value="Datum" />
-                                <h:outputText value="Bemerkung" />
-                                <p:inputText />
-                                <p:inputText />
-                                <p:inputText />
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <p:tabView dynamic="true" cache="true">
-                        <p:tab title="Sammeldaten">
-                            <div class="jacq-panel-grid">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
                                 <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="sammeldatum">Sammeldatum</label>
+                                    <label for="wissenschaftlichername">Wissenschaftlicher Name</label>
                                     <p:inputText />
-                                    <label for="sammelnummer">Sammelnummer</label>
+                                    <label for="familie">Familie</label>
                                     <p:inputText />
                                 </h:panelGrid>
                             </div>
-                            <div class="jacq-panel-grid">
+                            <div class="col">
                                 <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="freiessammeldatum">Freies Sammeldatum</label>
+                                    <label for="Standort">Standort</label>
                                     <p:inputText />
-                                    <label for="sammlernamen">Sammler-Name(n)</label>
+                                    <label for="platznummer">Platznummer</label>
                                     <p:inputText />
                                 </h:panelGrid>
                             </div>
-                            <div class="jacq-panel-grid">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="sorte">Sorte</label>
+                                    </div>
+                                    <div class="col">
+                                        <p:selectOneMenu id="sorteselect">
+                                            <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputText value="Abgearbeitet" />
+                                    </div>
+                                    <div class="col">
+                                        <p:selectBooleanCheckbox value="abgearbeitet" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
                                 <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="ort">Ort</label>
+                                    <label for="akzessionsnummer">Akzessionsnummer</label>
+                                    <p:selectOneMenu id="auto">
+                                        <f:selectItem itemLabel="auto" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="akzessionsnummer">Akzessionsnummer(n)</label>
                                     <p:inputText />
-                                    <label for="Altitude">Altitude</label>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="ipentyp">IPEN Typ</label>
+                                    <p:selectOneMenu id="ipentyp">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </div>
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <label for="ipennummer">IPEN Nummer</label>
                                     <h:panelGrid columns="3" cellpadding="2">
                                         <p:inputText style="width: 50px" />
-                                        -
+                                        <p:selectOneMenu id="ipennummerselect">
+                                            <f:selectItem itemLabel="X" noSelectionOption="true" />
+                                        </p:selectOneMenu>
                                         <p:inputText style="width: 50px" />
                                     </h:panelGrid>
                                 </h:panelGrid>
                             </div>
-                            <div class="jacq-panel-grid">
+                        </div>
+                        <div class="row">
+                            <div class="col">
                                 <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="genauigkeit">Genauigkeit</label>
+                                    <h:outputText value="IPEN gesperrt" />
+                                    <p:selectBooleanCheckbox value="ipengesperrt" />
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                        <h3>Geschlecht *</h3>
+                        <div class="row">
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="männlich" />
+                                    <p:selectBooleanCheckbox value="maennlich" />
+                                </h:panelGrid>
+                            </div>
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="weiblich" />
+                                    <p:selectBooleanCheckbox value="weiblich" />
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                        <h3>Etikett</h3>
+                        <div class="row">
+                            <div class="col">
+                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="Synonym für Etikett" />
                                     <p:inputText />
                                 </h:panelGrid>
                             </div>
-                            <br />
-                            <div class="jacq-panel-grid">
+                            <div class="col">
                                 <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="latitude">Latitude</label>
-                                    <h:panelGrid columns="4" cellpadding="2">
-                                        <p:inputText style="width: 30px" />
-                                        <p:inputText style="width: 30px" />
-                                        <p:inputText style="width: 30px" />
-                                        <p:selectOneMenu id="latitudeselect">
-                                            <f:selectItem itemLabel="N" noSelectionOption="true" />
-                                        </p:selectOneMenu>
+                                    <h:outputText value="Anmerkung für Etikett" />
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="Arbeit" />
+                                    <p:selectBooleanCheckbox value="arbeit" />
+                                </h:panelGrid>
+                            </div>
+                            <div class="col">
+                                <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="Ausstellung" />
+                                    <p:selectBooleanCheckbox value="ausstellung" />
+                                </h:panelGrid>
+                            </div>
+                            <div class="col">
+                                <h:panelGrid columns="2"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="Ausgeschieden" />
+                                    <p:selectBooleanCheckbox value="ausgeschieden" />
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="jacq-panel-grid">
+                            <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                    <h:outputText value="Abgang" />
+                                    <h:outputText value="Datum" />
+                                    <h:outputText value="Bemerkung" />
+                                    <p:inputText />
+                                    <p:inputText />
+                                    <p:inputText />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </div>-->
+                        <br />
+                        <p:tabView dynamic="true" cache="true">
+                            <p:tab title="Sammeldaten">
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="sammeldatum">Sammeldatum</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="sammelnummer">Sammelnummer</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="freiessammeldatum">Freies Sammeldatum</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="sammlernamen">Sammler-Name(n)</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="ort">Ort</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="Altitude">Altitude</label>
+                                            <h:panelGrid columns="3" cellpadding="2">
+                                                <p:inputText style="width: 50px" />
+                                                -
+                                                <p:inputText style="width: 50px" />
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="genauigkeit">Genauigkeit</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="latitude">Latitude</label>
+                                            <h:panelGrid columns="4" cellpadding="2">
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:selectOneMenu id="latitudeselect">
+                                                    <f:selectItem itemLabel="N" noSelectionOption="true" />
+                                                </p:selectOneMenu>
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="longitude">Longitude</label>
+                                            <h:panelGrid columns="4" cellpadding="2">
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:selectOneMenu id="longitudeselect">
+                                                    <f:selectItem itemLabel="E" noSelectionOption="true" />
+                                                </p:selectOneMenu>
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="bemerkung">Bemerkung</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="habitat">Habitat</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="indexseminum">Index Seminum</label>
+                                            <p:selectBooleanCheckbox value="indexseminum" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="art">Art</label>
+                                            <p:selectOneMenu id="artselect">
+                                                <f:selectItem itemLabel="WS" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                            </p:tab>
+                            <p:tab title="Gärtnerische Daten">
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="aufnahmedatum">Aufnahmedatum *</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="eingangsdatum">Eingangsdatum</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="Anbaudatum">Anbaudatum</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="kulturhinweise">Kulturhinweise</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="jacq-panel-grid">
+                                    <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                        <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <h:outputText value="Bezugsdatum" />
+                                            <h:outputText value="Bezugsquelle *" />
+                                            <h:outputText value="Aktion" />
+                                            <p:inputText />
+                                            <p:inputText />
+                                            <p:inputText />
+                                        </h:panelGrid>
                                     </h:panelGrid>
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="longitude">Longitude</label>
-                                    <h:panelGrid columns="4" cellpadding="2">
-                                        <p:inputText style="width: 30px" />
-                                        <p:inputText style="width: 30px" />
-                                        <p:inputText style="width: 30px" />
-                                        <p:selectOneMenu id="longitudeselect">
-                                            <f:selectItem itemLabel="E" noSelectionOption="true" />
-                                        </p:selectOneMenu>
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="bemerkung">Bemerkung</label>
-                                    <p:inputText />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="habitat">Habitat</label>
-                                    <p:inputText />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="indexseminum">Index Seminum</label>
-                                    <p:selectBooleanCheckbox value="indexseminum" />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="art">Art</label>
-                                    <p:selectOneMenu id="artselect">
-                                        <f:selectItem itemLabel="WS" noSelectionOption="true" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                            </div>
-                        </p:tab>
-                        <p:tab title="Gärtnerische Daten">
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="aufnahmedatum">Aufnahmedatum *</label>
-                                    <p:inputText />
-                                    <label for="eingangsdatum">Eingangsdatum</label>
-                                    <p:inputText />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="Anbaudatum">Anbaudatum</label>
-                                    <p:inputText />
-                                    <label for="kulturhinweise">Kulturhinweise</label>
-                                    <p:inputText />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="1"  cellpadding="2" width="100%">
-                                    <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                        <h:outputText value="Bezugsdatum" />
-                                        <h:outputText value="Bezugsquelle *" />
-                                        <h:outputText value="Aktion" />
-                                        <p:inputText />
-                                        <p:inputText />
-                                        <p:inputText />
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="ipentyp">Name</label>
-                                    <p:selectOneMenu id="name">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="seite">Seite</label>
-                                    <p:selectOneMenu id="seite">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="Bemerkung">Bemerkung</label>
-                                    <p:inputText />
-                                </h:panelGrid>
-                            </div>
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                    <label for="">Phänologie</label>
-                                    <p:selectOneMenu id="phaenologie">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                            </div>
-                        </p:tab>
-                        <p:tab title="Sammlungsmanagement">
-                        </p:tab>
-                        <p:tab title="Derivate">
-                        </p:tab>
-                        <p:tab title="Inventuren">
-                        </p:tab>
-                    </p:tabView>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="Anlegen" />
+                                </div>-->
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="ipentyp">Name</label>
+                                            <p:selectOneMenu id="name">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="seite">Seite</label>
+                                            <p:selectOneMenu id="seite">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="Bemerkung">Bemerkung</label>
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="">Phänologie</label>
+                                            <p:selectOneMenu id="phaenologie">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                            </p:tab>
+                            <p:tab title="Sammlungsmanagement">
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <h:outputText value="Neu bestimmen" />
+                                            <p:selectBooleanCheckbox value="neubestimmen" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="">Bestimmungsdatum</label>
+                                            <p:selectOneMenu id="bestimmungsdatum">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="">Bestimmungsstatus</label>
+                                            <p:selectOneMenu id="bestimmungsstatus">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <label for="">Bestimmung durch</label>
+                                            <p:selectOneMenu id="bestimmungdurch">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Forschung" />
+                                            <p:selectBooleanCheckbox value="Forschung" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Historisch" />
+                                            <p:selectBooleanCheckbox value="Historisch" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Lehre" />
+                                            <p:selectBooleanCheckbox value="Lehre" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Naturschutz" />
+                                            <p:selectBooleanCheckbox value="Naturschutz" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Öffentlichkeit" />
+                                            <p:selectBooleanCheckbox value="Öffentlichkeit" />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <!-- <br />
+                                 <div class="jacq-panel-grid">
+                                     <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                         <h:panelGrid columns="4"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                             <h:outputText value="Zertifikat-Art *" />
+                                             <h:outputText value="Nummer" />
+                                             <h:outputText value="Bemerkung" />
+                                             <h:outputText value="Aktionen" />
+                                             <p:inputText />
+                                             <p:inputText />
+                                             <p:inputText />
+                                             <p:inputText />
+                                         </h:panelGrid>
+                                     </h:panelGrid>
+                                 </div>
+                                 <br />-->
+                                <div class="row">
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="Phyto-Kontrolle" />
+                                            <p:selectBooleanCheckbox value="phytokontrolle" />
+                                        </h:panelGrid>
+                                    </div>
+                                    <div class="col">
+                                        <h:panelGrid columns="2"  cellpadding="2">
+                                            <h:outputText value="BGCI" />
+                                            <p:selectBooleanCheckbox value="bgci" />
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                            </p:tab>
+                            <p:tab title="Derivate">
+                            </p:tab>
+                            <p:tab title="Inventuren">
+                            </p:tab>
+                        </p:tabView>
+                        <div class="jacq-buttons">
+                            <p:commandButton value="Anlegen" />
+                        </div>
                     </div>
                 </div>
             </h:form>
