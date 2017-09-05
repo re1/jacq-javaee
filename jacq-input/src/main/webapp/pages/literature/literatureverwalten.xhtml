@@ -13,37 +13,111 @@
                     <div class="jacq-content-header">
                         <h1>Literature Verwalten</h1>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="title">Title</label>
-                            <p:inputText />
-                            <label for="author">Author</label>
-                            <p:inputText />
-                            <label for="listing">listing</label>
-                            <p:selectOneMenu id="listingselect">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                            <label for="volume">Volume</label>
-                            <p:inputText />
-                            <label for="page">Page</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="periodical">Periodical</label>
-                            <p:inputText />
-                            <label for="year">Year</label>
-                            <p:inputText />
-                            <label for="keywords">Keywords</label>
-                            <p:inputText />
-                            <label for="categories">Categories</label>
-                            <p:selectOneMenu id="categoriesselect">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                            <h:outputText value="list as containers" />
-                            <p:selectBooleanCheckbox value="listascontainers" />
-                        </h:panelGrid>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="title">Title</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="author">Author</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="listing">listing</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="listingselect">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="volume">Volume</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="page">Page</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="periodical">Periodical</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="year">Year</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="keywords">Keywords</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="categories">Categories</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="categoriesselect">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="list as containers" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="listascontainers" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Search" />

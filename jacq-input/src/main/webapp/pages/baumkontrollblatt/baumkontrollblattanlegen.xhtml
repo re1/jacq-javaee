@@ -12,25 +12,37 @@
                     <div class="jacq-content-header">
                         <h1>Baumkontrollblatt anlegen</h1>
                     </div>
-
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="beschreibung">Beschreibung</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="Aktenummer">Aktenummer</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="file">File Name</label>
-                            <p:fileUpload  mode="simple" skinSimple="true"/>
-                        </h:panelGrid>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="beschreibung">Beschreibung</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="Aktenummer">Aktenummer</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="file">File Name</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:fileUpload  mode="simple" skinSimple="true"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Anlegen" />

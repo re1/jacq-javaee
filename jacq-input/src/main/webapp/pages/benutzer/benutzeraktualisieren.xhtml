@@ -12,13 +12,27 @@
                     <div class="jacq-content-header">
                         <h1>Benutzer aktualisieren</h1>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2">
-                            <h:outputLabel for="password" value="Neues Passwort" />
-                            <p:password id="newPassword" value="" required="true" label="password" />
-                            <h:outputLabel for="password" value="Neues Passwort bestätigen" />
-                            <p:password id="newPasswordCheck" value="" required="true" label="password" />
-                        </h:panelGrid>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputLabel for="password" value="Neues Passwort" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:password id="newPassword" value="" required="true" label="password" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:password id="newPasswordCheck" value="" required="true" label="password" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Aktualisieren" />

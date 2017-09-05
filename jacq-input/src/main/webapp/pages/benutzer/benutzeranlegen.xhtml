@@ -13,110 +13,221 @@
                     <div class="jacq-content-header">
                         <h1>Benutzer anlegen</h1>
                     </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="benutzername">Benutzername</label>
-                            <p:inputText />
-                            <h:outputLabel for="password" value="Neues Passwort" />
-                            <p:password id="newPassword" value="" required="true" label="password" />
-                            <h:outputLabel for="password" value="Neues Passwort bestätigen" />
-                            <p:password id="newPasswordCheck" value="" required="true" label="password" />
-                            <h:outputText value="Änderung bei Login" />
-                            <p:selectBooleanCheckbox value="changePassword" />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="benutzertyp">Benutzertyp</label>
-                            <p:selectOneMenu id="benutzertyp">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="anstellungsverhealtnis">Anstellungsverhältnis</label>
-                            <p:selectOneMenu id="anstellungsverhealtnis">
-                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="vorname">Vorname</label>
-                            <p:inputText />
-                            <label for="nachname">Nachname</label>
-                            <p:inputText />
-                            <label for="geburtstag">Geburtstag</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2" cellpadding="2" columnClasses="firstColumn,secondColumn">
-                            <label for="titelprefix">Titel (vorangestellt)</label>
-                            <p:inputText />
-                            <label for="titelpostfix">Titel (nachgestellt)</label>
-                            <p:inputText />
-                            <label for="revier">Revier</label>
-                            <p:inputText />
-                        </h:panelGrid>
-                    </div>
-                    <br />
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="admin" />
-                            <p:selectBooleanCheckbox value="admin" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="gardener" />
-                            <p:selectBooleanCheckbox value="gardener" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="guest" />
-                            <p:selectBooleanCheckbox value="guest" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="inventory" />
-                            <p:selectBooleanCheckbox value="inventory" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="labelPrinters" />
-                            <p:selectBooleanCheckbox value="labelPrinters" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="leadGardener" />
-                            <p:selectBooleanCheckbox value="leadGardener" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="scientificNameEditor" />
-                            <p:selectBooleanCheckbox value="scientificNameEditor" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="Scientist" />
-                            <p:selectBooleanCheckbox value="Scientist" />
-                        </h:panelGrid>
-                    </div>
-                    <div class="jacq-panel-grid">
-                        <h:panelGrid columns="2"  cellpadding="2">
-                            <h:outputText value="volunteers" />
-                            <p:selectBooleanCheckbox value="volunteers" />
-                        </h:panelGrid>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="benutzername">Benutzername</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputLabel for="password" value="Neues Passwort" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:password id="newPassword" value="" required="true" label="password" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:password id="newPasswordCheck" value="" required="true" label="password" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="Änderung bei Login" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="changePassword" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="benutzertyp">Benutzertyp</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="benutzertyp">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="anstellungsverhealtnis">Anstellungsverhältnis</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="anstellungsverhealtnis">
+                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="vorname">Vorname</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="nachname">Nachname</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="geburtstag">Geburtstag</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="titelprefix">Titel (vorangestellt)</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="titelpostfix">Titel (nachgestellt)</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <label for="revier">Revier</label>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="admin" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="admin" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="gardener" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="gardener" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="guest" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="guest" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="inventory" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="inventory" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="labelPrinters" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="labelPrinters" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="leadGardener" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="leadGardener" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="scientificNameEditor" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="scientificNameEditor" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="Scientist" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="Scientist" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="volunteers" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="volunteers" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Anlegen" />

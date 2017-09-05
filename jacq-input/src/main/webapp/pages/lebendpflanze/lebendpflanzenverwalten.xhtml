@@ -64,60 +64,63 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h:panelGrid columns="2"  cellpadding="2">
-                                <h:outputText value="Ausgeschieden" />
-                                <p:selectBooleanCheckbox value="Ausgeschieden" />
-                            </h:panelGrid>
-                        </div>
-                        <div class="col">
-                            <h:panelGrid columns="2"  cellpadding="2">
-                                <h:outputText value="Etiketten Arbeit" />
-                                <p:selectBooleanCheckbox value="Etiketten Arbeit" />
-                            </h:panelGrid>
-                        </div>
-                        <div class="col">
-                            <h:panelGrid columns="2"  cellpadding="2">
-                                <h:outputText value="Index Seminum" />
-                                <p:selectBooleanCheckbox value="Index Seminum" />
-                            </h:panelGrid>
-                        </div>
-                        <div class="col">
-                            <h:panelGrid columns="2"  cellpadding="2">
-                                <h:outputText value="Ausstellung" />
-                                <p:selectBooleanCheckbox value="Ausstellung" />
-                            </h:panelGrid>
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="Ausgeschieden" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:selectBooleanCheckbox value="Ausgeschieden" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Etiketten Arbeit" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:selectBooleanCheckbox value="Etiketten Arbeit" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Index Seminum" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:selectBooleanCheckbox value="Index Seminum" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Ausstellung" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:selectBooleanCheckbox value="Ausstellung" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="Search" />
                     </div>
-                </div>
-                <br />
-                <div class="jacq-data-table">
-                    <p:dataTable var="item">
-                        <p:column filterBy="" headerText="Wissenschaftlicher Name">
-                            <h:outputText  />
-                        </p:column>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:dataTable var="item">
+                                <p:column filterBy="" headerText="Wissenschaftlicher Name">
+                                    <h:outputText  />
+                                </p:column>
 
-                        <p:column filterBy="" headerText="Standort">
-                            <h:outputText />
-                        </p:column>
+                                <p:column filterBy="" headerText="Standort">
+                                    <h:outputText />
+                                </p:column>
 
-                        <p:column filterBy="" headerText="Akzessionsnummer">
-                            <h:outputText />
-                        </p:column>
+                                <p:column filterBy="" headerText="Akzessionsnummer">
+                                    <h:outputText />
+                                </p:column>
 
-                        <p:column filterBy="" headerText="Ort">
-                            <h:outputText />
-                        </p:column>
+                                <p:column filterBy="" headerText="Ort">
+                                    <h:outputText />
+                                </p:column>
 
-                        <p:column headerText="Aktion">
-                            <h:outputText />
-                        </p:column>
-                    </p:dataTable>
+                                <p:column headerText="Aktion">
+                                    <h:outputText />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
                 </div>
             </h:form>
         </ui:define>
