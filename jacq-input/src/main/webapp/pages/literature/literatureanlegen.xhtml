@@ -127,30 +127,320 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="show author(s)" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="showauthors" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="additions"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="listing"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="recent publication" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="recentpublication" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="signature"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="Search" />
-                    </div>
-                    <br />
-                    <div class="jacq-data-table">
-                        <p:dataTable var="literaturetable">
-                            <p:column filterBy="" headerText="Titel">
-                                <h:outputText  />
-                            </p:column>
+                    <p:tabView dynamic="true" cache="true">
+                        <p:tab title="Index">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="ID"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="Taxon"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="citation"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="paginae"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="figures"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="annotations "/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
 
-                            <p:column filterBy="" headerText="Periodical/Monograph">
-                                <h:outputText />
-                            </p:column>
+                                    <p:column filterBy="" headerText="Taxon">
+                                        <h:outputText />
+                                    </p:column>
 
-                            <p:column filterBy="" headerText="Author">
-                                <h:outputText />
-                            </p:column>
+                                    <p:column filterBy="" headerText="Paginae">
+                                        <h:outputText />
+                                    </p:column>
 
-                            <p:column filterBy="" headerText="Date ">
-                                <h:outputText />
-                            </p:column>
-                        </p:dataTable>
-                    </div>
+                                    <p:column filterBy="" headerText="Figures">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="Annotations">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="cited taxa">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="ID"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="last updated by"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="Taxon"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="acc. Taxon"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="citation"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <label for="source">Source</label>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="scource">
+                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="et al." />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="etal" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="annotations "/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="Taxon  v">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="acc. Taxon">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="Annotations">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="cited person">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="ID"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="last updated by"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="Person"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="citation"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="annotations "/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="Name">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="Annotations">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
                 </div>
             </h:form>
         </ui:define>
