@@ -25,16 +25,16 @@
                 <div class="ui-g">
                     <div class="ui-g-3">
                         <p:panelMenu>
-                            <p:submenu label="Lebendpflanze">
-                                <p:menuitem value="Anlegen" url="/faces/pages/lebendpflanze/lebendpflanzeanlegen.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/lebendpflanze/lebendpflanzenverwalten.xhtml"/>
+                            <p:submenu label="#{messages['livingplant']}">
+                                <p:menuitem value="Anlegen" url="/faces/pages/livingplant/livingplantcreate.xhtml"/>
+                                <p:menuitem value="Verwalten" url="/faces/pages/livingplant/lebendpflanzenverwalten.xhtml"/>
                                 <p:submenu label="Inventur">
-                                    <p:menuitem value="Anlegen" url="/faces/pages/lebendpflanze/inventuranlegen.xhtml"/>
-                                    <p:menuitem value="Verwalten" url="/faces/pages/lebendpflanze/inventuren.xhtml"/>
+                                    <p:menuitem value="Anlegen" url="/faces/pages/livingplant/inventuranlegen.xhtml"/>
+                                    <p:menuitem value="Verwalten" url="/faces/pages/livingplant/inventuren.xhtml"/>
                                 </p:submenu>
                                 <p:submenu label="Seminum">
-                                    <p:menuitem value="Index Seminum" url="/faces/pages/lebendpflanze/indexseminum.xhtml"/>
-                                    <p:menuitem value="Revision anlegen" url="/faces/pages/lebendpflanze/revisionanlegen.xhtml"/>
+                                    <p:menuitem value="Index Seminum" url="/faces/pages/livingplant/indexseminum.xhtml"/>
+                                    <p:menuitem value="Revision anlegen" url="/faces/pages/livingplant/revisionanlegen.xhtml"/>
                                 </p:submenu>
                             </p:submenu>
                             <p:submenu label="Standort">
@@ -59,9 +59,20 @@
                                 <p:menuitem value="Anlegen" url="/faces/pages/literature/literatureanlegen.xhtml"/>
                                 <p:menuitem value="Verwalten" url="/faces/pages/literature/literatureverwalten.xhtml"/>
                             </p:submenu>
+                            <p:submenu label="Nomenclature">
+                                <p:menuitem value="Bearbeiten" url="/faces/pages/nomenclature/checknomenclature.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="Chorology">
+                                <p:menuitem value="Check" url="/faces/pages/chrology/chorologybearbeiten.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="Observations">
+                                <p:menuitem value="Verwalten" url="/faces/pages/observations/observationsverwalten.xhtml"/>
+                            </p:submenu>
                             <p:submenu label="Taxonomy">
                                 <p:menuitem value="Genera" url="/faces/pages/taxonomy/generaanlegen.xhtml"/>
                                 <p:menuitem value="Species" url="/faces/pages/taxonomy/speciesanlegen.xhtml"/>
+                                <p:menuitem value="Familie" url="/faces/pages/taxonomy/familieanlegen.xhtml"/>
+                                <p:menuitem value="Author" url="/faces/pages/taxonomy/authoranlegen.xhtml"/>
                                 <p:menuitem value="Verwalten" url="/faces/pages/taxonomy/taxonomyverwalten.xhtml"/>
                             </p:submenu>
                         </p:panelMenu>
