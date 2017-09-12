@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Lebendpflanzen Verwalten</h1>
+                        <h1>#{messages['livingplant.livingplantmanage']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="wissenschaftlicher name">Wissenschaftlicher Name</label>
+                                    <h:outputText value="#{messages['livingplant.scientificname']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,7 +27,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="standort">#{messages['livingplant.location']}</label>
+                                    <h:outputText value="#{messages['livingplant.location']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -37,7 +37,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="platznummer">Platznummer</label>
+                                    <h:outputText value="#{messages['livingplant.placenumber']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -47,7 +47,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="ort">Ort</label>
+                                    <h:outputText value="#{messages['livingplant.place']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -57,7 +57,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="akzessionsnummer">Akzessionsnummer</label>
+                                    <h:outputText value="#{messages['livingplant.accessionnumber']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -67,55 +67,55 @@
                         <div class="ui-g-12 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-3">
-                                    <h:outputText value="Ausgeschieden" />
+                                    <h:outputText value="#{messages['livingplant.eliminated']}" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="Ausgeschieden" />
+                                    <p:selectBooleanCheckbox value="eliminated" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <h:outputText value="Etiketten Arbeit" />
+                                    <h:outputText value="#{messages['livingplant.label']}" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="Etiketten Arbeit" />
+                                    <p:selectBooleanCheckbox value="label" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <h:outputText value="Index Seminum" />
+                                    <h:outputText value="#{messages['livingplant.indexseminum']}" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="Index Seminum" />
+                                    <p:selectBooleanCheckbox value="indexseminum" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <h:outputText value="Ausstellung" />
+                                    <h:outputText value="#{messages['livingplant.exhibition']}" />
                                 </div>
                                 <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="Ausstellung" />
+                                    <p:selectBooleanCheckbox value="exhibition" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Search" />
+                        <p:commandButton value="#{messages['search']}" />
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-12">
                             <p:dataTable var="item">
-                                <p:column filterBy="" headerText="Wissenschaftlicher Name">
+                                <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
                                     <h:outputText  />
                                 </p:column>
 
-                                <p:column filterBy="" headerText="Standort">
+                                <p:column filterBy="" headerText="#{messages['livingplant.location']}">
                                     <h:outputText />
                                 </p:column>
 
-                                <p:column filterBy="" headerText="Akzessionsnummer">
+                                <p:column filterBy="" headerText="#{messages['livingplant.accessionnumber']}">
                                     <h:outputText />
                                 </p:column>
 
-                                <p:column filterBy="" headerText="Ort">
+                                <p:column filterBy="" headerText="#{messages['livingplant.location']}">
                                     <h:outputText />
                                 </p:column>
 
-                                <p:column headerText="Aktion">
+                                <p:column headerText="#{messages['action']}">
                                     <h:outputText />
                                 </p:column>
                             </p:dataTable>

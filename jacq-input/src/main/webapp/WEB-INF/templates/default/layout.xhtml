@@ -26,24 +26,24 @@
                     <div class="ui-g-3">
                         <p:panelMenu>
                             <p:submenu label="#{messages['livingplant']}">
-                                <p:menuitem value="Anlegen" url="/faces/pages/livingplant/livingplantcreate.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/livingplant/lebendpflanzenverwalten.xhtml"/>
-                                <p:submenu label="Inventur">
-                                    <p:menuitem value="Anlegen" url="/faces/pages/livingplant/inventuranlegen.xhtml"/>
-                                    <p:menuitem value="Verwalten" url="/faces/pages/livingplant/inventuren.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/livingplantcreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/livingplantmanage.xhtml"/>
+                                <p:submenu label="#{messages['inventory']}">
+                                    <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/inventorycreate.xhtml"/>
+                                    <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
                                 </p:submenu>
-                                <p:submenu label="Seminum">
-                                    <p:menuitem value="Index Seminum" url="/faces/pages/livingplant/indexseminum.xhtml"/>
+                                <p:submenu label="#{messages['seminum']}">
+                                    <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
                                     <p:menuitem value="Revision anlegen" url="/faces/pages/livingplant/revisionanlegen.xhtml"/>
                                 </p:submenu>
                             </p:submenu>
                             <p:submenu label="Standort">
-                                <p:menuitem value="Anlegen" url="/faces/pages/standort/standortanlegen.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/standort/standortverwaltung.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/standort/standortanlegen.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/standort/standortverwaltung.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Baumkontrollblatt">
-                                <p:menuitem value="Anlegen" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Daten Browser">
                                 <p:menuitem value="Klassifikations-Browser" url="/faces/pages/datenbrowser/klassifikationsbrowser.xhtml"/>
@@ -51,13 +51,13 @@
                             </p:submenu>
                             <p:separator />
                             <p:submenu label="Benutzer">
-                                <p:menuitem value="Anlegen" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
                                 <p:menuitem value="Aktualisieren" url="/faces/pages/benutzer/benutzeraktualisieren.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Literature">
-                                <p:menuitem value="Anlegen" url="/faces/pages/literature/literatureanlegen.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/literature/literatureverwalten.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literatureanlegen.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literatureverwalten.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Nomenclature">
                                 <p:menuitem value="Bearbeiten" url="/faces/pages/nomenclature/checknomenclature.xhtml"/>
@@ -66,14 +66,14 @@
                                 <p:menuitem value="Check" url="/faces/pages/chrology/chorologybearbeiten.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Observations">
-                                <p:menuitem value="Verwalten" url="/faces/pages/observations/observationsverwalten.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsverwalten.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Taxonomy">
                                 <p:menuitem value="Genera" url="/faces/pages/taxonomy/generaanlegen.xhtml"/>
                                 <p:menuitem value="Species" url="/faces/pages/taxonomy/speciesanlegen.xhtml"/>
                                 <p:menuitem value="Familie" url="/faces/pages/taxonomy/familieanlegen.xhtml"/>
                                 <p:menuitem value="Author" url="/faces/pages/taxonomy/authoranlegen.xhtml"/>
-                                <p:menuitem value="Verwalten" url="/faces/pages/taxonomy/taxonomyverwalten.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomyverwalten.xhtml"/>
                             </p:submenu>
                         </p:panelMenu>
                     </div>
