@@ -1,6 +1,5 @@
-package org.jacq.service.manager;
+package org.jacq.service.report.manager;
 
-import org.jacq.service.ApplicationManager;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,7 +19,8 @@ import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.jpa.TblLivingPlant;
-import org.jacq.service.JacqConfig;
+import org.jacq.service.report.ApplicationManager;
+import org.jacq.service.report.JacqConfig;
 
 /**
  * Business logic for label printing process
@@ -100,5 +100,12 @@ public class LabelManager {
 
         // return the produces PDF
         return Response.ok(baos.toByteArray()).header("Content-Disposition", "attachment; filename=hbv_worklabel.pdf").build();
+    }
+
+    /**
+     * @see LabelService#getWork(java.lang.String, long)
+     */
+    public Response getWork(String type, long derivativeId) {
+        return null;
     }
 }
