@@ -10,20 +10,20 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Benutzer verwalten</h1>
+                        <h1>#{messages['location.locationmanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
                         <p:dataTable var="item">
-                            <p:column headerText="ID">
-                                <h:outputText  />
+                            <p:column filterBy="" headerText="#{messages['location.id']}">
+                                <h:outputText value="" />
                             </p:column>
-                            <p:column headerText="Jahr">
+                            <p:column filterBy="" headerText="#{messages['location.description']}">
                                 <h:outputText />
                             </p:column>
-                            <p:column headerText="Name">
+                            <p:column filterBy="" headerText="#{messages['location.department']}">
                                 <h:outputText />
                             </p:column>
-                            <p:column headerText="Aktennummer">
+                            <p:column headerText="#{messages['location.username']}">
                                 <h:outputText />
                             </p:column>
                             <p:column headerText="">

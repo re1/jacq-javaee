@@ -10,13 +10,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Baumkontrollblatt anlegen</h1>
+                        <h1>#{messages['treecontrolsheet.treecontrolsheetcreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="beschreibung">Beschreibung</label>
+                                    <h:outputText value="#{messages['treecontrolsheet.description']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -26,7 +26,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="Aktenummer">Aktenummer</label>
+                                    <h:outputText value="#{messages['treecontrolsheet.filesnumber']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -36,7 +36,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="file">File Name</label>
+                                    <h:outputText value="#{messages['treecontrolsheet.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:fileUpload  mode="simple" skinSimple="true"/>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Anlegen" />
+                        <p:commandButton value="#{messages['create']}" />
                     </div>
                 </div>
             </h:form>

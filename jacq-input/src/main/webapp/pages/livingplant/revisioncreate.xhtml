@@ -10,13 +10,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Revision anlegen</h1>
+                        <h1>#{messages['livingplant.revisioncreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="indexSeminum">Index Seminum anlegen</label>
+                                    <h:outputText value="#{messages['livingplant.indexseminumcreate']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Anlegen" />
+                        <p:commandButton value="#{messages['create']}" />
                     </div>
                 </div>
             </h:form>

@@ -10,13 +10,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Benutzer aktualisieren</h1>
+                        <h1>#{messages['user.userupdate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputLabel for="password" value="Neues Passwort" />
+                                    <h:outputText value="#{messages['user.newpassword']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:password id="newPassword" value="" required="true" label="password" />
@@ -26,7 +26,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                                    <h:outputText value="#{messages['user.newpasswordvalidate']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:password id="newPasswordCheck" value="" required="true" label="password" />
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Aktualisieren" />
+                        <p:commandButton value="#{messages['update']}" />
                     </div>
                 </div>
             </h:form>

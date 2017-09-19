@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Benutzer anlegen</h1>
+                        <h1>#{messages['user.usercreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="benutzername">Benutzername</label>
+                                    <h:outputText value="#{messages['user.username']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,7 +27,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputLabel for="password" value="Neues Passwort" />
+                                    <h:outputText value="#{messages['user.newpassword']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:password id="newPassword" value="" required="true" label="password" />
@@ -37,7 +37,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputLabel for="password" value="Neues Passwort bestätigen" />
+                                    <h:outputText value="#{messages['user.newpasswordvalidate']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:password id="newPasswordCheck" value="" required="true" label="password" />
@@ -47,7 +47,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Änderung bei Login" />
+                                    <h:outputText value="#{messages['user.changeonlogin']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="changePassword" />
@@ -57,11 +57,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="benutzertyp">Benutzertyp</label>
+                                    <h:outputText value="#{messages['user.usertype']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="benutzertyp">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    <p:selectOneMenu id="usertype">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -69,11 +69,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="anstellungsverhealtnis">Anstellungsverhältnis</label>
+                                    <h:outputText value="#{messages['user.employmentrelationship']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="anstellungsverhealtnis">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    <p:selectOneMenu id="employmentrelationship">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="vorname">Vorname</label>
+                                    <h:outputText value="#{messages['user.firstname']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -91,7 +91,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="nachname">Nachname</label>
+                                    <h:outputText value="#{messages['user.lastname']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -101,7 +101,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="geburtstag">Geburtstag</label>
+                                    <h:outputText value="#{messages['user.birthday']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -111,7 +111,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="titelprefix">Titel (vorangestellt)</label>
+                                    <h:outputText value="#{messages['user.titelprefix']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -121,7 +121,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="titelpostfix">Titel (nachgestellt)</label>
+                                    <h:outputText value="#{messages['user.titelpostfix']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -131,7 +131,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="revier">Revier</label>
+                                    <h:outputText value="#{messages['user.territory']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -141,7 +141,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="admin" />
+                                    <h:outputText value="#{messages['user.admin']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="admin" />
@@ -151,7 +151,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="gardener" />
+                                    <h:outputText value="#{messages['user.gardener']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="gardener" />
@@ -161,7 +161,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="guest" />
+                                    <h:outputText value="#{messages['user.guest']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="guest" />
@@ -171,7 +171,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="inventory" />
+                                    <h:outputText value="#{messages['user.inventory']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="inventory" />
@@ -181,7 +181,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="labelPrinters" />
+                                    <h:outputText value="#{messages['user.labelprinters']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="labelPrinters" />
@@ -191,7 +191,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="leadGardener" />
+                                    <h:outputText value="#{messages['user.leadgardener']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="leadGardener" />
@@ -201,7 +201,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="scientificNameEditor" />
+                                    <h:outputText value="#{messages['user.scientificnameeditor']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="scientificNameEditor" />
@@ -211,7 +211,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Scientist" />
+                                    <h:outputText value="#{messages['user.scientist']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="Scientist" />
@@ -221,7 +221,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="volunteers" />
+                                    <h:outputText value="#{messages['user.volunteers']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="volunteers" />
@@ -230,7 +230,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Anlegen" />
+                        <p:commandButton value="#{messages['create']}" />
                     </div>
                 </div>
             </h:form>

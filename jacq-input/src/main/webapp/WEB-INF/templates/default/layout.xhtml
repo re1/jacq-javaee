@@ -34,36 +34,36 @@
                                 </p:submenu>
                                 <p:submenu label="#{messages['seminum']}">
                                     <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
-                                    <p:menuitem value="Revision anlegen" url="/faces/pages/livingplant/revisionanlegen.xhtml"/>
+                                    <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/faces/pages/livingplant/revisioncreate.xhtml"/>
                                 </p:submenu>
                             </p:submenu>
-                            <p:submenu label="Standort">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/standort/standortanlegen.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/standort/standortverwaltung.xhtml"/>
+                            <p:submenu label="#{messages['location']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/location/locationcreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/location/locationmanage.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Baumkontrollblatt">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/baumkontrollblatt/baumkontrollblattanlegen.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/baumkontrollblatt/baumkontrollblattverwaltung.xhtml"/>
+                            <p:submenu label="#{messages['treecontrolsheet']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/treecontrolsheet/treecontrolsheetcreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/treecontrolsheet/treecontrolsheetmanage.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Daten Browser">
-                                <p:menuitem value="Klassifikations-Browser" url="/faces/pages/datenbrowser/klassifikationsbrowser.xhtml"/>
-                                <p:menuitem value="Statistik" url="/faces/pages/datenbrowser/statistik.xhtml"/>
+                            <p:submenu label="#{messages['databrowser']}">
+                                <p:menuitem value="#{messages['databrowser.classificationbrowser']}" url="/faces/pages/databrowser/classificationbrowser.xhtml"/>
+                                <p:menuitem value="#{messages['databrowser.statistic']}" url="/faces/pages/databrowser/statistic.xhtml"/>
                             </p:submenu>
                             <p:separator />
-                            <p:submenu label="Benutzer">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/benutzer/benutzeranlegen.xhtml"/>
-                                <p:menuitem value="Aktualisieren" url="/faces/pages/benutzer/benutzeraktualisieren.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/benutzer/benutzerverwaltung.xhtml"/>
+                            <p:submenu label="#{messages['user']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/user/usercreate.xhtml"/>
+                                <p:menuitem value="#{messages['update']}" url="/faces/pages/user/userupdate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/usermanage.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Literature">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literatureanlegen.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literatureverwalten.xhtml"/>
+                            <p:submenu label="#{messages['literature']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literaturemanage.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Nomenclature">
-                                <p:menuitem value="Bearbeiten" url="/faces/pages/nomenclature/checknomenclature.xhtml"/>
+                            <p:submenu label="#{messages['nomenclature']}">
+                                <p:menuitem value="#{messages['edit']}" url="/faces/pages/nomenclature/nomenclaturecheck.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Chorology">
-                                <p:menuitem value="Check" url="/faces/pages/chrology/chorologybearbeiten.xhtml"/>
+                            <p:submenu label="#{messages['chorology']}">
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/chrology/chorologyedit.xhtml"/>
                             </p:submenu>
                             <p:submenu label="Observations">
                                 <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsverwalten.xhtml"/>
