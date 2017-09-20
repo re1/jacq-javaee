@@ -11,17 +11,17 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Check Nomenclature</h1>
+                        <h1>#{messages['nomenclature.nomenclaturecheck']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="id">Institution</label>
+                                    <h:outputText value="#{messages['nomenclature.institution']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="scource">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -29,7 +29,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="familie">Familie</label>
+                                    <h:outputText value="#{messages['nomenclature.family']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -39,7 +39,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="genus">Genus</label>
+                                    <h:outputText value="#{messages['nomenclature.genus']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -49,7 +49,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['nomenclature.author']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -59,7 +59,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="collector">Collector</label>
+                                    <h:outputText value="#{messages['nomenclature.collector']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />

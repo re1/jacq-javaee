@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Literature Verwalten</h1>
+                        <h1>#{messages['literature.literaturemanage']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="title">Title</label>
+                                    <h:outputText value="#{messages['literature.title']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,7 +27,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['literature.authors']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -37,11 +37,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="listing">listing</label>
+                                    <h:outputText value="#{messages['literature.listing']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="listingselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="volume">Volume</label>
+                                    <h:outputText value="#{messages['literature.volume']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -59,7 +59,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="page">Page</label>
+                                    <h:outputText value="#{messages['literature.page']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -69,7 +69,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="periodical">Periodical</label>
+                                    <h:outputText value="#{messages['literature.periodical']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -79,7 +79,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="year">Year</label>
+                                    <h:outputText value="#{messages['literature.year']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -89,7 +89,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="keywords">Keywords</label>
+                                    <h:outputText value="#{messages['literature.keywords']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -99,11 +99,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="categories">Categories</label>
+                                    <h:outputText value="#{messages['literature.categories']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="categoriesselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="list as containers" />
+                                    <h:outputText value="#{messages['literature.listascontainers']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="listascontainers" />
@@ -120,24 +120,24 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Search" />
+                        <p:commandButton value="#{messages['search']}" />
                     </div>
                     <br />
                     <div class="jacq-data-table">
                         <p:dataTable var="literaturetable">
-                            <p:column filterBy="" headerText="Titel">
+                            <p:column filterBy="" headerText="#{messages['literature.title']}">
                                 <h:outputText  />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Periodical/Monograph">
+                            <p:column filterBy="" headerText="#{messages['literature.periodical']}">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Author">
+                            <p:column filterBy="" headerText="#{messages['literature.authors']}">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column filterBy="" headerText="Date ">
+                            <p:column filterBy="" headerText="#{messages['literature.date']}">
                                 <h:outputText />
                             </p:column>
                         </p:dataTable>

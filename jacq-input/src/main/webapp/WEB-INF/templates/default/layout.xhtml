@@ -65,15 +65,15 @@
                             <p:submenu label="#{messages['chorology']}">
                                 <p:menuitem value="#{messages['manage']}" url="/faces/pages/chrology/chorologyedit.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Observations">
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsverwalten.xhtml"/>
+                            <p:submenu label="#{messages['observations']}">
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsmanage.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="Taxonomy">
-                                <p:menuitem value="Genera" url="/faces/pages/taxonomy/generaanlegen.xhtml"/>
-                                <p:menuitem value="Species" url="/faces/pages/taxonomy/speciesanlegen.xhtml"/>
-                                <p:menuitem value="Familie" url="/faces/pages/taxonomy/familieanlegen.xhtml"/>
-                                <p:menuitem value="Author" url="/faces/pages/taxonomy/authoranlegen.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomyverwalten.xhtml"/>
+                            <p:submenu label="#{messages['taxonomy']}">
+                                <p:menuitem value="#{messages['taxonomy.genera']}" url="/faces/pages/taxonomy/generacreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.species']}" url="/faces/pages/taxonomy/speciescreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.family']}" url="/faces/pages/taxonomy/familycreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.author']}" url="/faces/pages/taxonomy/authorcreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomymanage.xhtml"/>
                             </p:submenu>
                         </p:panelMenu>
                     </div>

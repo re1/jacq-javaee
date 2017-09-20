@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Chorology Bearbeiten</h1>
+                        <h1>#{messages['chorology.chorologyedit']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="choose">Choose project parameters</label>
+                                    <h:outputText value="#{messages['chorology.chooseprojectparameters']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,7 +27,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="family">Family</label>
+                                    <h:outputText value="#{messages['chorology.family']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -37,7 +37,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="genus">Genus</label>
+                                    <h:outputText value="#{messages['chorology.genus']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -47,7 +47,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="species">Species</label>
+                                    <h:outputText value="#{messages['chorology.species']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -57,11 +57,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="status">Status</label>
+                                    <h:outputText value="#{messages['chorology.status']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="listingselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -69,11 +69,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="rank">Rank</label>
+                                    <h:outputText value="#{messages['chorology.rank']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="listingselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['chorology.author']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -91,7 +91,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="annotation">Annotation</label>
+                                    <h:outputText value="#{messages['chorology.annotation']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -100,12 +100,12 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Search" />
+                        <p:commandButton value="#{messages['search']}"/>
                     </div>
                     <br />
                     <div class="jacq-data-table">
                         <p:dataTable var="literaturetable">
-                            <p:column filterBy="" headerText="Taxon">
+                            <p:column filterBy="" headerText="#{messages['chorology.taxon']}">
                                 <h:outputText  />
                             </p:column>
 

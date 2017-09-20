@@ -11,17 +11,17 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Observations Verwalten</h1>
+                        <h1>#{messages['observations.observationsmanage']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="collection">Collection</label>
+                                    <h:outputText value="#{messages['observations.collection']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="listingselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                    <p:selectOneMenu id="collectionselect">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -29,11 +29,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="collectionnr">Collection Nr.</label>
+                                    <h:outputText value="#{messages['observations.collectionnr']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="listingselect">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="series">Series</label>
+                                    <h:outputText value="#{messages['observations.series']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -51,7 +51,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="family">Family</label>
+                                    <h:outputText value="#{messages['observations.family']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -61,7 +61,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="taxon">Taxon</label>
+                                    <h:outputText value="#{messages['observations.taxon']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -71,7 +71,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="identhistory">ident. history</label>
+                                    <h:outputText value="#{messages['observations.identhistory']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -81,7 +81,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="collector">Collector</label>
+                                    <h:outputText value="#{messages['observations.collector']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -91,7 +91,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="number">Number</label>
+                                    <h:outputText value="#{messages['observations.number']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -101,7 +101,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="date">Date</label>
+                                    <h:outputText value="#{messages['observations.date']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -111,7 +111,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="Continent">Continent</label>
+                                    <h:outputText value="#{messages['observations.continent']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -121,7 +121,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="region">Region</label>
+                                    <h:outputText value="#{messages['observations.region']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -131,7 +131,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="country">Country</label>
+                                    <h:outputText value="#{messages['observations.country']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -141,7 +141,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="stateprovince">State/Province</label>
+                                    <h:outputText value="#{messages['observations.stateprovince']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -151,7 +151,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="loc">Loc.</label>
+                                    <h:outputText value="#{messages['observations.loc']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -161,7 +161,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="All records" />
+                                    <h:outputText value="#{messages['observations.allrecords']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="allrecords" />
@@ -171,36 +171,16 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Type records only" />
+                                    <h:outputText value="#{messages['observations.typerecordsonly']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="typerecordsonly" />
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="images" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="yes" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="images" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="no" />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="Search" />
+                        <p:commandButton value="#{messages['search']}" />
                     </div>
                 </div>
             </h:form>

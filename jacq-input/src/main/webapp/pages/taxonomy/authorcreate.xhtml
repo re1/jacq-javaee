@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Family Anlegen</h1>
+                        <h1>#{messages['taxonomy.authorcreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="id">ID</label>
+                                    <h:outputText value="#{messages['taxonomy.id']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,7 +27,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="locked">Locked</label>
+                                    <h:outputText value="#{messages['taxonomy.locked']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="hybrid" />
@@ -37,7 +37,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="familie">Familie</label>
+                                    <h:outputText value="#{messages['taxonomy.author']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -47,7 +47,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="category">Kategorie</label>
+                                    <h:outputText value="#{messages['taxonomy.brummit']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />

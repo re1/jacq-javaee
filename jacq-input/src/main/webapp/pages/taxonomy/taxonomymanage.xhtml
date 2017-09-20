@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Genera Anlegen</h1>
+                        <h1>#{messages['taxonomy.taxonomymanage']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="genus">Genus</label>
+                                    <h:outputText value="#{messages['taxonomy.mdldsearch']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,106 +27,158 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.family']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.genus']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="listingselect">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.species']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.status']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.rank']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.typecollection']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.number']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.date']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.annotation']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.commonname']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.external']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="external" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['taxonomy.noliteratur']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="noliteratur" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h3>Search</h3>
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <label for="refno">Ref No.</label>
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <label for="audition">Audition</label>
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Hybrid" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="hybrid" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Accepted" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="accepted" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Author(s)" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Author(s)" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Family" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Taxon" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Remarks" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="#{messages['search']}" />
+                    </div>
+                    <br />
+                    <div class="jacq-data-table">
+                        <p:dataTable var="literaturetable">
+                            <p:column filterBy="" headerText="#{messages['taxonomy.title']}">
+                                <h:outputText  />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['taxonomy.periodical']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['taxonomy.authors']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['taxonomy.date']}">
+                                <h:outputText />
+                            </p:column>
+                        </p:dataTable>
                     </div>
                 </div>
             </h:form>

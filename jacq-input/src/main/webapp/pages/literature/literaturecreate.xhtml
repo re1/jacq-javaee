@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <h3>Search</h3>
+                    <h3>#{messages['search']}</h3>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
@@ -130,7 +130,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="show author(s)" />
+                                    <h:outputText value="#{messages['literature.showsathors']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="showauthors" />
@@ -140,7 +140,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="additions"/>
+                                    <h:outputText value="#{messages['literature.additions']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -150,7 +150,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="listing"/>
+                                    <h:outputText value="#{messages['literature.listing']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -160,7 +160,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="recent publication" />
+                                    <h:outputText value="#{messages['literature.recentpublication']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="recentpublication" />
@@ -170,7 +170,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="signature"/>
+                                    <h:outputText value="#{messages['literature.signature']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -179,12 +179,12 @@
                         </div>
                     </div>
                     <p:tabView dynamic="true" cache="true">
-                        <p:tab title="Index">
+                        <p:tab title="#{messages['literature.index']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="ID"/>
+                                            <h:outputText value="#{messages['literature.id']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -194,7 +194,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="Taxon"/>
+                                            <h:outputText value="#{messages['literature.taxon']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -204,7 +204,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="citation"/>
+                                            <h:outputText value="#{messages['literature.citation']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -214,7 +214,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="paginae"/>
+                                            <h:outputText value="#{messages['literature.paginae']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -224,7 +224,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="figures"/>
+                                            <h:outputText value="#{messages['literature.figures']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -234,7 +234,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="annotations "/>
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -248,30 +248,30 @@
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Taxon">
+                                    <p:column filterBy="" headerText="#{messages['literature.taxon']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Paginae">
+                                    <p:column filterBy="" headerText="#{messages['literature.paginae']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Figures">
+                                    <p:column filterBy="" headerText="#{messages['literature.figures']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Annotations">
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab title="cited taxa">
+                        <p:tab title="#{messages['literature.citedtaxa']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="ID"/>
+                                            <h:outputText value="#{messages['literature.id']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -281,7 +281,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="last updated by"/>
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -291,7 +291,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="Taxon"/>
+                                            <h:outputText value="#{messages['literature.taxon']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -301,7 +301,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="acc. Taxon"/>
+                                            <h:outputText value="#{messages['literature.acctaxon']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -311,7 +311,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="citation"/>
+                                            <h:outputText value="#{messages['literature.citation']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -321,11 +321,11 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <label for="source">Source</label>
+                                            <h:outputText value="#{messages['literature.source']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:selectOneMenu id="scource">
-                                                <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                             </p:selectOneMenu>
                                         </div>
                                     </div>
@@ -333,7 +333,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="et al." />
+                                            <h:outputText value="#{messages['literature.etal']}" />
                                         </div>
                                         <div class="ui-g-6">
                                             <p:selectBooleanCheckbox value="etal" />
@@ -343,7 +343,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="annotations "/>
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -357,26 +357,26 @@
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Taxon  v">
+                                    <p:column filterBy="" headerText="#{messages['literature.taxon']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="acc. Taxon">
+                                    <p:column filterBy="" headerText="#{messages['literature.acctaxon']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Annotations">
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab title="cited person">
+                        <p:tab title="#{messages['literature.citedperson']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="ID"/>
+                                            <h:outputText value="#{messages['literature.id']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -386,7 +386,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="last updated by"/>
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -396,7 +396,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="Person"/>
+                                            <h:outputText value="#{messages['literature.person']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -406,7 +406,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="citation"/>
+                                            <h:outputText value="#{messages['literature.citation']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -416,7 +416,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="annotations "/>
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -430,22 +430,22 @@
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Name">
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Annotations">
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab title="container">
+                        <p:tab title="#{messages['literature.container']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="ID"/>
+                                            <h:outputText value="#{messages['literature.id']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -455,7 +455,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="last updated by"/>
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -465,7 +465,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="annotations "/>
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -479,17 +479,17 @@
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Name">
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Annotations">
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab title="tax synonym">
+                        <p:tab title="#{messages['literature.taxasynonym']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
@@ -538,22 +538,22 @@
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Name">
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Annotations">
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab title="taxon classification">
+                        <p:tab title="#{messages['literature.taxonclassification']}">
                             <div class="ui-g">
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="child"/>
+                                            <h:outputText value="#{messages['literature.child']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -563,7 +563,7 @@
                                 <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g">
                                         <div class="ui-g-6">
-                                            <h:outputText value="Parent"/>
+                                            <h:outputText value="#{messages['literature.parent']}"/>
                                         </div>
                                         <div class="ui-g-6">
                                             <p:inputText />
@@ -573,23 +573,23 @@
                             </div>
                             <div class="jacq-data-table">
                                 <p:dataTable var="taxonomy">
-                                    <p:column filterBy="" headerText="Genus">
+                                    <p:column filterBy="" headerText="#{messages['literature.genus']}">
                                         <h:outputText  />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Author">
+                                    <p:column filterBy="" headerText="#{messages['literature.authors']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="RefNo">
+                                    <p:column filterBy="" headerText="#{messages['literature.refno']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Family">
+                                    <p:column filterBy="" headerText="#{messages['literature.family']}">
                                         <h:outputText />
                                     </p:column>
 
-                                    <p:column filterBy="" headerText="Categorie">
+                                    <p:column filterBy="" headerText="#{messages['literature.categorie']}">
                                         <h:outputText />
                                     </p:column>
                                 </p:dataTable>

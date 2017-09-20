@@ -11,13 +11,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>Species Anlegen</h1>
+                        <h1>#{messages['taxonomy.speciescreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="genus">Genus</label>
+                                    <h:outputText value="#{messages['taxonomy.genus']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -27,11 +27,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="rank">Rank</label>
+                                    <h:outputText value="#{messages['taxonomy.rank']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="rank">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -39,11 +39,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="taxsStatus">tax. Status</label>
+                                    <h:outputText value="#{messages['taxonomy.taxstatus']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="taxsStatus">
-                                        <f:selectItem itemLabel="Keine Auswahl" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="species">Species</label>
+                                    <h:outputText value="#{messages['taxonomy.species']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -64,7 +64,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -74,7 +74,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Subspecies" />
+                                    <h:outputText value="#{messages['taxonomy.subspecies']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -84,7 +84,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -94,7 +94,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Variety" />
+                                    <h:outputText value="#{messages['taxonomy.variety']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -104,7 +104,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -114,7 +114,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Subvariety" />
+                                    <h:outputText value="#{messages['taxonomy.subvariety']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -124,7 +124,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -134,7 +134,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Forma" />
+                                    <h:outputText value="#{messages['taxonomy.forma']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -144,7 +144,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -154,7 +154,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Subforma" />
+                                    <h:outputText value="#{messages['taxonomy.subforma']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -164,7 +164,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <label for="author">Author</label>
+                                    <h:outputText value="#{messages['taxonomy.authors']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -174,7 +174,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="accepted Taxon" />
+                                    <h:outputText value="#{messages['taxonomy.acceptedtaxon']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -184,7 +184,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="Basionym" />
+                                    <h:outputText value="#{messages['taxonomy.basionym']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
@@ -194,7 +194,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="annotations" />
+                                    <h:outputText value="#{messages['taxonomy.annotations']}"/>
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText />
