@@ -60,7 +60,7 @@
                                     <h:outputText value="#{messages['chorology.status']}"/>
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="listingselect">
+                                    <p:selectOneMenu id="statusselect">
                                         <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
@@ -72,7 +72,7 @@
                                     <h:outputText value="#{messages['chorology.rank']}"/>
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="listingselect">
+                                    <p:selectOneMenu id="rankselect">
                                         <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
@@ -104,7 +104,7 @@
                     </div>
                     <br />
                     <div class="jacq-data-table">
-                        <p:dataTable var="literaturetable">
+                        <p:dataTable var="chrologytable">
                             <p:column filterBy="" headerText="#{messages['chorology.taxon']}">
                                 <h:outputText  />
                             </p:column>
