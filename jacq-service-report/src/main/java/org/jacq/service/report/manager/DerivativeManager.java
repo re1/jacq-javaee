@@ -14,14 +14,17 @@ import javax.persistence.Query;
 import org.jacq.common.model.BotanicalObjectDerivative;
 
 /**
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs
  *
  * @author wkoller
  */
 @ManagedBean
 public class DerivativeManager {
 
-    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_living` WHERE 1";
-    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_vegetative` WHERE 1";
+    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_living`";
+    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_vegetative`";
 
     private static final String FILTER_TYPE = "`type` = ?";
     private static final String FILTER_DERIVATIVEID = "`derivative_id` = ?";
@@ -32,27 +35,8 @@ public class DerivativeManager {
     public List<BotanicalObjectDerivative> findDerivative(String type, Long derivativeId) {
         List<Object> params = new ArrayList<>();
 
-        String livingQueryString = SELECT_LIVING;
-
-        if (type != null) {
-            livingQueryString += " AND " + FILTER_TYPE;
-            params.add(type);
-        }
-        if (derivativeId != null) {
-            livingQueryString += " AND " + FILTER_DERIVATIVEID;
-            params.add(derivativeId);
-        }
-
-        String vegetativeQueryString = SELECT_VEGETATIVE;
-
-        if (type != null) {
-            vegetativeQueryString += " AND " + FILTER_TYPE;
-            params.add(type);
-        }
-        if (derivativeId != null) {
-            vegetativeQueryString += " AND " + FILTER_DERIVATIVEID;
-            params.add(derivativeId);
-        }
+        String livingQueryString = applySearchCriteria(SELECT_LIVING, params, type, derivativeId);
+        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE, params, type, derivativeId);
 
         String botanicalObjectSearchQueryString = livingQueryString + " UNION ALL " + vegetativeQueryString;
 
@@ -64,5 +48,30 @@ public class DerivativeManager {
         List<BotanicalObjectDerivative> results = botanicalObjectSearchQuery.getResultList();
 
         return results;
+    }
+
+    /**
+     * Apply search criteria for querying
+     *
+     * @param baseSql
+     * @param params
+     * @param type
+     * @param derivativeId
+     * @return
+     */
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId) {
+        String queryString = baseSql;
+        queryString += " WHERE 1 ";
+
+        if (type != null) {
+            queryString += " AND " + FILTER_TYPE;
+            params.add(type);
+        }
+        if (derivativeId != null) {
+            queryString += " AND " + FILTER_DERIVATIVEID;
+            params.add(derivativeId);
+        }
+
+        return queryString;
     }
 }
