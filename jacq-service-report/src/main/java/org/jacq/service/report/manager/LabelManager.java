@@ -1,6 +1,7 @@
 package org.jacq.service.report.manager;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import org.eclipse.birt.report.engine.api.EngineConstants;
@@ -18,7 +18,8 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
-import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.report.WorkLabel;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;
 
@@ -46,8 +47,11 @@ public class LabelManager {
     @Inject
     protected JacqConfig jacqConfig;
 
+    @Inject
+    protected DerivativeManager derivativeManager;
+
     // Context key for birt reporting
-    public static final String APP_CONTEXT_KEY_LIVINGPLANTDATASET = "APP_CONTEXT_KEY_LIVINGPLANTDATASET";
+    public static final String APP_CONTEXT_KEY_WORKLABELDATASET = "APP_CONTEXT_KEY_WORKLABELDATASET";
 
     @PostConstruct
     public void init() {
@@ -55,17 +59,28 @@ public class LabelManager {
     }
 
     /**
-     * @see LabelService#getWork()
+     * @see LabelService#getWork(java.lang.String, long)
      */
-    public Response getWork(long botanicalObjectId) throws Exception {
-        // find the corresponding living plant entry for the passed botanical object
-        TypedQuery<TblLivingPlant> query = em.createNamedQuery("TblLivingPlant.findById", TblLivingPlant.class);
-        query.setParameter("id", botanicalObjectId);
-        List<TblLivingPlant> results = query.getResultList();
+    public Response getWork(String type, Long derivativeId) throws EngineException {
+        List<BotanicalObjectDerivative> results = derivativeManager.findDerivative(type, derivativeId);
 
         // if no result is found, return an error
         if (results == null || results.size() <= 0) {
-            throw new NotFoundException("Living Plant with id '" + botanicalObjectId + "' not found!");
+            throw new NotFoundException("Derivative of type '" + type + "' and derivativeId '" + derivativeId + "' not found!");
+        }
+
+        // convert results to WorkLabel POJOs for passing data to BIRT Engine
+        List<WorkLabel> workLabels = new ArrayList<>();
+        for (BotanicalObjectDerivative botanicalObjectDerivative : results) {
+            WorkLabel workLabel = new WorkLabel();
+            workLabel.setAccessionNumber(botanicalObjectDerivative.getAccessionNumber());
+
+            // extract label annotation and scientific name
+            workLabel.setLabelAnnotation(botanicalObjectDerivative.getLabelAnnotation());
+            workLabel.setScientificName(botanicalObjectDerivative.getScientificName());
+
+            // add work-label to output queue
+            workLabels.add(workLabel);
         }
 
         // get a reference to the report engine
@@ -76,7 +91,7 @@ public class LabelManager {
         // setup task for rendering the labels, make sure to set ClassLoader & LivingPlant dataset
         IRunAndRenderTask task = reportEngine.createRunAndRenderTask(report);
         task.getAppContext().put(EngineConstants.APPCONTEXT_CLASSLOADER_KEY, LabelManager.class.getClassLoader());
-        task.getAppContext().put(APP_CONTEXT_KEY_LIVINGPLANTDATASET, results.iterator());
+        task.getAppContext().put(APP_CONTEXT_KEY_WORKLABELDATASET, workLabels.iterator());
 
         // output stream for returning the rendered pdf
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -100,12 +115,6 @@ public class LabelManager {
 
         // return the produces PDF
         return Response.ok(baos.toByteArray()).header("Content-Disposition", "attachment; filename=hbv_worklabel.pdf").build();
-    }
 
-    /**
-     * @see LabelService#getWork(java.lang.String, long)
-     */
-    public Response getWork(String type, long derivativeId) {
-        return null;
     }
 }

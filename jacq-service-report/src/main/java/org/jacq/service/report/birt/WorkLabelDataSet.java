@@ -8,9 +8,6 @@ package org.jacq.service.report.birt;
 import java.util.Map;
 import org.eclipse.birt.data.oda.pojo.api.IPojoDataSet;
 import org.eclipse.datatools.connectivity.oda.OdaException;
-import org.jacq.common.model.jpa.TblBotanicalObject;
-import org.jacq.common.model.jpa.TblLivingPlant;
-import org.jacq.common.model.jpa.ViewBotanicalObjectSearch;
 import org.jacq.common.model.report.WorkLabel;
 
 /**

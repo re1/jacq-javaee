@@ -30,25 +30,10 @@ public class LabelServiceImpl implements LabelService, Serializable {
     protected LabelManager labelManager;
 
     /**
-     * @see LabelService#getWork()
-     */
-    @Override
-    public Response getWork(long botanicalObjectId) {
-        try {
-            return labelManager.getWork(botanicalObjectId);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            // encapsulate exception into Jacq specific rest exception
-            throw new JacqRestException(e);
-        }
-    }
-
-    /**
      * @see LabelService#getWork(java.lang.String, long)
      */
     @Override
-    public Response getWork(String type, long derivativeId) {
+    public Response getWork(String type, Long derivativeId) {
         try {
             return labelManager.getWork(type, derivativeId);
         } catch (Exception e) {

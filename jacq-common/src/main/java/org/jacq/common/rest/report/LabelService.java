@@ -19,18 +19,6 @@ public interface LabelService {
     public static final String APPLICATION_PDF = "application/pdf";
 
     /**
-     * Generate a work label and return it as PDF
-     *
-     * @param botanicalObjectId ID of botanical object to create this work label for
-     * @return
-     */
-    @GET
-    @Path("/work/{botanical_object_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(APPLICATION_PDF)
-    public Response getWork(@PathParam("botanical_object_id") long botanicalObjectId);
-
-    /**
      * Generate a work label for any given botanical object available through the search view
      *
      * @param type Type of botanical object to search for (e.g. 'vegetative', 'living')
@@ -41,5 +29,5 @@ public interface LabelService {
     @Path("/work/{type}/{derivative_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_PDF)
-    public Response getWork(@PathParam("type") String type, @PathParam("derivative_id") long derivativeId);
+    public Response getWork(@PathParam("type") String type, @PathParam("derivative_id") Long derivativeId);
 }
