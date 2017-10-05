@@ -3,19 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacq.service.report.birt.mock;
+package org.jacq.service.report.birt;
 
 import java.util.Map;
 import org.eclipse.birt.data.oda.pojo.api.IPojoDataSet;
 import org.eclipse.datatools.connectivity.oda.OdaException;
-import org.jacq.common.model.jpa.TblBotanicalObject;
-import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.report.WorkLabel;
 
 /**
  *
  * @author wkoller
  */
-public class LivingPlantDataSet implements IPojoDataSet {
+public class WorkLabelDataSet implements IPojoDataSet {
 
     protected int rowCount = 10;
 
@@ -30,12 +29,12 @@ public class LivingPlantDataSet implements IPojoDataSet {
             return null;
         }
 
-        TblLivingPlant tblLivingPlant = new TblLivingPlant();
-        tblLivingPlant.setAccessionNumber((int) (Math.random() * 1000.0));
-        tblLivingPlant.setLabelAnnotation("Eine Anmerkung: '" + rowCount + "'");
-        tblLivingPlant.setTblBotanicalObject(new TblBotanicalObject());
+        WorkLabel workLabel = new WorkLabel();
+        workLabel.setAccessionNumber("0123456-" + rowCount);
+        workLabel.setLabelAnnotation("Eine Anmerkung:" + rowCount);
+        workLabel.setScientificName("Abies alba");
 
-        return tblLivingPlant;
+        return workLabel;
     }
 
     @Override

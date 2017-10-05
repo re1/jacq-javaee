@@ -12,6 +12,7 @@
         <module>../jacq-names</module>
         <module>../jacq-output</module>
         <module>../jacq-service</module>
+        <module>../jacq-service-report</module>
     </modules>
 
     <build>

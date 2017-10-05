@@ -1,4 +1,4 @@
-package org.jacq.common.rest;
+package org.jacq.common.rest.report;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,14 +19,15 @@ public interface LabelService {
     public static final String APPLICATION_PDF = "application/pdf";
 
     /**
-     * Generate a work label and return it as PDF
+     * Generate a work label for any given botanical object available through the search view
      *
-     * @param botanicalObjectId ID of botanical object to create this work label for
+     * @param type Type of botanical object to search for (e.g. 'vegetative', 'living')
+     * @param derivativeId Id of derivative
      * @return
      */
     @GET
-    @Path("/work/{botanical_object_id}")
+    @Path("/work/{type}/{derivative_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_PDF)
-    public Response getWork(@PathParam("botanical_object_id") long botanicalObjectId);
+    public Response getWork(@PathParam("type") String type, @PathParam("derivative_id") Long derivativeId);
 }
