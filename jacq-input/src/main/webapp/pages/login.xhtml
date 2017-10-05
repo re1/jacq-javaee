@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Login</title>
+        <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Poppins" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="jacq" name="jacq.css" />
+    </h:head>
+    <h:body>
+        <div class="jacq-login">
+            <img class="jacq-logo-img" src="resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
+            <h:form style="">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="username" value="Username:" />
+                    <p:inputText id="username" value="" required="true" label="username" />
+
+                    <h:outputLabel for="password" value="Password:" />
+                    <p:password id="password" value="" required="true" label="password" />
+                </h:panelGrid>
+                <p:selectManyCheckbox id="basic">
+                    <f:selectItem itemLabel="Save Password" itemValue="Save Password" />
+                </p:selectManyCheckbox>
+                <p:commandButton value="Login" onclick="window.open('/jacq-input/faces/pages/livingplant/livingplantcreate.xhtml')"/>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

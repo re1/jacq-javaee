@@ -1,0 +1,636 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>#{messages['livingplant.livingplantcreate']}</h1>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.scientificname']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.family']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.location']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.placenumber']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.variety']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="sorteselect">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.processed']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="processed" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="auto">
+                                        <f:selectItem itemLabel="auto" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.accessionnumbers']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipentyp']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="ipentyp">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipennummer']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <h:panelGrid columns="3" cellpadding="2">
+                                        <p:inputText style="width: 50px" />
+                                        <p:selectOneMenu id="ipennummerselect">
+                                            <f:selectItem itemLabel="X" noSelectionOption="true" />
+                                        </p:selectOneMenu>
+                                        <p:inputText style="width: 50px" />
+                                    </h:panelGrid>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipenlocked']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="ipenlocked" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>#{messages['livingplant.sex']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.male']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="male" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.female']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="female" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>#{messages['livingplant.label']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.synonymforlabel']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.annotationforlabel']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.work']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="work" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.exhibition']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="exhibition" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.eliminated']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="eliminated" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="jacq-panel-grid">
+                        <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                            <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                <h:outputText value="Abgang" />
+                                <h:outputText value="Datum" />
+                                <h:outputText value="Bemerkung" />
+                                <p:inputText />
+                                <p:inputText />
+                                <p:inputText />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </div>-->
+                    <br />
+                    <p:tabView dynamic="true" cache="true">
+                        <p:tab title="#{messages['livingplant.collectingdata']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectiondate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectionnumber']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.freecollectiondate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectorname']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.location']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.altitude']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <h:panelGrid columns="3" cellpadding="2">
+                                                <p:inputText style="width: 50px" />
+                                                -
+                                                <p:inputText style="width: 50px" />
+                                            </h:panelGrid>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.accuracy']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.latitude']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <h:panelGrid columns="4" cellpadding="2">
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:selectOneMenu id="latitudeselect">
+                                                    <f:selectItem itemLabel="N" noSelectionOption="true" />
+                                                </p:selectOneMenu>
+                                            </h:panelGrid>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.longitude']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <h:panelGrid columns="4" cellpadding="2">
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:inputText style="width: 30px" />
+                                                <p:selectOneMenu id="longitudeselect">
+                                                    <f:selectItem itemLabel="E" noSelectionOption="true" />
+                                                </p:selectOneMenu>
+                                            </h:panelGrid>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.annotation']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.habitat']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.indexseminum']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="indexseminum" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.type']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="type">
+                                                <f:selectItem itemLabel="WS" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.horticulturaldata']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.acquisitiondate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.entrydate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.cultivationdate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.culturenote']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="jacq-panel-grid">
+                                    <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                        <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                            <h:outputText value="Bezugsdatum" />
+                                            <h:outputText value="Bezugsquelle *" />
+                                            <h:outputText value="Aktion" />
+                                            <p:inputText />
+                                            <p:inputText />
+                                            <p:inputText />
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                </div>-->
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.name']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="name">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.site']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="site">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.annotation']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.phenology']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="phenology">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.collectionmanagement']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.redetermine']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="redetermine" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.determinedate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="determinedate">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.determiningstatus']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="determiningstatus">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.determineby']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="determineby">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.research']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="research" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.historical']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="historical" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.doctrine']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="doctrine" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.naturalreserve']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="naturalreserve" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.public']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="public" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <br />
+                                 <div class="jacq-panel-grid">
+                                     <h:panelGrid columns="1"  cellpadding="2" width="100%">
+                                         <h:panelGrid columns="4"  cellpadding="2" columnClasses="firstColumn,secondColumn">
+                                             <h:outputText value="Zertifikat-Art *" />
+                                             <h:outputText value="Nummer" />
+                                             <h:outputText value="Bemerkung" />
+                                             <h:outputText value="Aktionen" />
+                                             <p:inputText />
+                                             <p:inputText />
+                                             <p:inputText />
+                                             <p:inputText />
+                                         </h:panelGrid>
+                                     </h:panelGrid>
+                                 </div>
+                                 <br />-->
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.phytocontrol']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="phytocontrol" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.bgci']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="bgci" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.derivatives']}">
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.inventories']}">
+                        </p:tab>
+                    </p:tabView>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="#{messages['create']}" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
