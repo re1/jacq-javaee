@@ -13,23 +13,26 @@
                         <h1>#{messages['location.locationmanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="item">
+                        <p:dataTable var="item" value="#{organisationController.dataModel}">
                             <p:column filterBy="" headerText="#{messages['location.id']}">
-                                <h:outputText value="" />
+                                <h:outputText value="#{organisationController.organisationId}"/>
                             </p:column>
                             <p:column filterBy="" headerText="#{messages['location.description']}">
-                                <h:outputText />
+                                <h:outputText value="#{organisationController.description}"/>
                             </p:column>
                             <p:column filterBy="" headerText="#{messages['location.department']}">
-                                <h:outputText />
+                                <h:outputText value="#{organisationController.department}"/>
                             </p:column>
-                            <p:column headerText="#{messages['location.username']}">
-                                <h:outputText />
+                            <p:column headerText="#{messages['location.username']}" >
+                                <h:outputText value="#{organisationController.greenhouse}"/>
                             </p:column>
-                            <p:column headerText="">
-                                <h:outputText />
+                            <p:column headerText="#{messages['location.username']}" >
+                                <h:outputText value="#{organisationController.ipenCode}"/>
                             </p:column>
                         </p:dataTable>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="#{messages['search']}" action="#{organisationController.search()}" />
                     </div>
                 </div>
             </h:form>
