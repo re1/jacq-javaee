@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input;
+package org.jacq.input.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.jacq.common.model.OrganisationResult;
 import org.jacq.common.rest.OrganisationService;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 
 /**
  * Lazy loading data model for botanical object searches
@@ -91,7 +93,8 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
         return organisationResult.getOrganisationId();
     }
 
-    public List<OrganisationResult> load(int first, int pageSize) {
+    @Override
+    public List<OrganisationResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
         int rowCount = this.organisationService.searchCount();
         this.setRowCount(rowCount);
