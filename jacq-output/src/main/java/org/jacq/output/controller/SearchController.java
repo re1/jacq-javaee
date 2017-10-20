@@ -15,6 +15,7 @@
  */
 package org.jacq.output.controller;
 
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +31,7 @@ import org.jacq.output.view.LazyBotanicalObjectDataModel;
  */
 @ManagedBean
 @SessionScoped
-public class SearchController {
+public class SearchController implements Serializable {
 
     protected LazyBotanicalObjectDataModel dataModel;
 
@@ -80,7 +81,8 @@ public class SearchController {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the data-table
+     * Noop action listener for refreshing the row count after loading the
+     * data-table
      *
      * @return
      */

@@ -5,10 +5,11 @@
  */
 package org.jacq.input.controller;
 
+import org.jacq.input.view.LazyOrganisationDataModel;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.jacq.input.LazyOrganisationDataModel;
 import org.jacq.input.util.ServicesUtil;
 
 /**
@@ -18,7 +19,7 @@ import org.jacq.input.util.ServicesUtil;
  */
 @ManagedBean
 @SessionScoped
-public class OrganisationController {
+public class OrganisationController implements Serializable {
 
     protected LazyOrganisationDataModel dataModel;
 
