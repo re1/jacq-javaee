@@ -28,7 +28,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String JACQ_SERVICE_URL = "http://localhost:8080/jacq-service/rest/";
+    // "http://localhost:8080/jacq-service/rest/"
+    private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
 
     public static OrganisationService getOrganisationService() {
         return getProxy(OrganisationService.class, JACQ_SERVICE_URL);
