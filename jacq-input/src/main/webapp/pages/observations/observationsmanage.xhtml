@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>#{messages['observations.observationsmanage']}</h1>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.collection']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="collectionselect">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.collectionnr']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="listingselect">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.series']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.family']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.taxon']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.identhistory']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.collector']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.number']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.date']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.continent']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.region']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.country']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.stateprovince']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.loc']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.allrecords']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="allrecords" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['observations.typerecordsonly']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="typerecordsonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="#{messages['search']}" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

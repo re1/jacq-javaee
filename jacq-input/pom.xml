@@ -26,7 +26,13 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.3</version>
+            <version>6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.0.10.Final</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -37,6 +43,7 @@
     </dependencies>
 
     <build>
+        <finalName>jacq-input</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
