@@ -13,21 +13,21 @@
                         <h1>#{messages['location.locationmanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="item" value="#{organisationController.dataModel}">
+                        <p:dataTable var="organisationResult" lazy="true" value="#{organisationController.dataModel}" paginator="true" rows="10">
                             <p:column filterBy="" headerText="#{messages['location.id']}">
-                                <h:outputText value="#{organisationController.organisationId}"/>
+                                <h:outputText value="#{organisationResult.organisationId}"/>
                             </p:column>
                             <p:column filterBy="" headerText="#{messages['location.description']}">
-                                <h:outputText value="#{organisationController.description}"/>
+                                <h:outputText value="#{organisationResult.description}"/>
                             </p:column>
                             <p:column filterBy="" headerText="#{messages['location.department']}">
-                                <h:outputText value="#{organisationController.department}"/>
+                                <h:outputText value="#{organisationResult.department}"/>
                             </p:column>
                             <p:column headerText="#{messages['location.username']}" >
-                                <h:outputText value="#{organisationController.greenhouse}"/>
+                                <h:outputText value="#{organisationResult.greenhouse}"/>
                             </p:column>
                             <p:column headerText="#{messages['location.username']}" >
-                                <h:outputText value="#{organisationController.ipenCode}"/>
+                                <h:outputText value="#{organisationResult.ipenCode}"/>
                             </p:column>
                         </p:dataTable>
                     </div>

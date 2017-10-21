@@ -11,6 +11,7 @@ import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.derby.iapi.store.access.conglomerate.Sort;
 import org.jacq.common.model.BotanicalObjectDerivative;
 
 /**
@@ -33,10 +34,15 @@ public class DerivativeManager {
     private EntityManager em;
 
     public List<BotanicalObjectDerivative> findDerivative(String type, Long derivativeId) {
+        return findDerivative(type, derivativeId, null, null, null, null);
+    }
+
+    public List<BotanicalObjectDerivative> findDerivative(String type, Long derivativeId, String orderColumn, String orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
-        String livingQueryString = applySearchCriteria(SELECT_LIVING, params, type, derivativeId);
-        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE, params, type, derivativeId);
+        // apply search criteria to all derivative views
+        String livingQueryString = applySearchCriteria(SELECT_LIVING, params, type, derivativeId, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE, params, type, derivativeId, offset, count);
 
         String botanicalObjectSearchQueryString = livingQueryString + " UNION ALL " + vegetativeQueryString;
 
@@ -45,6 +51,24 @@ public class DerivativeManager {
             botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
         }
 
+        // apply order
+        if (orderColumn != null) {
+            botanicalObjectSearchQueryString += " ORDER BY " + orderColumn;
+
+            if (orderDirection != null) {
+                botanicalObjectSearchQueryString += " " + orderDirection;
+            }
+        }
+
+        // apply offset and count
+        if (offset != null) {
+            botanicalObjectSearchQuery.setFirstResult(offset);
+        }
+        if (count != null) {
+            botanicalObjectSearchQuery.setMaxResults(count);
+        }
+
+        // fetch result list
         List<BotanicalObjectDerivative> results = botanicalObjectSearchQuery.getResultList();
 
         return results;
@@ -59,7 +83,7 @@ public class DerivativeManager {
      * @param derivativeId
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -70,6 +94,18 @@ public class DerivativeManager {
         if (derivativeId != null) {
             queryString += " AND " + FILTER_DERIVATIVEID;
             params.add(derivativeId);
+        }
+
+        // apply offset and count
+        // NOTE: This must stay the last query modification
+        if (offset != null && count != null) {
+            queryString += " LIMIT " + offset + ", " + count;
+        }
+        else if (offset != null) {
+            queryString += " LIMIT " + offset;
+        }
+        else if (count != null) {
+            queryString += " LIMIT 0, " + count;
         }
 
         return queryString;

@@ -731,9 +731,9 @@
             <property name="type">custom</property>
             <property name="orientation">portrait</property>
             <property name="topMargin">0cm</property>
-            <property name="leftMargin">0.15cm</property>
+            <property name="leftMargin">0cm</property>
             <property name="bottomMargin">0in</property>
-            <property name="rightMargin">0.15cm</property>
+            <property name="rightMargin">0cm</property>
             <property name="height">25mm</property>
             <property name="width">78mm</property>
             <property name="headerHeight">0in</property>
@@ -788,10 +788,10 @@
                             <grid id="29">
                                 <property name="width">2.6875in</property>
                                 <column id="30">
-                                    <property name="width">2.03125in</property>
+                                    <property name="width">60mm</property>
                                 </column>
                                 <column id="31">
-                                    <property name="width">0.65625in</property>
+                                    <property name="width">18mm</property>
                                 </column>
                                 <row id="32">
                                     <property name="fontSize">20pt</property>
@@ -807,7 +807,7 @@
                                         </data>
                                     </cell>
                                     <cell id="34">
-                                        <property name="fontSize">8pt</property>
+                                        <property name="fontSize">6pt</property>
                                         <property name="verticalAlign">middle</property>
                                         <data id="36">
                                             <property name="paddingTop">0pt</property>
