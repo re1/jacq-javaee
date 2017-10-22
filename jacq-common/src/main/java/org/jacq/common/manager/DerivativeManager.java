@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacq.service.report.manager;
+package org.jacq.common.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.derby.iapi.store.access.conglomerate.Sort;
 import org.jacq.common.model.BotanicalObjectDerivative;
 
 /**
@@ -24,8 +23,13 @@ import org.jacq.common.model.BotanicalObjectDerivative;
 @ManagedBean
 public class DerivativeManager {
 
-    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_living`";
-    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type` FROM `view_botanical_object_vegetative`";
+    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
+    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
+
+    private static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
+
+    private static final String FROM_LIVING = "FROM `view_botanical_object_living`";
+    private static final String FROM_VEGETATIVE = "FROM `view_botanical_object_vegetative`";
 
     private static final String FILTER_TYPE = "`type` = ?";
     private static final String FILTER_DERIVATIVEID = "`derivative_id` = ?";
@@ -33,16 +37,32 @@ public class DerivativeManager {
     @PersistenceContext
     private EntityManager em;
 
-    public List<BotanicalObjectDerivative> findDerivative(String type, Long derivativeId) {
-        return findDerivative(type, derivativeId, null, null, null, null);
+    /**
+     * @see DerivativeManager#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Integer, java.lang.Integer)
+     */
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId) {
+        return find(type, derivativeId, null, null, null, null);
     }
 
-    public List<BotanicalObjectDerivative> findDerivative(String type, Long derivativeId, String orderColumn, String orderDirection, Integer offset, Integer count) {
+    /**
+     * Find derivatives based on given search parameters. All search parameters are optional and will be ignored if they
+     * are null.
+     *
+     * @param type
+     * @param derivativeId
+     * @param orderColumn
+     * @param orderDirection
+     * @param offset
+     * @param count
+     * @return
+     */
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, String orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_LIVING, params, type, derivativeId, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE, params, type, derivativeId, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_LIVING + " " + FROM_LIVING, params, type, derivativeId, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE + " " + FROM_VEGETATIVE, params, type, derivativeId, offset, count);
 
         String botanicalObjectSearchQueryString = livingQueryString + " UNION ALL " + vegetativeQueryString;
 
@@ -75,12 +95,38 @@ public class DerivativeManager {
     }
 
     /**
+     * Return total available count of results based on search criteria
+     *
+     * @param type
+     * @param derivativeId
+     * @return
+     */
+    public int count(String type, Long derivativeId) {
+        List<Object> params = new ArrayList<>();
+
+        // apply search criteria to all derivative views
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, null, null);
+
+        String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
+
+        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, Number.class);
+        for (int i = 0; i < params.size(); i++) {
+            botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
+        }
+
+        return ((Number) botanicalObjectSearchQuery.getSingleResult()).intValue();
+    }
+
+    /**
      * Apply search criteria for querying
      *
      * @param baseSql
      * @param params
      * @param type
      * @param derivativeId
+     * @param offset
+     * @param count
      * @return
      */
     protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, Integer offset, Integer count) {

@@ -1,5 +1,6 @@
 package org.jacq.service.report.manager;
 
+import org.jacq.common.manager.DerivativeManager;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class LabelManager {
      * @see LabelService#getWork(java.lang.String, long)
      */
     public Response getWork(String type, Long derivativeId) throws EngineException {
-        List<BotanicalObjectDerivative> results = derivativeManager.findDerivative(type, derivativeId);
+        List<BotanicalObjectDerivative> results = derivativeManager.find(type, derivativeId);
 
         // if no result is found, return an error
         if (results == null || results.size() <= 0) {
