@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacq.common.manager;
+package org.jacq.service.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class DerivativeManager {
         String livingQueryString = applySearchCriteria(SELECT_LIVING + " " + FROM_LIVING, params, type, derivativeId, offset, count);
         String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE + " " + FROM_VEGETATIVE, params, type, derivativeId, offset, count);
 
-        String botanicalObjectSearchQueryString = livingQueryString + " UNION ALL " + vegetativeQueryString;
+        String botanicalObjectSearchQueryString = "SELECT * FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_list_tbl";
 
         Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, BotanicalObjectDerivative.class);
         for (int i = 0; i < params.size(); i++) {
@@ -80,7 +80,7 @@ public class DerivativeManager {
             }
         }
 
-        // apply offset and count
+        // apply count
         if (offset != null) {
             botanicalObjectSearchQuery.setFirstResult(offset);
         }
@@ -110,7 +110,7 @@ public class DerivativeManager {
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
-        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, Number.class);
+        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString);
         for (int i = 0; i < params.size(); i++) {
             botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
         }
@@ -145,10 +145,10 @@ public class DerivativeManager {
         // apply offset and count
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
-            queryString += " LIMIT " + offset + ", " + count;
+            queryString += " LIMIT 0, " + (offset + count);
         }
         else if (offset != null) {
-            queryString += " LIMIT " + offset;
+            queryString += " LIMIT 0, " + offset;
         }
         else if (count != null) {
             queryString += " LIMIT 0, " + count;

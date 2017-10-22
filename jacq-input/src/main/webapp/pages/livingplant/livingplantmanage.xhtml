@@ -98,9 +98,9 @@
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-12">
-                            <p:dataTable var="item">
+                            <p:dataTable var="botanicalObjectDerivative" lazy="true" value="#{livingPlantController.dataModel}" paginator="true" rows="10">
                                 <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
-                                    <h:outputText  />
+                                    <h:outputText value="#{botanicalObjectDerivative.scientificName}" />
                                 </p:column>
 
                                 <p:column filterBy="" headerText="#{messages['livingplant.location']}">
@@ -108,7 +108,7 @@
                                 </p:column>
 
                                 <p:column filterBy="" headerText="#{messages['livingplant.accessionnumber']}">
-                                    <h:outputText />
+                                    <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
                                 </p:column>
 
                                 <p:column filterBy="" headerText="#{messages['livingplant.location']}">

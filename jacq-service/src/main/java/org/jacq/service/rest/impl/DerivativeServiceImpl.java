@@ -18,7 +18,7 @@ package org.jacq.service.rest.impl;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
-import org.jacq.common.manager.DerivativeManager;
+import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.BotanicalObjectDerivative;
 import org.jacq.common.rest.DerivativeService;
 
