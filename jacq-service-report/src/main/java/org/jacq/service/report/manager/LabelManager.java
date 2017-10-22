@@ -20,8 +20,10 @@ import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.BotanicalObjectDerivative;
 import org.jacq.common.model.report.WorkLabel;
+import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;
+import org.jacq.service.report.util.ServicesUtil;
 
 /**
  * Business logic for label printing process
@@ -47,8 +49,7 @@ public class LabelManager {
     @Inject
     protected JacqConfig jacqConfig;
 
-    @Inject
-    protected DerivativeManager derivativeManager;
+    protected DerivativeService derivativeSerive;
 
     // Context key for birt reporting
     public static final String APP_CONTEXT_KEY_WORKLABELDATASET = "APP_CONTEXT_KEY_WORKLABELDATASET";
@@ -56,13 +57,14 @@ public class LabelManager {
     @PostConstruct
     public void init() {
         LabelManager.REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_WORK_LABEL);
+        this.derivativeSerive = ServicesUtil.getDerivativeService();
     }
 
     /**
      * @see LabelService#getWork(java.lang.String, long)
      */
     public Response getWork(String type, Long derivativeId) throws EngineException {
-        List<BotanicalObjectDerivative> results = derivativeManager.findDerivative(type, derivativeId);
+        List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null);
 
         // if no result is found, return an error
         if (results == null || results.size() <= 0) {

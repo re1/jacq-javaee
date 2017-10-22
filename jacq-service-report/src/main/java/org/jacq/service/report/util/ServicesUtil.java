@@ -1,5 +1,7 @@
+package org.jacq.service.report.util;
+
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input.util;
-
-import org.jacq.common.rest.OrganisationService;
-import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.filter.RequestDebugFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -25,7 +24,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 /**
  * Helper function for providing proxies to several service backends
  *
- * @author fhafner
+ * @author wkoller
  */
 public class ServicesUtil {
 
@@ -35,17 +34,9 @@ public class ServicesUtil {
         return getProxy(DerivativeService.class, JACQ_SERVICE_URL);
     }
 
-    public static OrganisationService getOrganisationService() {
-        return getProxy(OrganisationService.class, JACQ_SERVICE_URL);
-    }
-
-    public static ClassificationService getClassificationService() {
-        return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
-    }
-
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
-        //resteasyClient.register(new ContentTypeResponseFilter());
+        resteasyClient.register(new RequestDebugFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }
