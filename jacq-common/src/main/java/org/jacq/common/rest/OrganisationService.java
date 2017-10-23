@@ -42,7 +42,7 @@ public interface OrganisationService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrganisationResult> search(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<OrganisationResult> search(@QueryParam("organisationId") Long organisationId, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      * Search the database using the given filter and return the count
@@ -53,6 +53,6 @@ public interface OrganisationService {
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount();
+    public int searchCount(@QueryParam("organisationId") Long organisationId, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode);
 
 }

@@ -34,12 +34,12 @@ public class OrganisationServiceImpl implements OrganisationService {
      * @see OrganisationService#search()
      */
     @Override
-    public List<OrganisationResult> search(Integer offset, Integer limit) {
-        return organisationManager.search(offset, limit);
+    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, Integer offset, Integer limit) {
+        return organisationManager.search(organisationId, description, department, greenhouse, ipenCode, offset, limit);
     }
 
     @Override
-    public int searchCount() {
-        return organisationManager.searchCount();
+    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode) {
+        return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode);
     }
 }

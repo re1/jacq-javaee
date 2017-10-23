@@ -16,6 +16,7 @@
 package org.jacq.input.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.jacq.common.model.OrganisationResult;
@@ -96,12 +97,12 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
     @Override
     public List<OrganisationResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
-        int rowCount = this.organisationService.searchCount();
+        int rowCount = this.organisationService.searchCount(filters.get("organisationId") != null ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, getGreenhouse(), filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null);
         this.setRowCount(rowCount);
 
         List<OrganisationResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.organisationService.search(first, pageSize);
+            results = this.organisationService.search(filters.get("organisationId") != null ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, getGreenhouse(), filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null, first, pageSize);
         }
 
         return results;
@@ -131,11 +132,11 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
         this.department = department;
     }
 
-    public boolean getGreenhouse() {
+    public Boolean getGreenhouse() {
         return greenhouse;
     }
 
-    public void setGreenhouse(boolean greenhouse) {
+    public void setGreenhouse(Boolean greenhouse) {
         this.greenhouse = greenhouse;
     }
 
