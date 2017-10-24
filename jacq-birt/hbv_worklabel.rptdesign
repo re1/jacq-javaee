@@ -799,8 +799,9 @@
                                         <property name="paddingTop">0pt</property>
                                         <property name="paddingLeft">0pt</property>
                                         <data id="26">
-                                            <property name="fontFamily">"39 No Text"</property>
+                                            <property name="fontFamily">"Code-39-Logitogo-sene"</property>
                                             <property name="fontSize">16pt</property>
+                                            <property name="fontWeight">normal</property>
                                             <property name="paddingTop">0pt</property>
                                             <property name="paddingLeft">0pt</property>
                                             <property name="resultSetColumn">AccessionNumberBarcode</property>

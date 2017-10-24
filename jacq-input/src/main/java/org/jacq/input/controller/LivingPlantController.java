@@ -19,6 +19,10 @@ import org.jacq.input.view.LazyDerivativeDataModel;
 @SessionScoped
 public class LivingPlantController {
 
+    public static final String TYPE_ALL = "all";
+    public static final String TYPE_LIVING = "living";
+    public static final String TYPE_VEGETATIVE = "vegetative";
+
     protected LazyDerivativeDataModel dataModel;
 
     @PostConstruct
@@ -29,4 +33,17 @@ public class LivingPlantController {
     public LazyDerivativeDataModel getDataModel() {
         return dataModel;
     }
+
+    public String getTypeAll() {
+        return TYPE_ALL;
+    }
+
+    public String getTypeLiving() {
+        return TYPE_LIVING;
+    }
+
+    public String getTypeVegetative() {
+        return TYPE_VEGETATIVE;
+    }
+
 }

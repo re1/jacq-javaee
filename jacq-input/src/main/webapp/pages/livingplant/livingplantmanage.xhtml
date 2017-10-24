@@ -8,121 +8,146 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['livingplant.livingplantmanage']}</h1>
-                    </div>
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.scientificname']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
+            <div class="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['livingplant.livingplantmanage']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.location']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.placenumber']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.place']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.accessionnumber']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.eliminated']}" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="eliminated" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.label']}" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="label" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.indexseminum']}" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="indexseminum" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.exhibition']}" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <p:selectBooleanCheckbox value="exhibition" />
-                                </div>
+                            <div class="ui-g-6">
+                                <p:inputText />
                             </div>
                         </div>
                     </div>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['search']}" />
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.location']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText />
+                            </div>
+                        </div>
                     </div>
-                    <div class="ui-g">
-                        <div class="ui-g-12">
-                            <p:dataTable var="botanicalObjectDerivative" lazy="true" value="#{livingPlantController.dataModel}" paginator="true" rows="10">
-                                <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
-                                    <h:outputText value="#{botanicalObjectDerivative.scientificName}" />
-                                </p:column>
-
-                                <p:column filterBy="" headerText="#{messages['livingplant.location']}">
-                                    <h:outputText />
-                                </p:column>
-
-                                <p:column filterBy="" headerText="#{messages['livingplant.accessionnumber']}">
-                                    <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
-                                </p:column>
-
-                                <p:column filterBy="" headerText="#{messages['livingplant.location']}">
-                                    <h:outputText />
-                                </p:column>
-
-                                <p:column headerText="#{messages['action']}">
-                                    <h:outputText />
-                                </p:column>
-                            </p:dataTable>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.placenumber']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.place']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.eliminated']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="eliminated" />
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.label']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="label" />
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.indexseminum']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="indexseminum" />
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.exhibition']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="exhibition" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </h:form>
+                <div class="jacq-buttons">
+                    <p:commandButton value="#{messages['search']}" />
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:remoteCommand update="derivativeTable:rowCount" name="update_derivativeFooter" />
+
+                        <p:dataTable var="botanicalObjectDerivative" lazy="true" value="#{livingPlantController.dataModel}" paginator="true" rows="10" widgetVar="derivativeTable" id="derivativeTable">
+                            <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
+
+                            <p:column filterBy="#{botanicalObjectDerivative.id}" headerText="#{messages['livingplant.derivative_id']}">
+                                <h:outputText value="#{botanicalObjectDerivative.derivativeId}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
+                                <h:outputText value="#{botanicalObjectDerivative.scientificName}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.location']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.accessionnumber']}">
+                                <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.location']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.count']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column filterBy="#{botanicalObjectDerivative.type}" headerText="#{messages['livingplant.type']}">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('derivativeTable').filter()">
+                                        <f:selectItem itemLabel="All" itemValue="#{livingPlantController.typeAll}" />
+                                        <f:selectItem itemLabel="Living" itemValue="#{livingPlantController.typeLiving}" />
+                                        <f:selectItem itemLabel="Vegetative" itemValue="#{livingPlantController.typeVegetative}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{botanicalObjectDerivative.type}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['action']}">
+                                <h:outputText />
+                            </p:column>
+
+                            <f:facet name="footer">
+                                Showing a total of <h:outputText value="#{livingPlantController.dataModel.rowCount}" id="rowCount" /> entries.
+                            </f:facet>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
         </ui:define>
     </ui:composition>
 </html>
