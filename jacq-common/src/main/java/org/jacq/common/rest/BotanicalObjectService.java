@@ -25,7 +25,8 @@ import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.BotanicalObjectResult;
 
 /**
- *
+ * @see DerivativeService
+ * @deprecated
  * @author wkoller
  */
 @Path("/botanicalObject")

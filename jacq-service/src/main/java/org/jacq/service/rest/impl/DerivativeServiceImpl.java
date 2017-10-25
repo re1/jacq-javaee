@@ -20,6 +20,7 @@ import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -33,7 +34,7 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected DerivativeManager derivativeManager;
 
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, String orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         return derivativeManager.find(type, derivativeId, orderColumn, orderDirection, offset, count);
     }
 
