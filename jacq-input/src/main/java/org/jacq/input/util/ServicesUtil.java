@@ -18,6 +18,7 @@ package org.jacq.input.util;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.TreeRecordFileService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -37,6 +38,10 @@ public class ServicesUtil {
 
     public static OrganisationService getOrganisationService() {
         return getProxy(OrganisationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static TreeRecordFileService getTreeRecordFileService() {
+        return getProxy(TreeRecordFileService.class, JACQ_SERVICE_URL);
     }
 
     public static ClassificationService getClassificationService() {

@@ -16,6 +16,7 @@
 package org.jacq.service.manager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,72 +27,71 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import org.jacq.common.model.OrganisationResult;
-import org.jacq.common.model.jpa.TblOrganisation;
-import org.jacq.common.rest.OrganisationService;
+import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.jpa.TblTreeRecordFile;
 
 /**
  *
  * @author fhafner
  */
-public class OrganisationManager {
+public class TreeRecordFileManager {
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
     /**
-     * @see OrganisationService#search()
+     * @see TreeRecordFileService#search()
      */
     @Transactional
-    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, Integer offset, Integer limit) {
+    public List<TreeRecordFileResult> search(Long treeRecordFileId, Date year, String name, String documentNumber, Integer offset, Integer limit) {
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TblOrganisation> cq = cb.createQuery(TblOrganisation.class);
-        Root<TblOrganisation> bo = cq.from(TblOrganisation.class);
+        CriteriaQuery<TblTreeRecordFile> cq = cb.createQuery(TblTreeRecordFile.class);
+        Root<TblTreeRecordFile> bo = cq.from(TblTreeRecordFile.class);
 
         // select result list
         cq.select(bo);
 
         // apply search criteria
-        applySearchCriteria(cb, cq, bo, organisationId, description, department, greenhouse, ipenCode);
+        applySearchCriteria(cb, cq, bo, treeRecordFileId, year, name, documentNumber);
 
         // convert to typed query and apply offset / limit
-        TypedQuery<TblOrganisation> organisationSearchQuery = em.createQuery(cq);
+        TypedQuery<TblTreeRecordFile> TreeRecordFileSearchQuery = em.createQuery(cq);
         if (offset != null) {
-            organisationSearchQuery.setFirstResult(offset);
+            TreeRecordFileSearchQuery.setFirstResult(offset);
         }
         if (limit != null) {
-            organisationSearchQuery.setMaxResults(limit);
+            TreeRecordFileSearchQuery.setMaxResults(limit);
         }
 
         // finally fetch the results
-        ArrayList<OrganisationResult> results = new ArrayList<>();
-        List<TblOrganisation> organisationResults = organisationSearchQuery.getResultList();
-        for (TblOrganisation organisation : organisationResults) {
-            OrganisationResult organisationResult = new OrganisationResult(organisation);
+        ArrayList<TreeRecordFileResult> results = new ArrayList<>();
+        List<TblTreeRecordFile> treeRecordFileResults = TreeRecordFileSearchQuery.getResultList();
+        for (TblTreeRecordFile treeRecordFile : treeRecordFileResults) {
+            TreeRecordFileResult treeRecordFileResult = new TreeRecordFileResult(treeRecordFile);
 
             // add botanical object to result list
-            results.add(organisationResult);
+            results.add(treeRecordFileResult);
         }
 
         return results;
     }
 
     /**
-     * @see OrganisationService#searchCount()
+     * @see TreeRecordFileService#searchCount()
      */
     @Transactional
-    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode) {
+    public int searchCount(Long treeRecordFileId, Date year, String name, String documentNumber) {
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<TblOrganisation> bo = cq.from(TblOrganisation.class);
+        Root<TblTreeRecordFile> bo = cq.from(TblTreeRecordFile.class);
 
         // count result
         cq.select(cb.count(bo));
 
         // apply search criteria
-        applySearchCriteria(cb, cq, bo, organisationId, description, department, greenhouse, ipenCode);
+        applySearchCriteria(cb, cq, bo, treeRecordFileId, year, name, documentNumber);
 
         // run query and return count
         return em.createQuery(cq).getSingleResult().intValue();
@@ -109,41 +109,31 @@ public class OrganisationManager {
      * @param cb
      * @param cq
      * @param bo
-     * @param organisationId
-     * @param description
-     * @param department
-     * @param greenhouse
-     * @param ipenCode
      */
-    protected void applySearchCriteria(CriteriaBuilder cb, CriteriaQuery cq, Root<TblOrganisation> bo, Long organisationId, String description, String department, Boolean greenhouse, String ipenCode) {
+    protected void applySearchCriteria(CriteriaBuilder cb, CriteriaQuery cq, Root<TblTreeRecordFile> bo, Long treeRecordFileId, Date year, String name, String documentNumber) {
         // helper variable for handling different paths
         Expression<String> path = null;
         // list of predicates to add in where clause
         List<Predicate> predicates = new ArrayList<>();
 
-        if (organisationId != null) {
+        if (treeRecordFileId != null) {
             path = bo.get("id");
-            predicates.add(cb.equal(path, organisationId));
+            predicates.add(cb.equal(path, treeRecordFileId));
         }
 
-        if (description != null) {
-            path = bo.get("description");
-            predicates.add(cb.like(path, description + "%"));
+        if (year != null) {
+            path = bo.get("year");
+            predicates.add(cb.like(path, year + "%"));
         }
 
-        if (department != null) {
-            path = bo.get("department");
-            predicates.add(cb.like(path, department + "%"));
+        if (name != null) {
+            path = bo.get("name");
+            predicates.add(cb.like(path, name + "%"));
         }
 
-        if (greenhouse != null) {
-            path = bo.get("greenhouse");
-            predicates.add(cb.equal(path, greenhouse));
-        }
-
-        if (ipenCode != null) {
-            path = bo.get("ipenCode");
-            predicates.add(cb.like(path, ipenCode + "%"));
+        if (documentNumber != null) {
+            path = bo.get("documentNumber");
+            predicates.add(cb.like(path, documentNumber + "%"));
         }
 
         // add all predicates as where clause

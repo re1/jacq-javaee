@@ -16,29 +16,29 @@
 package org.jacq.common.rest;
 
 import java.util.List;
+import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.OrganisationResult;
+import org.jacq.common.model.TreeRecordFileResult;
 
 /**
  *
  * @author fhafner
  */
-@Path("/organisation")
-public interface OrganisationService {
+@Path("/treeRecordFile")
+public interface TreeRecordFileService {
 
     /**
      * Search the database using the given filter
      *
      * @param id
-     * @param description
-     * @param department
-     * @param ipenCode
-     * @param greenhouse
+     * @param year
+     * @param name
+     * @param documentNumber
      * @param offset Return result with an offset
      * @param limit Limit total count of results
      * @return
@@ -47,22 +47,21 @@ public interface OrganisationService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrganisationResult> search(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<TreeRecordFileResult> search(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      * Search the database using the given filter and return the count
      *
      * @param id
-     * @param description
-     * @param department
-     * @param ipenCode
-     * @param greenhouse
-     * @see OrganisationService#search()
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @see treeRecordFile#search()
      */
     @GET
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode);
+    public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
 
 }

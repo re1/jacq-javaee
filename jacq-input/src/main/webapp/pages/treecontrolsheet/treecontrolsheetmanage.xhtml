@@ -13,18 +13,18 @@
                         <h1>#{messages['treecontrolsheet.treecontrolsheetmanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="item">
-                            <p:column filterBy="" headerText="#{messages['treecontrolsheet.id']}">
-                                <h:outputText  />
+                        <p:dataTable var="treeRecordFileResult" lazy="true" value="#{treeRecordFileController.dataModel}" paginator="true" rows="10">
+                            <p:column filterBy="#{treeRecordFileResult.treeRecordFileId}" headerText="#{messages['treecontrolsheet.id']}">
+                                <h:outputText  value="#{treeRecordFileResult.treeRecordFileId}"/>
                             </p:column>
-                            <p:column filterBy="" headerText="#{messages['treecontrolsheet.year']}">
-                                <h:outputText />
+                            <p:column filterBy="#{treeRecordFileResult.year}" headerText="#{messages['treecontrolsheet.year']}">
+                                <h:outputText value="#{treeRecordFileResult.year}" />
                             </p:column>
-                            <p:column filterBy="" headerText="#{messages['treecontrolsheet.name']}">
-                                <h:outputText />
+                            <p:column filterBy="#{treeRecordFileResult.name}" headerText="#{messages['treecontrolsheet.name']}">
+                                <h:outputText value="#{treeRecordFileResult.name}" />
                             </p:column>
-                            <p:column filterBy="" headerText="#{messages['treecontrolsheet.filesnumber']}">
-                                <h:outputText />
+                            <p:column filterBy="#{treeRecordFileResult.documentNumber}" headerText="#{messages['treecontrolsheet.filesnumber']}">
+                                <h:outputText value="#{treeRecordFileResult.documentNumber}" />
                             </p:column>
                             <p:column headerText="">
                                 <h:outputText />
