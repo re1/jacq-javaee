@@ -98,13 +98,43 @@ public class OrganisationManager {
     }
 
     /**
+     * @see OrganisationService#load(java.lang.Long)
+     */
+    public OrganisationResult load(Long organisationId) {
+        TblOrganisation tblOrganisation = em.find(TblOrganisation.class, organisationId);
+        if (tblOrganisation != null) {
+            return new OrganisationResult(tblOrganisation);
+        }
+
+        return null;
+    }
+
+    /**
+     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
+     */
+    @Transactional
+    public OrganisationResult save(OrganisationResult organisationResult) {
+        TblOrganisation tblOrganisation = em.find(TblOrganisation.class, organisationResult.getOrganisationId());
+        if (tblOrganisation != null) {
+            tblOrganisation.setDescription(organisationResult.getDescription());
+            tblOrganisation.setDepartment(organisationResult.getDepartment());
+            tblOrganisation.setGreenhouse(organisationResult.getGreenhouse());
+            tblOrganisation.setIpenCode(organisationResult.getIpenCode());
+
+            em.merge(tblOrganisation);
+
+            return new OrganisationResult(tblOrganisation);
+        }
+        return null;
+    }
+
+    /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
-     * java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String)
      *
      * @param cb
      * @param cq

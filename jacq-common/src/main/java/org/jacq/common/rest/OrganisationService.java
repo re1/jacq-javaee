@@ -17,7 +17,9 @@ package org.jacq.common.rest;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -64,5 +66,29 @@ public interface OrganisationService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public int searchCount(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode);
+
+    /**
+     * Retrieve a single organisation entry by id
+     *
+     * @param organisationId
+     * @return
+     */
+    @GET
+    @Path("/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public OrganisationResult load(@QueryParam("organisationId") Long organisationId);
+
+    /**
+     * Update or Add Single organisation entry
+     *
+     * @param organisationResult
+     * @return
+     */
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public OrganisationResult save(OrganisationResult organisationResult);
 
 }

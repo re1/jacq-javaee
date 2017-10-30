@@ -38,17 +38,20 @@ public class OrganisationController implements Serializable {
      * @return
      */
     public String search() {
-        return "locationmanage";
+        return "manage";
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the
-     * data-table
+     * Noop action listener for refreshing the row count after loading the data-table
      *
      * @return
      */
     public String updateRowCount() {
         return null;
+    }
+
+    public String edit() {
+        return "edit";
     }
 
 }

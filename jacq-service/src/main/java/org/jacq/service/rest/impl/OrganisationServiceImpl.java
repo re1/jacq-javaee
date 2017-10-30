@@ -42,4 +42,14 @@ public class OrganisationServiceImpl implements OrganisationService {
     public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode) {
         return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode);
     }
+
+    @Override
+    public OrganisationResult load(Long organisationId) {
+        return organisationManager.load(organisationId);
+    }
+
+    @Override
+    public OrganisationResult save(OrganisationResult organisationResult) {
+        return organisationManager.save(organisationResult);
+    }
 }

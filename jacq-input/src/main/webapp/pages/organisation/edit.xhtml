@@ -8,6 +8,10 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="organisationId" value="#{organisationEditController.organisationId}"/>
+            </f:metadata>
+
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
@@ -20,7 +24,7 @@
                                     <h:outputText value="#{messages['location.description']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{organisationEditController.organisation.description}" />
                                 </div>
                             </div>
                         </div>
@@ -30,7 +34,7 @@
                                     <h:outputText value="#{messages['location.department']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{organisationEditController.organisation.department}" />
                                 </div>
                             </div>
                         </div>
@@ -40,7 +44,7 @@
                                     <h:outputText value="#{messages['location.ipencode']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{organisationEditController.organisation.ipenCode}" />
                                 </div>
                             </div>
                         </div>
@@ -74,13 +78,13 @@
                                     <h:outputText value="#{messages['location.glasshouse']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="glasshouse" />
+                                    <p:selectBooleanCheckbox value="#{organisationEditController.organisation.greenhouse}" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" />
+                        <p:commandButton value="#{messages['create']}" action="#{organisationEditController.edit}" />
                     </div>
                 </div>
             </h:form>
