@@ -37,6 +37,8 @@ public class OrganisationResult {
     protected String department;
     protected boolean greenhouse;
     protected String ipenCode;
+    protected String parentOrganisation;
+    protected String gardener;
 
     public Long getOrganisationId() {
         return organisationId;
@@ -78,6 +80,23 @@ public class OrganisationResult {
         this.ipenCode = ipenCode;
     }
 
+    public String getGardener() {
+        return gardener;
+    }
+
+    public void setGardenerId(String gardener) {
+        this.gardener = gardener;
+
+    }
+
+    public String getParentOrganisation() {
+        return parentOrganisation;
+    }
+
+    public void setParentOrganisation(String parentOrganisation) {
+        this.parentOrganisation = parentOrganisation;
+    }
+
     public OrganisationResult() {
     }
 
@@ -87,6 +106,8 @@ public class OrganisationResult {
         this.department = organisation.getDepartment();
         this.greenhouse = organisation.getGreenhouse();
         this.ipenCode = organisation.getIpenCode();
+        this.parentOrganisation = organisation.getParentOrganisationId() != null ? organisation.getParentOrganisationId().getDescription() : "";
+        this.gardener = organisation.getGardenerId() != null ? organisation.getGardenerId().getUsername() : "";
     }
 
     /**
