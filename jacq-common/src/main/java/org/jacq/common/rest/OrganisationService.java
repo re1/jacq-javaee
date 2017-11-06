@@ -91,4 +91,15 @@ public interface OrganisationService {
     @Produces(MediaType.APPLICATION_JSON)
     public OrganisationResult save(OrganisationResult organisationResult);
 
+    /**
+     * Retrieve a list of all organisation entries
+     *
+     * @return
+     */
+    @GET
+    @Path("/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrganisationResult> findAll();
+
 }

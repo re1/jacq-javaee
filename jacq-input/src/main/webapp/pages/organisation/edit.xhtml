@@ -54,8 +54,8 @@
                                     <h:outputText value="#{messages['location.parentOrganisation']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="organisation">
-                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
+                                        <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>

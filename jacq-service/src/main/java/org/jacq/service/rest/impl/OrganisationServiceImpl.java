@@ -52,4 +52,9 @@ public class OrganisationServiceImpl implements OrganisationService {
     public OrganisationResult save(OrganisationResult organisationResult) {
         return organisationManager.save(organisationResult);
     }
+
+    @Override
+    public List<OrganisationResult> findAll() {
+        return organisationManager.search(null, null, null, null, null, null, null);
+    }
 }

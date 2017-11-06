@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblOrganisation;
 
 /**
- * Wrapper model which represents a single result after a search Used to
- * minimize the transfered data and only return the relevant information
+ * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
+ * the relevant information
  *
  * @author fhafner
  */
@@ -37,7 +37,8 @@ public class OrganisationResult {
     protected String department;
     protected boolean greenhouse;
     protected String ipenCode;
-    protected String parentOrganisation;
+    protected String parentOrganisationDescription;
+    protected Long parentOrganisationId;
     protected String gardener;
 
     public Long getOrganisationId() {
@@ -89,12 +90,20 @@ public class OrganisationResult {
 
     }
 
-    public String getParentOrganisation() {
-        return parentOrganisation;
+    public String getParentOrganisationDescription() {
+        return parentOrganisationDescription;
     }
 
-    public void setParentOrganisation(String parentOrganisation) {
-        this.parentOrganisation = parentOrganisation;
+    public void setParentOrganisationDescription(String parentOrganisationDescription) {
+        this.parentOrganisationDescription = parentOrganisationDescription;
+    }
+
+    public Long getParentOrganisationId() {
+        return parentOrganisationId;
+    }
+
+    public void setParentOrganisationId(Long parentOrganisationId) {
+        this.parentOrganisationId = parentOrganisationId;
     }
 
     public OrganisationResult() {
@@ -106,13 +115,13 @@ public class OrganisationResult {
         this.department = organisation.getDepartment();
         this.greenhouse = organisation.getGreenhouse();
         this.ipenCode = organisation.getIpenCode();
-        this.parentOrganisation = organisation.getParentOrganisationId() != null ? organisation.getParentOrganisationId().getDescription() : "";
-        this.gardener = organisation.getGardenerId() != null ? organisation.getGardenerId().getUsername() : "";
+        this.parentOrganisationDescription = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getDescription() : "";
+        this.parentOrganisationId = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getId() : null;
+        this.gardener = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getUsername() : "";
     }
 
     /**
-     * Helper function for converting a list of Organisation entries to
-     * organisation results
+     * Helper function for converting a list of Organisation entries to organisation results
      *
      * @param organisationList
      * @return

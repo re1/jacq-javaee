@@ -15,6 +15,7 @@
  */
 package org.jacq.input.controller;
 
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -36,9 +37,13 @@ public class OrganisationEditController {
 
     protected OrganisationService organisationService;
 
+    protected List<OrganisationResult> organisations;
+
     @PostConstruct
     public void init() {
         this.organisationService = ServicesUtil.getOrganisationService();
+
+        this.organisations = this.organisationService.findAll();
     }
 
     public Long getOrganisationId() {
@@ -59,6 +64,10 @@ public class OrganisationEditController {
         this.organisation = this.organisationService.save(this.organisation);
 
         return null;
+    }
+
+    public List<OrganisationResult> getOrganisations() {
+        return organisations;
     }
 
 }

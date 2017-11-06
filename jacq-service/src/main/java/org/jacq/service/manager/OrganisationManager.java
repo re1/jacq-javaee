@@ -100,6 +100,7 @@ public class OrganisationManager {
     /**
      * @see OrganisationService#load(java.lang.Long)
      */
+    @Transactional
     public OrganisationResult load(Long organisationId) {
         TblOrganisation tblOrganisation = em.find(TblOrganisation.class, organisationId);
         if (tblOrganisation != null) {
@@ -120,6 +121,7 @@ public class OrganisationManager {
             tblOrganisation.setDepartment(organisationResult.getDepartment());
             tblOrganisation.setGreenhouse(organisationResult.getGreenhouse());
             tblOrganisation.setIpenCode(organisationResult.getIpenCode());
+            tblOrganisation.setParentOrganisationId(em.find(TblOrganisation.class, organisationResult.getParentOrganisationId()));
 
             em.merge(tblOrganisation);
 
