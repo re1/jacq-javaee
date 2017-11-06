@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblOrganisation;
 
 /**
- * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
- * the relevant information
+ * Wrapper model which represents a single result after a search Used to
+ * minimize the transfered data and only return the relevant information
  *
  * @author fhafner
  */
@@ -40,6 +40,7 @@ public class OrganisationResult {
     protected String parentOrganisationDescription;
     protected Long parentOrganisationId;
     protected String gardener;
+    protected Long gardenerId;
 
     public Long getOrganisationId() {
         return organisationId;
@@ -85,9 +86,17 @@ public class OrganisationResult {
         return gardener;
     }
 
-    public void setGardenerId(String gardener) {
+    public void setGardener(String gardener) {
         this.gardener = gardener;
 
+    }
+
+    public Long getGardenerId() {
+        return gardenerId;
+    }
+
+    public void setGardenerId(Long gardenerId) {
+        this.gardenerId = gardenerId;
     }
 
     public String getParentOrganisationDescription() {
@@ -118,10 +127,12 @@ public class OrganisationResult {
         this.parentOrganisationDescription = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getDescription() : "";
         this.parentOrganisationId = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getId() : null;
         this.gardener = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getUsername() : "";
+        this.gardenerId = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getId() : null;
     }
 
     /**
-     * Helper function for converting a list of Organisation entries to organisation results
+     * Helper function for converting a list of Organisation entries to
+     * organisation results
      *
      * @param organisationList
      * @return

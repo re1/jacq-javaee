@@ -30,10 +30,10 @@
                             <p:column filterBy="#{organisationResult.ipenCode}" headerText="#{messages['location.ipenCode']}" >
                                 <h:outputText value="#{organisationResult.ipenCode}"/>
                             </p:column>
-                            <p:column headerText="#{messages['location.parentOrganisation']}" >
+                            <p:column filterBy="#{organisationResult.parentOrganisationDescription}" headerText="#{messages['location.parentOrganisation']}" >
                                 <h:outputText value="#{organisationResult.parentOrganisationDescription}"/>
                             </p:column>
-                            <p:column headerText="#{messages['location.username']}" >
+                            <p:column filterBy="#{organisationResult.gardener}" headerText="#{messages['location.username']}" >
                                 <h:outputText value="#{organisationResult.gardener}"/>
                             </p:column>
                             <p:column filterBy="" headerText="#{messages['location.action']}" >

@@ -41,6 +41,8 @@ public interface OrganisationService {
      * @param department
      * @param ipenCode
      * @param greenhouse
+     * @param parentOrganisationDescription
+     * @param gardener
      * @param offset Return result with an offset
      * @param limit Limit total count of results
      * @return
@@ -49,7 +51,7 @@ public interface OrganisationService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrganisationResult> search(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<OrganisationResult> search(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("parentOrganisationDescription") String parentOrganisationDescription, @QueryParam("gardener") String gardener, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      * Search the database using the given filter and return the count
@@ -59,13 +61,15 @@ public interface OrganisationService {
      * @param department
      * @param ipenCode
      * @param greenhouse
+     * @param parentOrganisationDescription
+     * @param gardener
      * @see OrganisationService#search()
      */
     @GET
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode);
+    public int searchCount(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("parentOrganisationDescription") String parentOrganisationDescription, @QueryParam("gardener") String gardener);
 
     /**
      * Retrieve a single organisation entry by id

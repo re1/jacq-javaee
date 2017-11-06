@@ -34,13 +34,13 @@ public class OrganisationServiceImpl implements OrganisationService {
      * @see OrganisationService#search()
      */
     @Override
-    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, Integer offset, Integer limit) {
-        return organisationManager.search(organisationId, description, department, greenhouse, ipenCode, offset, limit);
+    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
+        return organisationManager.search(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener, offset, limit);
     }
 
     @Override
-    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode) {
-        return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode);
+    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener) {
+        return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener);
     }
 
     @Override
@@ -55,6 +55,6 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     public List<OrganisationResult> findAll() {
-        return organisationManager.search(null, null, null, null, null, null, null);
+        return organisationManager.search(null, null, null, null, null, null, null, null, null);
     }
 }

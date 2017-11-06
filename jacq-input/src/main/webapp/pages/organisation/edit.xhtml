@@ -66,8 +66,8 @@
                                     <h:outputText value="#{messages['location.gardener']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="gardener">
-                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    <p:selectOneMenu id="gardener" value="#{organisationEditController.organisation.gardenerId}">
+                                        <f:selectItems value="#{organisationEditController.users}" var="user" itemLabel="#{user.username}" itemValue="#{user.id}" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
