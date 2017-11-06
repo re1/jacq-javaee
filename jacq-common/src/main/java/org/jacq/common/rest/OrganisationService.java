@@ -70,14 +70,14 @@ public interface OrganisationService {
     /**
      * Retrieve a single organisation entry by id
      *
-     * @param organisationId
+     * @param id
      * @return
      */
     @GET
     @Path("/load")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public OrganisationResult load(@QueryParam("organisationId") Long organisationId);
+    public OrganisationResult load(@QueryParam("organisationId") Long id);
 
     /**
      * Update or Add Single organisation entry
