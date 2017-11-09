@@ -42,7 +42,8 @@ public class OrganisationController implements Serializable {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the data-table
+     * Noop action listener for refreshing the row count after loading the
+     * data-table
      *
      * @return
      */
@@ -50,6 +51,11 @@ public class OrganisationController implements Serializable {
         return null;
     }
 
+    /**
+     * Jumps to edit form of Organisation
+     *
+     * @return
+     */
     public String edit() {
         return "edit";
     }

@@ -8,6 +8,9 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="id" value="#{userEditController.id}"/>
+            </f:metadata>
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
@@ -20,7 +23,7 @@
                                     <h:outputText value="#{messages['user.username']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.username}"/>
                                 </div>
                             </div>
                         </div>
@@ -60,8 +63,8 @@
                                     <h:outputText value="#{messages['user.usertype']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="usertype">
-                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    <p:selectOneMenu id="usertype" value="#{userEditController.user.userTypeId}">
+                                        <f:selectItems value="#{userEditController.userTypes}" var="userTypes" itemLabel="#{userTypes.type}" itemValue="#{userTypes.userTypeId}" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -69,11 +72,11 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['user.employmentrelationship']}" />
+                                    <h:outputText value="#{messages['user.employmentType']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="employmentrelationship">
-                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                    <p:selectOneMenu id="employmentType" value="#{userEditController.user.employmentTypeId}">
+                                        <f:selectItems value="#{userEditController.employmentTypes}" var="employmentTypes" itemLabel="#{employmentTypes.type}" itemValue="#{employmentTypes.employmentTypeId}" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
@@ -84,7 +87,7 @@
                                     <h:outputText value="#{messages['user.firstname']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.firstname}"/>
                                 </div>
                             </div>
                         </div>
@@ -94,17 +97,17 @@
                                     <h:outputText value="#{messages['user.lastname']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.lastname}"/>
                                 </div>
                             </div>
                         </div>
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['user.birthday']}" />
+                                    <h:outputText value="#{messages['user.birthdate']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.birthdate}"/>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +117,7 @@
                                     <h:outputText value="#{messages['user.titelprefix']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.titlePrefix}"/>
                                 </div>
                             </div>
                         </div>
@@ -124,17 +127,19 @@
                                     <h:outputText value="#{messages['user.titelpostfix']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{userEditController.user.titleSuffix}"/>
                                 </div>
                             </div>
                         </div>
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['user.territory']}" />
+                                    <h:outputText value="#{messages['user.organisationDescription']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:selectOneMenu id="organisation" value="#{userEditController.user.organisationId}">
+                                        <f:selectItems value="#{userEditController.organisations}" var="organisations" itemLabel="#{organisations.description}" itemValue="#{organisations.organisationId}" />
+                                    </p:selectOneMenu>
                                 </div>
                             </div>
                         </div>
@@ -230,7 +235,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" />
+                        <p:commandButton value="#{messages['create']}" action="#{userEditController.edit}" />
                     </div>
                 </div>
             </h:form>

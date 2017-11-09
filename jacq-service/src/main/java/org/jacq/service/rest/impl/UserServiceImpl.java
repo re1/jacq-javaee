@@ -15,9 +15,12 @@
  */
 package org.jacq.service.rest.impl;
 
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
+import org.jacq.common.model.EmploymentTypeResult;
 import org.jacq.common.model.UserResult;
+import org.jacq.common.model.UserTypeResult;
 import org.jacq.common.rest.UserService;
 import org.jacq.service.manager.UserManager;
 
@@ -31,18 +34,38 @@ public class UserServiceImpl implements UserService {
     protected UserManager userManager;
 
     @Override
-    public List<UserResult> search(Integer offset, Integer limit) {
-        return userManager.search(offset, limit);
+    public List<UserResult> search(Long id, String username, Date birthdate, String usertype, String employmentType, String organisationDescription, Integer offset, Integer limit) {
+        return userManager.search(id, username, birthdate, usertype, employmentType, organisationDescription, offset, limit);
     }
 
     @Override
-    public int searchCount() {
-        return userManager.searchCount();
+    public int searchCount(Long id, String username, Date birthdate, String usertype, String employmentType, String organisationDescription) {
+        return userManager.searchCount(id, username, birthdate, usertype, employmentType, organisationDescription);
     }
 
     @Override
     public List<UserResult> findAll() {
-        return userManager.search(null, null);
+        return userManager.search(null, null, null, null, null, null, null, null);
+    }
+
+    @Override
+    public UserResult load(Long id) {
+        return userManager.load(id);
+    }
+
+    @Override
+    public UserResult save(UserResult userResult) {
+        return userManager.save(userResult);
+    }
+
+    @Override
+    public List<UserTypeResult> findAllUserType() {
+        return userManager.findAllUserType();
+    }
+
+    @Override
+    public List<EmploymentTypeResult> findAllEmploymentType() {
+        return userManager.findAllEmploymentType();
     }
 
 }

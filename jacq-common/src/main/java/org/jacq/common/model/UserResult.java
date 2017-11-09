@@ -40,6 +40,20 @@ public class UserResult {
     protected String lastname;
     protected String titleSuffix;
     protected Date birthdate;
+    protected Long userTypeId;
+    protected String userType;
+    protected Long employmentTypeId;
+    protected String employmentType;
+    protected Long organisationId;
+    protected String organisationDescription;
+
+    public String getOrganisationDescription() {
+        return organisationDescription;
+    }
+
+    public void setOrganisationDescription(String organisationDescription) {
+        this.organisationDescription = organisationDescription;
+    }
 
     public Long getId() {
         return id;
@@ -55,6 +69,22 @@ public class UserResult {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getEmploymentType() {
+        return employmentType;
+    }
+
+    public void setEmploymentType(String employmentType) {
+        this.employmentType = employmentType;
     }
 
     public String getPassword() {
@@ -93,6 +123,30 @@ public class UserResult {
         return lastname;
     }
 
+    public Long getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
+    public Long getEmploymentTypeId() {
+        return employmentTypeId;
+    }
+
+    public void setEmploymentTypeId(Long employmentTypeId) {
+        this.employmentTypeId = employmentTypeId;
+    }
+
+    public Long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
+    }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -126,6 +180,12 @@ public class UserResult {
         this.titlePrefix = user.getTitlePrefix();
         this.titleSuffix = user.getTitleSuffix();
         this.username = user.getUsername();
+        this.employmentTypeId = (user.getEmploymentTypeId() != null) ? user.getEmploymentTypeId().getEmploymentTypeId() : null;
+        this.userTypeId = (user.getUserTypeId() != null) ? user.getUserTypeId().getUserTypeId() : null;
+        this.organisationId = (user.getOrganisationId() != null) ? user.getOrganisationId().getId() : null;
+        this.organisationDescription = (user.getOrganisationId() != null) ? user.getOrganisationId().getDescription().toString() : "";
+        this.userType = (user.getUserTypeId() != null) ? user.getUserTypeId().getType().toString() : "";
+        this.employmentType = (user.getEmploymentTypeId() != null) ? user.getEmploymentTypeId().getType().toString() : "";
 
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
     protected List<OrganisationResult> organisationResult = new ArrayList<>();
 
     /**
-     * Default constructor, needs a reference to the botanical object service
+     * Default constructor, needs a reference to the organisation object service
      * for later querying
      *
      * @param organisationService
