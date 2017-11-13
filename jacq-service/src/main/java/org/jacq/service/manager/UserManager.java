@@ -30,9 +30,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.EmploymentTypeResult;
+import org.jacq.common.model.GroupResult;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.model.UserTypeResult;
 import org.jacq.common.model.jpa.FrmwrkEmploymentType;
+import org.jacq.common.model.jpa.FrmwrkGroup;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkUserType;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -123,6 +125,7 @@ public class UserManager {
             frmwrkUser = new FrmwrkUser();
         }
         if (frmwrkUser != null) {
+            frmwrkUser.setPassword(userResult.getPassword());
             frmwrkUser.setFirstname(userResult.getFirstname());
             frmwrkUser.setLastname(userResult.getLastname());
             frmwrkUser.setUsername(userResult.getUsername());
@@ -192,6 +195,32 @@ public class UserManager {
 
             // add botanical object to result list
             results.add(employmentTypeResult);
+        }
+
+        return results;
+    }
+
+    @Transactional
+    public List<GroupResult> findAllGroup() {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<FrmwrkGroup> cq = cb.createQuery(FrmwrkGroup.class);
+        Root<FrmwrkGroup> bo = cq.from(FrmwrkGroup.class);
+
+        // select result list
+        cq.select(bo);
+
+        // convert to typed query and apply offset / limit
+        TypedQuery<FrmwrkGroup> groupSearchQuery = em.createQuery(cq);
+
+        // finally fetch the results
+        ArrayList<GroupResult> results = new ArrayList<>();
+        List<FrmwrkGroup> groupResults = groupSearchQuery.getResultList();
+        for (FrmwrkGroup group : groupResults) {
+            GroupResult groupResult = new GroupResult(group);
+
+            // add botanical object to result list
+            results.add(groupResult);
         }
 
         return results;

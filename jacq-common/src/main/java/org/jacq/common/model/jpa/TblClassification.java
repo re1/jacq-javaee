@@ -70,7 +70,7 @@ public class TblClassification implements Serializable {
     @Column(name = "scientific_name_id")
     private long scientificNameId;
     @Column(name = "acc_scientific_name_id")
-    private Integer accScientificNameId;
+    private Long accScientificNameId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "preferred_taxonomy")
@@ -95,12 +95,12 @@ public class TblClassification implements Serializable {
     @Column(name = "user_id")
     private long userId;
     @Column(name = "parent_scientific_name_id")
-    private Integer parentScientificNameId;
+    private Long parentScientificNameId;
     @Size(max = 15)
     @Column(name = "number")
     private String number;
     @Column(name = "order")
-    private Integer order;
+    private Long order;
 
     public TblClassification() {
     }
@@ -121,11 +121,11 @@ public class TblClassification implements Serializable {
         this.scientificNameId = scientificNameId;
     }
 
-    public Integer getAccScientificNameId() {
+    public Long getAccScientificNameId() {
         return accScientificNameId;
     }
 
-    public void setAccScientificNameId(Integer accScientificNameId) {
+    public void setAccScientificNameId(Long accScientificNameId) {
         this.accScientificNameId = accScientificNameId;
     }
 
@@ -177,11 +177,11 @@ public class TblClassification implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getParentScientificNameId() {
+    public Long getParentScientificNameId() {
         return parentScientificNameId;
     }
 
-    public void setParentScientificNameId(Integer parentScientificNameId) {
+    public void setParentScientificNameId(Long parentScientificNameId) {
         this.parentScientificNameId = parentScientificNameId;
     }
 
@@ -193,11 +193,11 @@ public class TblClassification implements Serializable {
         this.number = number;
     }
 
-    public Integer getOrder() {
+    public Long getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
 }

@@ -25,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.EmploymentTypeResult;
+import org.jacq.common.model.GroupResult;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.model.UserTypeResult;
 
@@ -125,4 +126,15 @@ public interface UserService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<EmploymentTypeResult> findAllEmploymentType();
+
+    /**
+     * Retrieve a list of all Group entries
+     *
+     * @return
+     */
+    @GET
+    @Path("findAllGroup")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<GroupResult> findAllGroup();
 }

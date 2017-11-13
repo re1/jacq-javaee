@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.jacq.common.model.EmploymentTypeResult;
+import org.jacq.common.model.GroupResult;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.model.UserTypeResult;
 import org.jacq.common.rest.UserService;
@@ -66,6 +67,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<EmploymentTypeResult> findAllEmploymentType() {
         return userManager.findAllEmploymentType();
+    }
+
+    @Override
+    public List<GroupResult> findAllGroup() {
+        return userManager.findAllGroup();
     }
 
 }

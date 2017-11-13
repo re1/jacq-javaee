@@ -81,7 +81,7 @@ public class TblClassificationChorolStatus implements Serializable {
     @Column(name = "nation_id")
     private int nationId;
     @Column(name = "province_id")
-    private Integer provinceId;
+    private Long provinceId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "province_debatable")
@@ -155,11 +155,11 @@ public class TblClassificationChorolStatus implements Serializable {
         this.nationId = nationId;
     }
 
-    public Integer getProvinceId() {
+    public Long getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(Integer provinceId) {
+    public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
     }
 

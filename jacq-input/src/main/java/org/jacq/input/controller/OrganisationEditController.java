@@ -19,6 +19,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.jacq.common.model.GroupResult;
 import org.jacq.common.model.OrganisationResult;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.rest.OrganisationService;
@@ -45,6 +46,8 @@ public class OrganisationEditController {
 
     protected List<UserResult> users;
 
+    protected List<GroupResult> groups;
+
     @PostConstruct
     public void init() {
         this.organisationService = ServicesUtil.getOrganisationService();
@@ -56,6 +59,8 @@ public class OrganisationEditController {
         this.organisation = new OrganisationResult();
 
         this.users = this.userService.findAll();
+
+        this.groups = this.userService.findAllGroup();
     }
 
     public Long getOrganisationId() {
@@ -88,4 +93,7 @@ public class OrganisationEditController {
         return users;
     }
 
+    public List<GroupResult> getGroups() {
+        return groups;
+    }
 }
