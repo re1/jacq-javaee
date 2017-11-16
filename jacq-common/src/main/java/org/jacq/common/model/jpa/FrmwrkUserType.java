@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "frmwrk_user_type")
@@ -58,7 +57,7 @@ public class FrmwrkUserType implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId")
     private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkUserType() {

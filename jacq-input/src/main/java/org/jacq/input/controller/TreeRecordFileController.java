@@ -5,12 +5,12 @@
  */
 package org.jacq.input.controller;
 
-import org.jacq.input.view.LazyOrganisationDataModel;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.jacq.input.util.ServicesUtil;
+import org.jacq.input.view.LazyTreeRecordFileDataModel;
 
 /**
  * Controller for handling the search page
@@ -19,16 +19,16 @@ import org.jacq.input.util.ServicesUtil;
  */
 @ManagedBean
 @SessionScoped
-public class OrganisationController implements Serializable {
+public class TreeRecordFileController implements Serializable {
 
-    protected LazyOrganisationDataModel dataModel;
+    protected LazyTreeRecordFileDataModel dataModel;
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyOrganisationDataModel(ServicesUtil.getOrganisationService());
+        this.dataModel = new LazyTreeRecordFileDataModel(ServicesUtil.getTreeRecordFileService());
     }
 
-    public LazyOrganisationDataModel getDataModel() {
+    public LazyTreeRecordFileDataModel getDataModel() {
         return dataModel;
     }
 
@@ -38,7 +38,7 @@ public class OrganisationController implements Serializable {
      * @return
      */
     public String search() {
-        return "manage";
+        return "treecontrolsheetmanage";
     }
 
     /**
@@ -49,15 +49,6 @@ public class OrganisationController implements Serializable {
      */
     public String updateRowCount() {
         return null;
-    }
-
-    /**
-     * Jumps to edit form of Organisation
-     *
-     * @return
-     */
-    public String edit() {
-        return "edit";
     }
 
 }

@@ -60,7 +60,7 @@ public class TblGeoNation implements Serializable {
     @Column(name = "nation")
     private String nation;
     @Column(name = "fnnumber")
-    private Integer fnnumber;
+    private Long fnnumber;
     @Size(max = 50)
     @Column(name = "nation_engl")
     private String nationEngl;
@@ -109,11 +109,11 @@ public class TblGeoNation implements Serializable {
         this.nation = nation;
     }
 
-    public Integer getFnnumber() {
+    public Long getFnnumber() {
         return fnnumber;
     }
 
-    public void setFnnumber(Integer fnnumber) {
+    public void setFnnumber(Long fnnumber) {
         this.fnnumber = fnnumber;
     }
 

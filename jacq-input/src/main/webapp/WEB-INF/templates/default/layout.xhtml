@@ -13,7 +13,7 @@
         <h:outputStylesheet library="jacq" name="jacq.css" />
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="jacq_form">
             <div class="jacq-content">
                 <div class="jacq-header">
                     <header>
@@ -38,8 +38,8 @@
                                 </p:submenu>
                             </p:submenu>
                             <p:submenu label="#{messages['location']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/location/locationcreate.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/location/locationmanage.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/organisation/edit.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/organisation/manage.xhtml"/>
                             </p:submenu>
                             <p:submenu label="#{messages['treecontrolsheet']}">
                                 <p:menuitem value="#{messages['create']}" url="/faces/pages/treecontrolsheet/treecontrolsheetcreate.xhtml"/>
@@ -51,9 +51,9 @@
                             </p:submenu>
                             <p:separator />
                             <p:submenu label="#{messages['user']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/user/usercreate.xhtml"/>
-                                <p:menuitem value="#{messages['update']}" url="/faces/pages/user/userupdate.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/usermanage.xhtml"/>
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml"/>
+                                <p:menuitem value="#{messages['update']}" url="/faces/pages/user/update.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml"/>
                             </p:submenu>
                             <p:submenu label="#{messages['literature']}">
                                 <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>

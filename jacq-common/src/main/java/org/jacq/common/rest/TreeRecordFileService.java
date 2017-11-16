@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,29 @@
 package org.jacq.common.rest;
 
 import java.util.List;
+import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.BotanicalObjectResult;
+import org.jacq.common.model.TreeRecordFileResult;
 
 /**
- * @see DerivativeService
- * @deprecated
- * @author wkoller
+ *
+ * @author fhafner
  */
-@Path("/botanicalObject")
-public interface BotanicalObjectService {
+@Path("/treeRecordFile")
+public interface TreeRecordFileService {
 
     /**
      * Search the database using the given filter
      *
-     * @param scientificName Scientific name to search for
-     * @param organization Organization to filter for
-     * @param hasImage Only display results containing images
+     * @param id
+     * @param year
+     * @param name
+     * @param documentNumber
      * @param offset Return result with an offset
      * @param limit Limit total count of results
      * @return
@@ -46,17 +47,21 @@ public interface BotanicalObjectService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectResult> search(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<TreeRecordFileResult> search(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      * Search the database using the given filter and return the count
      *
-     * @see BotanicalObjectService#search(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Integer,
-     * java.lang.Integer)
+     * @param id
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @see treeRecordFile#search()
      */
     @GET
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount(@QueryParam("scientificName") String scientificName, @QueryParam("organization") String organization, @QueryParam("hasImage") Boolean hasImage);
+    public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
+
 }

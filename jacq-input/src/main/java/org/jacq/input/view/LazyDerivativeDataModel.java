@@ -18,10 +18,11 @@ package org.jacq.input.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.BotanicalObjectDerivative;
-import org.jacq.common.model.OrganisationResult;
+import org.jacq.common.model.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
-import org.jacq.common.rest.OrganisationService;
+import org.jacq.input.controller.LivingPlantController;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -31,6 +32,10 @@ import org.primefaces.model.SortOrder;
  * @author wkoller
  */
 public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDerivative> {
+
+    public static final String FILTER_ID = "id";
+    public static final String FILTER_TYPE = "type";
+    public static final String FILTER_TYPE_EMPTY = "null";
 
     /**
      * Reference to derivative service which is used during querying
@@ -71,13 +76,22 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
 
     @Override
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        // try to parse the id filter
+        Long id = (filters.get(FILTER_ID) == null) ? null : Long.valueOf(String.valueOf(filters.get(FILTER_ID)));
+
+        // quote type filter and set to null if empty
+        String type = String.valueOf(filters.get(FILTER_TYPE));
+        if (StringUtils.isEmpty(type) || FILTER_TYPE_EMPTY.equalsIgnoreCase(type) || LivingPlantController.TYPE_ALL.equalsIgnoreCase(type)) {
+            type = null;
+        }
+
         // get count first
-        int rowCount = this.derivativeService.count(null, null);
+        int rowCount = this.derivativeService.count(type, id);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(null, null, sortField, sortOrder.name(), first, pageSize);
+            results = this.derivativeService.find(type, id, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

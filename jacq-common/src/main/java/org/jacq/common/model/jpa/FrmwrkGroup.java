@@ -18,15 +18,16 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,54 +39,57 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author fhafner
  */
 @Entity
-@Table(name = "frmwrk_employment_type")
+@Table(name = "frmwrk_group")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkEmploymentType.findAll", query = "SELECT f FROM FrmwrkEmploymentType f")
-    , @NamedQuery(name = "FrmwrkEmploymentType.findByEmploymentTypeId", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.employmentTypeId = :employmentTypeId")
-    , @NamedQuery(name = "FrmwrkEmploymentType.findByType", query = "SELECT f FROM FrmwrkEmploymentType f WHERE f.type = :type")})
-public class FrmwrkEmploymentType implements Serializable {
+    @NamedQuery(name = "FrmwrkGroup.findAll", query = "SELECT f FROM FrmwrkGroup f")
+    , @NamedQuery(name = "FrmwrkGroup.findByGroupId", query = "SELECT f FROM FrmwrkGroup f WHERE f.groupId = :groupId")
+    , @NamedQuery(name = "FrmwrkGroup.findByName", query = "SELECT f FROM FrmwrkGroup f WHERE f.name = :name")})
+public class FrmwrkGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "employment_type_id")
-    private Long employmentTypeId;
+    @Column(name = "group_id")
+    private Long groupId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "type")
-    private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employmentTypeId")
+    @Column(name = "name")
+    private String name;
+    @JoinTable(name = "frmwrk_user_group", joinColumns = {
+        @JoinColumn(name = "group_id", referencedColumnName = "group_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")})
+    @ManyToMany
     private List<FrmwrkUser> frmwrkUserList;
 
-    public FrmwrkEmploymentType() {
+    public FrmwrkGroup() {
     }
 
-    public FrmwrkEmploymentType(Long employmentTypeId) {
-        this.employmentTypeId = employmentTypeId;
+    public FrmwrkGroup(Long groupId) {
+        this.groupId = groupId;
     }
 
-    public FrmwrkEmploymentType(Long employmentTypeId, String type) {
-        this.employmentTypeId = employmentTypeId;
-        this.type = type;
+    public FrmwrkGroup(Long groupId, String name) {
+        this.groupId = groupId;
+        this.name = name;
     }
 
-    public Long getEmploymentTypeId() {
-        return employmentTypeId;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setEmploymentTypeId(Long employmentTypeId) {
-        this.employmentTypeId = employmentTypeId;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
@@ -100,18 +104,18 @@ public class FrmwrkEmploymentType implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (employmentTypeId != null ? employmentTypeId.hashCode() : 0);
+        hash += (groupId != null ? groupId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FrmwrkEmploymentType)) {
+        if (!(object instanceof FrmwrkGroup)) {
             return false;
         }
-        FrmwrkEmploymentType other = (FrmwrkEmploymentType) object;
-        if ((this.employmentTypeId == null && other.employmentTypeId != null) || (this.employmentTypeId != null && !this.employmentTypeId.equals(other.employmentTypeId))) {
+        FrmwrkGroup other = (FrmwrkGroup) object;
+        if ((this.groupId == null && other.groupId != null) || (this.groupId != null && !this.groupId.equals(other.groupId))) {
             return false;
         }
         return true;
@@ -119,7 +123,7 @@ public class FrmwrkEmploymentType implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.FrmwrkEmploymentType[ employmentTypeId=" + employmentTypeId + " ]";
+        return "org.jacq.common.model.jpa.FrmwrkGroup[ groupId=" + groupId + " ]";
     }
 
 }

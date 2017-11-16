@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "tbl_organisation")
@@ -74,13 +74,13 @@ public class TblOrganisation implements Serializable {
     private String ipenCode;
     @OneToMany(mappedBy = "organisationId", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
-    @OneToMany(mappedBy = "parentOrganisationId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentOrganisationId")
     private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private TblOrganisation parentOrganisationId;
     @JoinColumn(name = "gardener_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private FrmwrkUser gardenerId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
     private TblImageServer tblImageServer;
@@ -88,7 +88,7 @@ public class TblOrganisation implements Serializable {
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkUser> frmwrkUserList;
 
     public TblOrganisation() {

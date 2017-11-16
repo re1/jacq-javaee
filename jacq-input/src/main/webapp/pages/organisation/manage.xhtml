@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
@@ -14,20 +15,31 @@
                     </div>
                     <div class="jacq-data-table">
                         <p:dataTable var="organisationResult" lazy="true" value="#{organisationController.dataModel}" paginator="true" rows="10">
-                            <p:column filterBy="" headerText="#{messages['location.id']}">
+                            <p:column filterBy="#{organisationResult.organisationId}" headerText="#{messages['location.id']}">
                                 <h:outputText value="#{organisationResult.organisationId}"/>
                             </p:column>
-                            <p:column filterBy="" headerText="#{messages['location.description']}">
+                            <p:column filterBy="#{organisationResult.description}" headerText="#{messages['location.description']}">
                                 <h:outputText value="#{organisationResult.description}"/>
                             </p:column>
-                            <p:column filterBy="" headerText="#{messages['location.department']}">
+                            <p:column filterBy="#{organisationResult.department}" headerText="#{messages['location.department']}">
                                 <h:outputText value="#{organisationResult.department}"/>
                             </p:column>
-                            <p:column headerText="#{messages['location.username']}" >
+                            <p:column filterBy="#{organisationResult.greenhouse}" headerText="#{messages['location.greenhouse']}" >
                                 <h:outputText value="#{organisationResult.greenhouse}"/>
                             </p:column>
-                            <p:column headerText="#{messages['location.username']}" >
+                            <p:column filterBy="#{organisationResult.ipenCode}" headerText="#{messages['location.ipenCode']}" >
                                 <h:outputText value="#{organisationResult.ipenCode}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.parentOrganisationDescription}" headerText="#{messages['location.parentOrganisation']}" >
+                                <h:outputText value="#{organisationResult.parentOrganisationDescription}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.gardener}" headerText="#{messages['location.username']}" >
+                                <h:outputText value="#{organisationResult.gardener}"/>
+                            </p:column>
+                            <p:column filterBy="" headerText="#{messages['location.action']}" >
+                                <p:button  outcome="edit.xhtml" icon="ui-icon-pencil">
+                                    <f:param name="organisationId" value="#{organisationResult.organisationId}" />
+                                </p:button>
                             </p:column>
                         </p:dataTable>
                     </div>

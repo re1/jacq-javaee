@@ -5,13 +5,18 @@
  */
 package org.jacq.service.manager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.OrderDirection;
 
 /**
  * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
@@ -22,6 +27,8 @@ import org.jacq.common.model.BotanicalObjectDerivative;
  */
 @ManagedBean
 public class DerivativeManager {
+
+    private static final Logger LOGGER = Logger.getLogger(DerivativeManager.class.getName());
 
     private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
     private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
@@ -57,19 +64,17 @@ public class DerivativeManager {
      * @param count
      * @return
      */
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, String orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
+        // translate order column into database column
+        orderColumn = getColumnName(orderColumn);
+
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_LIVING + " " + FROM_LIVING, params, type, derivativeId, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE + " " + FROM_VEGETATIVE, params, type, derivativeId, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_LIVING + " " + FROM_LIVING, params, type, derivativeId, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE + " " + FROM_VEGETATIVE, params, type, derivativeId, orderColumn, orderDirection, offset, count);
 
-        String botanicalObjectSearchQueryString = "SELECT * FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_list_tbl";
-
-        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, BotanicalObjectDerivative.class);
-        for (int i = 0; i < params.size(); i++) {
-            botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
-        }
+        String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
         // apply order
         if (orderColumn != null) {
@@ -78,6 +83,11 @@ public class DerivativeManager {
             if (orderDirection != null) {
                 botanicalObjectSearchQueryString += " " + orderDirection;
             }
+        }
+
+        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, BotanicalObjectDerivative.class);
+        for (int i = 0; i < params.size(); i++) {
+            botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
         }
 
         // apply count
@@ -105,8 +115,8 @@ public class DerivativeManager {
         List<Object> params = new ArrayList<>();
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, null, null);
-        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, null, null);
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, null, null, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, null, null, null, null);
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
@@ -129,7 +139,7 @@ public class DerivativeManager {
      * @param count
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, Integer offset, Integer count) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -140,6 +150,15 @@ public class DerivativeManager {
         if (derivativeId != null) {
             queryString += " AND " + FILTER_DERIVATIVEID;
             params.add(derivativeId);
+        }
+
+        // apply order
+        if (orderColumn != null) {
+            queryString += " ORDER BY " + orderColumn;
+
+            if (orderDirection != null) {
+                queryString += " " + orderDirection;
+            }
         }
 
         // apply offset and count
@@ -155,5 +174,28 @@ public class DerivativeManager {
         }
 
         return queryString;
+    }
+
+    /**
+     * Helper function for retrieving the actual database column name for a given column attribute name
+     *
+     * @param attributeName
+     * @return
+     */
+    protected String getColumnName(String attributeName) {
+        if (attributeName == null) {
+            return null;
+        }
+
+        try {
+            Field field = BotanicalObjectDerivative.class.getDeclaredField(attributeName);
+            Column column = field.getAnnotation(Column.class);
+
+            return column.name();
+        } catch (NoSuchFieldException | SecurityException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 }

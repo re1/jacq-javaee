@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,16 @@ public class OrganisationResult {
     protected String department;
     protected boolean greenhouse;
     protected String ipenCode;
+    protected String parentOrganisationDescription;
+    protected Long parentOrganisationId;
+    protected String gardener;
+    protected Long gardenerId;
 
     public Long getOrganisationId() {
         return organisationId;
     }
 
-    public void setOrganisationIdLong(Long organisationId) {
+    public void setOrganisationId(Long organisationId) {
         this.organisationId = organisationId;
     }
 
@@ -78,6 +82,39 @@ public class OrganisationResult {
         this.ipenCode = ipenCode;
     }
 
+    public String getGardener() {
+        return gardener;
+    }
+
+    public void setGardener(String gardener) {
+        this.gardener = gardener;
+
+    }
+
+    public Long getGardenerId() {
+        return gardenerId;
+    }
+
+    public void setGardenerId(Long gardenerId) {
+        this.gardenerId = gardenerId;
+    }
+
+    public String getParentOrganisationDescription() {
+        return parentOrganisationDescription;
+    }
+
+    public void setParentOrganisationDescription(String parentOrganisationDescription) {
+        this.parentOrganisationDescription = parentOrganisationDescription;
+    }
+
+    public Long getParentOrganisationId() {
+        return parentOrganisationId;
+    }
+
+    public void setParentOrganisationId(Long parentOrganisationId) {
+        this.parentOrganisationId = parentOrganisationId;
+    }
+
     public OrganisationResult() {
     }
 
@@ -87,6 +124,10 @@ public class OrganisationResult {
         this.department = organisation.getDepartment();
         this.greenhouse = organisation.getGreenhouse();
         this.ipenCode = organisation.getIpenCode();
+        this.parentOrganisationDescription = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getDescription() : "";
+        this.parentOrganisationId = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getId() : null;
+        this.gardener = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getUsername() : "";
+        this.gardenerId = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getId() : null;
     }
 
     /**

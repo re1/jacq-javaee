@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,27 @@ public class OrganisationServiceImpl implements OrganisationService {
      * @see OrganisationService#search()
      */
     @Override
-    public List<OrganisationResult> search(Integer offset, Integer limit) {
-        return organisationManager.search(offset, limit);
+    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
+        return organisationManager.search(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener, offset, limit);
     }
 
     @Override
-    public int searchCount() {
-        return organisationManager.searchCount();
+    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener) {
+        return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener);
+    }
+
+    @Override
+    public OrganisationResult load(Long organisationId) {
+        return organisationManager.load(organisationId);
+    }
+
+    @Override
+    public OrganisationResult save(OrganisationResult organisationResult) {
+        return organisationManager.save(organisationResult);
+    }
+
+    @Override
+    public List<OrganisationResult> findAll() {
+        return organisationManager.search(null, null, null, null, null, null, null, null, null);
     }
 }

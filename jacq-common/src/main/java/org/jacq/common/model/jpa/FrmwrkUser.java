@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -41,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "frmwrk_user")
@@ -104,28 +103,18 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
-    @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "frmwrkUserList")
+    private List<FrmwrkGroup> frmwrkGroupList;
+    @OneToMany(mappedBy = "gardenerId")
     private List<TblOrganisation> tblOrganisationList;
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<TblInventory> tblInventoryList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser", fetch = FetchType.LAZY)
-    private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<TblIndexSeminumRevision> tblIndexSeminumRevisionList;
     @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private FrmwrkEmploymentType employmentTypeId;
     @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private FrmwrkUserType userTypeId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblOrganisation organisationId;
 
     public FrmwrkUser() {
@@ -226,12 +215,12 @@ public class FrmwrkUser implements Serializable {
     }
 
     @XmlTransient
-    public List<FrmwrkaccessClassification> getFrmwrkaccessClassificationList() {
-        return frmwrkaccessClassificationList;
+    public List<FrmwrkGroup> getFrmwrkGroupList() {
+        return frmwrkGroupList;
     }
 
-    public void setFrmwrkaccessClassificationList(List<FrmwrkaccessClassification> frmwrkaccessClassificationList) {
-        this.frmwrkaccessClassificationList = frmwrkaccessClassificationList;
+    public void setFrmwrkGroupList(List<FrmwrkGroup> frmwrkGroupList) {
+        this.frmwrkGroupList = frmwrkGroupList;
     }
 
     @XmlTransient
@@ -241,51 +230,6 @@ public class FrmwrkUser implements Serializable {
 
     public void setTblOrganisationList(List<TblOrganisation> tblOrganisationList) {
         this.tblOrganisationList = tblOrganisationList;
-    }
-
-    @XmlTransient
-    public List<FrmwrkaccessOrganisation> getFrmwrkaccessOrganisationList() {
-        return frmwrkaccessOrganisationList;
-    }
-
-    public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
-        this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
-    }
-
-    @XmlTransient
-    public List<TblInventory> getTblInventoryList() {
-        return tblInventoryList;
-    }
-
-    public void setTblInventoryList(List<TblInventory> tblInventoryList) {
-        this.tblInventoryList = tblInventoryList;
-    }
-
-    @XmlTransient
-    public List<FrmwrkAuthAssignment> getFrmwrkAuthAssignmentList() {
-        return frmwrkAuthAssignmentList;
-    }
-
-    public void setFrmwrkAuthAssignmentList(List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList) {
-        this.frmwrkAuthAssignmentList = frmwrkAuthAssignmentList;
-    }
-
-    @XmlTransient
-    public List<FrmwrkaccessBotanicalObject> getFrmwrkaccessBotanicalObjectList() {
-        return frmwrkaccessBotanicalObjectList;
-    }
-
-    public void setFrmwrkaccessBotanicalObjectList(List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList) {
-        this.frmwrkaccessBotanicalObjectList = frmwrkaccessBotanicalObjectList;
-    }
-
-    @XmlTransient
-    public List<TblIndexSeminumRevision> getTblIndexSeminumRevisionList() {
-        return tblIndexSeminumRevisionList;
-    }
-
-    public void setTblIndexSeminumRevisionList(List<TblIndexSeminumRevision> tblIndexSeminumRevisionList) {
-        this.tblIndexSeminumRevisionList = tblIndexSeminumRevisionList;
     }
 
     public FrmwrkEmploymentType getEmploymentTypeId() {

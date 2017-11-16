@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.OrderDirection;
 
 /**
  * Main service for searching derivatives
@@ -47,7 +48,7 @@ public interface DerivativeService {
     @Path("/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") String orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
      * Return total count of results for the given search parameters
