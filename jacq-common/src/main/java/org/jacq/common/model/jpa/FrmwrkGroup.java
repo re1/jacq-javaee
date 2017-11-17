@@ -58,10 +58,7 @@ public class FrmwrkGroup implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @JoinTable(name = "frmwrk_user_group", joinColumns = {
-        @JoinColumn(name = "group_id", referencedColumnName = "group_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "frmwrkGroupList")
     private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkGroup() {

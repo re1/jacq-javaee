@@ -15,11 +15,14 @@
  */
 package org.jacq.input.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.jacq.common.model.EmploymentTypeResult;
+import org.jacq.common.model.GroupResult;
 import org.jacq.common.model.OrganisationResult;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.model.UserTypeResult;
@@ -49,6 +52,10 @@ public class UserEditController {
 
     protected List<EmploymentTypeResult> employmentTypes;
 
+    protected List<SelectItem> groups;
+
+    protected List<String> selectedGroupIds;
+
     @PostConstruct
     public void init() {
         this.userService = ServicesUtil.getUserService();
@@ -63,6 +70,13 @@ public class UserEditController {
 
         this.employmentTypes = this.userService.findAllEmploymentType();
 
+        List<GroupResult> groupResults = this.userService.findAllGroup();
+        this.groups = new ArrayList<>();
+        for (GroupResult group : groupResults) {
+            this.groups.add(new SelectItem(group.getGroupId(), group.getName()));
+        }
+        this.selectedGroupIds = new ArrayList<>();
+
     }
 
     public Long getId() {
@@ -74,6 +88,9 @@ public class UserEditController {
 
         if (this.id != null) {
             this.user = this.userService.load(this.id);
+            for (GroupResult group : this.user.getGroupList()) {
+                this.selectedGroupIds.add(group.getGroupId().toString());
+            }
         }
     }
 
@@ -82,6 +99,10 @@ public class UserEditController {
     }
 
     public String edit() {
+        this.user.getGroupList().clear();
+        for (String groupId : this.selectedGroupIds) {
+            this.user.getGroupList().add(new GroupResult(Long.parseLong(groupId)));
+        }
         this.user = this.userService.save(this.user);
 
         return null;
@@ -97,6 +118,18 @@ public class UserEditController {
 
     public List<EmploymentTypeResult> getEmploymentTypes() {
         return employmentTypes;
+    }
+
+    public List<SelectItem> getGroups() {
+        return groups;
+    }
+
+    public List<String> getSelectedGroupIds() {
+        return selectedGroupIds;
+    }
+
+    public void setSelectedGroupIds(List<String> selectedGroupIds) {
+        this.selectedGroupIds = selectedGroupIds;
     }
 
 }

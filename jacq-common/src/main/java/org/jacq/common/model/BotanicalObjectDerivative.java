@@ -62,6 +62,10 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(min = 1, max = 6)
     @Column(name = "type")
     private String type;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "organisation_description")
+    private String organisationDescription;
 
     public BotanicalObjectDerivative() {
     }
@@ -112,6 +116,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getOrganisationDescription() {
+        return organisationDescription;
+    }
+
+    public void setOrganisationDescription(String organisationDescription) {
+        this.organisationDescription = organisationDescription;
     }
 
 }

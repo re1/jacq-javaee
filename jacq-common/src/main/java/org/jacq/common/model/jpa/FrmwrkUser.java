@@ -19,12 +19,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -103,7 +105,10 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @ManyToMany(mappedBy = "frmwrkUserList")
+    @ManyToMany
+    @JoinTable(name = "frmwrk_user_group", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "group_id", referencedColumnName = "group_id")})
     private List<FrmwrkGroup> frmwrkGroupList;
     @OneToMany(mappedBy = "gardenerId")
     private List<TblOrganisation> tblOrganisationList;

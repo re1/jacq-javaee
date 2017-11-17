@@ -136,6 +136,13 @@ public class UserManager {
             frmwrkUser.setOrganisationId(em.find(TblOrganisation.class, userResult.getOrganisationId()));
             frmwrkUser.setEmploymentTypeId(em.find(FrmwrkEmploymentType.class, userResult.getEmploymentTypeId()));
             frmwrkUser.setUserTypeId(em.find(FrmwrkUserType.class, userResult.getUserTypeId()));
+            frmwrkUser.getFrmwrkGroupList().clear();
+            for (GroupResult group : userResult.getGroupList()) {
+                FrmwrkGroup frmwrkGroup = em.find(FrmwrkGroup.class, group.getGroupId());
+                if (frmwrkGroup != null) {
+                    frmwrkUser.getFrmwrkGroupList().add(frmwrkGroup);
+                }
+            }
 
             if (frmwrkUser.getId() != null) {
                 em.merge(frmwrkUser);

@@ -21,6 +21,10 @@ import org.jacq.input.util.ServicesUtil;
 @SessionScoped
 public class OrganisationController implements Serializable {
 
+    public static final String ALL = "all";
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
+
     protected LazyOrganisationDataModel dataModel;
 
     @PostConstruct
@@ -58,6 +62,18 @@ public class OrganisationController implements Serializable {
      */
     public String edit() {
         return "edit";
+    }
+
+    public String getALL() {
+        return ALL;
+    }
+
+    public String getTRUE() {
+        return TRUE;
+    }
+
+    public String getFALSE() {
+        return FALSE;
     }
 
 }
