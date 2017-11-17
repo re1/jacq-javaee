@@ -118,12 +118,12 @@
                                 <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
                             </p:column>
 
-                            <p:column filterBy="" headerText="#{messages['livingplant.location']}">
-                                <h:outputText />
+                            <p:column filterBy="" headerText="#{messages['livingplant.placenumber']}">
+                                <h:outputText value="#{botanicalObjectDerivative.placeNumber}" />
                             </p:column>
 
                             <p:column filterBy="" headerText="#{messages['livingplant.count']}">
-                                <h:outputText />
+                                <h:outputText value="#{(botanicalObjectDerivative.vegetativeCount == null) ? 0 : botanicalObjectDerivative.vegetativeCount}" />
                             </p:column>
 
                             <p:column filterBy="#{botanicalObjectDerivative.type}" headerText="#{messages['livingplant.type']}">
@@ -138,7 +138,9 @@
                             </p:column>
 
                             <p:column headerText="#{messages['action']}">
-                                <h:outputText />
+                                <p:button  outcome="edit.xhtml" icon="ui-icon-pencil">
+                                    <f:param name="id" value="#{botanicalObjectDerivative.id}" />
+                                </p:button>
                             </p:column>
 
                             <f:facet name="footer">

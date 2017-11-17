@@ -30,8 +30,7 @@ public class DerivativeManager {
 
     private static final Logger LOGGER = Logger.getLogger(DerivativeManager.class.getName());
 
-    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `type`";
-    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `type`";
+    private static final String SELECT_FIELDS = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `place_number`, `vegetative_count`, `type`";
 
     private static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 
@@ -71,8 +70,8 @@ public class DerivativeManager {
         orderColumn = getColumnName(orderColumn);
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_LIVING + " " + FROM_LIVING, params, type, derivativeId, orderColumn, orderDirection, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_VEGETATIVE + " " + FROM_VEGETATIVE, params, type, derivativeId, orderColumn, orderDirection, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, orderColumn, orderDirection, offset, count);
 
         String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
