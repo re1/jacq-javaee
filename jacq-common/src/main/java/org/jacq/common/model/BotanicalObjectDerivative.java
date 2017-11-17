@@ -27,6 +27,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Union object for displaying and search botanical object derivatives
  *
  * @author wkoller
  */
@@ -66,6 +67,11 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 65535)
     @Column(name = "organisation_description")
     private String organisationDescription;
+    @Size(max = 20)
+    @Column(name = "place_number")
+    private String placeNumber;
+    @Column(name = "vegetative_count")
+    private Long vegetativeCount;
 
     public BotanicalObjectDerivative() {
     }
@@ -124,6 +130,22 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setOrganisationDescription(String organisationDescription) {
         this.organisationDescription = organisationDescription;
+    }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
+    }
+
+    public Long getVegetativeCount() {
+        return vegetativeCount;
+    }
+
+    public void setVegetativeCount(Long vegetativeCount) {
+        this.vegetativeCount = vegetativeCount;
     }
 
 }
