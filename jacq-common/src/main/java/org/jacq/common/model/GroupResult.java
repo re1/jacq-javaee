@@ -52,6 +52,15 @@ public class GroupResult {
     public GroupResult() {
     }
 
+    /**
+     * Helper Constructor for Save of Groups
+     *
+     * @param groupId
+     */
+    public GroupResult(Long groupId) {
+        this.groupId = groupId;
+    }
+
     public GroupResult(FrmwrkGroup group) {
         this.groupId = group.getGroupId();
         this.name = group.getName();
