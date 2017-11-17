@@ -30,8 +30,8 @@ public class DerivativeManager {
 
     private static final Logger LOGGER = Logger.getLogger(DerivativeManager.class.getName());
 
-    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
-    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `type`";
+    private static final String SELECT_LIVING = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `type`";
+    private static final String SELECT_VEGETATIVE = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `type`";
 
     private static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 
