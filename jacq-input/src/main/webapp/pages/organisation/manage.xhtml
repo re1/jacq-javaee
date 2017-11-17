@@ -14,7 +14,7 @@
                         <h1>#{messages['location.locationmanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="organisationResult" lazy="true" value="#{organisationController.dataModel}" paginator="true" rows="10">
+                        <p:dataTable var="organisationResult" lazy="true" value="#{organisationController.dataModel}" widgetVar="organisationTable" paginator="true" rows="10">
                             <p:column filterBy="#{organisationResult.organisationId}" headerText="#{messages['location.id']}">
                                 <h:outputText value="#{organisationResult.organisationId}"/>
                             </p:column>
@@ -25,6 +25,13 @@
                                 <h:outputText value="#{organisationResult.department}"/>
                             </p:column>
                             <p:column filterBy="#{organisationResult.greenhouse}" headerText="#{messages['location.greenhouse']}" >
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('organisationTable').filter()">
+                                        <f:selectItem itemLabel="All" itemValue="#{organisationController.ALL}" />
+                                        <f:selectItem itemLabel="True" itemValue="#{organisationController.TRUE}" />
+                                        <f:selectItem itemLabel="False" itemValue="#{organisationController.FALSE}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
                                 <h:outputText value="#{organisationResult.greenhouse}"/>
                             </p:column>
                             <p:column filterBy="#{organisationResult.ipenCode}" headerText="#{messages['location.ipenCode']}" >

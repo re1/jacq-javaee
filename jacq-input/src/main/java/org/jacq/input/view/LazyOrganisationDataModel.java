@@ -70,13 +70,26 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
 
     @Override
     public List<OrganisationResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
+        //Check if Greenhouse is true or False, All = null
+        Boolean greenhouse = null;
+        if (filters.get("greenhouse") != null) {
+            if (String.valueOf(filters.get("greenhouse")).equals("false")) {
+                greenhouse = false;
+            } else if (String.valueOf(filters.get("greenhouse")).equals("true")) {
+                greenhouse = true;
+            } else {
+                greenhouse = null;
+            }
+        }
+
         // get count first
-        int rowCount = this.organisationService.searchCount((filters.get("organisationId") != null) ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, Boolean.parseBoolean(filters.get("greenhouse") != null ? filters.get("greenhouse").toString() : null), filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null, filters.get("parentOrganisationDescription") != null ? filters.get("parentOrganisationDescription").toString() : null, filters.get("gardener") != null ? filters.get("gardener").toString() : null);
+        int rowCount = this.organisationService.searchCount((filters.get("organisationId") != null) ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, greenhouse, filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null, filters.get("parentOrganisationDescription") != null ? filters.get("parentOrganisationDescription").toString() : null, filters.get("gardener") != null ? filters.get("gardener").toString() : null);
         this.setRowCount(rowCount);
 
         List<OrganisationResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.organisationService.search(filters.get("organisationId") != null ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, Boolean.parseBoolean(filters.get("greenhouse") != null ? filters.get("greenhouse").toString() : null), filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null, filters.get("parentOrganisationDescription") != null ? filters.get("parentOrganisationDescription").toString() : null, filters.get("gardener") != null ? filters.get("gardener").toString() : null, first, pageSize
+            results = this.organisationService.search(filters.get("organisationId") != null ? Long.parseLong(filters.get("organisationId").toString()) : null, filters.get("description") != null ? filters.get("description").toString() : null, filters.get("department") != null ? filters.get("department").toString() : null, greenhouse, filters.get("ipenCode") != null ? filters.get("ipenCode").toString() : null, filters.get("parentOrganisationDescription") != null ? filters.get("parentOrganisationDescription").toString() : null, filters.get("gardener") != null ? filters.get("gardener").toString() : null, first, pageSize
             );
         }
 
