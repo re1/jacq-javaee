@@ -7,6 +7,8 @@ package org.jacq.input.controller;
 
 import org.jacq.input.view.LazyOrganisationDataModel;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -24,6 +26,8 @@ public class OrganisationController implements Serializable {
     public static final String ALL = "all";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
+
+    protected Date selectedBirthdate;
 
     protected LazyOrganisationDataModel dataModel;
 
@@ -76,4 +80,11 @@ public class OrganisationController implements Serializable {
         return FALSE;
     }
 
+    public Date getSelectedBirthdate() {
+        return selectedBirthdate;
+    }
+
+    public void setSelectedBirthdate(Date selectedBirthdate) {
+        this.selectedBirthdate = selectedBirthdate;
+    }
 }

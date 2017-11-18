@@ -15,9 +15,15 @@
  */
 package org.jacq.input.view;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jacq.common.model.UserResult;
 import org.jacq.common.rest.UserService;
 import org.primefaces.model.LazyDataModel;
@@ -69,6 +75,19 @@ public class LazyUserDataModel extends LazyDataModel<UserResult> {
 
     @Override
     public List<UserResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
+        //Parse Datefilter
+        Date date = new Date();
+        if (filters.get("birthdate") != null) {
+            try {
+                date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(String.valueOf(filters.get("birthdate")));
+            } catch (Exception exception) {
+                System.out.print(exception);
+            }
+        } else {
+            date = null;
+        }
+
         // get count first
         int rowCount = this.userService.searchCount((filters.get("id") != null) ? Long.parseLong(filters.get("id").toString()) : null, filters.get("username") != null ? filters.get("username").toString() : null, null, filters.get("userType") != null ? filters.get("userType").toString() : null, filters.get("employmentType") != null ? filters.get("employmentType").toString() : null, filters.get("organisationDescription") != null ? filters.get("organisationDescription").toString() : null);
         this.setRowCount(rowCount);
