@@ -23,7 +23,9 @@
                             </p:column>
                             <p:column filterBy="#{userResult.birthdate}" headerText="#{messages['user.birthdate']}">
                                 <f:facet name="filter">
-                                    <p:calendar value="#{organisationController.selectedBirthdate}" pattern="dd.MM.yyyy" onchange="PF('userTable').filter()" />
+                                    <p:calendar value="#{organisationController.selectedBirthdate}" pattern="dd.MM.yyyy" >
+                                        <p:ajax event="dateSelect" oncomplete="PF('userTable').filter()"/>
+                                    </p:calendar>
                                 </f:facet>
                                 <h:outputText value="#{userResult.birthdate}" />
                             </p:column>

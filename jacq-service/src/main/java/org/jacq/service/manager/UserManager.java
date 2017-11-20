@@ -261,6 +261,11 @@ public class UserManager {
             predicates.add(cb.like(path, username + "%"));
         }
 
+        if (birthdate != null) {
+            path = bo.get("birthdate");
+            predicates.add(cb.equal(path, birthdate));
+        }
+
         if (userType != null) {
             Join<FrmwrkUser, FrmwrkUserType> frmwrkUserType = bo.join("userTypeId", JoinType.LEFT);
             path = frmwrkUserType.get("type");
