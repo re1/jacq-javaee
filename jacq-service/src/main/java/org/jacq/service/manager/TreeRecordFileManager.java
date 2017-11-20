@@ -98,6 +98,21 @@ public class TreeRecordFileManager {
     }
 
     /**
+     * @param treeRecordFileResult
+     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
+     */
+    @Transactional
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
+        TblTreeRecordFile tblTreeRecordFile = new TblTreeRecordFile();
+
+        tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
+        tblTreeRecordFile.setName(treeRecordFileResult.getName());
+        em.persist(tblTreeRecordFile);
+
+        return new TreeRecordFileResult(tblTreeRecordFile);
+    }
+
+    /**
      * Helper function for applying the search criteria for counting / selecting
      *
      * @see OrganisationManager#search(java.lang.Long, java.lang.String,

@@ -43,4 +43,9 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
     public int searchCount(Long treeRecordFileId, Date year, String name, String documentNumber) {
         return treeRecordFileManager.searchCount(treeRecordFileId, year, name, documentNumber);
     }
+
+    @Override
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
+        return treeRecordFileManager.save(treeRecordFileResult);
+    }
 }

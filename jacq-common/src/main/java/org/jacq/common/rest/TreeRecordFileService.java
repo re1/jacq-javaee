@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -63,5 +64,17 @@ public interface TreeRecordFileService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
+
+    /**
+     * Update or Add Single User entry
+     *
+     * @param treeRecordFileResult
+     * @return
+     */
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult);
 
 }
