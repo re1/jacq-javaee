@@ -123,7 +123,7 @@ public class TreeRecordFileManager {
 
         if (year != null) {
             path = bo.get("year");
-            predicates.add(cb.like(path, year + "%"));
+            predicates.add(cb.equal(path, year));
         }
 
         if (name != null) {

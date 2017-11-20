@@ -70,22 +70,13 @@ public class LazyUserDataModel extends LazyDataModel<UserResult> {
 
     @Override
     public List<UserResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-
-        //Parse Datefilter
-        Date birthdate = new Date();
-        if (filters.get("birthdate") != null) {
-            birthdate = (Date) filters.get("birthdate");
-        } else {
-            birthdate = null;
-        }
-
         // get count first
-        int rowCount = this.userService.searchCount((filters.get("id") != null) ? Long.parseLong(filters.get("id").toString()) : null, filters.get("username") != null ? filters.get("username").toString() : null, birthdate, filters.get("userType") != null ? filters.get("userType").toString() : null, filters.get("employmentType") != null ? filters.get("employmentType").toString() : null, filters.get("organisationDescription") != null ? filters.get("organisationDescription").toString() : null);
+        int rowCount = this.userService.searchCount((filters.get("id") != null) ? Long.parseLong(filters.get("id").toString()) : null, filters.get("username") != null ? filters.get("username").toString() : null, filters.get("birthdate") != null ? (Date) filters.get("birthdate") : null, filters.get("userType") != null ? filters.get("userType").toString() : null, filters.get("employmentType") != null ? filters.get("employmentType").toString() : null, filters.get("organisationDescription") != null ? filters.get("organisationDescription").toString() : null);
         this.setRowCount(rowCount);
 
         List<UserResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.userService.search((filters.get("id") != null) ? Long.parseLong(filters.get("id").toString()) : null, filters.get("username") != null ? filters.get("username").toString() : null, birthdate, filters.get("userType") != null ? filters.get("userType").toString() : null, filters.get("employmentType") != null ? filters.get("employmentType").toString() : null, filters.get("organisationDescription") != null ? filters.get("organisationDescription").toString() : null, first, pageSize);
+            results = this.userService.search((filters.get("id") != null) ? Long.parseLong(filters.get("id").toString()) : null, filters.get("username") != null ? filters.get("username").toString() : null, filters.get("birthdate") != null ? (Date) filters.get("birthdate") : null, filters.get("userType") != null ? filters.get("userType").toString() : null, filters.get("employmentType") != null ? filters.get("employmentType").toString() : null, filters.get("organisationDescription") != null ? filters.get("organisationDescription").toString() : null, first, pageSize);
         }
 
         return results;
