@@ -15,6 +15,11 @@
  */
 package org.jacq.service.manager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +32,12 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import javax.ws.rs.core.Response;
 import org.jacq.common.model.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
+import javax.ws.rs.core.Response.Status;
 
 /**
  *
@@ -110,6 +119,32 @@ public class TreeRecordFileManager {
         em.persist(tblTreeRecordFile);
 
         return new TreeRecordFileResult(tblTreeRecordFile);
+    }
+
+    /**
+     *
+     * @param is
+     * @param formData
+     * @return
+     * @throws IOException
+     */
+    @Transactional
+    public Response uploadFile(@FormDataParam("upload") InputStream is,
+            @FormDataParam("upload") FormDataContentDisposition formData) throws IOException {
+        String fileLocation = "c:/work/" + formData.getFileName();
+        saveFile(is, fileLocation);
+        String result = "Successfully File Uploaded on the path " + fileLocation;
+        return Response.status(Status.OK).entity(result).build();
+
+    }
+
+    public void saveFile(InputStream is, String fileLocation) throws IOException {
+        OutputStream os = new FileOutputStream(new File(fileLocation));
+        byte[] buffer = new byte[256];
+        int bytes = 0;
+        while ((bytes = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytes);
+        }
     }
 
     /**
