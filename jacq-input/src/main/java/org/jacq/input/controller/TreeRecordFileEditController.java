@@ -21,6 +21,7 @@ import javax.faces.bean.ViewScoped;
 import org.jacq.common.model.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.input.util.ServicesUtil;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -35,6 +36,8 @@ public class TreeRecordFileEditController {
     protected TreeRecordFileResult treeRecordFile;
 
     protected TreeRecordFileService treeRecordFileService;
+
+    private UploadedFile file;
 
     @PostConstruct
     public void init() {
@@ -61,6 +64,14 @@ public class TreeRecordFileEditController {
         this.treeRecordFile = this.treeRecordFileService.save(this.treeRecordFile);
 
         return null;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
     }
 
 }

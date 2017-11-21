@@ -15,6 +15,8 @@
  */
 package org.jacq.common.rest;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Date;
 import javax.ws.rs.Consumes;
@@ -25,6 +27,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.TreeRecordFileResult;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 /**
  *
@@ -76,5 +83,31 @@ public interface TreeRecordFileService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult);
+
+    /**
+     *
+     * @param is
+     * @param formData
+     * @return
+     * @throws java.io.IOException
+     */
+    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public void uploadFile(@FormDataParam("upload") InputStream is,
+            @FormDataParam("upload") FormDataContentDisposition formData) throws IOException {
+        String fileLocation = "c:/work/" + formData.getFileName();
+        saveFile(is, fileLocation);
+
+    }
+
+    public void saveFile(InputStream is, String fileLocation) throws IOException {
+        OutputStream os = new FileOutputStream(new File(fileLocation));
+        byte[] buffer = new byte[256];
+        int bytes = 0;
+        while ((bytes = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytes);
+        }
+    }
 
 }
