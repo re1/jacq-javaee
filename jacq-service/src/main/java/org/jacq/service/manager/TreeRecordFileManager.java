@@ -33,10 +33,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
-import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 import javax.ws.rs.core.Response.Status;
 
 /**
@@ -128,7 +126,7 @@ public class TreeRecordFileManager {
      * @return
      * @throws IOException
      */
-    @Transactional
+    /*    @Transactional
     public Response uploadFile(@FormDataParam("upload") InputStream is,
             @FormDataParam("upload") FormDataContentDisposition formData) throws IOException {
         String fileLocation = "c:/work/" + formData.getFileName();
@@ -137,7 +135,7 @@ public class TreeRecordFileManager {
         return Response.status(Status.OK).entity(result).build();
 
     }
-
+     */
     public void saveFile(InputStream is, String fileLocation) throws IOException {
         OutputStream os = new FileOutputStream(new File(fileLocation));
         byte[] buffer = new byte[256];
@@ -150,11 +148,10 @@ public class TreeRecordFileManager {
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
-     * java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String)
      *
      * @param cb
      * @param cq

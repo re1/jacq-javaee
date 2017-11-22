@@ -17,7 +17,7 @@ package org.jacq.service.rest.impl;
 
 import java.util.List;
 import javax.inject.Inject;
-import org.jacq.common.model.BotanicalObjectResult;
+import org.jacq.common.model.rest.BotanicalObjectResult;
 import org.jacq.common.rest.BotanicalObjectService;
 import org.jacq.service.manager.BotanicalObjectManager;
 

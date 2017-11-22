@@ -8,6 +8,10 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="derivativeId" value="#{livingPlantEditController.derivativeId}"/>
+            </f:metadata>
+
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
@@ -20,7 +24,8 @@
                                     <h:outputText value="#{messages['livingplant.scientificname']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.scientificName}" />
+                                    <h:inputHidden value="#{livingPlantEditController.livingPlantResult.scientificNameId}" />
                                 </div>
                             </div>
                         </div>
@@ -40,7 +45,7 @@
                                     <h:outputText value="#{messages['livingplant.location']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.organisationDescription}"/>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +55,7 @@
                                     <h:outputText value="#{messages['livingplant.placenumber']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.placeNumber}"/>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +87,8 @@
                                     <h:outputText value="#{messages['livingplant.accessionnumber']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="auto">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.accessionNumber}"/>
+                                    <p:selectOneMenu id="auto" rendered="false">
                                         <f:selectItem itemLabel="auto" noSelectionOption="true" />
                                     </p:selectOneMenu>
                                 </div>
@@ -178,7 +184,7 @@
                                     <h:outputText value="#{messages['livingplant.annotationforlabel']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText />
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.labelAnnotation}" />
                                 </div>
                             </div>
                         </div>

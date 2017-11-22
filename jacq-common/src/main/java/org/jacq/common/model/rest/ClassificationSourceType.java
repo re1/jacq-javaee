@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.common.model;
+package org.jacq.common.model.rest;
 
 /**
  * List of possible sources for classification entries

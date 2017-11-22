@@ -26,7 +26,7 @@ import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.ws.rs.QueryParam;
-import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.SrvcUuidMinter;
 import org.jacq.common.model.jpa.ViewClassificationResult;

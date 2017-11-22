@@ -23,14 +23,14 @@ import java.io.Serializable;
  */
 public class BotanicalObjectDerivativeKey implements Serializable {
 
-    private int id;
-    private int derivativeId;
+    private long id;
+    private long derivativeId;
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 43 * hash + this.id;
-        hash = 43 * hash + this.derivativeId;
+        hash = (int) (43 * hash + this.id);
+        hash = (int) (43 * hash + this.derivativeId);
         return hash;
     }
 

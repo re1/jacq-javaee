@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;

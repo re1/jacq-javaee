@@ -25,7 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.rest.TreeRecordFileResult;
 import javax.ws.rs.core.Response;
 
 /**
@@ -85,9 +85,9 @@ public interface TreeRecordFileService {
      * @param formData
      * @return
      */
-    @POST
+    /*    @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@FormDataParam("upload") InputStream is, @FormDataParam("upload") FormDataContentDisposition formData);
-
+     */
 }

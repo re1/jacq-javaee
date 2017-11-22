@@ -18,7 +18,7 @@ package org.jacq.input.controller;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.input.util.ServicesUtil;
 import org.primefaces.model.UploadedFile;

@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.UserResult;
+import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;

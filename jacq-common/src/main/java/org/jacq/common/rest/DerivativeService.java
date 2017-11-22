@@ -22,8 +22,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.jacq.common.model.BotanicalObjectDerivative;
-import org.jacq.common.model.OrderDirection;
+import org.jacq.common.model.rest.OrderDirection;
 
 /**
  * Main service for searching derivatives
@@ -62,4 +63,16 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId);
+
+    /**
+     * Get details for a given derivative entry
+     *
+     * @param derivativeId
+     * @return
+     */
+    @GET
+    @Path("/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response load(@QueryParam("derivativeId") Long derivativeId, @QueryParam("type") String type);
 }

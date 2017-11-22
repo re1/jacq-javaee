@@ -28,7 +28,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import org.jacq.common.model.OrganisationResult;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.OrganisationService;

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.BotanicalObjectDerivative;
-import org.jacq.common.model.OrderDirection;
+import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.input.controller.LivingPlantController;
 import org.primefaces.model.LazyDataModel;
@@ -61,7 +61,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         Long rowKeyLong = Long.valueOf(rowKey);
 
         for (BotanicalObjectDerivative derivativeResult : this.derivativeResults) {
-            if (derivativeResult.getId().equals(rowKeyLong)) {
+            if (rowKeyLong.equals(derivativeResult.getId())) {
                 return derivativeResult;
             }
         }
