@@ -24,10 +24,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.EmploymentTypeResult;
-import org.jacq.common.model.GroupResult;
-import org.jacq.common.model.UserResult;
-import org.jacq.common.model.UserTypeResult;
+import org.jacq.common.model.rest.EmploymentTypeResult;
+import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.model.rest.UserTypeResult;
 
 /**
  *

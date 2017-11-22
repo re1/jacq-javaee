@@ -17,9 +17,7 @@ package org.jacq.output.view;
 
 import java.util.List;
 import java.util.UUID;
-import org.jacq.common.model.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
-import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.output.model.RevClassificationView;
 import org.primefaces.model.DefaultTreeNode;

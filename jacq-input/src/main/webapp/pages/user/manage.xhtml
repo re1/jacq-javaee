@@ -14,7 +14,7 @@
                         <h1>#{messages['user.usermanage']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="userResult" lazy="true" value="#{userController.dataModel}" paginator="true" rows="10">
+                        <p:dataTable var="userResult" lazy="true" value="#{userController.dataModel}" widgetVar="userTable" paginator="true" rows="10">
                             <p:column filterBy="#{userResult.id}" headerText="#{messages['user.id']}">
                                 <h:outputText value="#{userResult.id}" />
                             </p:column>
@@ -22,7 +22,14 @@
                                 <h:outputText value="#{userResult.username}" />
                             </p:column>
                             <p:column filterBy="#{userResult.birthdate}" headerText="#{messages['user.birthdate']}">
-                                <h:outputText value="#{userResult.birthdate}" />
+                                <f:facet name="filter">
+                                    <p:calendar value="#{organisationController.selectedBirthdate}" pattern="dd.MM.yyyy" >
+                                        <p:ajax event="dateSelect" oncomplete="PF('userTable').filter()"/>
+                                    </p:calendar>
+                                </f:facet>
+                                <h:outputText value="#{userResult.birthdate}">
+                                    <f:convertDateTime type="date" pattern="dd.MM.yyyy"/>
+                                </h:outputText>
                             </p:column>
                             <p:column filterBy="#{userResult.userType}" headerText="#{messages['user.usertype']}">
                                 <h:outputText value="#{userResult.userType}" />

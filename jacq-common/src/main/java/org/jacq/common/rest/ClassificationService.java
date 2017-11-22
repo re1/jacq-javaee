@@ -24,7 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.ClassificationSourceType;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 

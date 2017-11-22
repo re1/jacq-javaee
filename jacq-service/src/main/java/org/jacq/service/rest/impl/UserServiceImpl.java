@@ -18,10 +18,10 @@ package org.jacq.service.rest.impl;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import org.jacq.common.model.EmploymentTypeResult;
-import org.jacq.common.model.GroupResult;
-import org.jacq.common.model.UserResult;
-import org.jacq.common.model.UserTypeResult;
+import org.jacq.common.model.rest.EmploymentTypeResult;
+import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.model.rest.UserTypeResult;
 import org.jacq.common.rest.UserService;
 import org.jacq.service.manager.UserManager;
 

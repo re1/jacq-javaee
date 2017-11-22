@@ -15,8 +15,13 @@ import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import org.jacq.common.model.BotanicalObjectDerivative;
-import org.jacq.common.model.OrderDirection;
+import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.rest.BotanicalObjectService;
+import org.jacq.common.rest.DerivativeService;
 
 /**
  * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
@@ -128,6 +133,21 @@ public class DerivativeManager {
     }
 
     /**
+     * @see DerivativeService#load(java.lang.Long, java.lang.String)
+     */
+    @Transactional
+    public BotanicalObjectDerivative load(Long derivativeId, String type) {
+        if (LivingPlantResult.LIVING.equalsIgnoreCase(type)) {
+            TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, derivativeId);
+            if (tblLivingPlant != null) {
+                return new LivingPlantResult(tblLivingPlant);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Apply search criteria for querying
      *
      * @param baseSql
@@ -197,4 +217,5 @@ public class DerivativeManager {
 
         return null;
     }
+
 }

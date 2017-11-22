@@ -18,7 +18,7 @@ package org.jacq.input.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.OrganisationResult;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.rest.OrganisationService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;

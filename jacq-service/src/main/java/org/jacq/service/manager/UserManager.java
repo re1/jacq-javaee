@@ -29,10 +29,10 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import org.jacq.common.model.EmploymentTypeResult;
-import org.jacq.common.model.GroupResult;
-import org.jacq.common.model.UserResult;
-import org.jacq.common.model.UserTypeResult;
+import org.jacq.common.model.rest.EmploymentTypeResult;
+import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.model.rest.UserTypeResult;
 import org.jacq.common.model.jpa.FrmwrkEmploymentType;
 import org.jacq.common.model.jpa.FrmwrkGroup;
 import org.jacq.common.model.jpa.FrmwrkUser;
@@ -259,6 +259,11 @@ public class UserManager {
         if (username != null) {
             path = bo.get("username");
             predicates.add(cb.like(path, username + "%"));
+        }
+
+        if (birthdate != null) {
+            path = bo.get("birthdate");
+            predicates.add(cb.equal(path, birthdate));
         }
 
         if (userType != null) {

@@ -30,7 +30,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
-import org.jacq.common.model.ImageServerResource;
+import org.jacq.common.model.rest.ImageServerResource;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblImageServer;
 import org.jacq.common.model.jpa.TblLivingPlant;

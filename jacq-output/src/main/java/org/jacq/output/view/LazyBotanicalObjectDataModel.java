@@ -18,7 +18,7 @@ package org.jacq.output.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.BotanicalObjectResult;
+import org.jacq.common.model.rest.BotanicalObjectResult;
 import org.jacq.common.rest.BotanicalObjectService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;

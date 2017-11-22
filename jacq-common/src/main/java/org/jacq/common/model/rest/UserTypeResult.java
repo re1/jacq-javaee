@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.common.model;
+package org.jacq.common.model.rest;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.jacq.common.model.jpa.FrmwrkEmploymentType;
+import org.jacq.common.model.jpa.FrmwrkUserType;
 
 /**
  *
@@ -28,17 +28,17 @@ import org.jacq.common.model.jpa.FrmwrkEmploymentType;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EmploymentTypeResult {
+public class UserTypeResult {
 
-    protected Long employmentTypeId;
+    protected Long userTypeId;
     protected String type;
 
-    public Long getEmploymentTypeId() {
-        return employmentTypeId;
+    public Long getUserTypeId() {
+        return userTypeId;
     }
 
-    public void setEmploymentTypeId(Long employmentTypeId) {
-        this.employmentTypeId = employmentTypeId;
+    public void setUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
     }
 
     public String getType() {
@@ -49,31 +49,30 @@ public class EmploymentTypeResult {
         this.type = type;
     }
 
-    public EmploymentTypeResult() {
+    public UserTypeResult() {
     }
 
-    public EmploymentTypeResult(FrmwrkEmploymentType employmentType) {
-        this.employmentTypeId = employmentType.getEmploymentTypeId();
-        this.type = employmentType.getType().toString();
+    public UserTypeResult(FrmwrkUserType userType) {
+        this.userTypeId = userType.getUserTypeId();
+        this.type = userType.getType().toString();
     }
 
     /**
      * Helper function for converting a list of User entries to userTypeResult
      *
-     * @param employmentTypeList
      * @param userTypeList
      * @return
      */
-    public static List<EmploymentTypeResult> fromList(List<FrmwrkEmploymentType> employmentTypeList) {
-        List<EmploymentTypeResult> employmentTypeResult = new ArrayList<>();
+    public static List<UserTypeResult> fromList(List<FrmwrkUserType> userTypeList) {
+        List<UserTypeResult> userTypeResult = new ArrayList<>();
 
-        if (employmentTypeList != null) {
-            for (FrmwrkEmploymentType employmentType : employmentTypeList) {
-                employmentTypeResult.add(new EmploymentTypeResult(employmentType));
+        if (userTypeList != null) {
+            for (FrmwrkUserType userType : userTypeList) {
+                userTypeResult.add(new UserTypeResult(userType));
             }
         }
 
-        return employmentTypeResult;
+        return userTypeResult;
     }
 
 }

@@ -36,17 +36,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @IdClass(BotanicalObjectDerivativeKey.class)
 public class BotanicalObjectDerivative implements Serializable {
 
+    public static final String LIVING = "living";
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private int id;
+    private long id;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "derivative_id")
-    private int derivativeId;
+    private long derivativeId;
     @Lob
     @Size(max = 65535)
     @Column(name = "scientific_name")
@@ -76,19 +78,19 @@ public class BotanicalObjectDerivative implements Serializable {
     public BotanicalObjectDerivative() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getDerivativeId() {
+    public long getDerivativeId() {
         return derivativeId;
     }
 
-    public void setDerivativeId(int derivativeId) {
+    public void setDerivativeId(long derivativeId) {
         this.derivativeId = derivativeId;
     }
 

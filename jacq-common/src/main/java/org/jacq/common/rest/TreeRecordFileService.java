@@ -15,15 +15,18 @@
  */
 package org.jacq.common.rest;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.TreeRecordFileResult;
+import org.jacq.common.model.rest.TreeRecordFileResult;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -64,4 +67,27 @@ public interface TreeRecordFileService {
     @Produces(MediaType.APPLICATION_JSON)
     public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
 
+    /**
+     * Update or Add Single User entry
+     *
+     * @param treeRecordFileResult
+     * @return
+     */
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult);
+
+    /**
+     *
+     * @param is
+     * @param formData
+     * @return
+     */
+    /*    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(@FormDataParam("upload") InputStream is, @FormDataParam("upload") FormDataContentDisposition formData);
+     */
 }

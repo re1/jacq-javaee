@@ -32,7 +32,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.manager.NameParserManager;
-import org.jacq.common.model.BotanicalObjectResult;
+import org.jacq.common.model.rest.BotanicalObjectResult;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;

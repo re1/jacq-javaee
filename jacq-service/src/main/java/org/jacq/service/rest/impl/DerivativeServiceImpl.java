@@ -18,13 +18,16 @@ package org.jacq.service.rest.impl;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.BotanicalObjectDerivative;
-import org.jacq.common.model.OrderDirection;
+import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
+ * Implementation of derivative service
  *
+ * @see DerivativeService
  * @author wkoller
  */
 @ManagedBean
@@ -33,14 +36,29 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Inject
     protected DerivativeManager derivativeManager;
 
+    /**
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         return derivativeManager.find(type, derivativeId, orderColumn, orderDirection, offset, count);
     }
 
+    /**
+     * @see DerivativeService#count(java.lang.String, java.lang.Long)
+     */
     @Override
     public int count(String type, Long derivativeId) {
         return derivativeManager.count(type, derivativeId);
+    }
+
+    /**
+     * @see DerivativeService#load(java.lang.Long, java.lang.String)
+     */
+    @Override
+    public Response load(Long derivativeId, String type) {
+        return Response.ok().entity(derivativeManager.load(derivativeId, type)).build();
     }
 
 }
