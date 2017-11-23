@@ -7,7 +7,7 @@ package org.jacq.input.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.jacq.input.util.ServicesUtil;
 import org.jacq.input.view.LazyDerivativeDataModel;
 
@@ -16,7 +16,7 @@ import org.jacq.input.view.LazyDerivativeDataModel;
  * @author wkoller
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class LivingPlantController {
 
     public static final String TYPE_ALL = "all";

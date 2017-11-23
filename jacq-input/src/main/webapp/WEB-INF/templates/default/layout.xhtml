@@ -5,18 +5,27 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>JACQ</title>
         <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Poppins" rel="stylesheet"></link>
 
         <h:outputStylesheet library="jacq" name="jacq.css" />
+        <h:outputStylesheet library="" name="icons.css" />
+
     </h:head>
     <h:body>
         <div class="jacq-content">
             <div class="jacq-header">
                 <header>
                     <img class="jacq-logo-img" src="../../resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
+                    <h:form>
+                        <p:splitButton icon="flag-de">
+                            <p:menuitem value="Deutsch" icon="flag-de" />
+                            <p:menuitem value="English" icon="flag-en" />
+                        </p:splitButton>
+                    </h:form>
                 </header>
             </div>
         </div>
