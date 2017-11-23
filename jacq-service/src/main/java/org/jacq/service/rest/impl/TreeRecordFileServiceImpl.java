@@ -15,11 +15,9 @@
  */
 package org.jacq.service.rest.impl;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.manager.TreeRecordFileManager;
@@ -50,9 +48,4 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
         return treeRecordFileManager.save(treeRecordFileResult);
     }
-
-    /*    @Override
-    public Response uploadFile(InputStream is, FormDataContentDisposition formData) {
-        return treeRecordFileManager.uploadFile(is, formData)
-    }*/
 }
