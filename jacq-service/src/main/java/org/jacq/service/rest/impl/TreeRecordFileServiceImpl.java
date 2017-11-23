@@ -15,8 +15,11 @@
  */
 package org.jacq.service.rest.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
@@ -46,6 +49,11 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
 
     @Override
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
-        return treeRecordFileManager.save(treeRecordFileResult);
+        try {
+            return treeRecordFileManager.save(treeRecordFileResult);
+        } catch (IOException ex) {
+            Logger.getLogger(TreeRecordFileServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

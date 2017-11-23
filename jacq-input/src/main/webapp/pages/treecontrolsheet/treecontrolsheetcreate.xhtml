@@ -7,11 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
-        <ui:define name="content">
+        <ui:define name="content_noform">
             <f:metadata>
                 <f:viewParam name="organisationId" value="#{treeRecordFileEditController.treeRecordFileId}"/>
             </f:metadata>
-            <h:form>
+            <h:form enctype="multipart/form-data">
                 <div class="jacq-content">
                     <div class="jacq-content-header">
                         <h1>#{messages['treecontrolsheet.treecontrolsheetcreate']}</h1>
@@ -43,13 +43,13 @@
                                     <h:outputText value="#{messages['treecontrolsheet.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:fileUpload  mode="simple" skinSimple="true"/>
+                                    <p:fileUpload value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" />
+                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" ajax="false" />
                     </div>
                 </div>
             </h:form>

@@ -15,9 +15,21 @@
  */
 package org.jacq.service.manager;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.utils.PageRange;
+import com.itextpdf.kernel.utils.PdfSplitter;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -29,12 +41,20 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
+import org.jacq.common.rest.OrganisationService;
+import org.jacq.common.rest.TreeRecordFileService;
+import org.jacq.service.JacqConfig;
 
 /**
  *
  * @author fhafner
  */
 public class TreeRecordFileManager {
+
+    private static final Logger LOGGER = Logger.getLogger(TreeRecordFileManager.class.getName());
+
+    @Inject
+    protected JacqConfig jacqConfig;
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
@@ -102,7 +122,7 @@ public class TreeRecordFileManager {
      * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
      */
     @Transactional
-    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) throws IOException {
         TblTreeRecordFile tblTreeRecordFile = new TblTreeRecordFile();
 
         tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
@@ -110,16 +130,40 @@ public class TreeRecordFileManager {
         em.persist(tblTreeRecordFile);
 
         // TODO: decode and save to disk, split file, save total number of pages and records for them
+        byte[] decodedPdf = Base64.getDecoder().decode(treeRecordFileResult.getFileContent());
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
+        PdfDocument pdfDoc = new PdfDocument(new PdfReader(byteArrayInputStream));
+
+        List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc) {
+            int partNumber = 1;
+
+            @Override
+            protected PdfWriter getNextPdfWriter(PageRange documentPageRange) {
+                try {
+                    return new PdfWriter(jacqConfig.getString(JacqConfig.TREERECORD_PDF_PATH) + "splitDocument1_" + String.valueOf(partNumber++) + ".pdf");
+                } catch (FileNotFoundException ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                }
+                return null;
+            }
+        }.splitByPageCount(1);
+
+        for (PdfDocument doc : splitDocuments) {
+            doc.close();
+        }
+        pdfDoc.close();
+
         return new TreeRecordFileResult(tblTreeRecordFile);
     }
 
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq
