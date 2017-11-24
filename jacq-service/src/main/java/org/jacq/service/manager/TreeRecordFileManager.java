@@ -17,17 +17,15 @@ package org.jacq.service.manager;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.utils.PageRange;
 import com.itextpdf.kernel.utils.PdfSplitter;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -41,6 +39,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
+import org.jacq.common.model.jpa.TblTreeRecordFilePage;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.JacqConfig;
@@ -128,28 +127,26 @@ public class TreeRecordFileManager {
         tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
         tblTreeRecordFile.setName(treeRecordFileResult.getName());
         em.persist(tblTreeRecordFile);
+        final Long tblTreeRecordFileid = tblTreeRecordFile.getId();
 
         // TODO: decode and save to disk, split file, save total number of pages and records for them
         byte[] decodedPdf = Base64.getDecoder().decode(treeRecordFileResult.getFileContent());
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
         PdfDocument pdfDoc = new PdfDocument(new PdfReader(byteArrayInputStream));
 
-        List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc) {
-            int partNumber = 1;
-
-            @Override
-            protected PdfWriter getNextPdfWriter(PageRange documentPageRange) {
-                try {
-                    return new PdfWriter(jacqConfig.getString(JacqConfig.TREERECORD_PDF_PATH) + "splitDocument1_" + String.valueOf(partNumber++) + ".pdf");
-                } catch (FileNotFoundException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
-                return null;
-            }
-        }.splitByPageCount(1);
-
+        List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc).splitByPageCount(1);
+        int page = 1;
         for (PdfDocument doc : splitDocuments) {
+            byte[] pdfPage = null;
+            OutputStream outputStream = doc.getWriter().getOutputStream();
+            ByteArrayOutputStream bos = (ByteArrayOutputStream) outputStream;
+            pdfPage = bos.toByteArray();
             doc.close();
+            TblTreeRecordFilePage tblTreeRecordFilePage = new TblTreeRecordFilePage();
+            tblTreeRecordFilePage.setTreeRecordFileId(em.find(TblTreeRecordFile.class, tblTreeRecordFileid));
+            tblTreeRecordFilePage.setContent(Base64.getEncoder().encodeToString(pdfPage));
+            tblTreeRecordFilePage.setPage(page++);
+            em.persist(tblTreeRecordFilePage);
         }
         pdfDoc.close();
 
