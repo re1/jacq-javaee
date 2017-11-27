@@ -56,4 +56,9 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
         }
         return null;
     }
+
+    @Override
+    public TreeRecordFileResult load(Long treeRecordFileId) {
+        return treeRecordFileManager.load(treeRecordFileId);
+    }
 }

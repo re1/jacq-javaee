@@ -76,4 +76,15 @@ public interface TreeRecordFileService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult);
+
+    /**
+     *
+     * @param treeRecordFileId
+     * @return
+     */
+    @GET
+    @Path("/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFileResult load(@QueryParam("treeRecordFileId") Long treeRecordFileId);
 }

@@ -21,9 +21,9 @@ import com.itextpdf.kernel.utils.PdfSplitter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,7 +40,6 @@ import javax.transaction.Transactional;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
 import org.jacq.common.model.jpa.TblTreeRecordFilePage;
-import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.JacqConfig;
 
@@ -118,39 +117,55 @@ public class TreeRecordFileManager {
 
     /**
      * @param treeRecordFileResult
-     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
+     * @see TreeRecordFileService
      */
     @Transactional
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) throws IOException {
         TblTreeRecordFile tblTreeRecordFile = new TblTreeRecordFile();
-
         tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
         tblTreeRecordFile.setName(treeRecordFileResult.getName());
         em.persist(tblTreeRecordFile);
-        final Long tblTreeRecordFileid = tblTreeRecordFile.getId();
+        if (!treeRecordFileResult.getFileContent().equals("")) {
+            final Long tblTreeRecordFileid = tblTreeRecordFile.getId();
 
-        // TODO: decode and save to disk, split file, save total number of pages and records for them
-        byte[] decodedPdf = Base64.getDecoder().decode(treeRecordFileResult.getFileContent());
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
-        PdfDocument pdfDoc = new PdfDocument(new PdfReader(byteArrayInputStream));
+            // TODO: decode and save to disk, split file, save total number of pages and records for them
+            byte[] decodedPdf = Base64.getDecoder().decode(treeRecordFileResult.getFileContent());
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
+            PdfDocument pdfDoc = new PdfDocument(new PdfReader(byteArrayInputStream));
 
-        List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc).splitByPageCount(1);
-        int page = 1;
-        for (PdfDocument doc : splitDocuments) {
-            byte[] pdfPage = null;
-            OutputStream outputStream = doc.getWriter().getOutputStream();
-            ByteArrayOutputStream bos = (ByteArrayOutputStream) outputStream;
-            pdfPage = bos.toByteArray();
-            doc.close();
-            TblTreeRecordFilePage tblTreeRecordFilePage = new TblTreeRecordFilePage();
-            tblTreeRecordFilePage.setTreeRecordFileId(em.find(TblTreeRecordFile.class, tblTreeRecordFileid));
-            tblTreeRecordFilePage.setContent(Base64.getEncoder().encodeToString(pdfPage));
-            tblTreeRecordFilePage.setPage(page++);
-            em.persist(tblTreeRecordFilePage);
+            List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc).splitByPageCount(1);
+
+            int page = 1;
+            for (PdfDocument doc : splitDocuments) {
+                doc.getWriter().flush();
+                ByteArrayOutputStream baos = (ByteArrayOutputStream) doc.getWriter().getOutputStream();
+                doc.close();
+                byte[] pdfPage = baos.toByteArray();
+                TblTreeRecordFilePage tblTreeRecordFilePage = new TblTreeRecordFilePage();
+                tblTreeRecordFilePage.setTreeRecordFileId(em.find(TblTreeRecordFile.class, tblTreeRecordFileid));
+                tblTreeRecordFilePage.setContent(Base64.getEncoder().encodeToString(pdfPage));
+                tblTreeRecordFilePage.setPage(page++);
+                em.persist(tblTreeRecordFilePage);
+            }
+            pdfDoc.close();
         }
-        pdfDoc.close();
 
         return new TreeRecordFileResult(tblTreeRecordFile);
+    }
+
+    /**
+     *
+     * @param treeRecordFileId
+     * @return
+     */
+    @Transactional
+    public TreeRecordFileResult load(Long treeRecordFileId) {
+        TblTreeRecordFile tblTreeRecordFile = em.find(TblTreeRecordFile.class, treeRecordFileId);
+        if (tblTreeRecordFile != null) {
+            return new TreeRecordFileResult(tblTreeRecordFile);
+        }
+
+        return null;
     }
 
     /**
