@@ -23,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,6 +39,7 @@ import javax.transaction.Transactional;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
 import org.jacq.common.model.jpa.TblTreeRecordFilePage;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.JacqConfig;
 
@@ -163,6 +163,21 @@ public class TreeRecordFileManager {
         TblTreeRecordFile tblTreeRecordFile = em.find(TblTreeRecordFile.class, treeRecordFileId);
         if (tblTreeRecordFile != null) {
             return new TreeRecordFileResult(tblTreeRecordFile);
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param treeRecordFilePageId
+     * @return
+     */
+    @Transactional
+    public TreeRecordFilePageResult loadPage(Long treeRecordFilePageId) {
+        TblTreeRecordFilePage tblTreeRecordFilePage = em.find(TblTreeRecordFilePage.class, treeRecordFilePageId);
+        if (tblTreeRecordFilePage != null) {
+            return new TreeRecordFilePageResult(tblTreeRecordFilePage);
         }
 
         return null;

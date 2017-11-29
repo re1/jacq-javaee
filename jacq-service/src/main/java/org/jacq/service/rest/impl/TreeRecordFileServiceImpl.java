@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.manager.TreeRecordFileManager;
@@ -60,5 +61,10 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
     @Override
     public TreeRecordFileResult load(Long treeRecordFileId) {
         return treeRecordFileManager.load(treeRecordFileId);
+    }
+
+    @Override
+    public TreeRecordFilePageResult loadPage(Long treeRecordFilePageId) {
+        return treeRecordFileManager.loadPage(treeRecordFilePageId);
     }
 }

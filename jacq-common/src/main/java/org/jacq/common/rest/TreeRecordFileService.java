@@ -24,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 
 /**
@@ -87,4 +88,15 @@ public interface TreeRecordFileService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRecordFileResult load(@QueryParam("treeRecordFileId") Long treeRecordFileId);
+
+    /**
+     *
+     * @param treeRecordFilePageId
+     * @return
+     */
+    @GET
+    @Path("/loadPage")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFilePageResult loadPage(@QueryParam("treeRecordFilePageId") Long treeRecordFilePageId);
 }
