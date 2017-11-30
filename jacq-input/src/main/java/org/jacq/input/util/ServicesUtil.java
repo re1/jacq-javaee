@@ -18,6 +18,7 @@ package org.jacq.input.util;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
@@ -52,6 +53,10 @@ public class ServicesUtil {
 
     public static ClassificationService getClassificationService() {
         return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static IndexSeminumService getIndexSeminumService() {
+        return getProxy(IndexSeminumService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

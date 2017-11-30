@@ -90,6 +90,10 @@ public class TblOrganisation implements Serializable {
     private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkUser> frmwrkUserList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "index_seminum_start")
+    private boolean indexSeminumStart;
 
     public TblOrganisation() {
     }
@@ -183,6 +187,14 @@ public class TblOrganisation implements Serializable {
 
     public void setTblImageServer(TblImageServer tblImageServer) {
         this.tblImageServer = tblImageServer;
+    }
+
+    public boolean getIndexSeminumStart() {
+        return indexSeminumStart;
+    }
+
+    public void setIndexSeminumStart(boolean indexSeminumStart) {
+        this.indexSeminumStart = indexSeminumStart;
     }
 
     @XmlTransient
