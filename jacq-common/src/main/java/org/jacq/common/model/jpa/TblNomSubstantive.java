@@ -18,12 +18,12 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,58 +38,54 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_person")
+@Table(name = "mig_nom_substantive")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblPerson.findAll", query = "SELECT t FROM TblPerson t")
-    , @NamedQuery(name = "TblPerson.findById", query = "SELECT t FROM TblPerson t WHERE t.id = :id")
-    , @NamedQuery(name = "TblPerson.findByName", query = "SELECT t FROM TblPerson t WHERE t.name = :name")})
-public class TblPerson implements Serializable {
+    @NamedQuery(name = "TblNomSubstantive.findAll", query = "SELECT t FROM TblNomSubstantive t")
+    , @NamedQuery(name = "TblNomSubstantive.findBySubstantiveId", query = "SELECT t FROM TblNomSubstantive t WHERE t.substantiveId = :substantiveId")
+    , @NamedQuery(name = "TblNomSubstantive.findBySubstantive", query = "SELECT t FROM TblNomSubstantive t WHERE t.substantive = :substantive")})
+public class TblNomSubstantive implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "substantive_id")
+    private Long substantiveId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @ManyToMany(mappedBy = "tblPersonList")
+    @Column(name = "substantive")
+    private String substantive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "substantiveId")
     private List<TblNomName> tblNomNameList;
-    @ManyToMany(mappedBy = "tblPersonList")
-    private List<TblAcquisitionEvent> tblAcquisitionEventList;
-    @OneToMany(mappedBy = "determinedById")
-    private List<TblBotanicalObject> tblBotanicalObjectList;
 
-    public TblPerson() {
+    public TblNomSubstantive() {
     }
 
-    public TblPerson(Long id) {
-        this.id = id;
+    public TblNomSubstantive(Long substantiveId) {
+        this.substantiveId = substantiveId;
     }
 
-    public TblPerson(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public TblNomSubstantive(Long substantiveId, String substantive) {
+        this.substantiveId = substantiveId;
+        this.substantive = substantive;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSubstantiveId() {
+        return substantiveId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSubstantiveId(Long substantiveId) {
+        this.substantiveId = substantiveId;
     }
 
-    public String getName() {
-        return name;
+    public String getSubstantive() {
+        return substantive;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubstantive(String substantive) {
+        this.substantive = substantive;
     }
 
     @XmlTransient
@@ -101,39 +97,21 @@ public class TblPerson implements Serializable {
         this.tblNomNameList = tblNomNameList;
     }
 
-    @XmlTransient
-    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
-        return tblAcquisitionEventList;
-    }
-
-    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
-        this.tblAcquisitionEventList = tblAcquisitionEventList;
-    }
-
-    @XmlTransient
-    public List<TblBotanicalObject> getTblBotanicalObjectList() {
-        return tblBotanicalObjectList;
-    }
-
-    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
-        this.tblBotanicalObjectList = tblBotanicalObjectList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (substantiveId != null ? substantiveId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblPerson)) {
+        if (!(object instanceof TblNomSubstantive)) {
             return false;
         }
-        TblPerson other = (TblPerson) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        TblNomSubstantive other = (TblNomSubstantive) object;
+        if ((this.substantiveId == null && other.substantiveId != null) || (this.substantiveId != null && !this.substantiveId.equals(other.substantiveId))) {
             return false;
         }
         return true;
@@ -141,7 +119,7 @@ public class TblPerson implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblPerson[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblNomSubstantive[ substantiveId=" + substantiveId + " ]";
     }
 
 }

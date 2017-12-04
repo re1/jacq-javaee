@@ -18,12 +18,12 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,58 +38,56 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_person")
+@Table(name = "mig_nom_epithet")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblPerson.findAll", query = "SELECT t FROM TblPerson t")
-    , @NamedQuery(name = "TblPerson.findById", query = "SELECT t FROM TblPerson t WHERE t.id = :id")
-    , @NamedQuery(name = "TblPerson.findByName", query = "SELECT t FROM TblPerson t WHERE t.name = :name")})
-public class TblPerson implements Serializable {
+    @NamedQuery(name = "TblNomEpithet.findAll", query = "SELECT t FROM TblNomEpithet t")
+    , @NamedQuery(name = "TblNomEpithet.findByEpithetId", query = "SELECT t FROM TblNomEpithet t WHERE t.epithetId = :epithetId")
+    , @NamedQuery(name = "TblNomEpithet.findByEpithet", query = "SELECT t FROM TblNomEpithet t WHERE t.epithet = :epithet")})
+public class TblNomEpithet implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "epithet_id")
+    private Long epithetId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @ManyToMany(mappedBy = "tblPersonList")
+    @Column(name = "epithet")
+    private String epithet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "firstEpithetId")
     private List<TblNomName> tblNomNameList;
-    @ManyToMany(mappedBy = "tblPersonList")
-    private List<TblAcquisitionEvent> tblAcquisitionEventList;
-    @OneToMany(mappedBy = "determinedById")
-    private List<TblBotanicalObject> tblBotanicalObjectList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secondEpithetId")
+    private List<TblNomName> tblNomNameList1;
 
-    public TblPerson() {
+    public TblNomEpithet() {
     }
 
-    public TblPerson(Long id) {
-        this.id = id;
+    public TblNomEpithet(Long epithetId) {
+        this.epithetId = epithetId;
     }
 
-    public TblPerson(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public TblNomEpithet(Long epithetId, String epithet) {
+        this.epithetId = epithetId;
+        this.epithet = epithet;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEpithetId() {
+        return epithetId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEpithetId(Long epithetId) {
+        this.epithetId = epithetId;
     }
 
-    public String getName() {
-        return name;
+    public String getEpithet() {
+        return epithet;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEpithet(String epithet) {
+        this.epithet = epithet;
     }
 
     @XmlTransient
@@ -102,38 +100,29 @@ public class TblPerson implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
-        return tblAcquisitionEventList;
+    public List<TblNomName> getTblNomNameList1() {
+        return tblNomNameList1;
     }
 
-    public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
-        this.tblAcquisitionEventList = tblAcquisitionEventList;
-    }
-
-    @XmlTransient
-    public List<TblBotanicalObject> getTblBotanicalObjectList() {
-        return tblBotanicalObjectList;
-    }
-
-    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
-        this.tblBotanicalObjectList = tblBotanicalObjectList;
+    public void setTblNomNameList1(List<TblNomName> tblNomNameList1) {
+        this.tblNomNameList1 = tblNomNameList1;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (epithetId != null ? epithetId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblPerson)) {
+        if (!(object instanceof TblNomEpithet)) {
             return false;
         }
-        TblPerson other = (TblPerson) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        TblNomEpithet other = (TblNomEpithet) object;
+        if ((this.epithetId == null && other.epithetId != null) || (this.epithetId != null && !this.epithetId.equals(other.epithetId))) {
             return false;
         }
         return true;
@@ -141,7 +130,7 @@ public class TblPerson implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblPerson[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblNomEpithet[ epithetId=" + epithetId + " ]";
     }
 
 }
