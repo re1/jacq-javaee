@@ -16,20 +16,19 @@
 package org.jacq.service.manager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblIndexSeminumContent;
 import org.jacq.common.model.jpa.TblIndexSeminumPerson;
 import org.jacq.common.model.jpa.TblIndexSeminumRevision;
 import org.jacq.common.model.jpa.TblOrganisation;
-import org.jacq.common.model.jpa.TblScientificNameInformation;
+import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.rest.IndexSeminumResult;
 
 /**
@@ -42,67 +41,100 @@ public class IndexSeminumManager {
     protected EntityManager em;
 
     /**
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
+     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
+     * List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
      */
     @Transactional
     public IndexSeminumResult save(IndexSeminumResult indexSeminumResult) {
+
+        // Create new TblIndexSeminumRevision Object set Parameter and Save to DB including set User
         TblIndexSeminumRevision tblIndexSeminumRevision = new TblIndexSeminumRevision();
         tblIndexSeminumRevision.setName(indexSeminumResult.getName());
-        tblIndexSeminumRevision.setUserId(em.find(FrmwrkUser.class, 1L));
-        Calendar rightNow = Calendar.getInstance();
-        tblIndexSeminumRevision.setTimestamp(rightNow.getTime());
+        FrmwrkUser user = em.find(FrmwrkUser.class, 10L);
+        tblIndexSeminumRevision.setUserId(user);
+        em.persist(tblIndexSeminumRevision);
 
-        TblOrganisation tblOrganisation = em.find(TblOrganisation.class, 1L);
+        // Load Organisation from User for finding Head of the Organisation Tree
+        TblOrganisation tblOrganisation = user.getOrganisationId();
         tblOrganisation = findIndexSeminumStart(tblOrganisation);
+
+        // No Organisation with IndexSeminum Start true
         if (tblOrganisation == null) {
             return null;
         }
 
-        List<TblOrganisation> organisationIdList = findchilds(tblOrganisation);
-        organisationIdList.add(tblOrganisation);
+        //Find all Organisation childs for a complet Botanical Object List
+        List<TblOrganisation> organisationList = findchilds(tblOrganisation);
+        organisationList.add(tblOrganisation);
 
-        Query query = em.createQuery("SELECT t FROM TblBotanicalObject t WHERE t.organisationId in :organisationIdList").setParameter("organisationIdList", organisationIdList);
+        // Load the BotanicalObject list with Organisation Id in List
+        Query query = em.createNamedQuery("TblBotanicalObject.findByOrganisationList").setParameter("organisationList", organisationList);
         List<TblBotanicalObject> botanicalObjectList = query.getResultList();
 
+        // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
         for (TblBotanicalObject botanicalObject : botanicalObjectList) {
-            em.persist(tblIndexSeminumRevision);
+            //TODO Family and Scientific Name
+
+            // Tbl_index_seminum_content
             TblIndexSeminumContent tblIndexSeminumContent = new TblIndexSeminumContent();
+
+            // index_seminum_revision_id
             tblIndexSeminumContent.setIndexSeminumRevisionId(tblIndexSeminumRevision);
+            // botanical_object_id
             tblIndexSeminumContent.setBotanicalObjectId(botanicalObject);
+            // accession_number
             tblIndexSeminumContent.setAccessionNumber(String.valueOf(botanicalObject.getTblLivingPlant().getAccessionNumber()));
-            TblScientificNameInformation tblScientificNameInformation = em.find(TblScientificNameInformation.class, botanicalObject.getScientificNameId());
-            tblIndexSeminumContent.setScientificName(tblScientificNameInformation.getCommonNames());
+            // ipen_number
             tblIndexSeminumContent.setIpenNumber(botanicalObject.getTblLivingPlant().getIpenNumber());
-            if (botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear().equals("")) {
-                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
-            } else {
-                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
-            }
-            tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat());
-            tblIndexSeminumContent.setAltitudeMin(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin());
-            tblIndexSeminumContent.setAltitudeMax(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax());
-            tblIndexSeminumContent.setLatitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
-            tblIndexSeminumContent.setLongitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
+            // acquisition_location
             tblIndexSeminumContent.setAcquisitionLocation(botanicalObject.getAcquisitionEventId().getLocationId().getLocation());
-            tblIndexSeminumContent.setTimestamp(rightNow.getTime());
+            // acqustition_number
+            tblIndexSeminumContent.setAcquisitionNumber(String.valueOf(botanicalObject.getAcquisitionEventId().getNumber()));
+            // acquisition_date
+            if (!StringUtils.isEmpty(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
+                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
+            } else {
+                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
+            }
+            // habitat
+            tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat());
+            // altitude_min
+            tblIndexSeminumContent.setAltitudeMin(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin());
+            // altitude_max
+            tblIndexSeminumContent.setAltitudeMax(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax());
+            // latitude
+            tblIndexSeminumContent.setLatitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
+            // longitude
+            tblIndexSeminumContent.setLongitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
+            // save Tbl_index_seminum_content to DB
             em.persist(tblIndexSeminumContent);
-            TblIndexSeminumPerson tblIndexSeminumPerson = new TblIndexSeminumPerson();
-            tblIndexSeminumPerson.setIndexSeminumContentId(tblIndexSeminumContent);
-            tblIndexSeminumPerson.setName(botanicalObject.getDeterminedById().getName());
-            tblIndexSeminumPerson.setTimestamp(rightNow.getTime());
-            em.persist(tblIndexSeminumPerson);
+            // Load all Person to Acquisition Event
+            List<TblPerson> tblPerson = botanicalObject.getAcquisitionEventId().getTblPersonList();
+            for (TblPerson person : tblPerson) {
+
+                // tbl_index_seminum_person
+                TblIndexSeminumPerson tblIndexSeminumPerson = new TblIndexSeminumPerson();
+
+                // index_seminum_content_id
+                tblIndexSeminumPerson.setIndexSeminumContentId(tblIndexSeminumContent);
+                // name
+                tblIndexSeminumPerson.setName(person.getName());
+                // save tbl_index_seminum_person to DB
+                em.persist(tblIndexSeminumPerson);
+            }
 
         }
-
-        return indexSeminumResult;
+        return new IndexSeminumResult(tblIndexSeminumRevision);
     }
 
     /**
      * Find the Head of the Organisation Tree
      *
-     * @param tblorganisation
+     * @param tblOrganisation
      * @return
      */
     protected TblOrganisation findIndexSeminumStart(TblOrganisation tblOrganisation) {
@@ -117,6 +149,7 @@ public class IndexSeminumManager {
     }
 
     /**
+     * Find all childs to the Head of the organisation Tree Recursiv
      *
      * @param tblOrganisation
      * @return

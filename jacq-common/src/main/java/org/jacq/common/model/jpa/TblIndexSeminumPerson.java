@@ -45,8 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblIndexSeminumPerson.findAll", query = "SELECT t FROM TblIndexSeminumPerson t")
     , @NamedQuery(name = "TblIndexSeminumPerson.findByIndexSeminumPersonId", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.indexSeminumPersonId = :indexSeminumPersonId")
-    , @NamedQuery(name = "TblIndexSeminumPerson.findByName", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.name = :name")
-    , @NamedQuery(name = "TblIndexSeminumPerson.findByTimestamp", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.timestamp = :timestamp")})
+    , @NamedQuery(name = "TblIndexSeminumPerson.findByName", query = "SELECT t FROM TblIndexSeminumPerson t WHERE t.name = :name")})
 public class TblIndexSeminumPerson implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,11 +59,6 @@ public class TblIndexSeminumPerson implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
     @JoinColumn(name = "index_seminum_content_id", referencedColumnName = "index_seminum_content_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblIndexSeminumContent indexSeminumContentId;
@@ -79,7 +73,6 @@ public class TblIndexSeminumPerson implements Serializable {
     public TblIndexSeminumPerson(Long indexSeminumPersonId, String name, Date timestamp) {
         this.indexSeminumPersonId = indexSeminumPersonId;
         this.name = name;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumPersonId() {
@@ -96,14 +89,6 @@ public class TblIndexSeminumPerson implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     public TblIndexSeminumContent getIndexSeminumContentId() {

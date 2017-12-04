@@ -49,8 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblIndexSeminumRevision.findAll", query = "SELECT t FROM TblIndexSeminumRevision t")
     , @NamedQuery(name = "TblIndexSeminumRevision.findByIndexSeminumRevisionId", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.indexSeminumRevisionId = :indexSeminumRevisionId")
-    , @NamedQuery(name = "TblIndexSeminumRevision.findByName", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.name = :name")
-    , @NamedQuery(name = "TblIndexSeminumRevision.findByTimestamp", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.timestamp = :timestamp")})
+    , @NamedQuery(name = "TblIndexSeminumRevision.findByName", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.name = :name")})
 public class TblIndexSeminumRevision implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,11 +63,6 @@ public class TblIndexSeminumRevision implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -85,7 +79,6 @@ public class TblIndexSeminumRevision implements Serializable {
     public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name, Date timestamp) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
         this.name = name;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumRevisionId() {
@@ -102,14 +95,6 @@ public class TblIndexSeminumRevision implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     @XmlTransient
