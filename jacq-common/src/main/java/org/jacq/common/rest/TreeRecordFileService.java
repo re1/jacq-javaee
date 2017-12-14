@@ -67,7 +67,7 @@ public interface TreeRecordFileService {
     public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
 
     /**
-     * Update or Add Single User entry
+     * Update or Add Single TreeRecordFile entry
      *
      * @param treeRecordFileResult
      * @return

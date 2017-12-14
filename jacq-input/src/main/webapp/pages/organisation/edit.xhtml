@@ -15,13 +15,13 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>#{messages['location.locationcreate']}</h1>
+                        <h1>#{messages['organisation.edit']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.description']}" />
+                                    <h:outputText value="#{messages['organisation.description']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText value="#{organisationEditController.organisation.description}" />
@@ -31,7 +31,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.department']}" />
+                                    <h:outputText value="#{messages['organisation.department']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText value="#{organisationEditController.organisation.department}" />
@@ -41,7 +41,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.ipencode']}" />
+                                    <h:outputText value="#{messages['organisation.ipencode']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText value="#{organisationEditController.organisation.ipenCode}" />
@@ -51,7 +51,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.parentOrganisation']}" />
+                                    <h:outputText value="#{messages['organisation.parentOrganisation']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
@@ -63,7 +63,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.gardener']}" />
+                                    <h:outputText value="#{messages['organisation.gardener']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectOneMenu id="gardener" value="#{organisationEditController.organisation.gardenerId}">
@@ -75,7 +75,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['location.glasshouse']}" />
+                                    <h:outputText value="#{messages['organisation.glasshouse']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:selectBooleanCheckbox value="#{organisationEditController.organisation.greenhouse}" />

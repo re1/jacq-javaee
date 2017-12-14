@@ -8,48 +8,37 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content_noform">
-            <f:metadata>
-                <f:viewParam name="organisationId" value="#{treeRecordFileEditController.treeRecordFileId}"/>
-            </f:metadata>
             <h:form enctype="multipart/form-data">
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>#{messages['treecontrolsheet.treecontrolsheetcreate']}</h1>
+                        <h1>#{messages['livingplant.inventorycreate']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.description']}" />
+                                    <h:outputText value="#{messages['livingplant.inventorytyp']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText value="#{treeRecordFileEditController.treeRecordFile.name}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.filesnumber']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{treeRecordFileEditController.treeRecordFile.documentNumber}"/>
+                                    <p:selectOneMenu id="inventorytyp" value="#{inventoryEditController.inventory.inventoryTypeId}" >
+                                        <f:selectItems value="#{inventoryEditController.inventoryTypes}" var="inventoryTypes" itemLabel="#{inventoryTypes.type}" itemValue="#{inventoryTypes.inventoryTypeId}" />
+                                    </p:selectOneMenu>
                                 </div>
                             </div>
                         </div>
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.filename']}" />
+                                    <h:outputText value="#{messages['livingplant.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:fileUpload value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true"/>
+                                    <p:fileUpload value="#{inventoryEditController.file}" mode="simple" skinSimple="true"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" ajax="false" />
+                        <p:commandButton value="#{messages['create']}" action="#{inventoryEditController.edit}" ajax="false" />
                     </div>
                 </div>
             </h:form>

@@ -32,9 +32,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,8 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblInventory.findAll", query = "SELECT t FROM TblInventory t")
-    , @NamedQuery(name = "TblInventory.findByInventoryId", query = "SELECT t FROM TblInventory t WHERE t.inventoryId = :inventoryId")
-    , @NamedQuery(name = "TblInventory.findByTimestamp", query = "SELECT t FROM TblInventory t WHERE t.timestamp = :timestamp")})
+    , @NamedQuery(name = "TblInventory.findByInventoryId", query = "SELECT t FROM TblInventory t WHERE t.inventoryId = :inventoryId")})
 public class TblInventory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,11 +53,6 @@ public class TblInventory implements Serializable {
     @Basic(optional = false)
     @Column(name = "inventory_id")
     private Long inventoryId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryId", fetch = FetchType.LAZY)
     private List<TblInventoryObject> tblInventoryObjectList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -78,25 +69,12 @@ public class TblInventory implements Serializable {
         this.inventoryId = inventoryId;
     }
 
-    public TblInventory(Long inventoryId, Date timestamp) {
-        this.inventoryId = inventoryId;
-        this.timestamp = timestamp;
-    }
-
     public Long getInventoryId() {
         return inventoryId;
     }
 
     public void setInventoryId(Long inventoryId) {
         this.inventoryId = inventoryId;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     @XmlTransient

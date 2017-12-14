@@ -15,29 +15,44 @@
  */
 package org.jacq.common.rest;
 
+import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.rest.IndexSeminumResult;
+import org.jacq.common.model.rest.InventoryResult;
+import org.jacq.common.model.rest.InventoryTypeResult;
 
 /**
  *
  * @author fhafner
  */
-@Path("/indexSeminum")
-public interface IndexSeminumService {
+@Path("/inventory")
+public interface InventoryService {
 
     /**
+     * Update or Add Single inventory entry
      *
-     * @param indexSeminumResult
+     * @param inventoryResult
      * @return
      */
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public IndexSeminumResult save(IndexSeminumResult indexSeminumResult);
+    public InventoryResult save(InventoryResult inventoryResult);
+
+    /**
+     * Retrieve a list of all InventoryType entries
+     *
+     * @return
+     */
+    @GET
+    @Path("/findAllInventoryType")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<InventoryTypeResult> findAllInventoryType();
 
 }

@@ -19,6 +19,7 @@ import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
+import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
@@ -45,6 +46,10 @@ public class ServicesUtil {
 
     public static UserService getUserService() {
         return getProxy(UserService.class, JACQ_SERVICE_URL);
+    }
+
+    public static InventoryService getInventoryService() {
+        return getProxy(InventoryService.class, JACQ_SERVICE_URL);
     }
 
     public static TreeRecordFileService getTreeRecordFileService() {

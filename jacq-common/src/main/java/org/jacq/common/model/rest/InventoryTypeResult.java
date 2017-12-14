@@ -20,7 +20,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.jacq.common.model.jpa.FrmwrkEmploymentType;
+import org.jacq.common.model.jpa.TblInventoryType;
 
 /**
  *
@@ -28,17 +28,17 @@ import org.jacq.common.model.jpa.FrmwrkEmploymentType;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EmploymentTypeResult {
+public class InventoryTypeResult {
 
-    protected Long employmentTypeId;
+    protected Long inventoryTypeId;
     protected String type;
 
-    public Long getEmploymentTypeId() {
-        return employmentTypeId;
+    public Long getInventoryTypeId() {
+        return inventoryTypeId;
     }
 
-    public void setEmploymentTypeId(Long employmentTypeId) {
-        this.employmentTypeId = employmentTypeId;
+    public void setInventoryTypeId(Long inventoryTypeId) {
+        this.inventoryTypeId = inventoryTypeId;
     }
 
     public String getType() {
@@ -49,31 +49,31 @@ public class EmploymentTypeResult {
         this.type = type;
     }
 
-    public EmploymentTypeResult() {
+    public InventoryTypeResult() {
     }
 
-    public EmploymentTypeResult(FrmwrkEmploymentType employmentType) {
-        this.employmentTypeId = employmentType.getEmploymentTypeId();
-        this.type = employmentType.getType().toString();
+    public InventoryTypeResult(TblInventoryType inventoryType) {
+        this.inventoryTypeId = inventoryType.getInventoryTypeId();
+        this.type = inventoryType.getType();
     }
 
     /**
-     * Helper function for converting a list of EmploymentType entries to
-     * employmentTypeResult
+     * Helper function for converting a list of inventoryType entries to
+     * inventoryTypeResult
      *
-     * @param employmentTypeList
+     * @param inventoryTypeList
      * @return
      */
-    public static List<EmploymentTypeResult> fromList(List<FrmwrkEmploymentType> employmentTypeList) {
-        List<EmploymentTypeResult> employmentTypeResult = new ArrayList<>();
+    public static List<InventoryTypeResult> fromList(List<TblInventoryType> inventoryTypeList) {
+        List<InventoryTypeResult> inventoryTypeResult = new ArrayList<>();
 
-        if (employmentTypeList != null) {
-            for (FrmwrkEmploymentType employmentType : employmentTypeList) {
-                employmentTypeResult.add(new EmploymentTypeResult(employmentType));
+        if (inventoryTypeList != null) {
+            for (TblInventoryType inventoryType : inventoryTypeList) {
+                inventoryTypeResult.add(new InventoryTypeResult(inventoryType));
             }
         }
 
-        return employmentTypeResult;
+        return inventoryTypeResult;
     }
 
 }
