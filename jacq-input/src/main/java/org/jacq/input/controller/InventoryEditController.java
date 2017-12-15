@@ -25,7 +25,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.rest.InventoryService;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.input.util.ServicesUtil;
 import org.primefaces.model.UploadedFile;
 
@@ -45,7 +47,13 @@ public class InventoryEditController {
 
     protected InventoryService inventoryService;
 
-    private UploadedFile file;
+    protected OrganisationService organisationService;
+
+    protected List<OrganisationResult> organisations;
+
+    protected Boolean separated;
+
+    protected UploadedFile file;
 
     @PostConstruct
     public void init() {
@@ -55,11 +63,16 @@ public class InventoryEditController {
 
         this.inventory = new InventoryResult();
 
+        this.organisationService = ServicesUtil.getOrganisationService();
+
+        this.organisations = this.organisationService.findAll();
+
     }
 
     public String edit() {
         try {
             this.inventory.setFileContent(new String(Base64.getEncoder().encode(this.file.getContents()), "ASCII"));
+            this.inventory.setSeparated(separated);
             this.inventory = this.inventoryService.save(this.inventory);
 
         } catch (UnsupportedEncodingException ex) {
@@ -81,8 +94,20 @@ public class InventoryEditController {
         this.file = file;
     }
 
+    public Boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(Boolean separated) {
+        this.separated = separated;
+    }
+
     public InventoryResult getInventory() {
         return inventory;
+    }
+
+    public List<OrganisationResult> getOrganisations() {
+        return organisations;
     }
 
 }

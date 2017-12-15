@@ -34,6 +34,8 @@ public class InventoryResult {
     protected Long userId;
     protected Long inventoryTypeId;
     protected String fileContent;
+    protected Boolean separated;
+    protected Long organisationId;
 
     public Long getInventoryId() {
         return inventoryId;
@@ -67,6 +69,22 @@ public class InventoryResult {
         this.fileContent = fileContent;
     }
 
+    public Boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(Boolean separated) {
+        this.separated = separated;
+    }
+
+    public Long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
+    }
+
     public InventoryResult() {
     }
 
@@ -77,7 +95,8 @@ public class InventoryResult {
     }
 
     /**
-     * Helper function for converting a list of User entries to Userresults
+     * Helper function for converting a list of TblInventory entries to
+     * InventoryResult
      *
      * @param inventoryList
      * @return

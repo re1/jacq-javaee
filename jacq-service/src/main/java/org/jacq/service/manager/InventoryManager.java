@@ -15,18 +15,30 @@
  */
 package org.jacq.service.manager;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.FrmwrkUser;
+import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblInventory;
+import org.jacq.common.model.jpa.TblInventoryObject;
 import org.jacq.common.model.jpa.TblInventoryType;
+import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.rest.InventoryService;
@@ -55,9 +67,14 @@ public class InventoryManager {
         inventoryTyp = tblInventory.getInventoryTypeId().getType();
 
         switch (inventoryTyp) {
-            case "inventory":
-                defaultinventory(inventoryResult);
-                break;
+            case "inventory": {
+                try {
+                    defaultinventory(inventoryResult, tblInventory);
+                } catch (IOException ex) {
+                    Logger.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
             case "advancedinventory":
                 advancedinventory(inventoryResult);
                 break;
@@ -100,8 +117,42 @@ public class InventoryManager {
         return results;
     }
 
-    private void defaultinventory(InventoryResult inventoryResult) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void defaultinventory(InventoryResult inventoryResult, TblInventory tblInventory) throws IOException {
+        String accessionNumber = "";
+        TblOrganisation organisation = em.find(TblOrganisation.class, inventoryResult.getOrganisationId());
+        byte[] decodedPdf = Base64.getDecoder().decode(inventoryResult.getFileContent());
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
+        List<TblLivingPlant> livingPlantList = new ArrayList<>();
+        List<Long> livingPlantIdList = new ArrayList<>();
+        while ((accessionNumber = bufferedReader.readLine()) != null) {
+            Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Integer.parseInt(accessionNumber));
+            livingPlantList.addAll(query.getResultList());
+            for (TblLivingPlant livingPlant : livingPlantList) {
+                livingPlantIdList.add(livingPlant.getId());
+            }
+        }
+        if (inventoryResult.getSeparated()) {
+            Query query = em.createNamedQuery("TblBotanicalObject.findByNotIntblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
+            List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+            botanicalObjects.addAll(query.getResultList());
+            for (TblBotanicalObject botanicalObject : botanicalObjects) {
+                botanicalObject.setSeparated(inventoryResult.getSeparated());
+                em.merge(botanicalObject);
+            }
+        }
+        Query query = em.createNamedQuery("TblBotanicalObject.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
+        List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+        botanicalObjects.addAll(query.getResultList());
+        for (TblBotanicalObject botanicalObject : botanicalObjects) {
+            botanicalObject.setOrganisationId(organisation);
+            em.merge(botanicalObject);
+            TblInventoryObject tblInventoryObject = new TblInventoryObject();
+            tblInventoryObject.setInventoryId(tblInventory);
+            tblInventoryObject.setBotanicalObjectId(botanicalObject);
+            em.persist(tblInventoryObject);
+        }
+
     }
 
     private void advancedinventory(InventoryResult inventoryResult) {

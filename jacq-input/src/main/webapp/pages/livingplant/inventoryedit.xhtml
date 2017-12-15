@@ -36,6 +36,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['user.organisationDescription']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="organisation" value="#{inventoryEditController.inventory.organisationId}">
+                                        <f:selectItems value="#{inventoryEditController.organisations}" var="organisations" itemLabel="#{organisations.description}" itemValue="#{organisations.organisationId}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.separated']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="#{inventoryEditController.separated}" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="jacq-buttons">
                         <p:commandButton value="#{messages['create']}" action="#{inventoryEditController.edit}" ajax="false" />

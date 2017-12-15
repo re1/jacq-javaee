@@ -61,7 +61,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblBotanicalObject.findByAccessible", query = "SELECT t FROM TblBotanicalObject t WHERE t.accessible = :accessible")
     , @NamedQuery(name = "TblBotanicalObject.findByRedetermine", query = "SELECT t FROM TblBotanicalObject t WHERE t.redetermine = :redetermine")
     , @NamedQuery(name = "TblBotanicalObject.findBySeparated", query = "SELECT t FROM TblBotanicalObject t WHERE t.separated = :separated")
-    , @NamedQuery(name = "TblBotanicalObject.findByOrganisationList", query = "SELECT t FROM TblBotanicalObject t INNER JOIN t.tblLivingPlant l WHERE l.indexSeminum = 1 and t.organisationId in :organisationList")})
+    , @NamedQuery(name = "TblBotanicalObject.findByOrganisationList", query = "SELECT t FROM TblBotanicalObject t INNER JOIN t.tblLivingPlant l WHERE l.indexSeminum = 1 and t.organisationId in :organisationList")
+    , @NamedQuery(name = "TblBotanicalObject.findByLivingPlantList", query = "SELECT t FROM TblBotanicalObject t INNER JOIN t.tblLivingPlant l WHERE l.id in :tblLivingPlantList")
+    , @NamedQuery(name = "TblBotanicalObject.findByNotIntblLivingPlantListAndOrangisation", query = "SELECT t FROM TblBotanicalObject t INNER JOIN t.tblLivingPlant l WHERE l.id not in (:tblLivingPlantList) and t.organisationId = (:organisationId)")})
 public class TblBotanicalObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
