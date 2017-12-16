@@ -49,6 +49,8 @@ import org.jacq.common.rest.InventoryService;
  */
 public class InventoryManager {
 
+    private static final Logger LOGGER = Logger.getLogger(TreeRecordFileManager.class.getName());
+
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
@@ -71,13 +73,18 @@ public class InventoryManager {
                 try {
                     defaultinventory(inventoryResult, tblInventory);
                 } catch (IOException ex) {
-                    Logger.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             break;
-            case "advancedinventory":
-                advancedinventory(inventoryResult);
-                break;
+            case "advancedinventory": {
+                try {
+                    advancedinventory(inventoryResult, tblInventory);
+                } catch (IOException ex) {
+                    LOGGER.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
             default:
 
                 break;
@@ -155,8 +162,48 @@ public class InventoryManager {
 
     }
 
-    private void advancedinventory(InventoryResult inventoryResult) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void advancedinventory(InventoryResult inventoryResult, TblInventory tblInventory) throws IOException {
+        String line = "";
+        byte[] decodedPdf = Base64.getDecoder().decode(inventoryResult.getFileContent());
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
+        List<TblLivingPlant> livingPlantList = new ArrayList<>();
+        List<Long> livingPlantIdList = new ArrayList<>();
+        while ((line = bufferedReader.readLine()) != null) {
+            TblOrganisation organisation = null;
+            if (line.length() > 8) {
+                Long organisationId = Long.parseLong(line);
+                organisation = em.find(TblOrganisation.class, organisationId);
+            }
+            while ((line = bufferedReader.readLine()) != null && line.length() <= 8) {
+                Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Integer.parseInt(line));
+                livingPlantList.addAll(query.getResultList());
+                for (TblLivingPlant livingPlant : livingPlantList) {
+                    livingPlantIdList.add(livingPlant.getId());
+                }
+            }
+            if (inventoryResult.getSeparated()) {
+                Query query = em.createNamedQuery("TblBotanicalObject.findByNotIntblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
+                List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+                botanicalObjects.addAll(query.getResultList());
+                for (TblBotanicalObject botanicalObject : botanicalObjects) {
+                    botanicalObject.setSeparated(inventoryResult.getSeparated());
+                    em.merge(botanicalObject);
+                }
+            }
+            Query query = em.createNamedQuery("TblBotanicalObject.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
+            List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+            botanicalObjects.addAll(query.getResultList());
+            for (TblBotanicalObject botanicalObject : botanicalObjects) {
+                botanicalObject.setOrganisationId(organisation);
+                em.merge(botanicalObject);
+                TblInventoryObject tblInventoryObject = new TblInventoryObject();
+                tblInventoryObject.setInventoryId(tblInventory);
+                tblInventoryObject.setBotanicalObjectId(botanicalObject);
+                em.persist(tblInventoryObject);
+
+            }
+        }
     }
 
 }
