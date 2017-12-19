@@ -45,8 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblInventoryObject.findAll", query = "SELECT t FROM TblInventoryObject t")
-    , @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId")
-    , @NamedQuery(name = "TblInventoryObject.findByTimestamp", query = "SELECT t FROM TblInventoryObject t WHERE t.timestamp = :timestamp")})
+    , @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId")})
 public class TblInventoryObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,11 +60,6 @@ public class TblInventoryObject implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "message")
     private String message;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
@@ -80,10 +74,9 @@ public class TblInventoryObject implements Serializable {
         this.inventoryObjectId = inventoryObjectId;
     }
 
-    public TblInventoryObject(Long inventoryObjectId, String message, Date timestamp) {
+    public TblInventoryObject(Long inventoryObjectId, String message) {
         this.inventoryObjectId = inventoryObjectId;
         this.message = message;
-        this.timestamp = timestamp;
     }
 
     public Long getInventoryObjectId() {
@@ -100,14 +93,6 @@ public class TblInventoryObject implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

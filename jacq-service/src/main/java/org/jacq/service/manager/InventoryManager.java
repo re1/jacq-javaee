@@ -62,16 +62,23 @@ public class InventoryManager {
     public InventoryResult save(InventoryResult inventoryResult) {
         String inventoryTyp;
 
+        //Create inventory Table entry
         TblInventory tblInventory = new TblInventory();
         tblInventory.setInventoryTypeId(em.find(TblInventoryType.class, inventoryResult.getInventoryTypeId()));
         tblInventory.setUserId(em.find(FrmwrkUser.class, 1L));
         em.persist(tblInventory);
+
+        //get inventorytyp
         inventoryTyp = tblInventory.getInventoryTypeId().getType();
+
+        //Get BufferedReader from File in InventoryResult
+        BufferedReader bufferedReader = decodeFileToBufferedReader(Base64.getDecoder().decode(inventoryResult.getFileContent()));
 
         switch (inventoryTyp) {
             case "inventory": {
                 try {
-                    defaultinventory(inventoryResult, tblInventory);
+                    //default inventory organisation in Result and only accession number in File
+                    defaultinventory(inventoryResult.getSeparated(), tblInventory, bufferedReader, inventoryResult.getOrganisationId());
                 } catch (IOException ex) {
                     LOGGER.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -79,7 +86,7 @@ public class InventoryManager {
             break;
             case "advancedinventory": {
                 try {
-                    advancedinventory(inventoryResult, tblInventory);
+                    advancedinventory(inventoryResult.getSeparated(), tblInventory, bufferedReader);
                 } catch (IOException ex) {
                     LOGGER.getLogger(InventoryManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -124,30 +131,66 @@ public class InventoryManager {
         return results;
     }
 
-    private void defaultinventory(InventoryResult inventoryResult, TblInventory tblInventory) throws IOException {
-        String accessionNumber = "";
-        TblOrganisation organisation = em.find(TblOrganisation.class, inventoryResult.getOrganisationId());
-        byte[] decodedPdf = Base64.getDecoder().decode(inventoryResult.getFileContent());
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
-        List<TblLivingPlant> livingPlantList = new ArrayList<>();
+    protected void defaultinventory(Boolean separated, TblInventory tblInventory, BufferedReader bufferedReader, Long organisationId) throws IOException {
+        TblOrganisation organisation = em.find(TblOrganisation.class, organisationId);
         List<Long> livingPlantIdList = new ArrayList<>();
-        while ((accessionNumber = bufferedReader.readLine()) != null) {
-            Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Integer.parseInt(accessionNumber));
-            livingPlantList.addAll(query.getResultList());
-            for (TblLivingPlant livingPlant : livingPlantList) {
-                livingPlantIdList.add(livingPlant.getId());
-            }
+        livingPlantIdList.addAll(accessionNumberToLivingPlantIdList(bufferedReader));
+        if (separated) {
+            setSeparatedByLivingPlantIdListAndOrganisation(livingPlantIdList, organisation);
         }
-        if (inventoryResult.getSeparated()) {
-            Query query = em.createNamedQuery("TblBotanicalObject.findByNotIntblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
-            List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
-            botanicalObjects.addAll(query.getResultList());
-            for (TblBotanicalObject botanicalObject : botanicalObjects) {
-                botanicalObject.setSeparated(inventoryResult.getSeparated());
-                em.merge(botanicalObject);
+        setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(livingPlantIdList, organisation, tblInventory);
+    }
+
+    protected void advancedinventory(Boolean separated, TblInventory tblInventory, BufferedReader bufferedReader) throws IOException {
+        String line = "";
+        List<Long> livingPlantIdList = new ArrayList<>();
+        while ((line = bufferedReader.readLine()) != null) {
+            TblOrganisation organisation = null;
+            if (line.length() > 8) {
+                Long organisationId = Long.parseLong(line);
+                organisation = em.find(TblOrganisation.class, organisationId);
             }
+            livingPlantIdList.addAll(accessionNumberToLivingPlantIdList(bufferedReader));
+            if (separated) {
+                setSeparatedByLivingPlantIdListAndOrganisation(livingPlantIdList, organisation);
+            }
+            setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(livingPlantIdList, organisation, tblInventory);
         }
+    }
+
+    protected BufferedReader decodeFileToBufferedReader(byte[] decodedFile) {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedFile);
+        return new BufferedReader(new InputStreamReader(byteArrayInputStream));
+    }
+
+    protected List<Long> accessionNumberToLivingPlantIdList(BufferedReader bufferedReader) throws IOException {
+        String line = "";
+        List<TblLivingPlant> livingPlantList = new ArrayList<>();
+        List<Integer> accessionNumberList = new ArrayList<>();
+        List<Long> livingPlantIdList = new ArrayList<>();
+
+        while ((line = bufferedReader.readLine()) != null && line.length() <= 8) {
+            accessionNumberList.add(Integer.parseInt(line));
+        }
+        Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumberList").setParameter("accessionNumberList", accessionNumberList);
+        livingPlantList.addAll(query.getResultList());
+        for (TblLivingPlant livingPlant : livingPlantList) {
+            livingPlantIdList.add(livingPlant.getId());
+        }
+        return livingPlantIdList;
+    }
+
+    protected void setSeparatedByLivingPlantIdListAndOrganisation(List<Long> livingPlantIdList, TblOrganisation organisation) {
+        Query query = em.createNamedQuery("TblBotanicalObject.findByNotInTblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
+        List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+        botanicalObjects.addAll(query.getResultList());
+        for (TblBotanicalObject botanicalObject : botanicalObjects) {
+            botanicalObject.setSeparated(true);
+            em.merge(botanicalObject);
+        }
+    }
+
+    protected void setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(List<Long> livingPlantIdList, TblOrganisation organisation, TblInventory tblInventory) {
         Query query = em.createNamedQuery("TblBotanicalObject.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
         List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
         botanicalObjects.addAll(query.getResultList());
@@ -157,52 +200,8 @@ public class InventoryManager {
             TblInventoryObject tblInventoryObject = new TblInventoryObject();
             tblInventoryObject.setInventoryId(tblInventory);
             tblInventoryObject.setBotanicalObjectId(botanicalObject);
+            tblInventoryObject.setMessage("TEST");
             em.persist(tblInventoryObject);
-        }
-
-    }
-
-    private void advancedinventory(InventoryResult inventoryResult, TblInventory tblInventory) throws IOException {
-        String line = "";
-        byte[] decodedPdf = Base64.getDecoder().decode(inventoryResult.getFileContent());
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
-        List<TblLivingPlant> livingPlantList = new ArrayList<>();
-        List<Long> livingPlantIdList = new ArrayList<>();
-        while ((line = bufferedReader.readLine()) != null) {
-            TblOrganisation organisation = null;
-            if (line.length() > 8) {
-                Long organisationId = Long.parseLong(line);
-                organisation = em.find(TblOrganisation.class, organisationId);
-            }
-            while ((line = bufferedReader.readLine()) != null && line.length() <= 8) {
-                Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Integer.parseInt(line));
-                livingPlantList.addAll(query.getResultList());
-                for (TblLivingPlant livingPlant : livingPlantList) {
-                    livingPlantIdList.add(livingPlant.getId());
-                }
-            }
-            if (inventoryResult.getSeparated()) {
-                Query query = em.createNamedQuery("TblBotanicalObject.findByNotIntblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
-                List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
-                botanicalObjects.addAll(query.getResultList());
-                for (TblBotanicalObject botanicalObject : botanicalObjects) {
-                    botanicalObject.setSeparated(inventoryResult.getSeparated());
-                    em.merge(botanicalObject);
-                }
-            }
-            Query query = em.createNamedQuery("TblBotanicalObject.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
-            List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
-            botanicalObjects.addAll(query.getResultList());
-            for (TblBotanicalObject botanicalObject : botanicalObjects) {
-                botanicalObject.setOrganisationId(organisation);
-                em.merge(botanicalObject);
-                TblInventoryObject tblInventoryObject = new TblInventoryObject();
-                tblInventoryObject.setInventoryId(tblInventory);
-                tblInventoryObject.setBotanicalObjectId(botanicalObject);
-                em.persist(tblInventoryObject);
-
-            }
         }
     }
 
