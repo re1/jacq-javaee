@@ -54,7 +54,7 @@ public class IndexSeminumManager {
         // Create new TblIndexSeminumRevision Object set Parameter and Save to DB including set User
         TblIndexSeminumRevision tblIndexSeminumRevision = new TblIndexSeminumRevision();
         tblIndexSeminumRevision.setName(indexSeminumResult.getName());
-        FrmwrkUser user = em.find(FrmwrkUser.class, 10L);
+        FrmwrkUser user = em.find(FrmwrkUser.class, 27L);
         tblIndexSeminumRevision.setUserId(user);
         em.persist(tblIndexSeminumRevision);
 
@@ -77,44 +77,65 @@ public class IndexSeminumManager {
 
         // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
         for (TblBotanicalObject botanicalObject : botanicalObjectList) {
-            //TODO Family and Scientific Name
+            //TODO Family
 
             // Tbl_index_seminum_content
             TblIndexSeminumContent tblIndexSeminumContent = new TblIndexSeminumContent();
 
-            // index_seminum_revision_id
-            tblIndexSeminumContent.setIndexSeminumRevisionId(tblIndexSeminumRevision);
+            // family
+            tblIndexSeminumContent.setFamily("UNKNOWN");
             // botanical_object_id
             tblIndexSeminumContent.setBotanicalObjectId(botanicalObject);
-            // accession_number
-            tblIndexSeminumContent.setAccessionNumber(String.valueOf(botanicalObject.getTblLivingPlant().getAccessionNumber()));
-            // ipen_number
-            tblIndexSeminumContent.setIpenNumber(botanicalObject.getTblLivingPlant().getIpenNumber());
-            // acquisition_location
-            tblIndexSeminumContent.setAcquisitionLocation(botanicalObject.getAcquisitionEventId().getLocationId().getLocation());
-            // acqustition_number
-            tblIndexSeminumContent.setAcquisitionNumber(String.valueOf(botanicalObject.getAcquisitionEventId().getNumber()));
-            // acquisition_date
-            if (!StringUtils.isEmpty(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
-                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
-            } else {
-                tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
+            // index_seminum_revision_id
+            tblIndexSeminumContent.setIndexSeminumRevisionId(tblIndexSeminumRevision);
+
+            // scientificname
+            tblIndexSeminumContent.setScientificName(botanicalObject.getViewScientificName().getScientificName());
+
+            if (botanicalObject.getTblLivingPlant() != null) {
+                // accession_number
+                tblIndexSeminumContent.setAccessionNumber(String.valueOf(botanicalObject.getTblLivingPlant().getAccessionNumber()));
+                // ipen_number
+                tblIndexSeminumContent.setIpenNumber(botanicalObject.getTblLivingPlant().getIpenNumber());
+                // Type
+                tblIndexSeminumContent.setIndexSeminumType(botanicalObject.getTblLivingPlant().getIndexSeminumTypeId().getType());
             }
+
             // habitat
-            tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat());
-            // altitude_min
-            tblIndexSeminumContent.setAltitudeMin(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin());
-            // altitude_max
-            tblIndexSeminumContent.setAltitudeMax(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax());
-            // latitude
-            tblIndexSeminumContent.setLatitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
-            // longitude
-            tblIndexSeminumContent.setLongitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
+            tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat() != null ? botanicalObject.getHabitat() : null);
+
+            if (botanicalObject.getAcquisitionEventId() != null) {
+                // acquisition_location
+                tblIndexSeminumContent.setAcquisitionLocation(botanicalObject.getAcquisitionEventId().getLocationId() != null ? botanicalObject.getAcquisitionEventId().getLocationId().getLocation() : null);
+                // acqustition_number
+                tblIndexSeminumContent.setAcquisitionNumber(botanicalObject.getAcquisitionEventId().getNumber() != null ? String.valueOf(botanicalObject.getAcquisitionEventId().getNumber()) : null);
+                // acquisition_date
+                if (!StringUtils.isEmpty(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
+                    tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
+                } else {
+                    tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
+                }
+                if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId() != null) {
+                    // altitude_min
+                    tblIndexSeminumContent.setAltitudeMin(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() : null);
+                    // altitude_max
+                    tblIndexSeminumContent.setAltitudeMax(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() : null);
+                    // latitude
+                    if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds() != null) {
+                        tblIndexSeminumContent.setLatitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
+                    }
+                    // longitude
+                    if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds() != null) {
+                        tblIndexSeminumContent.setLongitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
+                    }
+
+                }
+            }
             // save Tbl_index_seminum_content to DB
             em.persist(tblIndexSeminumContent);
             // Load all Person to Acquisition Event
-            List<TblPerson> tblPerson = botanicalObject.getAcquisitionEventId().getTblPersonList();
-            for (TblPerson person : tblPerson) {
+            List<TblPerson> tblPersonList = botanicalObject.getAcquisitionEventId().getTblPersonList();
+            for (TblPerson person : tblPersonList) {
 
                 // tbl_index_seminum_person
                 TblIndexSeminumPerson tblIndexSeminumPerson = new TblIndexSeminumPerson();
