@@ -45,7 +45,7 @@ public class ViewPerson implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private int id;
+    private long id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -55,11 +55,11 @@ public class ViewPerson implements Serializable {
     public ViewPerson() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -55,12 +55,15 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "count")
     private long count;
-    @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
+    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private TblDerivativeType derivativeTypeId;
+    private TblOrganisation organisationId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
+    @ManyToOne(optional = false)
+    private TblDerivativeType derivativeTypeId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
     private TblLivingPlant tblLivingPlant;
 
@@ -92,12 +95,12 @@ public class TblDerivative implements Serializable {
         this.count = count;
     }
 
-    public TblDerivativeType getDerivativeTypeId() {
-        return derivativeTypeId;
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
     }
 
-    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
-        this.derivativeTypeId = derivativeTypeId;
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {
@@ -106,6 +109,14 @@ public class TblDerivative implements Serializable {
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
+    }
+
+    public TblDerivativeType getDerivativeTypeId() {
+        return derivativeTypeId;
+    }
+
+    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
+        this.derivativeTypeId = derivativeTypeId;
     }
 
     public TblLivingPlant getTblLivingPlant() {

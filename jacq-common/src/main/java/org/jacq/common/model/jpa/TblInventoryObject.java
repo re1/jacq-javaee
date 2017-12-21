@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +44,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblInventoryObject.findAll", query = "SELECT t FROM TblInventoryObject t")
-    , @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId")})
+    , @NamedQuery(name = "TblInventoryObject.findByInventoryObjectId", query = "SELECT t FROM TblInventoryObject t WHERE t.inventoryObjectId = :inventoryObjectId")
+    , @NamedQuery(name = "TblInventoryObject.findByTimestamp", query = "SELECT t FROM TblInventoryObject t WHERE t.timestamp = :timestamp")})
 public class TblInventoryObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,11 +60,14 @@ public class TblInventoryObject implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "message")
     private String message;
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblInventory inventoryId;
 
     public TblInventoryObject() {
@@ -93,6 +96,14 @@ public class TblInventoryObject implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

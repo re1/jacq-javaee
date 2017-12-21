@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +56,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblIndexSeminumContent.findByAltitudeMax", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.altitudeMax = :altitudeMax")
     , @NamedQuery(name = "TblIndexSeminumContent.findByLatitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.latitude = :latitude")
     , @NamedQuery(name = "TblIndexSeminumContent.findByLongitude", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.longitude = :longitude")
-    , @NamedQuery(name = "TblIndexSeminumContent.findByAcquisitionDate", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.acquisitionDate = :acquisitionDate")})
+    , @NamedQuery(name = "TblIndexSeminumContent.findByAcquisitionDate", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.acquisitionDate = :acquisitionDate")
+    , @NamedQuery(name = "TblIndexSeminumContent.findByTimestamp", query = "SELECT t FROM TblIndexSeminumContent t WHERE t.timestamp = :timestamp")})
 public class TblIndexSeminumContent implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -118,13 +118,16 @@ public class TblIndexSeminumContent implements Serializable {
     @Size(max = 20)
     @Column(name = "acquisition_date")
     private String acquisitionDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId")
     private List<TblIndexSeminumPerson> tblIndexSeminumPersonList;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblIndexSeminumRevision indexSeminumRevisionId;
 
     public TblIndexSeminumContent() {
@@ -134,7 +137,7 @@ public class TblIndexSeminumContent implements Serializable {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
+    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber) {
         this.indexSeminumContentId = indexSeminumContentId;
         this.accessionNumber = accessionNumber;
         this.family = family;
@@ -253,6 +256,14 @@ public class TblIndexSeminumContent implements Serializable {
 
     public void setAcquisitionDate(String acquisitionDate) {
         this.acquisitionDate = acquisitionDate;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     @XmlTransient

@@ -35,15 +35,15 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setType(BotanicalObjectDerivative.LIVING);
         this.setId(tblLivingPlant.getId());
         this.setDerivativeId(tblLivingPlant.getId());
-        this.setScientificName(tblLivingPlant.getTblBotanicalObject().getViewScientificName().getScientificName());
+        this.setScientificName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName());
         this.setAccessionNumber(String.format("%07d", tblLivingPlant.getAccessionNumber()));
         this.setLabelAnnotation(tblLivingPlant.getLabelAnnotation());
-        this.setOrganisationDescription(tblLivingPlant.getTblBotanicalObject().getOrganisationId().getDescription());
+        this.setOrganisationDescription(tblLivingPlant.getTblDerivative().getOrganisationId().getDescription());
         this.setPlaceNumber(tblLivingPlant.getPlaceNumber());
         this.setVegetativeCount(-1L);    // TODO
 
         // new properties
-        this.setScientificNameId(tblLivingPlant.getTblBotanicalObject().getScientificNameId());
+        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
     }
 
     public Long getScientificNameId() {

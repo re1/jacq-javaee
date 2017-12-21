@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,9 +54,9 @@ public class TblPhenology implements Serializable {
     @Size(max = 45)
     @Column(name = "phenology")
     private String phenology;
-    @OneToMany(mappedBy = "phenologyId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "phenologyId")
     private List<TblBotanicalObject> tblBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId")
     private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
 
     public TblPhenology() {

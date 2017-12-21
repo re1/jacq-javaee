@@ -58,9 +58,9 @@ public class TblPerson implements Serializable {
     @Column(name = "name")
     private String name;
     @ManyToMany(mappedBy = "tblPersonList")
-    private List<TblNomName> tblNomNameList;
-    @ManyToMany(mappedBy = "tblPersonList")
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
+    @ManyToMany(mappedBy = "tblPersonList")
+    private List<TblNomName> tblNomNameList;
     @OneToMany(mappedBy = "determinedById")
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
@@ -93,21 +93,21 @@ public class TblPerson implements Serializable {
     }
 
     @XmlTransient
-    public List<TblNomName> getTblNomNameList() {
-        return tblNomNameList;
-    }
-
-    public void setTblNomNameList(List<TblNomName> tblNomNameList) {
-        this.tblNomNameList = tblNomNameList;
-    }
-
-    @XmlTransient
     public List<TblAcquisitionEvent> getTblAcquisitionEventList() {
         return tblAcquisitionEventList;
     }
 
     public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
         this.tblAcquisitionEventList = tblAcquisitionEventList;
+    }
+
+    @XmlTransient
+    public List<TblNomName> getTblNomNameList() {
+        return tblNomNameList;
+    }
+
+    public void setTblNomNameList(List<TblNomName> tblNomNameList) {
+        this.tblNomNameList = tblNomNameList;
     }
 
     @XmlTransient

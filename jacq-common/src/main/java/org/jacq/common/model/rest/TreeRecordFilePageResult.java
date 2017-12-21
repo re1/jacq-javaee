@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblTreeRecordFilePage;
 
 /**
- * Wrapper model which represents a single result after a search Used to
- * minimize the transfered data and only return the relevant information
+ * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
+ * the relevant information
  *
  * @author fhafner
  */
@@ -33,7 +33,7 @@ import org.jacq.common.model.jpa.TblTreeRecordFilePage;
 public class TreeRecordFilePageResult {
 
     protected Long treeRecordFilePageId;
-    protected int page;
+    protected long page;
     protected String content;
 
     public Long getTreeRecordFilePageId() {
@@ -44,11 +44,11 @@ public class TreeRecordFilePageResult {
         this.treeRecordFilePageId = treeRecordFilePageId;
     }
 
-    public int getPage() {
+    public long getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(long page) {
         this.page = page;
     }
 
@@ -70,8 +70,7 @@ public class TreeRecordFilePageResult {
     }
 
     /**
-     * Helper function for converting a list of TreeRecordFile entries to
-     * treeRecordFileResult
+     * Helper function for converting a list of TreeRecordFile entries to treeRecordFileResult
      *
      * @param treeRecordFilePageList
      * @return

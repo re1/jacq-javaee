@@ -90,7 +90,7 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "taxonID")
-    private int taxonID;
+    private long taxonID;
     @Column(name = "synID")
     private Long synID;
     @Column(name = "basID")
@@ -98,7 +98,7 @@ public class ViewTaxon implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "genID")
-    private int genID;
+    private long genID;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "annotation")
@@ -218,11 +218,11 @@ public class ViewTaxon implements Serializable {
     public ViewTaxon() {
     }
 
-    public int getTaxonID() {
+    public long getTaxonID() {
         return taxonID;
     }
 
-    public void setTaxonID(int taxonID) {
+    public void setTaxonID(long taxonID) {
         this.taxonID = taxonID;
     }
 
@@ -242,11 +242,11 @@ public class ViewTaxon implements Serializable {
         this.basID = basID;
     }
 
-    public int getGenID() {
+    public long getGenID() {
         return genID;
     }
 
-    public void setGenID(int genID) {
+    public void setGenID(long genID) {
         this.genID = genID;
     }
 

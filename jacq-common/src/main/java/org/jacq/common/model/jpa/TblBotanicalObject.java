@@ -107,9 +107,6 @@ public class TblBotanicalObject implements Serializable {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
     @ManyToMany
     private List<TblLabelType> tblLabelTypeList;
-    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne
-    private TblOrganisation organisationId;
     @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
     @ManyToOne
     private TblIdentStatus identStatusId;
@@ -244,14 +241,6 @@ public class TblBotanicalObject implements Serializable {
         this.tblLabelTypeList = tblLabelTypeList;
     }
 
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
-    }
-
     public TblIdentStatus getIdentStatusId() {
         return identStatusId;
     }
@@ -380,4 +369,22 @@ public class TblBotanicalObject implements Serializable {
         return "org.jacq.common.model.jpa.TblBotanicalObject[ id=" + id + " ]";
     }
 
+    /**
+     * Custom mappings
+     */
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne
+    private ViewScientificName viewScientificName;
+
+    public ViewScientificName getViewScientificName() {
+        return viewScientificName;
+    }
+
+    @JoinColumn(name = "scientific_name_id", referencedColumnName = "taxonID", insertable = false, updatable = false)
+    @ManyToOne
+    private ViewTaxon viewTaxon;
+
+    public ViewTaxon getViewTaxon() {
+        return viewTaxon;
+    }
 }

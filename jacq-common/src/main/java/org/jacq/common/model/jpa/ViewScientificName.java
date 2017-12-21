@@ -45,7 +45,7 @@ public class ViewScientificName implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private int scientificNameId;
+    private long scientificNameId;
     @Lob
     @Size(max = 65535)
     @Column(name = "scientific_name")
@@ -58,11 +58,11 @@ public class ViewScientificName implements Serializable {
     public ViewScientificName() {
     }
 
-    public int getScientificNameId() {
+    public long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(int scientificNameId) {
+    public void setScientificNameId(long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 

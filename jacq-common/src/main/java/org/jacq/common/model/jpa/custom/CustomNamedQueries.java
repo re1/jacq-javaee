@@ -33,6 +33,8 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "TblBotanicalObject.findByNotInTblLivingPlantListAndOrangisation", query = "SELECT t FROM TblBotanicalObject t INNER JOIN t.tblLivingPlant l WHERE l.id not in (:tblLivingPlantList) and t.organisationId = (:organisationId)")
     , @NamedQuery(name = "TblClassification.findTopLevelBySource", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId IS NULL")
     , @NamedQuery(name = "TblClassification.findBySourceAndParent", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId = :parentScientificNameId")
+    , @NamedQuery(name = "TblLivingPlant.resetImageStatus", query = "UPDATE TblLivingPlant t SET t.hasImage = FALSE, t.hasPublicImage = FALSE WHERE t.tblBotanicalObject IN ( SELECT tbo FROM TblBotanicalObject tbo WHERE tbo.organisationId IN (:organisations) )")
+    , @NamedQuery(name = "TblLivingPlant.findByAccessionNumberList", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber in (:accessionNumberList)")
 })
 public class CustomNamedQueries {
 
