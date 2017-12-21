@@ -38,46 +38,46 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_certificate_type")
+@Table(name = "tbl_derivative_type")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCertificateType.findAll", query = "SELECT t FROM TblCertificateType t")
-    , @NamedQuery(name = "TblCertificateType.findById", query = "SELECT t FROM TblCertificateType t WHERE t.id = :id")
-    , @NamedQuery(name = "TblCertificateType.findByType", query = "SELECT t FROM TblCertificateType t WHERE t.type = :type")})
-public class TblCertificateType implements Serializable {
+    @NamedQuery(name = "TblDerivativeType.findAll", query = "SELECT t FROM TblDerivativeType t")
+    , @NamedQuery(name = "TblDerivativeType.findByDerivativeTypeId", query = "SELECT t FROM TblDerivativeType t WHERE t.derivativeTypeId = :derivativeTypeId")
+    , @NamedQuery(name = "TblDerivativeType.findByType", query = "SELECT t FROM TblDerivativeType t WHERE t.type = :type")})
+public class TblDerivativeType implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "derivative_type_id")
+    private Long derivativeTypeId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 15)
+    @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "certificateTypeId")
-    private List<TblCertificate> tblCertificateList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeTypeId")
+    private List<TblDerivative> tblDerivativeList;
 
-    public TblCertificateType() {
+    public TblDerivativeType() {
     }
 
-    public TblCertificateType(Long id) {
-        this.id = id;
+    public TblDerivativeType(Long derivativeTypeId) {
+        this.derivativeTypeId = derivativeTypeId;
     }
 
-    public TblCertificateType(Long id, String type) {
-        this.id = id;
+    public TblDerivativeType(Long derivativeTypeId, String type) {
+        this.derivativeTypeId = derivativeTypeId;
         this.type = type;
     }
 
-    public Long getId() {
-        return id;
+    public Long getDerivativeTypeId() {
+        return derivativeTypeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDerivativeTypeId(Long derivativeTypeId) {
+        this.derivativeTypeId = derivativeTypeId;
     }
 
     public String getType() {
@@ -89,29 +89,29 @@ public class TblCertificateType implements Serializable {
     }
 
     @XmlTransient
-    public List<TblCertificate> getTblCertificateList() {
-        return tblCertificateList;
+    public List<TblDerivative> getTblDerivativeList() {
+        return tblDerivativeList;
     }
 
-    public void setTblCertificateList(List<TblCertificate> tblCertificateList) {
-        this.tblCertificateList = tblCertificateList;
+    public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
+        this.tblDerivativeList = tblDerivativeList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (derivativeTypeId != null ? derivativeTypeId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblCertificateType)) {
+        if (!(object instanceof TblDerivativeType)) {
             return false;
         }
-        TblCertificateType other = (TblCertificateType) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        TblDerivativeType other = (TblDerivativeType) object;
+        if ((this.derivativeTypeId == null && other.derivativeTypeId != null) || (this.derivativeTypeId != null && !this.derivativeTypeId.equals(other.derivativeTypeId))) {
             return false;
         }
         return true;
@@ -119,7 +119,7 @@ public class TblCertificateType implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblCertificateType[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblDerivativeType[ derivativeTypeId=" + derivativeTypeId + " ]";
     }
 
 }

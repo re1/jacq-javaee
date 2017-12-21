@@ -20,11 +20,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -46,17 +43,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TblClassification.findByClassificationId", query = "SELECT t FROM TblClassification t WHERE t.classificationId = :classificationId")
     , @NamedQuery(name = "TblClassification.findByScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.scientificNameId = :scientificNameId")
     , @NamedQuery(name = "TblClassification.findByAccScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.accScientificNameId = :accScientificNameId")
+    , @NamedQuery(name = "TblClassification.findByRefDate", query = "SELECT t FROM TblClassification t WHERE t.refDate = :refDate")
     , @NamedQuery(name = "TblClassification.findByPreferredTaxonomy", query = "SELECT t FROM TblClassification t WHERE t.preferredTaxonomy = :preferredTaxonomy")
     , @NamedQuery(name = "TblClassification.findByLocked", query = "SELECT t FROM TblClassification t WHERE t.locked = :locked")
     , @NamedQuery(name = "TblClassification.findBySource", query = "SELECT t FROM TblClassification t WHERE t.source = :source")
     , @NamedQuery(name = "TblClassification.findBySourceId", query = "SELECT t FROM TblClassification t WHERE t.sourceId = :sourceId")
     , @NamedQuery(name = "TblClassification.findByUserId", query = "SELECT t FROM TblClassification t WHERE t.userId = :userId")
+    , @NamedQuery(name = "TblClassification.findByTimestamp", query = "SELECT t FROM TblClassification t WHERE t.timestamp = :timestamp")
     , @NamedQuery(name = "TblClassification.findByParentScientificNameId", query = "SELECT t FROM TblClassification t WHERE t.parentScientificNameId = :parentScientificNameId")
     , @NamedQuery(name = "TblClassification.findByNumber", query = "SELECT t FROM TblClassification t WHERE t.number = :number")
-    , @NamedQuery(name = "TblClassification.findByOrder", query = "SELECT t FROM TblClassification t WHERE t.order = :order")
-    , @NamedQuery(name = "TblClassification.findTopLevelBySource", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId IS NULL")
-    , @NamedQuery(name = "TblClassification.findBySourceAndParent", query = "SELECT t FROM TblClassification t WHERE t.source = :source AND t.sourceId = :sourceId AND t.parentScientificNameId = :parentScientificNameId")
-})
+    , @NamedQuery(name = "TblClassification.findByOrder", query = "SELECT t FROM TblClassification t WHERE t.order = :order")})
 public class TblClassification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,6 +67,9 @@ public class TblClassification implements Serializable {
     private long scientificNameId;
     @Column(name = "acc_scientific_name_id")
     private Long accScientificNameId;
+    @Column(name = "ref_date")
+    @Temporal(TemporalType.DATE)
+    private Date refDate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "preferred_taxonomy")
@@ -83,9 +82,7 @@ public class TblClassification implements Serializable {
     @NotNull
     @Column(name = "locked")
     private short locked;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "source")
     private String source;
     @Column(name = "source_id")
@@ -94,6 +91,11 @@ public class TblClassification implements Serializable {
     @NotNull
     @Column(name = "user_id")
     private long userId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
     @Column(name = "parent_scientific_name_id")
     private Long parentScientificNameId;
     @Size(max = 15)
@@ -127,6 +129,14 @@ public class TblClassification implements Serializable {
 
     public void setAccScientificNameId(Long accScientificNameId) {
         this.accScientificNameId = accScientificNameId;
+    }
+
+    public Date getRefDate() {
+        return refDate;
+    }
+
+    public void setRefDate(Date refDate) {
+        this.refDate = refDate;
     }
 
     public short getPreferredTaxonomy() {
@@ -177,6 +187,14 @@ public class TblClassification implements Serializable {
         this.userId = userId;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Long getParentScientificNameId() {
         return parentScientificNameId;
     }
@@ -200,4 +218,5 @@ public class TblClassification implements Serializable {
     public void setOrder(Long order) {
         this.order = order;
     }
+
 }

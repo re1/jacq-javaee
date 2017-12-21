@@ -34,72 +34,61 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_botanical_object_sex")
+@Table(name = "rev_flora")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblBotanicalObjectSex.findAll", query = "SELECT t FROM TblBotanicalObjectSex t")
-    , @NamedQuery(name = "TblBotanicalObjectSex.findById", query = "SELECT t FROM TblBotanicalObjectSex t WHERE t.id = :id")})
-public class TblBotanicalObjectSex implements Serializable {
+    @NamedQuery(name = "RevFlora.findAll", query = "SELECT r FROM RevFlora r")
+    , @NamedQuery(name = "RevFlora.findByRevFloraId", query = "SELECT r FROM RevFlora r WHERE r.revFloraId = :revFloraId")})
+public class RevFlora implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
+    @Column(name = "rev_flora_id")
+    private Long revFloraId;
+    @JoinColumn(name = "uuid_minter_id", referencedColumnName = "uuid_minter_id")
     @ManyToOne(optional = false)
-    private TblBotanicalObject botanicalObjectId;
-    @JoinColumn(name = "sex_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblSex sexId;
+    private SrvcUuidMinter uuidMinterId;
 
-    public TblBotanicalObjectSex() {
+    public RevFlora() {
     }
 
-    public TblBotanicalObjectSex(Long id) {
-        this.id = id;
+    public RevFlora(Long revFloraId) {
+        this.revFloraId = revFloraId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getRevFloraId() {
+        return revFloraId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRevFloraId(Long revFloraId) {
+        this.revFloraId = revFloraId;
     }
 
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
+    public SrvcUuidMinter getUuidMinterId() {
+        return uuidMinterId;
     }
 
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
-    }
-
-    public TblSex getSexId() {
-        return sexId;
-    }
-
-    public void setSexId(TblSex sexId) {
-        this.sexId = sexId;
+    public void setUuidMinterId(SrvcUuidMinter uuidMinterId) {
+        this.uuidMinterId = uuidMinterId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (revFloraId != null ? revFloraId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblBotanicalObjectSex)) {
+        if (!(object instanceof RevFlora)) {
             return false;
         }
-        TblBotanicalObjectSex other = (TblBotanicalObjectSex) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        RevFlora other = (RevFlora) object;
+        if ((this.revFloraId == null && other.revFloraId != null) || (this.revFloraId != null && !this.revFloraId.equals(other.revFloraId))) {
             return false;
         }
         return true;
@@ -107,7 +96,7 @@ public class TblBotanicalObjectSex implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblBotanicalObjectSex[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.RevFlora[ revFloraId=" + revFloraId + " ]";
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,12 @@ public class FrmwrkAuthAssignmentPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "userid")
-    private int userid;
+    private long userid;
 
     public FrmwrkAuthAssignmentPK() {
     }
 
-    public FrmwrkAuthAssignmentPK(String itemname, int userid) {
+    public FrmwrkAuthAssignmentPK(String itemname, long userid) {
         this.itemname = itemname;
         this.userid = userid;
     }
@@ -55,11 +55,11 @@ public class FrmwrkAuthAssignmentPK implements Serializable {
         this.itemname = itemname;
     }
 
-    public int getUserid() {
+    public long getUserid() {
         return userid;
     }
 
-    public void setUserid(int userid) {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
@@ -67,7 +67,7 @@ public class FrmwrkAuthAssignmentPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (itemname != null ? itemname.hashCode() : 0);
-        hash += (int) userid;
+        hash += (long) userid;
         return hash;
     }
 

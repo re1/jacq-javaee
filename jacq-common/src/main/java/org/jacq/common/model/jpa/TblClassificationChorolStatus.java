@@ -21,8 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,6 +29,12 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+
+/*
+* Custom imports
+*/
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -59,11 +63,11 @@ public class TblClassificationChorolStatus implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "classification_chorol_status_id")
-    private int classificationChorolStatusId;
+    private long classificationChorolStatusId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private int scientificNameId;
+    private long scientificNameId;
     @Size(max = 8)
     @Column(name = "source")
     private String source;
@@ -79,7 +83,7 @@ public class TblClassificationChorolStatus implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "nation_id")
-    private int nationId;
+    private long nationId;
     @Column(name = "province_id")
     private Long provinceId;
     @Basic(optional = false)
@@ -94,24 +98,24 @@ public class TblClassificationChorolStatus implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "locked")
-    private int locked;
+    private long locked;
 
     public TblClassificationChorolStatus() {
     }
 
-    public int getClassificationChorolStatusId() {
+    public long getClassificationChorolStatusId() {
         return classificationChorolStatusId;
     }
 
-    public void setClassificationChorolStatusId(int classificationChorolStatusId) {
+    public void setClassificationChorolStatusId(long classificationChorolStatusId) {
         this.classificationChorolStatusId = classificationChorolStatusId;
     }
 
-    public int getScientificNameId() {
+    public long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(int scientificNameId) {
+    public void setScientificNameId(long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -147,11 +151,11 @@ public class TblClassificationChorolStatus implements Serializable {
         this.statusDebatable = statusDebatable;
     }
 
-    public int getNationId() {
+    public long getNationId() {
         return nationId;
     }
 
-    public void setNationId(int nationId) {
+    public void setNationId(long nationId) {
         this.nationId = nationId;
     }
 
@@ -179,11 +183,11 @@ public class TblClassificationChorolStatus implements Serializable {
         this.dateLastEdited = dateLastEdited;
     }
 
-    public int getLocked() {
+    public long getLocked() {
         return locked;
     }
 
-    public void setLocked(int locked) {
+    public void setLocked(long locked) {
         this.locked = locked;
     }
 
