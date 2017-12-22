@@ -20,7 +20,6 @@ import org.jacq.common.model.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
-import org.jacq.common.rest.BotanicalObjectService;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -35,7 +34,7 @@ public class DerivativeManager {
 
     private static final Logger LOGGER = Logger.getLogger(DerivativeManager.class.getName());
 
-    private static final String SELECT_FIELDS = "SELECT `id`, `derivative_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `place_number`, `vegetative_count`, `type`";
+    private static final String SELECT_FIELDS = "SELECT `id`, `botanical_object_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `place_number`, `derivative_count`, `type`";
 
     private static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 

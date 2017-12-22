@@ -41,9 +41,8 @@ public class IndexSeminumManager {
     protected EntityManager em;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
-     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
-     * List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
+     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -72,7 +71,7 @@ public class IndexSeminumManager {
         organisationList.add(tblOrganisation);
 
         // Load the BotanicalObject list with Organisation Id in List
-        Query query = em.createNamedQuery("TblBotanicalObject.findByOrganisationList").setParameter("organisationList", organisationList);
+        Query query = em.createNamedQuery("TblDerivative.findByOrganisationListAndIndexSeminum").setParameter("organisationList", organisationList);
         List<TblBotanicalObject> botanicalObjectList = query.getResultList();
 
         // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
@@ -92,15 +91,14 @@ public class IndexSeminumManager {
             // scientificname
             tblIndexSeminumContent.setScientificName(botanicalObject.getViewScientificName().getScientificName());
 
-            if (botanicalObject.getTblLivingPlant() != null) {
+            /*           if (botanicalObject.getTblLivingPlant() != null) {
                 // accession_number
                 tblIndexSeminumContent.setAccessionNumber(String.valueOf(botanicalObject.getTblLivingPlant().getAccessionNumber()));
                 // ipen_number
                 tblIndexSeminumContent.setIpenNumber(botanicalObject.getTblLivingPlant().getIpenNumber());
                 // Type
                 tblIndexSeminumContent.setIndexSeminumType(botanicalObject.getTblLivingPlant().getIndexSeminumTypeId().getType());
-            }
-
+            }*/
             // habitat
             tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat() != null ? botanicalObject.getHabitat() : null);
 
@@ -112,7 +110,8 @@ public class IndexSeminumManager {
                 // acquisition_date
                 if (!StringUtils.isEmpty(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                     tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
-                } else {
+                }
+                else {
                     tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
                 if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId() != null) {

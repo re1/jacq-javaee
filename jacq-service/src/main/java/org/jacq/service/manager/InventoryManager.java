@@ -190,8 +190,8 @@ public class InventoryManager {
     }
 
     /**
-     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants
-     * by AccessionNumberList return LivinplantId list
+     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants by AccessionNumberList return
+     * LivinplantId list
      *
      * @param bufferedReader
      * @return
@@ -225,7 +225,7 @@ public class InventoryManager {
     protected void setSeparatedByLivingPlantIdListAndOrganisation(List<Long> livingPlantIdList, TblOrganisation organisation) {
         List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
         // Get all BotanicalObjects which have the right Organisation and are not in the AccessionNumberList
-        Query query = em.createNamedQuery("TblBotanicalObject.findByNotInTblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
+        Query query = em.createNamedQuery("TblDerivative.findByNotInTblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
         botanicalObjects.addAll(query.getResultList());
         // Set Seperated to True because they have the right organisation but are not in the File
         for (TblBotanicalObject botanicalObject : botanicalObjects) {
@@ -243,11 +243,11 @@ public class InventoryManager {
     protected void setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(List<Long> livingPlantIdList, TblOrganisation organisation, TblInventory tblInventory) {
         List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
         // Get all BotanicalObjects with the accession number from the uploaded File
-        Query query = em.createNamedQuery("TblBotanicalObject.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
+        Query query = em.createNamedQuery("TblDerivative.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
         botanicalObjects.addAll(query.getResultList());
         // Change the Organisation to the new Organisation from the File
         for (TblBotanicalObject botanicalObject : botanicalObjects) {
-            botanicalObject.setOrganisationId(organisation);
+            //botanicalObject.setOrganisationId(organisation);
             em.merge(botanicalObject);
             // Create tblInventoryObject
             TblInventoryObject tblInventoryObject = new TblInventoryObject();
