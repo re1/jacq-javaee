@@ -61,7 +61,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         Long rowKeyLong = Long.valueOf(rowKey);
 
         for (BotanicalObjectDerivative derivativeResult : this.derivativeResults) {
-            if (rowKeyLong.equals(derivativeResult.getId())) {
+            if (rowKeyLong.equals(derivativeResult.getDerivativeId())) {
                 return derivativeResult;
             }
         }
@@ -71,7 +71,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
 
     @Override
     public Object getRowKey(BotanicalObjectDerivative derivativeResult) {
-        return derivativeResult.getId();
+        return derivativeResult.getDerivativeId();
     }
 
     @Override

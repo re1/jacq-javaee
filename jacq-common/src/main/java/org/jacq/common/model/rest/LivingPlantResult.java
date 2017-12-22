@@ -33,7 +33,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
         // BotanicalObjectDerivative properties
         this.setType(BotanicalObjectDerivative.LIVING);
-        this.setId(tblLivingPlant.getTblDerivative().getDerivativeId());
+        this.setDerivativeId(tblLivingPlant.getTblDerivative().getDerivativeId());
         this.setBotanicalObjectId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getId());
         this.setScientificName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName());
         this.setAccessionNumber(String.format("%07d", tblLivingPlant.getAccessionNumber()));

@@ -34,7 +34,7 @@ public class DerivativeManager {
 
     private static final Logger LOGGER = Logger.getLogger(DerivativeManager.class.getName());
 
-    private static final String SELECT_FIELDS = "SELECT `id`, `botanical_object_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `place_number`, `derivative_count`, `type`";
+    private static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `accession_number`, `label_annotation`, `organisation_description`, `place_number`, `derivative_count`, `type`";
 
     private static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 

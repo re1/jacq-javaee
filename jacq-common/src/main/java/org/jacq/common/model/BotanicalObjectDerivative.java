@@ -41,8 +41,8 @@ public class BotanicalObjectDerivative implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
-    private long id;
+    @Column(name = "derivative_id")
+    private long derivativeId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "botanical_object_id")
@@ -76,12 +76,12 @@ public class BotanicalObjectDerivative implements Serializable {
     public BotanicalObjectDerivative() {
     }
 
-    public long getId() {
-        return id;
+    public long getDerivativeId() {
+        return derivativeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDerivativeId(long derivativeId) {
+        this.derivativeId = derivativeId;
     }
 
     public long getBotanicalObjectId() {
