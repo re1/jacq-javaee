@@ -89,8 +89,6 @@ public class TblOrganisation implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkUser> frmwrkUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<TblDerivative> tblDerivativeList;
@@ -196,15 +194,6 @@ public class TblOrganisation implements Serializable {
 
     public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
         this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
-    }
-
-    @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
-    }
-
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
     }
 
     @XmlTransient

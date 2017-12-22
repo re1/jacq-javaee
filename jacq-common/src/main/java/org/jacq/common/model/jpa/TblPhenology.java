@@ -57,7 +57,7 @@ public class TblPhenology implements Serializable {
     @OneToMany(mappedBy = "phenologyId")
     private List<TblBotanicalObject> tblBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId")
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
+    private List<TblVegetative> tblVegetativeList;
 
     public TblPhenology() {
     }
@@ -92,12 +92,12 @@ public class TblPhenology implements Serializable {
     }
 
     @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
+    public List<TblVegetative> getTblVegetativeList() {
+        return tblVegetativeList;
     }
 
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
+    public void setTblVegetativeList(List<TblVegetative> tblVegetativeList) {
+        this.tblVegetativeList = tblVegetativeList;
     }
 
     @Override

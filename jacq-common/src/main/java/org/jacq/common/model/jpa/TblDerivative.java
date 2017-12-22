@@ -16,6 +16,7 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,10 +28,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -55,15 +58,22 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "count")
     private long count;
-    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblOrganisation organisationId;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
+    private TblVegetative tblVegetative;
+    @OneToMany(mappedBy = "parentDerivativeId")
+    private List<TblDerivative> tblDerivativeList;
+    @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne
+    private TblDerivative parentDerivativeId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
     @ManyToOne(optional = false)
     private TblDerivativeType derivativeTypeId;
+    @JoinColumn(name = "organisation_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblOrganisation organisationId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
     private TblLivingPlant tblLivingPlant;
 
@@ -95,12 +105,29 @@ public class TblDerivative implements Serializable {
         this.count = count;
     }
 
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
+    public TblVegetative getTblVegetative() {
+        return tblVegetative;
     }
 
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
+    public void setTblVegetative(TblVegetative tblVegetative) {
+        this.tblVegetative = tblVegetative;
+    }
+
+    @XmlTransient
+    public List<TblDerivative> getTblDerivativeList() {
+        return tblDerivativeList;
+    }
+
+    public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
+        this.tblDerivativeList = tblDerivativeList;
+    }
+
+    public TblDerivative getParentDerivativeId() {
+        return parentDerivativeId;
+    }
+
+    public void setParentDerivativeId(TblDerivative parentDerivativeId) {
+        this.parentDerivativeId = parentDerivativeId;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {
@@ -117,6 +144,14 @@ public class TblDerivative implements Serializable {
 
     public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
         this.derivativeTypeId = derivativeTypeId;
+    }
+
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
     }
 
     public TblLivingPlant getTblLivingPlant() {

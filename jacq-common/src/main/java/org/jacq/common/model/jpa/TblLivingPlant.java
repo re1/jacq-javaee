@@ -129,8 +129,6 @@ public class TblLivingPlant implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
     private List<TblRelevancy> tblRelevancyList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
@@ -313,15 +311,6 @@ public class TblLivingPlant implements Serializable {
 
     public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
         this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
-    }
-
-    @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
-    }
-
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
     }
 
     @XmlTransient
