@@ -8,7 +8,7 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <div class="jacq-content">
+            <h:panelGroup id="jacq_livingplant-search" layout="block" class="jacq-content">
                 <div class="jacq-content-header">
                     <h1>#{messages['livingplant.livingplantmanage']}</h1>
                 </div>
@@ -39,7 +39,7 @@
                                 <h:outputText value="#{messages['livingplant.placenumber']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:inputText value="#{livingPlantController.dataModel.placeNumber}" />
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                                 <h:outputText value="#{messages['livingplant.accessionnumber']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:inputText value="#{livingPlantController.dataModel.accessionNumber}" />
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="jacq-buttons">
-                    <p:commandButton value="#{messages['search']}" />
+                    <p:commandButton value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
                 <div class="ui-g">
                     <div class="ui-g-12">
@@ -149,7 +149,7 @@
                         </p:dataTable>
                     </div>
                 </div>
-            </div>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </html>

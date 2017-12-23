@@ -39,6 +39,8 @@ public interface DerivativeService {
      *
      * @param type
      * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
      * @param orderColumn
      * @param orderDirection
      * @param offset
@@ -49,25 +51,28 @@ public interface DerivativeService {
     @Path("/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
      * Return total count of results for the given search parameters
      *
      * @param type
      * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
      * @return
      */
     @GET
     @Path("/count")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId);
+    public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber);
 
     /**
      * Get details for a given derivative entry
      *
      * @param derivativeId
+     * @param type
      * @return
      */
     @GET
