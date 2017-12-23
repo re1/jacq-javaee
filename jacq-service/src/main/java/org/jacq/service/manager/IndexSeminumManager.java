@@ -24,6 +24,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIndexSeminumContent;
 import org.jacq.common.model.jpa.TblIndexSeminumPerson;
 import org.jacq.common.model.jpa.TblIndexSeminumRevision;
@@ -41,8 +42,9 @@ public class IndexSeminumManager {
     protected EntityManager em;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
-     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
+     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
+     * List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -72,10 +74,10 @@ public class IndexSeminumManager {
 
         // Load the BotanicalObject list with Organisation Id in List
         Query query = em.createNamedQuery("TblDerivative.findByOrganisationListAndIndexSeminum").setParameter("organisationList", organisationList);
-        List<TblBotanicalObject> botanicalObjectList = query.getResultList();
+        List<TblDerivative> derivativeList = query.getResultList();
 
         // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
-        for (TblBotanicalObject botanicalObject : botanicalObjectList) {
+        for (TblDerivative derivative : derivativeList) {
             //TODO Family
 
             // Tbl_index_seminum_content
@@ -84,48 +86,47 @@ public class IndexSeminumManager {
             // family
             tblIndexSeminumContent.setFamily("UNKNOWN");
             // botanical_object_id
-            tblIndexSeminumContent.setBotanicalObjectId(botanicalObject);
+            tblIndexSeminumContent.setBotanicalObjectId(derivative.getBotanicalObjectId());
             // index_seminum_revision_id
             tblIndexSeminumContent.setIndexSeminumRevisionId(tblIndexSeminumRevision);
 
             // scientificname
-            tblIndexSeminumContent.setScientificName(botanicalObject.getViewScientificName().getScientificName());
+            tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName());
 
-            /*           if (botanicalObject.getTblLivingPlant() != null) {
+            if (derivative.getTblLivingPlant() != null) {
                 // accession_number
-                tblIndexSeminumContent.setAccessionNumber(String.valueOf(botanicalObject.getTblLivingPlant().getAccessionNumber()));
+                tblIndexSeminumContent.setAccessionNumber(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()));
                 // ipen_number
-                tblIndexSeminumContent.setIpenNumber(botanicalObject.getTblLivingPlant().getIpenNumber());
+                tblIndexSeminumContent.setIpenNumber(derivative.getTblLivingPlant().getIpenNumber());
                 // Type
-                tblIndexSeminumContent.setIndexSeminumType(botanicalObject.getTblLivingPlant().getIndexSeminumTypeId().getType());
-            }*/
+                tblIndexSeminumContent.setIndexSeminumType(derivative.getTblLivingPlant().getIndexSeminumTypeId().getType());
+            }
             // habitat
-            tblIndexSeminumContent.setHabitat(botanicalObject.getHabitat() != null ? botanicalObject.getHabitat() : null);
+            tblIndexSeminumContent.setHabitat(derivative.getBotanicalObjectId().getHabitat() != null ? derivative.getBotanicalObjectId().getHabitat() : null);
 
-            if (botanicalObject.getAcquisitionEventId() != null) {
+            if (derivative.getBotanicalObjectId().getAcquisitionEventId() != null) {
                 // acquisition_location
-                tblIndexSeminumContent.setAcquisitionLocation(botanicalObject.getAcquisitionEventId().getLocationId() != null ? botanicalObject.getAcquisitionEventId().getLocationId().getLocation() : null);
+                tblIndexSeminumContent.setAcquisitionLocation(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationId() != null ? botanicalObject.getAcquisitionEventId().getLocationId().getLocation() : null);
                 // acqustition_number
-                tblIndexSeminumContent.setAcquisitionNumber(botanicalObject.getAcquisitionEventId().getNumber() != null ? String.valueOf(botanicalObject.getAcquisitionEventId().getNumber()) : null);
+                tblIndexSeminumContent.setAcquisitionNumber(derivative.getBotanicalObjectId().getAcquisitionEventId().getNumber() != null ? String.valueOf(botanicalObject.getAcquisitionEventId().getNumber()) : null);
                 // acquisition_date
-                if (!StringUtils.isEmpty(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
-                    tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getCustom());
+                if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
+                    tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
+                } else {
+                    tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
-                else {
-                    tblIndexSeminumContent.setAcquisitionDate(botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + botanicalObject.getAcquisitionEventId().getAcquisitionDateId().getYear());
-                }
-                if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId() != null) {
+                if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
                     // altitude_min
-                    tblIndexSeminumContent.setAltitudeMin(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() : null);
+                    tblIndexSeminumContent.setAltitudeMin(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin() : null);
                     // altitude_max
-                    tblIndexSeminumContent.setAltitudeMax(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() : null);
+                    tblIndexSeminumContent.setAltitudeMax(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() != null ? botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax() : null);
                     // latitude
-                    if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds() != null) {
-                        tblIndexSeminumContent.setLatitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
+                    if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees() != null && derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes() != null && derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds() != null) {
+                        tblIndexSeminumContent.setLatitude(String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees()) + "." + String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes()) + "." + String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds()));
                     }
                     // longitude
-                    if (botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes() != null && botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds() != null) {
-                        tblIndexSeminumContent.setLongitude(String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(botanicalObject.getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
+                    if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees() != null && derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes() != null && derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds() != null) {
+                        tblIndexSeminumContent.setLongitude(String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees()) + "." + String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes()) + "." + String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds()));
                     }
 
                 }
@@ -133,7 +134,7 @@ public class IndexSeminumManager {
             // save Tbl_index_seminum_content to DB
             em.persist(tblIndexSeminumContent);
             // Load all Person to Acquisition Event
-            List<TblPerson> tblPersonList = botanicalObject.getAcquisitionEventId().getTblPersonList();
+            List<TblPerson> tblPersonList = derivative.getBotanicalObjectId().getAcquisitionEventId().getTblPersonList();
             for (TblPerson person : tblPersonList) {
 
                 // tbl_index_seminum_person

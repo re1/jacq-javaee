@@ -34,6 +34,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblInventory;
 import org.jacq.common.model.jpa.TblInventoryObject;
 import org.jacq.common.model.jpa.TblInventoryType;
@@ -190,8 +191,8 @@ public class InventoryManager {
     }
 
     /**
-     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants by AccessionNumberList return
-     * LivinplantId list
+     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants
+     * by AccessionNumberList return LivinplantId list
      *
      * @param bufferedReader
      * @return
@@ -223,14 +224,14 @@ public class InventoryManager {
      * @param organisation
      */
     protected void setSeparatedByLivingPlantIdListAndOrganisation(List<Long> livingPlantIdList, TblOrganisation organisation) {
-        List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+        List<TblDerivative> derivativeList = new ArrayList<>();
         // Get all BotanicalObjects which have the right Organisation and are not in the AccessionNumberList
         Query query = em.createNamedQuery("TblDerivative.findByNotInTblLivingPlantListAndOrangisation").setParameter("tblLivingPlantList", livingPlantIdList).setParameter("organisationId", organisation);
-        botanicalObjects.addAll(query.getResultList());
+        derivativeList.addAll(query.getResultList());
         // Set Seperated to True because they have the right organisation but are not in the File
-        for (TblBotanicalObject botanicalObject : botanicalObjects) {
-            botanicalObject.setSeparated(true);
-            em.merge(botanicalObject);
+        for (TblDerivative derivative : derivativeList) {
+            derivative.getBotanicalObjectId().setSeparated(true);
+            em.merge(derivative);
         }
     }
 
@@ -241,18 +242,18 @@ public class InventoryManager {
      * @param tblInventory
      */
     protected void setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(List<Long> livingPlantIdList, TblOrganisation organisation, TblInventory tblInventory) {
-        List<TblBotanicalObject> botanicalObjects = new ArrayList<>();
+        List<TblDerivative> derivativeList = new ArrayList<>();
         // Get all BotanicalObjects with the accession number from the uploaded File
         Query query = em.createNamedQuery("TblDerivative.findByLivingPlantList").setParameter("tblLivingPlantList", livingPlantIdList);
-        botanicalObjects.addAll(query.getResultList());
+        derivativeList.addAll(query.getResultList());
         // Change the Organisation to the new Organisation from the File
-        for (TblBotanicalObject botanicalObject : botanicalObjects) {
+        for (TblDerivative derivative : derivativeList) {
             //botanicalObject.setOrganisationId(organisation);
-            em.merge(botanicalObject);
+            em.merge(derivative);
             // Create tblInventoryObject
             TblInventoryObject tblInventoryObject = new TblInventoryObject();
             tblInventoryObject.setInventoryId(tblInventory);
-            tblInventoryObject.setBotanicalObjectId(botanicalObject);
+            tblInventoryObject.setBotanicalObjectId(derivative.getBotanicalObjectId());
             tblInventoryObject.setMessage("TEST");
             em.persist(tblInventoryObject);
         }
