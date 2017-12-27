@@ -114,6 +114,15 @@ public class DataImportManager {
             importRecord.setSeparationAnnotation(record.get(i++));
             importRecord.setMatchFamily(record.get(i++));
             importRecord.setIpenNumber(record.get(i++));
+            importRecord.setCultureNotes(record.get(i++));
+            importRecord.setPlaceNumber(record.get(i++));
+            importRecord.setCount(Long.valueOf(record.get(i++)));
+            importRecord.setSourceName(record.get(i++));
+            importRecord.setOriginalBotanicalObjectId(Long.valueOf(record.get(i++)));
+
+            // call import function
+            this.importRecord(importRecord);
+
         }
     }
 
@@ -177,6 +186,8 @@ public class DataImportManager {
                 }
             }
 
+            // try to find an original entry by matching the original botanicalobject id and source
+            // TODO
             // no entry exists yet, start creating the data
             // lookup default acqusition type
             TypedQuery<TblAcquisitionType> acquisitionTypeQuery = em.createNamedQuery("TblAcquisitionType.findById", TblAcquisitionType.class);
@@ -284,6 +295,7 @@ public class DataImportManager {
             TblDerivative derivative = new TblDerivative();
             derivative.setBotanicalObjectId(botanicalObject);
             derivative.setOrganisationId(organisation);
+            derivative.setCount(importRecord.getCount());
             em.persist(derivative);
 
             // setup living plant object
@@ -292,6 +304,8 @@ public class DataImportManager {
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
             livingPlant.setIncomingDateId(incomingDate);
             livingPlant.setIpenNumber(importRecord.getIpenNumber());
+            livingPlant.setCultureNotes(importRecord.getCultureNotes());
+            livingPlant.setPlaceNumber(importRecord.getPlaceNumber());
             em.persist(livingPlant);
 
             // store alternative accession number
