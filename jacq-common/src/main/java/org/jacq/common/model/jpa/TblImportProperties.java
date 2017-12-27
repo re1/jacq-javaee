@@ -43,7 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TblImportProperties.findById", query = "SELECT t FROM TblImportProperties t WHERE t.id = :id")
     , @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze")
     , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")
-    , @NamedQuery(name = "TblImportProperties.findBySourceName", query = "SELECT t FROM TblImportProperties t WHERE t.sourceName = :sourceName")})
+    , @NamedQuery(name = "TblImportProperties.findBySourceName", query = "SELECT t FROM TblImportProperties t WHERE t.sourceName = :sourceName")
+    , @NamedQuery(name = "TblImportProperties.findByOriginalBotanicalObjectId", query = "SELECT t FROM TblImportProperties t WHERE t.originalBotanicalObjectId = :originalBotanicalObjectId")})
 public class TblImportProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +65,8 @@ public class TblImportProperties implements Serializable {
     @Size(max = 45)
     @Column(name = "source_name")
     private String sourceName;
+    @Column(name = "original_botanical_object_id")
+    private Long originalBotanicalObjectId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
@@ -113,6 +116,14 @@ public class TblImportProperties implements Serializable {
 
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
+    }
+
+    public Long getOriginalBotanicalObjectId() {
+        return originalBotanicalObjectId;
+    }
+
+    public void setOriginalBotanicalObjectId(Long originalBotanicalObjectId) {
+        this.originalBotanicalObjectId = originalBotanicalObjectId;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {
