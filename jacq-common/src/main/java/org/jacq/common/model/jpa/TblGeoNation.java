@@ -55,7 +55,7 @@ public class TblGeoNation implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "nation_id")
-    private int nationId;
+    private long nationId;
     @Size(max = 50)
     @Column(name = "nation")
     private String nation;
@@ -85,7 +85,7 @@ public class TblGeoNation implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "region_id")
-    private int regionId;
+    private long regionId;
     @Size(max = 2000)
     @Column(name = "language_variants")
     private String languageVariants;
@@ -93,11 +93,11 @@ public class TblGeoNation implements Serializable {
     public TblGeoNation() {
     }
 
-    public int getNationId() {
+    public long getNationId() {
         return nationId;
     }
 
-    public void setNationId(int nationId) {
+    public void setNationId(long nationId) {
         this.nationId = nationId;
     }
 
@@ -173,11 +173,11 @@ public class TblGeoNation implements Serializable {
         this.isoAlpha2Code = isoAlpha2Code;
     }
 
-    public int getRegionId() {
+    public long getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(int regionId) {
+    public void setRegionId(long regionId) {
         this.regionId = regionId;
     }
 

@@ -5,84 +5,94 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>JACQ</title>
         <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Poppins" rel="stylesheet"></link>
 
         <h:outputStylesheet library="jacq" name="jacq.css" />
+        <h:outputStylesheet library="" name="icons.css" />
+
     </h:head>
     <h:body>
-        <h:form id="jacq_form">
-            <div class="jacq-content">
-                <div class="jacq-header">
-                    <header>
-                        <img class="jacq-logo-img" src="../../resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
-                    </header>
-                </div>
+        <div class="jacq-content">
+            <div class="jacq-header">
+                <header>
+                    <img class="jacq-logo-img" src="../../resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
+                    <h:form>
+                        <p:splitButton icon="flag-de">
+                            <p:menuitem value="Deutsch" icon="flag-de" />
+                            <p:menuitem value="English" icon="flag-en" />
+                        </p:splitButton>
+                    </h:form>
+                </header>
             </div>
-            <div class="jacq-pages">
-                <div class="ui-g">
-                    <div class="ui-g-3">
-                        <p:panelMenu>
-                            <p:submenu label="#{messages['livingplant']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/edit.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/manage.xhtml"/>
-                                <p:submenu label="#{messages['inventory']}">
-                                    <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/inventorycreate.xhtml"/>
-                                    <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
-                                </p:submenu>
-                                <p:submenu label="#{messages['seminum']}">
-                                    <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
-                                    <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/faces/pages/livingplant/revisioncreate.xhtml"/>
-                                </p:submenu>
+        </div>
+        <div class="jacq-pages">
+            <div class="ui-g">
+                <div class="ui-g-3">
+                    <p:panelMenu>
+                        <p:submenu label="#{messages['livingplant']}">
+                            <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/edit.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/manage.xhtml"/>
+                            <p:submenu label="#{messages['inventory']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/livingplant/inventoryedit.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="#{messages['location']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/organisation/edit.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/organisation/manage.xhtml"/>
+                            <p:submenu label="#{messages['seminum']}">
+                                <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
+                                <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/faces/pages/livingplant/revisioncreate.xhtml"/>
                             </p:submenu>
-                            <p:submenu label="#{messages['treecontrolsheet']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/treecontrolsheet/treecontrolsheetcreate.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/treecontrolsheet/treecontrolsheetmanage.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['databrowser']}" rendered="false">
-                                <p:menuitem value="#{messages['databrowser.classificationbrowser']}" url="/faces/pages/databrowser/classificationbrowser.xhtml"/>
-                                <p:menuitem value="#{messages['databrowser.statistic']}" url="/faces/pages/databrowser/statistic.xhtml"/>
-                            </p:submenu>
-                            <p:separator />
-                            <p:submenu label="#{messages['user']}">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml"/>
-                                <p:menuitem value="#{messages['update']}" url="/faces/pages/user/update.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['literature']}" rendered="false">
-                                <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literaturemanage.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['nomenclature']}" rendered="false">
-                                <p:menuitem value="#{messages['edit']}" url="/faces/pages/nomenclature/nomenclaturecheck.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['chorology']}" rendered="false">
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/chrology/chorologyedit.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['observations']}" rendered="false">
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsmanage.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="#{messages['taxonomy']}" rendered="false">
-                                <p:menuitem value="#{messages['taxonomy.genera']}" url="/faces/pages/taxonomy/generacreate.xhtml"/>
-                                <p:menuitem value="#{messages['taxonomy.species']}" url="/faces/pages/taxonomy/speciescreate.xhtml"/>
-                                <p:menuitem value="#{messages['taxonomy.family']}" url="/faces/pages/taxonomy/familycreate.xhtml"/>
-                                <p:menuitem value="#{messages['taxonomy.author']}" url="/faces/pages/taxonomy/authorcreate.xhtml"/>
-                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomymanage.xhtml"/>
-                            </p:submenu>
-                        </p:panelMenu>
-                    </div>
-                    <div class="ui-g-9 ui-g-nopad">
+                        </p:submenu>
+                        <p:submenu label="#{messages['location']}">
+                            <p:menuitem value="#{messages['create']}" url="/faces/pages/organisation/edit.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/organisation/manage.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['treerecordfile']}">
+                            <p:menuitem value="#{messages['create']}" url="/faces/pages/treerecordfile/edit.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/treerecordfile/manage.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['databrowser']}" rendered="false">
+                            <p:menuitem value="#{messages['databrowser.classificationbrowser']}" url="/faces/pages/databrowser/classificationbrowser.xhtml"/>
+                            <p:menuitem value="#{messages['databrowser.statistic']}" url="/faces/pages/databrowser/statistic.xhtml"/>
+                        </p:submenu>
+                        <p:separator />
+                        <p:submenu label="#{messages['user']}">
+                            <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml"/>
+                            <p:menuitem value="#{messages['update']}" url="/faces/pages/user/update.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['literature']}" rendered="false">
+                            <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literaturemanage.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['nomenclature']}" rendered="false">
+                            <p:menuitem value="#{messages['edit']}" url="/faces/pages/nomenclature/nomenclaturecheck.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['chorology']}" rendered="false">
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/chrology/chorologyedit.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['observations']}" rendered="false">
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsmanage.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{messages['taxonomy']}" rendered="false">
+                            <p:menuitem value="#{messages['taxonomy.genera']}" url="/faces/pages/taxonomy/generacreate.xhtml"/>
+                            <p:menuitem value="#{messages['taxonomy.species']}" url="/faces/pages/taxonomy/speciescreate.xhtml"/>
+                            <p:menuitem value="#{messages['taxonomy.family']}" url="/faces/pages/taxonomy/familycreate.xhtml"/>
+                            <p:menuitem value="#{messages['taxonomy.author']}" url="/faces/pages/taxonomy/authorcreate.xhtml"/>
+                            <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomymanage.xhtml"/>
+                        </p:submenu>
+                    </p:panelMenu>
+                </div>
+                <div class="ui-g-9 ui-g-nopad">
+                    <h:form id="jacq_form">
                         <ui:insert name="content"/>
-                    </div>
+                    </h:form>
+                    <ui:insert name="content_noform"/>
                 </div>
             </div>
-        </h:form>
+        </div>
     </h:body>
 </html>
 

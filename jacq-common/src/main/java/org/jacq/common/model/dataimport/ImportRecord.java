@@ -44,6 +44,11 @@ public class ImportRecord {
     protected String labelAnnotation;
     protected String matchFamily;
     protected String ipenNumber;
+    protected String cultureNotes;
+    protected String placeNumber;
+    protected Long count;
+    protected String sourceName;
+    protected Long originalBotanicalObjectId;
 
     public Long getOriginalId() {
         return originalId;
@@ -173,9 +178,49 @@ public class ImportRecord {
         this.importFile = importFile;
     }
 
+    public String getCultureNotes() {
+        return cultureNotes;
+    }
+
+    public void setCultureNotes(String cultureNotes) {
+        this.cultureNotes = cultureNotes;
+    }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public Long getOriginalBotanicalObjectId() {
+        return originalBotanicalObjectId;
+    }
+
+    public void setOriginalBotanicalObjectId(Long originalBotanicalObjectId) {
+        this.originalBotanicalObjectId = originalBotanicalObjectId;
+    }
+
     /**
-     * Helper function for converting the import record to a single line string
-     * for appending to the annotation field of an existing record
+     * Helper function for converting the import record to a single line string for appending to the annotation field of
+     * an existing record
      *
      * @return
      */

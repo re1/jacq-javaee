@@ -58,10 +58,10 @@ public class EmploymentTypeResult {
     }
 
     /**
-     * Helper function for converting a list of User entries to userTypeResult
+     * Helper function for converting a list of EmploymentType entries to
+     * employmentTypeResult
      *
      * @param employmentTypeList
-     * @param userTypeList
      * @return
      */
     public static List<EmploymentTypeResult> fromList(List<FrmwrkEmploymentType> employmentTypeList) {

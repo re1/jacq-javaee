@@ -7,11 +7,10 @@ package org.jacq.input.controller;
 
 import org.jacq.input.view.LazyOrganisationDataModel;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.jacq.input.util.ServicesUtil;
 
 /**
@@ -20,7 +19,7 @@ import org.jacq.input.util.ServicesUtil;
  * @author fhafner
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class OrganisationController implements Serializable {
 
     public static final String ALL = "all";
@@ -50,8 +49,7 @@ public class OrganisationController implements Serializable {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the
-     * data-table
+     * Noop action listener for refreshing the row count after loading the data-table
      *
      * @return
      */

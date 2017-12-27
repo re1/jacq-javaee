@@ -77,6 +77,8 @@ public class SrvcUuidMinter implements Serializable {
     @ManyToOne(optional = false)
     private SrvcUuidMinterType uuidMinterTypeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId")
+    private List<RevFlora> revFloraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId")
     private List<RevClassification> revClassificationList;
 
     public SrvcUuidMinter() {
@@ -131,6 +133,15 @@ public class SrvcUuidMinter implements Serializable {
 
     public void setUuidMinterTypeId(SrvcUuidMinterType uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
+    }
+
+    @XmlTransient
+    public List<RevFlora> getRevFloraList() {
+        return revFloraList;
+    }
+
+    public void setRevFloraList(List<RevFlora> revFloraList) {
+        this.revFloraList = revFloraList;
     }
 
     @XmlTransient

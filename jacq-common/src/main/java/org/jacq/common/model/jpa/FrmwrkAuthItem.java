@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -59,7 +58,7 @@ public class FrmwrkAuthItem implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "type")
-    private int type;
+    private long type;
     @Lob
     @Size(max = 65535)
     @Column(name = "description")
@@ -75,17 +74,17 @@ public class FrmwrkAuthItem implements Serializable {
     @JoinTable(name = "frmwrk_AuthItemChild", joinColumns = {
         @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
         @JoinColumn(name = "child", referencedColumnName = "name")})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     private List<FrmwrkAuthItem> frmwrkAuthItemList;
-    @ManyToMany(mappedBy = "frmwrkAuthItemList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "frmwrkAuthItemList")
     private List<FrmwrkAuthItem> frmwrkAuthItemList1;
-    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "authItemname")
     private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
-    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "authItemname")
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem")
     private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
-    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "authItemname")
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
 
     public FrmwrkAuthItem() {
@@ -95,7 +94,7 @@ public class FrmwrkAuthItem implements Serializable {
         this.name = name;
     }
 
-    public FrmwrkAuthItem(String name, int type) {
+    public FrmwrkAuthItem(String name, long type) {
         this.name = name;
         this.type = type;
     }
@@ -108,11 +107,11 @@ public class FrmwrkAuthItem implements Serializable {
         this.name = name;
     }
 
-    public int getType() {
+    public long getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(long type) {
         this.type = type;
     }
 

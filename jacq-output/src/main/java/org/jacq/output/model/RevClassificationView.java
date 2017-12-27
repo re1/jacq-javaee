@@ -184,14 +184,6 @@ public class RevClassificationView {
         revClassification.setProvinceCodes(provinceCodes);
     }
 
-    public Long getUuidMinterId() {
-        return revClassification.getUuidMinterId();
-    }
-
-    public void setUuidMinterId(Long uuidMinterId) {
-        revClassification.setUuidMinterId(uuidMinterId);
-    }
-
     public List<TblGeoProvince> getProvinceList() {
         return provinceList;
     }

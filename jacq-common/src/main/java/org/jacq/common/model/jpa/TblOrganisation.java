@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 fhafner.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fhafner
+ * @author wkoller
  */
 @Entity
 @Table(name = "tbl_organisation")
@@ -50,7 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblOrganisation.findByDescription", query = "SELECT t FROM TblOrganisation t WHERE t.description = :description")
     , @NamedQuery(name = "TblOrganisation.findByDepartment", query = "SELECT t FROM TblOrganisation t WHERE t.department = :department")
     , @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse")
-    , @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")})
+    , @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")
+    , @NamedQuery(name = "TblOrganisation.findByIndexSeminumStart", query = "SELECT t FROM TblOrganisation t WHERE t.indexSeminumStart = :indexSeminumStart")})
 public class TblOrganisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,8 +72,10 @@ public class TblOrganisation implements Serializable {
     @Size(max = 5)
     @Column(name = "ipen_code")
     private String ipenCode;
-    @OneToMany(mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private List<TblBotanicalObject> tblBotanicalObjectList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "index_seminum_start")
+    private boolean indexSeminumStart;
     @OneToMany(mappedBy = "parentOrganisationId")
     private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
@@ -82,14 +84,14 @@ public class TblOrganisation implements Serializable {
     @JoinColumn(name = "gardener_id", referencedColumnName = "id")
     @ManyToOne
     private FrmwrkUser gardenerId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
     private TblImageServer tblImageServer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkUser> frmwrkUserList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    private List<TblDerivative> tblDerivativeList;
 
     public TblOrganisation() {
     }
@@ -98,9 +100,10 @@ public class TblOrganisation implements Serializable {
         this.id = id;
     }
 
-    public TblOrganisation(Long id, boolean greenhouse) {
+    public TblOrganisation(Long id, boolean greenhouse, boolean indexSeminumStart) {
         this.id = id;
         this.greenhouse = greenhouse;
+        this.indexSeminumStart = indexSeminumStart;
     }
 
     public Long getId() {
@@ -143,13 +146,12 @@ public class TblOrganisation implements Serializable {
         this.ipenCode = ipenCode;
     }
 
-    @XmlTransient
-    public List<TblBotanicalObject> getTblBotanicalObjectList() {
-        return tblBotanicalObjectList;
+    public boolean getIndexSeminumStart() {
+        return indexSeminumStart;
     }
 
-    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
-        this.tblBotanicalObjectList = tblBotanicalObjectList;
+    public void setIndexSeminumStart(boolean indexSeminumStart) {
+        this.indexSeminumStart = indexSeminumStart;
     }
 
     @XmlTransient
@@ -195,21 +197,21 @@ public class TblOrganisation implements Serializable {
     }
 
     @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
-    }
-
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
-    }
-
-    @XmlTransient
     public List<FrmwrkUser> getFrmwrkUserList() {
         return frmwrkUserList;
     }
 
     public void setFrmwrkUserList(List<FrmwrkUser> frmwrkUserList) {
         this.frmwrkUserList = frmwrkUserList;
+    }
+
+    @XmlTransient
+    public List<TblDerivative> getTblDerivativeList() {
+        return tblDerivativeList;
+    }
+
+    public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
+        this.tblDerivativeList = tblDerivativeList;
     }
 
     @Override

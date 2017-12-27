@@ -15,14 +15,18 @@
  */
 package org.jacq.service.manager;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.utils.PdfSplitter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -32,16 +36,23 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import javax.ws.rs.core.Response;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
-import javax.ws.rs.core.Response.Status;
+import org.jacq.common.model.jpa.TblTreeRecordFilePage;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
+import org.jacq.common.rest.TreeRecordFileService;
+import org.jacq.service.JacqConfig;
 
 /**
  *
  * @author fhafner
  */
 public class TreeRecordFileManager {
+
+    private static final Logger LOGGER = Logger.getLogger(TreeRecordFileManager.class.getName());
+
+    @Inject
+    protected JacqConfig jacqConfig;
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
@@ -106,52 +117,80 @@ public class TreeRecordFileManager {
 
     /**
      * @param treeRecordFileResult
-     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
+     * @see TreeRecordFileService
      */
     @Transactional
-    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
+    public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) throws IOException {
         TblTreeRecordFile tblTreeRecordFile = new TblTreeRecordFile();
-
         tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
         tblTreeRecordFile.setName(treeRecordFileResult.getName());
         em.persist(tblTreeRecordFile);
+        if (!treeRecordFileResult.getFileContent().equals("")) {
+            final Long tblTreeRecordFileid = tblTreeRecordFile.getId();
+
+            // TODO: decode and save to disk, split file, save total number of pages and records for them
+            byte[] decodedPdf = Base64.getDecoder().decode(treeRecordFileResult.getFileContent());
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedPdf);
+            PdfDocument pdfDoc = new PdfDocument(new PdfReader(byteArrayInputStream));
+
+            List<PdfDocument> splitDocuments = new PdfSplitter(pdfDoc).splitByPageCount(1);
+
+            int page = 1;
+            for (PdfDocument doc : splitDocuments) {
+                doc.getWriter().flush();
+                ByteArrayOutputStream baos = (ByteArrayOutputStream) doc.getWriter().getOutputStream();
+                doc.close();
+                byte[] pdfPage = baos.toByteArray();
+                TblTreeRecordFilePage tblTreeRecordFilePage = new TblTreeRecordFilePage();
+                tblTreeRecordFilePage.setTreeRecordFileId(em.find(TblTreeRecordFile.class, tblTreeRecordFileid));
+                tblTreeRecordFilePage.setContent(Base64.getEncoder().encodeToString(pdfPage));
+                tblTreeRecordFilePage.setPage(page++);
+                em.persist(tblTreeRecordFilePage);
+            }
+            pdfDoc.close();
+        }
 
         return new TreeRecordFileResult(tblTreeRecordFile);
     }
 
     /**
      *
-     * @param is
-     * @param formData
+     * @param treeRecordFileId
      * @return
-     * @throws IOException
      */
-    /*    @Transactional
-    public Response uploadFile(@FormDataParam("upload") InputStream is,
-            @FormDataParam("upload") FormDataContentDisposition formData) throws IOException {
-        String fileLocation = "c:/work/" + formData.getFileName();
-        saveFile(is, fileLocation);
-        String result = "Successfully File Uploaded on the path " + fileLocation;
-        return Response.status(Status.OK).entity(result).build();
-
-    }
-     */
-    public void saveFile(InputStream is, String fileLocation) throws IOException {
-        OutputStream os = new FileOutputStream(new File(fileLocation));
-        byte[] buffer = new byte[256];
-        int bytes = 0;
-        while ((bytes = is.read(buffer)) != -1) {
-            os.write(buffer, 0, bytes);
+    @Transactional
+    public TreeRecordFileResult load(Long treeRecordFileId) {
+        TblTreeRecordFile tblTreeRecordFile = em.find(TblTreeRecordFile.class, treeRecordFileId);
+        if (tblTreeRecordFile != null) {
+            return new TreeRecordFileResult(tblTreeRecordFile);
         }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param treeRecordFilePageId
+     * @return
+     */
+    @Transactional
+    public TreeRecordFilePageResult loadPage(Long treeRecordFilePageId) {
+        TblTreeRecordFilePage tblTreeRecordFilePage = em.find(TblTreeRecordFilePage.class, treeRecordFilePageId);
+        if (tblTreeRecordFilePage != null) {
+            return new TreeRecordFilePageResult(tblTreeRecordFilePage);
+        }
+
+        return null;
     }
 
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq

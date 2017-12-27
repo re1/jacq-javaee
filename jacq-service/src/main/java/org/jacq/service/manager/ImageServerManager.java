@@ -32,6 +32,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.rest.ImageServerResource;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblImageServer;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -57,9 +58,9 @@ public class ImageServerManager {
      * @param botanicalObject
      * @return
      */
-    public List<ImageServerResource> getResources(TblBotanicalObject botanicalObject) {
+    public List<ImageServerResource> getResources(TblDerivative derivative) {
         // search for matching image server first
-        TblImageServer tblImageServer = findImageServer(botanicalObject.getOrganisationId());
+        TblImageServer tblImageServer = findImageServer(derivative.getOrganisationId());
         ArrayList<ImageServerResource> imageServerResources = new ArrayList<>();
 
         // check if the botanical object has an image server assigned
@@ -73,8 +74,8 @@ public class ImageServerManager {
                 String identifier = "";
 
                 // check if derivative is a living plant
-                if (botanicalObject.getTblLivingPlant() != null) {
-                    identifier = String.format("%07d", botanicalObject.getTblLivingPlant().getAccessionNumber());
+                if (derivative.getTblLivingPlant() != null) {
+                    identifier = String.format("%07d", derivative.getTblLivingPlant().getAccessionNumber());
                 }
 
                 // prepare request to image server

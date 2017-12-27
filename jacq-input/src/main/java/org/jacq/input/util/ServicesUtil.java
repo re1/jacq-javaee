@@ -18,6 +18,8 @@ package org.jacq.input.util;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.IndexSeminumService;
+import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
@@ -46,12 +48,20 @@ public class ServicesUtil {
         return getProxy(UserService.class, JACQ_SERVICE_URL);
     }
 
+    public static InventoryService getInventoryService() {
+        return getProxy(InventoryService.class, JACQ_SERVICE_URL);
+    }
+
     public static TreeRecordFileService getTreeRecordFileService() {
         return getProxy(TreeRecordFileService.class, JACQ_SERVICE_URL);
     }
 
     public static ClassificationService getClassificationService() {
         return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static IndexSeminumService getIndexSeminumService() {
+        return getProxy(IndexSeminumService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

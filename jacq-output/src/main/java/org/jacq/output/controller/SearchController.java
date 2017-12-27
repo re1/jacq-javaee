@@ -40,7 +40,7 @@ public class SearchController implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getBotanicalObjectService());
+        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getDerivativeService());
     }
 
     public String getScientificName() {
@@ -81,8 +81,7 @@ public class SearchController implements Serializable {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the
-     * data-table
+     * Noop action listener for refreshing the row count after loading the data-table
      *
      * @return
      */

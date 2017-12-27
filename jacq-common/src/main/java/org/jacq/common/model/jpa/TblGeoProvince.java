@@ -49,7 +49,7 @@ public class TblGeoProvince implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "province_id")
-    private int provinceId;
+    private long provinceId;
     @Size(max = 100)
     @Column(name = "provinz")
     private String provinz;
@@ -62,7 +62,7 @@ public class TblGeoProvince implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "nation_id")
-    private int nationId;
+    private long nationId;
     @Size(max = 5)
     @Column(name = "usgs_number")
     private String usgsNumber;
@@ -70,11 +70,11 @@ public class TblGeoProvince implements Serializable {
     public TblGeoProvince() {
     }
 
-    public int getProvinceId() {
+    public long getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(int provinceId) {
+    public void setProvinceId(long provinceId) {
         this.provinceId = provinceId;
     }
 
@@ -102,11 +102,11 @@ public class TblGeoProvince implements Serializable {
         this.provinzCode = provinzCode;
     }
 
-    public int getNationId() {
+    public long getNationId() {
         return nationId;
     }
 
-    public void setNationId(int nationId) {
+    public void setNationId(long nationId) {
         this.nationId = nationId;
     }
 

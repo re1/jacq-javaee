@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,15 +63,13 @@ public class TblIndexSeminumRevision implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId")
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private FrmwrkUser userId;
 
     public TblIndexSeminumRevision() {
@@ -82,10 +79,9 @@ public class TblIndexSeminumRevision implements Serializable {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 
-    public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name, Date timestamp) {
+    public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
         this.name = name;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumRevisionId() {

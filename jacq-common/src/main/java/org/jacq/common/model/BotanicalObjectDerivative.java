@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-@IdClass(BotanicalObjectDerivativeKey.class)
 public class BotanicalObjectDerivative implements Serializable {
 
     public static final String LIVING = "living";
@@ -42,13 +41,12 @@ public class BotanicalObjectDerivative implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
-    private long id;
-    @Id
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "derivative_id")
     private long derivativeId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "botanical_object_id")
+    private long botanicalObjectId;
     @Lob
     @Size(max = 65535)
     @Column(name = "scientific_name")
@@ -72,18 +70,10 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 20)
     @Column(name = "place_number")
     private String placeNumber;
-    @Column(name = "vegetative_count")
-    private Long vegetativeCount;
+    @Column(name = "derivative_count")
+    private Long derivativeCount;
 
     public BotanicalObjectDerivative() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getDerivativeId() {
@@ -92,6 +82,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setDerivativeId(long derivativeId) {
         this.derivativeId = derivativeId;
+    }
+
+    public long getBotanicalObjectId() {
+        return botanicalObjectId;
+    }
+
+    public void setBotanicalObjectId(long botanicalObjectId) {
+        this.botanicalObjectId = botanicalObjectId;
     }
 
     public String getScientificName() {
@@ -142,12 +140,12 @@ public class BotanicalObjectDerivative implements Serializable {
         this.placeNumber = placeNumber;
     }
 
-    public Long getVegetativeCount() {
-        return vegetativeCount;
+    public Long getDerivativeCount() {
+        return derivativeCount;
     }
 
-    public void setVegetativeCount(Long vegetativeCount) {
-        this.vegetativeCount = vegetativeCount;
+    public void setDerivativeCount(Long derivativeCount) {
+        this.derivativeCount = derivativeCount;
     }
 
 }

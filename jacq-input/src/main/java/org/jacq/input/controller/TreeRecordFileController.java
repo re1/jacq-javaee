@@ -8,7 +8,7 @@ package org.jacq.input.controller;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.jacq.input.util.ServicesUtil;
 import org.jacq.input.view.LazyTreeRecordFileDataModel;
 
@@ -18,7 +18,7 @@ import org.jacq.input.view.LazyTreeRecordFileDataModel;
  * @author fhafner
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class TreeRecordFileController implements Serializable {
 
     protected LazyTreeRecordFileDataModel dataModel;
@@ -42,8 +42,7 @@ public class TreeRecordFileController implements Serializable {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the
-     * data-table
+     * Noop action listener for refreshing the row count after loading the data-table
      *
      * @return
      */

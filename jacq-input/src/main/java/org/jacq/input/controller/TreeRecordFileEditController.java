@@ -15,6 +15,10 @@
  */
 package org.jacq.input.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -30,6 +34,8 @@ import org.primefaces.model.UploadedFile;
 @ManagedBean
 @ViewScoped
 public class TreeRecordFileEditController {
+
+    private static final Logger LOGGER = Logger.getLogger(TreeRecordFileEditController.class.getName());
 
     protected Long treeRecordFileId;
 
@@ -61,7 +67,13 @@ public class TreeRecordFileEditController {
     }
 
     public String edit() {
-        this.treeRecordFile = this.treeRecordFileService.save(this.treeRecordFile);
+        try {
+            this.treeRecordFile.setFileContent(new String(Base64.getEncoder().encode(this.file.getContents()), "ASCII"));
+            this.treeRecordFile = this.treeRecordFileService.save(this.treeRecordFile);
+
+        } catch (UnsupportedEncodingException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
 
         return null;
     }

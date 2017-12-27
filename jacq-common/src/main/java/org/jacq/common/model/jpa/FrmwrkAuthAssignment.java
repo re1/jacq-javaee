@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -54,10 +53,10 @@ public class FrmwrkAuthAssignment implements Serializable {
     @Column(name = "data")
     private String data;
     @JoinColumn(name = "userid", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private FrmwrkUser frmwrkUser;
     @JoinColumn(name = "itemname", referencedColumnName = "name", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private FrmwrkAuthItem frmwrkAuthItem;
 
     public FrmwrkAuthAssignment() {
@@ -67,7 +66,7 @@ public class FrmwrkAuthAssignment implements Serializable {
         this.frmwrkAuthAssignmentPK = frmwrkAuthAssignmentPK;
     }
 
-    public FrmwrkAuthAssignment(String itemname, int userid) {
+    public FrmwrkAuthAssignment(String itemname, long userid) {
         this.frmwrkAuthAssignmentPK = new FrmwrkAuthAssignmentPK(itemname, userid);
     }
 

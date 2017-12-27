@@ -28,6 +28,8 @@ public class JacqConfig {
 
     protected static final String BIRT = "birt";
     public static final String BIRT_WORK_LABEL = BIRT + CONFIG_SEPARATOR + "work_label";
+    protected static final String TREERECORD = "treerecord";
+    public static final String TREERECORD_PDF_PATH = TREERECORD + CONFIG_SEPARATOR + "pdf_path";
 
     protected HashMap<String, String> config;
 

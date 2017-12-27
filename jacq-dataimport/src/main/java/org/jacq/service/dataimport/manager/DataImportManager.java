@@ -41,6 +41,7 @@ import org.jacq.common.model.jpa.TblAcquisitionEvent;
 import org.jacq.common.model.jpa.TblAcquisitionType;
 import org.jacq.common.model.jpa.TblAlternativeAccessionNumber;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblImportProperties;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblLocationCoordinates;
@@ -113,6 +114,15 @@ public class DataImportManager {
             importRecord.setSeparationAnnotation(record.get(i++));
             importRecord.setMatchFamily(record.get(i++));
             importRecord.setIpenNumber(record.get(i++));
+            importRecord.setCultureNotes(record.get(i++));
+            importRecord.setPlaceNumber(record.get(i++));
+            importRecord.setCount(Long.valueOf(record.get(i++)));
+            importRecord.setSourceName(record.get(i++));
+            importRecord.setOriginalBotanicalObjectId(Long.valueOf(record.get(i++)));
+
+            // call import function
+            this.importRecord(importRecord);
+
         }
     }
 
@@ -140,7 +150,7 @@ public class DataImportManager {
             if (alternativeAccessionNumbers.size() > 0) {
 
                 TblAlternativeAccessionNumber alternativeAccessionNumber = alternativeAccessionNumbers.get(0);
-                TblBotanicalObject botanicalObject = alternativeAccessionNumber.getLivingPlantId().getTblBotanicalObject();
+                TblBotanicalObject botanicalObject = alternativeAccessionNumber.getLivingPlantId().getTblDerivative().getBotanicalObjectId();
 
                 // check if we limit to a certain family
                 if (!StringUtils.isEmpty(importRecord.getMatchFamily())) {
@@ -176,6 +186,8 @@ public class DataImportManager {
                 }
             }
 
+            // try to find an original entry by matching the original botanicalobject id and source
+            // TODO
             // no entry exists yet, start creating the data
             // lookup default acqusition type
             TypedQuery<TblAcquisitionType> acquisitionTypeQuery = em.createNamedQuery("TblAcquisitionType.findById", TblAcquisitionType.class);
@@ -273,19 +285,27 @@ public class DataImportManager {
             botanicalObject.setRecordingDate(new Date());
             botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
             botanicalObject.setScientificNameId(scientificNameId);
-            botanicalObject.setOrganisationId(organisation);
             em.persist(botanicalObject);
 
             // create empty acquisition date entry, view editing requires it to be set
             TblAcquisitionDate incomingDate = new TblAcquisitionDate();
             em.persist(incomingDate);
 
+            // create derivative entry
+            TblDerivative derivative = new TblDerivative();
+            derivative.setBotanicalObjectId(botanicalObject);
+            derivative.setOrganisationId(organisation);
+            derivative.setCount(importRecord.getCount());
+            em.persist(derivative);
+
             // setup living plant object
             TblLivingPlant livingPlant = new TblLivingPlant();
-            livingPlant.setId(botanicalObject.getId());
+            livingPlant.setId(derivative.getDerivativeId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
             livingPlant.setIncomingDateId(incomingDate);
             livingPlant.setIpenNumber(importRecord.getIpenNumber());
+            livingPlant.setCultureNotes(importRecord.getCultureNotes());
+            livingPlant.setPlaceNumber(importRecord.getPlaceNumber());
             em.persist(livingPlant);
 
             // store alternative accession number

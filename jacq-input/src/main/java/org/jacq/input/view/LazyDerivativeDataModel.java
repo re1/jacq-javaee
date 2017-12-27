@@ -48,6 +48,12 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     protected List<BotanicalObjectDerivative> derivativeResults = new ArrayList<>();
 
     /**
+     * Search criteria
+     */
+    protected String placeNumber;
+    protected String accessionNumber;
+
+    /**
      * Default constructor, needs a reference to the derivative service for later querying
      *
      * @param derivativeService
@@ -61,7 +67,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         Long rowKeyLong = Long.valueOf(rowKey);
 
         for (BotanicalObjectDerivative derivativeResult : this.derivativeResults) {
-            if (rowKeyLong.equals(derivativeResult.getId())) {
+            if (rowKeyLong.equals(derivativeResult.getDerivativeId())) {
                 return derivativeResult;
             }
         }
@@ -71,7 +77,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
 
     @Override
     public Object getRowKey(BotanicalObjectDerivative derivativeResult) {
-        return derivativeResult.getId();
+        return derivativeResult.getDerivativeId();
     }
 
     @Override
@@ -86,14 +92,31 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         }
 
         // get count first
-        int rowCount = this.derivativeService.count(type, id);
+        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(type, id, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
     }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
+    }
+
+    public String getAccessionNumber() {
+        return accessionNumber;
+    }
+
+    public void setAccessionNumber(String accessionNumber) {
+        this.accessionNumber = accessionNumber;
+    }
+
 }

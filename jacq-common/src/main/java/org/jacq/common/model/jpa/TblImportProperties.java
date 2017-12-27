@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +42,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblImportProperties.findAll", query = "SELECT t FROM TblImportProperties t")
     , @NamedQuery(name = "TblImportProperties.findById", query = "SELECT t FROM TblImportProperties t WHERE t.id = :id")
     , @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze")
-    , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")})
+    , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")
+    , @NamedQuery(name = "TblImportProperties.findBySourceName", query = "SELECT t FROM TblImportProperties t WHERE t.sourceName = :sourceName")})
 public class TblImportProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,8 +61,11 @@ public class TblImportProperties implements Serializable {
     @Size(max = 65535)
     @Column(name = "Verbreitung")
     private String verbreitung;
+    @Size(max = 45)
+    @Column(name = "source_name")
+    private String sourceName;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
 
     public TblImportProperties() {
@@ -102,6 +105,14 @@ public class TblImportProperties implements Serializable {
 
     public void setVerbreitung(String verbreitung) {
         this.verbreitung = verbreitung;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

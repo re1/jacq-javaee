@@ -7,20 +7,20 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
-        <ui:define name="content">
+        <ui:define name="content_noform">
             <f:metadata>
                 <f:viewParam name="organisationId" value="#{treeRecordFileEditController.treeRecordFileId}"/>
             </f:metadata>
-            <h:form>
+            <h:form enctype="multipart/form-data">
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>#{messages['treecontrolsheet.treecontrolsheetcreate']}</h1>
+                        <h1>#{messages['treerecordfile.edit']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.description']}" />
+                                    <h:outputText value="#{messages['treerecordfile.description']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText value="#{treeRecordFileEditController.treeRecordFile.name}"/>
@@ -30,7 +30,7 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.filesnumber']}" />
+                                    <h:outputText value="#{messages['treerecordfile.filesnumber']}" />
                                 </div>
                                 <div class="ui-g-6">
                                     <p:inputText value="#{treeRecordFileEditController.treeRecordFile.documentNumber}"/>
@@ -40,16 +40,16 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['treecontrolsheet.filename']}" />
+                                    <h:outputText value="#{messages['treerecordfile.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:fileUpload  mode="simple" skinSimple="true"/>
+                                    <p:fileUpload value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" />
+                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" ajax="false" />
                     </div>
                 </div>
             </h:form>

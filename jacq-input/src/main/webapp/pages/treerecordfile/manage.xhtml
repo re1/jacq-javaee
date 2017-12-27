@@ -11,14 +11,14 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>#{messages['treecontrolsheet.treecontrolsheetmanage']}</h1>
+                        <h1>#{messages['treerecordfile.manage']}</h1>
                     </div>
                     <div class="jacq-data-table">
                         <p:dataTable var="treeRecordFileResult" widgetVar="treeRecordFileTable" lazy="true" value="#{treeRecordFileController.dataModel}" paginator="true" rows="10">
-                            <p:column filterBy="#{treeRecordFileResult.treeRecordFileId}" headerText="#{messages['treecontrolsheet.id']}">
+                            <p:column filterBy="#{treeRecordFileResult.treeRecordFileId}" headerText="#{messages['treerecordfile.id']}">
                                 <h:outputText  value="#{treeRecordFileResult.treeRecordFileId}"/>
                             </p:column>
-                            <p:column filterBy="#{treeRecordFileResult.year}" headerText="#{messages['treecontrolsheet.year']}">
+                            <p:column filterBy="#{treeRecordFileResult.year}" headerText="#{messages['treerecordfile.year']}">
                                 <f:facet name="filter">
                                     <p:spinner onchange="PF('treeRecordFileTable').filter()">
                                         <f:converter converterId="javax.faces.Integer" />
@@ -28,10 +28,10 @@
                                     <f:convertDateTime type="date" pattern="yyyy"/>
                                 </h:outputText>
                             </p:column>
-                            <p:column filterBy="#{treeRecordFileResult.name}" headerText="#{messages['treecontrolsheet.name']}">
+                            <p:column filterBy="#{treeRecordFileResult.name}" headerText="#{messages['treerecordfile.name']}">
                                 <h:outputText value="#{treeRecordFileResult.name}" />
                             </p:column>
-                            <p:column filterBy="#{treeRecordFileResult.documentNumber}" headerText="#{messages['treecontrolsheet.filesnumber']}">
+                            <p:column filterBy="#{treeRecordFileResult.documentNumber}" headerText="#{messages['treerecordfile.filesnumber']}">
                                 <h:outputText value="#{treeRecordFileResult.documentNumber}" />
                             </p:column>
                             <p:column headerText="">

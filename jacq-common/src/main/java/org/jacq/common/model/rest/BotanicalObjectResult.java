@@ -35,8 +35,6 @@ public class BotanicalObjectResult {
     protected Long botanicalObjectId;
     protected List<String> commonNames;
     protected String scientificName;
-    protected String organization;
-    protected Integer accessionNumber;
     protected List<ImageServerResource> imageServerResources;
 
     public List<String> getCommonNames() {
@@ -53,22 +51,6 @@ public class BotanicalObjectResult {
 
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
-    }
-
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
-    public Integer getAccessionNumber() {
-        return accessionNumber;
-    }
-
-    public void setAccessionNumber(Integer accessionNumber) {
-        this.accessionNumber = accessionNumber;
     }
 
     public Long getBotanicalObjectId() {
@@ -92,11 +74,7 @@ public class BotanicalObjectResult {
 
     public BotanicalObjectResult(TblBotanicalObject botanicalObject) {
         this.scientificName = botanicalObject.getViewScientificName().getScientificName();
-        this.organization = botanicalObject.getOrganisationId().getDescription();
 
-        if (botanicalObject.getTblLivingPlant() != null) {
-            this.accessionNumber = botanicalObject.getTblLivingPlant().getAccessionNumber();
-        }
         this.botanicalObjectId = botanicalObject.getId();
         this.commonNames = new ArrayList<>();
         this.imageServerResources = new ArrayList<>();

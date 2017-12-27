@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -60,14 +59,14 @@ public class TblLocationGeonames implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "geonameId")
-    private int geonameId;
+    private long geonameId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2)
     @Column(name = "countryCode")
     private String countryCode;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false)
     private TblLocation tblLocation;
 
     public TblLocationGeonames() {
@@ -77,7 +76,7 @@ public class TblLocationGeonames implements Serializable {
         this.id = id;
     }
 
-    public TblLocationGeonames(Long id, String serviceData, int geonameId, String countryCode) {
+    public TblLocationGeonames(Long id, String serviceData, long geonameId, String countryCode) {
         this.id = id;
         this.serviceData = serviceData;
         this.geonameId = geonameId;
@@ -100,11 +99,11 @@ public class TblLocationGeonames implements Serializable {
         this.serviceData = serviceData;
     }
 
-    public int getGeonameId() {
+    public long getGeonameId() {
         return geonameId;
     }
 
-    public void setGeonameId(int geonameId) {
+    public void setGeonameId(long geonameId) {
         this.geonameId = geonameId;
     }
 

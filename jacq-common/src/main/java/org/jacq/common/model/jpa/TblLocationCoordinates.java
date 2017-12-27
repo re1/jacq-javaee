@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -86,7 +85,7 @@ public class TblLocationCoordinates implements Serializable {
     @Size(max = 2)
     @Column(name = "longitude_half")
     private String longitudeHalf;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationCoordinatesId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationCoordinatesId")
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
 
     public TblLocationCoordinates() {

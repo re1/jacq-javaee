@@ -15,7 +15,6 @@
  */
 package org.jacq.common.rest;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Date;
 import javax.ws.rs.Consumes;
@@ -25,8 +24,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.model.rest.TreeRecordFileResult;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -68,7 +67,7 @@ public interface TreeRecordFileService {
     public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
 
     /**
-     * Update or Add Single User entry
+     * Update or Add Single TreeRecordFile entry
      *
      * @param treeRecordFileResult
      * @return
@@ -81,13 +80,23 @@ public interface TreeRecordFileService {
 
     /**
      *
-     * @param is
-     * @param formData
+     * @param treeRecordFileId
      * @return
      */
-    /*    @POST
-    @Path("/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(@FormDataParam("upload") InputStream is, @FormDataParam("upload") FormDataContentDisposition formData);
+    @GET
+    @Path("/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFileResult load(@QueryParam("treeRecordFileId") Long treeRecordFileId);
+
+    /**
+     *
+     * @param treeRecordFilePageId
+     * @return
      */
+    @GET
+    @Path("/loadPage")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRecordFilePageResult loadPage(@QueryParam("treeRecordFilePageId") Long treeRecordFilePageId);
 }

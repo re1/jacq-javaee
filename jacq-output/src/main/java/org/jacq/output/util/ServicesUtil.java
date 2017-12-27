@@ -15,9 +15,8 @@
  */
 package org.jacq.output.util;
 
-import org.jacq.common.rest.BotanicalObjectService;
 import org.jacq.common.rest.ClassificationService;
-import org.jacq.common.rest.filter.ContentTypeResponseFilter;
+import org.jacq.common.rest.DerivativeService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -31,12 +30,12 @@ public class ServicesUtil {
 
     private static final String JACQ_SERVICE_URL = "http://localhost:8081/jacq-service/rest/";
 
-    public static BotanicalObjectService getBotanicalObjectService() {
-        return getProxy(BotanicalObjectService.class, JACQ_SERVICE_URL);
-    }
-
     public static ClassificationService getClassificationService() {
         return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static DerivativeService getDerivativeService() {
+        return getProxy(DerivativeService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

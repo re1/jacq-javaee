@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,9 +59,9 @@ public class TblCultivar implements Serializable {
     @Column(name = "cultivar")
     private String cultivar;
     @JoinColumn(name = "scientific_name_id", referencedColumnName = "scientific_name_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblScientificNameInformation scientificNameId;
-    @OneToMany(mappedBy = "cultivarId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cultivarId")
     private List<TblLivingPlant> tblLivingPlantList;
 
     public TblCultivar() {

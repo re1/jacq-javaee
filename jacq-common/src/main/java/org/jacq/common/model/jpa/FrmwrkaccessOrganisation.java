@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,13 +54,13 @@ public class FrmwrkaccessOrganisation implements Serializable {
     @Column(name = "allowDeny")
     private boolean allowDeny;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private FrmwrkUser userId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblOrganisation organisationId;
 
     public FrmwrkaccessOrganisation() {

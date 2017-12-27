@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 fhafner.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fhafner
+ * @author wkoller
  */
 @Entity
 @Table(name = "frmwrk_user_type")

@@ -15,11 +15,13 @@
  */
 package org.jacq.service.rest.impl;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.service.manager.TreeRecordFileManager;
@@ -48,11 +50,21 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
 
     @Override
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
-        return treeRecordFileManager.save(treeRecordFileResult);
+        try {
+            return treeRecordFileManager.save(treeRecordFileResult);
+        } catch (IOException ex) {
+            Logger.getLogger(TreeRecordFileServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-    /*    @Override
-    public Response uploadFile(InputStream is, FormDataContentDisposition formData) {
-        return treeRecordFileManager.uploadFile(is, formData)
-    }*/
+    @Override
+    public TreeRecordFileResult load(Long treeRecordFileId) {
+        return treeRecordFileManager.load(treeRecordFileId);
+    }
+
+    @Override
+    public TreeRecordFilePageResult loadPage(Long treeRecordFilePageId) {
+        return treeRecordFileManager.loadPage(treeRecordFilePageId);
+    }
 }

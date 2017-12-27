@@ -16,30 +16,24 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -54,28 +48,16 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "RevClassification.findByClassificationId", query = "SELECT r FROM RevClassification r WHERE r.classificationId = :classificationId")
     , @NamedQuery(name = "RevClassification.findByScientificNameId", query = "SELECT r FROM RevClassification r WHERE r.scientificNameId = :scientificNameId")
     , @NamedQuery(name = "RevClassification.findByAccScientificNameId", query = "SELECT r FROM RevClassification r WHERE r.accScientificNameId = :accScientificNameId")
+    , @NamedQuery(name = "RevClassification.findByRefDate", query = "SELECT r FROM RevClassification r WHERE r.refDate = :refDate")
     , @NamedQuery(name = "RevClassification.findByPreferredTaxonomy", query = "SELECT r FROM RevClassification r WHERE r.preferredTaxonomy = :preferredTaxonomy")
     , @NamedQuery(name = "RevClassification.findByLocked", query = "SELECT r FROM RevClassification r WHERE r.locked = :locked")
     , @NamedQuery(name = "RevClassification.findBySource", query = "SELECT r FROM RevClassification r WHERE r.source = :source")
     , @NamedQuery(name = "RevClassification.findBySourceId", query = "SELECT r FROM RevClassification r WHERE r.sourceId = :sourceId")
     , @NamedQuery(name = "RevClassification.findByUserId", query = "SELECT r FROM RevClassification r WHERE r.userId = :userId")
+    , @NamedQuery(name = "RevClassification.findByTimestamp", query = "SELECT r FROM RevClassification r WHERE r.timestamp = :timestamp")
     , @NamedQuery(name = "RevClassification.findByParentScientificNameId", query = "SELECT r FROM RevClassification r WHERE r.parentScientificNameId = :parentScientificNameId")
     , @NamedQuery(name = "RevClassification.findByNumber", query = "SELECT r FROM RevClassification r WHERE r.number = :number")
-    , @NamedQuery(name = "RevClassification.findByOrder", query = "SELECT r FROM RevClassification r WHERE r.order = :order")
-    , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndParent", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId = :accScientificNameId ORDER BY r.order ASC, r.scientificName ASC")
-    , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndTopLevel", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId IS NULL ORDER BY r.order ASC, r.scientificName ASC")
-    , @NamedQuery(name = "RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", query = "SELECT r FROM RevClassification r WHERE r.uuidMinterId = :uuidMinterId AND r.accScientificNameId IS NULL AND r.provinceIds LIKE :provinceId ORDER BY r.order ASC, r.scientificName ASC")
-})
-@NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery(name = "RevClassification.addRevision", procedureName = "AddRevClassification",
-            parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "i_source")
-                ,
-		@StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "i_source_id")
-                ,
-		@StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "o_uuid")
-            })
-})
+    , @NamedQuery(name = "RevClassification.findByOrder", query = "SELECT r FROM RevClassification r WHERE r.order = :order")})
 public class RevClassification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -94,6 +76,9 @@ public class RevClassification implements Serializable {
     private long scientificNameId;
     @Column(name = "acc_scientific_name_id")
     private Long accScientificNameId;
+    @Column(name = "ref_date")
+    @Temporal(TemporalType.DATE)
+    private Date refDate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "preferred_taxonomy")
@@ -117,6 +102,11 @@ public class RevClassification implements Serializable {
     @NotNull
     @Column(name = "user_id")
     private long userId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
     @Column(name = "parent_scientific_name_id")
     private Long parentScientificNameId;
     @Size(max = 15)
@@ -140,8 +130,9 @@ public class RevClassification implements Serializable {
     @Size(max = 65535)
     @Column(name = "province_codes")
     private String provinceCodes;
-    @Column(name = "uuid_minter_id")
-    private Long uuidMinterId;
+    @JoinColumn(name = "uuid_minter_id", referencedColumnName = "uuid_minter_id")
+    @ManyToOne(optional = false)
+    private SrvcUuidMinter uuidMinterId;
 
     public RevClassification() {
     }
@@ -158,6 +149,7 @@ public class RevClassification implements Serializable {
         this.locked = locked;
         this.source = source;
         this.userId = userId;
+        this.timestamp = timestamp;
     }
 
     public Long getClassificationBrowserRevisionId() {
@@ -190,6 +182,14 @@ public class RevClassification implements Serializable {
 
     public void setAccScientificNameId(Long accScientificNameId) {
         this.accScientificNameId = accScientificNameId;
+    }
+
+    public Date getRefDate() {
+        return refDate;
+    }
+
+    public void setRefDate(Date refDate) {
+        this.refDate = refDate;
     }
 
     public short getPreferredTaxonomy() {
@@ -238,6 +238,14 @@ public class RevClassification implements Serializable {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Long getParentScientificNameId() {
@@ -296,11 +304,11 @@ public class RevClassification implements Serializable {
         this.provinceCodes = provinceCodes;
     }
 
-    public Long getUuidMinterId() {
+    public SrvcUuidMinter getUuidMinterId() {
         return uuidMinterId;
     }
 
-    public void setUuidMinterId(Long uuidMinterId) {
+    public void setUuidMinterId(SrvcUuidMinter uuidMinterId) {
         this.uuidMinterId = uuidMinterId;
     }
 
@@ -328,4 +336,5 @@ public class RevClassification implements Serializable {
     public String toString() {
         return "org.jacq.common.model.jpa.RevClassification[ classificationBrowserRevisionId=" + classificationBrowserRevisionId + " ]";
     }
+
 }

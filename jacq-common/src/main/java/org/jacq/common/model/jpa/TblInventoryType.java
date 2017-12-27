@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,12 +61,10 @@ public class TblInventoryType implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId")
     private List<TblInventory> tblInventoryList;
 
     public TblInventoryType() {
@@ -77,10 +74,9 @@ public class TblInventoryType implements Serializable {
         this.inventoryTypeId = inventoryTypeId;
     }
 
-    public TblInventoryType(Long inventoryTypeId, String type, Date timestamp) {
+    public TblInventoryType(Long inventoryTypeId, String type) {
         this.inventoryTypeId = inventoryTypeId;
         this.type = type;
-        this.timestamp = timestamp;
     }
 
     public Long getInventoryTypeId() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -119,18 +118,16 @@ public class TblIndexSeminumContent implements Serializable {
     @Size(max = 20)
     @Column(name = "acquisition_date")
     private String acquisitionDate;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId")
     private List<TblIndexSeminumPerson> tblIndexSeminumPersonList;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblIndexSeminumRevision indexSeminumRevisionId;
 
     public TblIndexSeminumContent() {
@@ -140,14 +137,13 @@ public class TblIndexSeminumContent implements Serializable {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
+    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber) {
         this.indexSeminumContentId = indexSeminumContentId;
         this.accessionNumber = accessionNumber;
         this.family = family;
         this.scientificName = scientificName;
         this.indexSeminumType = indexSeminumType;
         this.ipenNumber = ipenNumber;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumContentId() {

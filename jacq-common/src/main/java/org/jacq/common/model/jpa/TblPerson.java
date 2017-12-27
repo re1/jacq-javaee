@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,9 +57,11 @@ public class TblPerson implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tblPersonList")
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
-    @OneToMany(mappedBy = "determinedById", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tblPersonList")
+    private List<TblNomName> tblNomNameList;
+    @OneToMany(mappedBy = "determinedById")
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblPerson() {
@@ -98,6 +99,15 @@ public class TblPerson implements Serializable {
 
     public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
         this.tblAcquisitionEventList = tblAcquisitionEventList;
+    }
+
+    @XmlTransient
+    public List<TblNomName> getTblNomNameList() {
+        return tblNomNameList;
+    }
+
+    public void setTblNomNameList(List<TblNomName> tblNomNameList) {
+        this.tblNomNameList = tblNomNameList;
     }
 
     @XmlTransient

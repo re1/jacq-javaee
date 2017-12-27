@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,12 +57,12 @@ public class FrmwrkaccessClassification implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "tax_syn_ID")
-    private int taxsynID;
+    private long taxsynID;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private FrmwrkUser userId;
 
     public FrmwrkaccessClassification() {
@@ -73,7 +72,7 @@ public class FrmwrkaccessClassification implements Serializable {
         this.accessClassificationId = accessClassificationId;
     }
 
-    public FrmwrkaccessClassification(Long accessClassificationId, boolean allowDeny, int taxsynID) {
+    public FrmwrkaccessClassification(Long accessClassificationId, boolean allowDeny, long taxsynID) {
         this.accessClassificationId = accessClassificationId;
         this.allowDeny = allowDeny;
         this.taxsynID = taxsynID;
@@ -95,11 +94,11 @@ public class FrmwrkaccessClassification implements Serializable {
         this.allowDeny = allowDeny;
     }
 
-    public int getTaxsynID() {
+    public long getTaxsynID() {
         return taxsynID;
     }
 
-    public void setTaxsynID(int taxsynID) {
+    public void setTaxsynID(long taxsynID) {
         this.taxsynID = taxsynID;
     }
 

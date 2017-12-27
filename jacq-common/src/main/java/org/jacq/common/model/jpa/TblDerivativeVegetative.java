@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2017 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +50,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblDerivativeVegetative.findByDerivativeVegetativeId", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.derivativeVegetativeId = :derivativeVegetativeId")
     , @NamedQuery(name = "TblDerivativeVegetative.findByAccessionNumber", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.accessionNumber = :accessionNumber")
     , @NamedQuery(name = "TblDerivativeVegetative.findByCultivationDate", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.cultivationDate = :cultivationDate")
-    , @NamedQuery(name = "TblDerivativeVegetative.findByIndexSeminum", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.indexSeminum = :indexSeminum")})
+    , @NamedQuery(name = "TblDerivativeVegetative.findByIndexSeminum", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.indexSeminum = :indexSeminum")
+    , @NamedQuery(name = "TblDerivativeVegetative.findByPlaceNumber", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.placeNumber = :placeNumber")
+    , @NamedQuery(name = "TblDerivativeVegetative.findBySeparated", query = "SELECT t FROM TblDerivativeVegetative t WHERE t.separated = :separated")})
 public class TblDerivativeVegetative implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,7 +64,7 @@ public class TblDerivativeVegetative implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "accession_number")
-    private int accessionNumber;
+    private long accessionNumber;
     @Column(name = "cultivation_date")
     @Temporal(TemporalType.DATE)
     private Date cultivationDate;
@@ -75,16 +76,23 @@ public class TblDerivativeVegetative implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @OneToMany(mappedBy = "derivativeVegetativeId", fetch = FetchType.LAZY)
+    @Size(max = 20)
+    @Column(name = "place_number")
+    private String placeNumber;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "separated")
+    private boolean separated;
+    @OneToMany(mappedBy = "derivativeVegetativeId")
     private List<TblSeparation> tblSeparationList;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblLivingPlant livingPlantId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblOrganisation organisationId;
     @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private TblPhenology phenologyId;
 
     public TblDerivativeVegetative() {
@@ -94,10 +102,11 @@ public class TblDerivativeVegetative implements Serializable {
         this.derivativeVegetativeId = derivativeVegetativeId;
     }
 
-    public TblDerivativeVegetative(Long derivativeVegetativeId, int accessionNumber, boolean indexSeminum) {
+    public TblDerivativeVegetative(Long derivativeVegetativeId, long accessionNumber, boolean indexSeminum, boolean separated) {
         this.derivativeVegetativeId = derivativeVegetativeId;
         this.accessionNumber = accessionNumber;
         this.indexSeminum = indexSeminum;
+        this.separated = separated;
     }
 
     public Long getDerivativeVegetativeId() {
@@ -108,11 +117,11 @@ public class TblDerivativeVegetative implements Serializable {
         this.derivativeVegetativeId = derivativeVegetativeId;
     }
 
-    public int getAccessionNumber() {
+    public long getAccessionNumber() {
         return accessionNumber;
     }
 
-    public void setAccessionNumber(int accessionNumber) {
+    public void setAccessionNumber(long accessionNumber) {
         this.accessionNumber = accessionNumber;
     }
 
@@ -138,6 +147,22 @@ public class TblDerivativeVegetative implements Serializable {
 
     public void setAnnotation(String annotation) {
         this.annotation = annotation;
+    }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
+    }
+
+    public boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(boolean separated) {
+        this.separated = separated;
     }
 
     @XmlTransient
