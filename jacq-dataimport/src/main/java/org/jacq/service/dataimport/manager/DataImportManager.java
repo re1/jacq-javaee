@@ -41,11 +41,14 @@ import org.jacq.common.model.jpa.TblAcquisitionEvent;
 import org.jacq.common.model.jpa.TblAcquisitionType;
 import org.jacq.common.model.jpa.TblAlternativeAccessionNumber;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblCultivar;
 import org.jacq.common.model.jpa.TblDerivative;
+import org.jacq.common.model.jpa.TblDerivativeType;
 import org.jacq.common.model.jpa.TblImportProperties;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.model.jpa.TblScientificNameInformation;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.names.JsonRpcRequest;
@@ -119,6 +122,7 @@ public class DataImportManager {
             importRecord.setCount(Long.valueOf(record.get(i++)));
             importRecord.setSourceName(record.get(i++));
             importRecord.setOriginalBotanicalObjectId(Long.valueOf(record.get(i++)));
+            importRecord.setCultivar(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -187,32 +191,151 @@ public class DataImportManager {
             }
 
             // try to find an original entry by matching the original botanicalobject id and source
-            // TODO
-            // no entry exists yet, start creating the data
-            // lookup default acqusition type
-            TypedQuery<TblAcquisitionType> acquisitionTypeQuery = em.createNamedQuery("TblAcquisitionType.findById", TblAcquisitionType.class);
-            acquisitionTypeQuery.setParameter("id", 1);
-            List<TblAcquisitionType> acquisitionTypes = acquisitionTypeQuery.getResultList();
-            if (acquisitionTypes.size() <= 0) {
-                throw new IllegalArgumentException("Unable to find acquisition type: '" + 1 + "'");
+            TblBotanicalObject botanicalObject = null;
+            TblCultivar cultivar = null;
+            if (importRecord.getOriginalBotanicalObjectId() != null && importRecord.getOriginalBotanicalObjectId() > 1) {
+                TypedQuery<TblImportProperties> importPropertiesQuery = em.createNamedQuery("TblImportProperties.findByOriginalBotanicalObjectIdAndSourceName", TblImportProperties.class);
+                importPropertiesQuery.setParameter("originalBotanicalObjectId", importRecord.getOriginalBotanicalObjectId());
+                importPropertiesQuery.setParameter("sourceName", importRecord.getSourceName());
+                List<TblImportProperties> importProperties = importPropertiesQuery.getResultList();
+                if (importProperties != null & importProperties.size() > 0) {
+                    botanicalObject = importProperties.get(0).getBotanicalObjectId();
+                }
             }
-            TblAcquisitionType acquisitionType = acquisitionTypes.get(0);
 
-            // start with the gathering location coordinates
-            TblLocationCoordinates locationCoordinates = new TblLocationCoordinates();
-            em.persist(locationCoordinates);
+            // if no previous botanical object is found, create a new entry for it
+            if (botanicalObject == null) {
+                // no entry exists yet, start creating the data
+                // lookup default acqusition type
+                TypedQuery<TblAcquisitionType> acquisitionTypeQuery = em.createNamedQuery("TblAcquisitionType.findById", TblAcquisitionType.class);
+                acquisitionTypeQuery.setParameter("id", 1L);
+                List<TblAcquisitionType> acquisitionTypes = acquisitionTypeQuery.getResultList();
+                if (acquisitionTypes.size() <= 0) {
+                    throw new IllegalArgumentException("Unable to find acquisition type: '" + 1 + "'");
+                }
+                TblAcquisitionType acquisitionType = acquisitionTypes.get(0);
 
-            // setup gathering date
-            TblAcquisitionDate acquisitionDate = new TblAcquisitionDate();
-            em.persist(acquisitionDate);
+                // start with the gathering location coordinates
+                TblLocationCoordinates locationCoordinates = new TblLocationCoordinates();
+                em.persist(locationCoordinates);
 
-            // setup the gathering event
-            TblAcquisitionEvent acquisitionEvent = new TblAcquisitionEvent();
-            acquisitionEvent.setLocationCoordinatesId(locationCoordinates);
-            acquisitionEvent.setAcquisitionDateId(acquisitionDate);
-            acquisitionEvent.setAcquisitionTypeId(acquisitionType);
-            acquisitionEvent.setNumber(importRecord.getGatheringNumber());
-            em.persist(acquisitionEvent);
+                // setup gathering date
+                TblAcquisitionDate acquisitionDate = new TblAcquisitionDate();
+                em.persist(acquisitionDate);
+
+                // setup the gathering event
+                TblAcquisitionEvent acquisitionEvent = new TblAcquisitionEvent();
+                acquisitionEvent.setLocationCoordinatesId(locationCoordinates);
+                acquisitionEvent.setAcquisitionDateId(acquisitionDate);
+                acquisitionEvent.setAcquisitionTypeId(acquisitionType);
+                acquisitionEvent.setNumber(importRecord.getGatheringNumber());
+                em.persist(acquisitionEvent);
+
+                // lookup scientific name id through taxamatch service
+                // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
+                TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
+                taxamatchOptions.setNearMatch(false);
+                taxamatchOptions.setShowSyn(false);
+
+                ArrayList<Object> params = new ArrayList<>();
+                params.add("vienna");
+                params.add(importRecord.getScientificName());
+                params.add(taxamatchOptions);
+
+                JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
+                jsonRpcRequest.setId(1L);
+                jsonRpcRequest.setMethod("getMatchesService");
+                jsonRpcRequest.setParams(params);
+
+                ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
+                TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
+
+                Long scientificNameId = 0L;
+                Long genusScientificNameId = 0L;
+                for (Result result : response.getResult().getResult()) {
+                    for (Searchresult searchResult : result.getSearchresult()) {
+                        // check for genus match
+                        if (searchResult.getDistance() == 0) {
+                            genusScientificNameId = searchResult.getTaxonID();
+                        }
+
+                        for (Species species : searchResult.getSpecies()) {
+                            if (species.getDistance() <= 0L) {
+                                scientificNameId = species.getTaxonID();
+                                break;
+                            }
+                        }
+
+                        if (scientificNameId != 0L) {
+                            break;
+                        }
+                    }
+
+                    if (scientificNameId != 0L) {
+                        break;
+                    }
+                }
+                if (scientificNameId == 0L) {
+                    if (genusScientificNameId == 0L) {
+                        LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                        scientificNameId = 46236L;
+                    }
+                    else {
+                        LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
+                        scientificNameId = genusScientificNameId;
+                    }
+                }
+
+                // check for cultivar entry
+                if (!StringUtils.isEmpty(importRecord.getCultivar())) {
+                    TypedQuery<TblCultivar> cultivarQuery = em.createNamedQuery("TblCultivar.findByCultivarAndScientificNameId", TblCultivar.class);
+                    cultivarQuery.setParameter("cultivar", importRecord.getCultivar());
+                    cultivarQuery.setParameter("scientificNameId", scientificNameId);
+
+                    List<TblCultivar> cultivars = cultivarQuery.getResultList();
+                    if (cultivars != null && cultivars.size() > 0) {
+                        cultivar = cultivars.get(0);
+                    }
+                    else {
+                        // try to find a matching scientific name information entry
+                        TypedQuery<TblScientificNameInformation> scientificNameInformationQuery = em.createNamedQuery("TblScientificNameInformation.findByScientificNameId", TblScientificNameInformation.class);
+                        scientificNameInformationQuery.setParameter("scientificNameId", scientificNameId);
+                        List<TblScientificNameInformation> scientificNameInformations = scientificNameInformationQuery.getResultList();
+                        TblScientificNameInformation scientificNameInformation = null;
+                        if (scientificNameInformations != null && scientificNameInformations.size() > 0) {
+                            scientificNameInformation = scientificNameInformations.get(0);
+                        }
+                        else {
+                            // create a new scientific name information entry
+                            scientificNameInformation = new TblScientificNameInformation();
+                            scientificNameInformation.setScientificNameId(scientificNameId);
+                            em.merge(scientificNameInformation);
+
+                            LOGGER.log(Level.INFO, "No scientific name information found for id ''{0}''. Added new entry.", scientificNameId);
+                        }
+
+                        // create cultivar entry and save it
+                        cultivar = new TblCultivar();
+                        cultivar.setCultivar(importRecord.getCultivar());
+                        cultivar.setScientificNameId(scientificNameInformation);
+                        em.persist(cultivar);
+
+                        LOGGER.log(Level.INFO, "No cultivar entry found for ''{0}''. Added new entry.", importRecord.getCultivar());
+                    }
+                }
+
+                // setup the botanical object
+                botanicalObject = new TblBotanicalObject();
+                botanicalObject.setAcquisitionEventId(acquisitionEvent);
+                botanicalObject.setRecordingDate(new Date());
+                botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
+                botanicalObject.setScientificNameId(scientificNameId);
+                em.persist(botanicalObject);
+            }
+
+            // create empty acquisition date entry, view editing requires it to be set
+            TblAcquisitionDate incomingDate = new TblAcquisitionDate();
+            em.persist(incomingDate);
 
             // lookup the organization by name
             TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findByDescription", TblOrganisation.class);
@@ -223,79 +346,12 @@ public class DataImportManager {
             }
             TblOrganisation organisation = organisations.get(0);
 
-            // lookup scientific name id through taxamatch service
-            // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
-            TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
-            taxamatchOptions.setNearMatch(false);
-            taxamatchOptions.setShowSyn(false);
-
-            ArrayList<Object> params = new ArrayList<>();
-            params.add("vienna");
-            params.add(importRecord.getScientificName());
-            params.add(taxamatchOptions);
-
-            JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
-            jsonRpcRequest.setId(1L);
-            jsonRpcRequest.setMethod("getMatchesService");
-            jsonRpcRequest.setParams(params);
-
-            ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
-            TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
-
-            Long scientificNameId = 0L;
-            Long genusScientificNameId = 0L;
-            for (Result result : response.getResult().getResult()) {
-                for (Searchresult searchResult : result.getSearchresult()) {
-                    // check for genus match
-                    if (searchResult.getDistance() == 0) {
-                        genusScientificNameId = searchResult.getTaxonID();
-                    }
-
-                    for (Species species : searchResult.getSpecies()) {
-                        if (species.getDistance() <= 0L) {
-                            scientificNameId = species.getTaxonID();
-                            break;
-                        }
-                    }
-
-                    if (scientificNameId != 0L) {
-                        break;
-                    }
-                }
-
-                if (scientificNameId != 0L) {
-                    break;
-                }
-            }
-            if (scientificNameId == 0L) {
-                if (genusScientificNameId == 0L) {
-                    LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                    scientificNameId = 46236L;
-                }
-                else {
-                    LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
-                    scientificNameId = genusScientificNameId;
-                }
-
-            }
-
-            // setup the botanical object
-            TblBotanicalObject botanicalObject = new TblBotanicalObject();
-            botanicalObject.setAcquisitionEventId(acquisitionEvent);
-            botanicalObject.setRecordingDate(new Date());
-            botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
-            botanicalObject.setScientificNameId(scientificNameId);
-            em.persist(botanicalObject);
-
-            // create empty acquisition date entry, view editing requires it to be set
-            TblAcquisitionDate incomingDate = new TblAcquisitionDate();
-            em.persist(incomingDate);
-
             // create derivative entry
             TblDerivative derivative = new TblDerivative();
             derivative.setBotanicalObjectId(botanicalObject);
             derivative.setOrganisationId(organisation);
             derivative.setCount(importRecord.getCount());
+            derivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 1L));
             em.persist(derivative);
 
             // setup living plant object
@@ -306,6 +362,8 @@ public class DataImportManager {
             livingPlant.setIpenNumber(importRecord.getIpenNumber());
             livingPlant.setCultureNotes(importRecord.getCultureNotes());
             livingPlant.setPlaceNumber(importRecord.getPlaceNumber());
+            livingPlant.setCultivarId(cultivar);
+            livingPlant.setIpenType("custom");
             em.persist(livingPlant);
 
             // store alternative accession number
@@ -351,6 +409,8 @@ public class DataImportManager {
             importProperties.setBotanicalObjectId(botanicalObject);
             importProperties.setIDPflanze(importRecord.getOriginalId());
             importProperties.setSpeciesName(importRecord.getScientificName());
+            importProperties.setSourceName(importRecord.getSourceName());
+            importProperties.setOriginalBotanicalObjectId(importRecord.getOriginalBotanicalObjectId());
             em.persist(importProperties);
         }
 

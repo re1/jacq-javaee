@@ -22,6 +22,7 @@ import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.rest.dataimport.DataImportService;
 import org.jacq.service.dataimport.manager.BromiMdbImportManager;
 import org.jacq.service.dataimport.manager.DataImportManager;
+import org.jacq.service.dataimport.manager.DbViewImportManager;
 
 /**
  * @see DataImportService
@@ -37,9 +38,11 @@ public class DataImportServiceImpl implements DataImportService {
     @Inject
     protected BromiMdbImportManager bromiMdbImportManager;
 
+    @Inject
+    protected DbViewImportManager dbViewImportManager;
+
     /**
-     * @see
-     * DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
+     * @see DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
      */
     @Override
     public void dataImport(ImportFile importFile) {
@@ -57,6 +60,15 @@ public class DataImportServiceImpl implements DataImportService {
     public void importBromiMdb() {
         try {
             bromiMdbImportManager.importBromiMdb();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void importDbView() {
+        try {
+            dbViewImportManager.importView();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

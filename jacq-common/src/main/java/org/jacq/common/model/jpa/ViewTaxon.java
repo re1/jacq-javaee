@@ -113,7 +113,7 @@ public class ViewTaxon implements Serializable {
     @Column(name = "DallaTorreIDs")
     private Long dallaTorreIDs;
     @Column(name = "DallaTorreZusatzIDs")
-    private Character dallaTorreZusatzIDs;
+    private String dallaTorreZusatzIDs;
     @Size(max = 255)
     @Column(name = "author_g")
     private String authorG;
@@ -282,11 +282,11 @@ public class ViewTaxon implements Serializable {
         this.dallaTorreIDs = dallaTorreIDs;
     }
 
-    public Character getDallaTorreZusatzIDs() {
+    public String getDallaTorreZusatzIDs() {
         return dallaTorreZusatzIDs;
     }
 
-    public void setDallaTorreZusatzIDs(Character dallaTorreZusatzIDs) {
+    public void setDallaTorreZusatzIDs(String dallaTorreZusatzIDs) {
         this.dallaTorreZusatzIDs = dallaTorreZusatzIDs;
     }
 
