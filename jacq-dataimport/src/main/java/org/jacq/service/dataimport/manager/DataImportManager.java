@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -57,6 +58,7 @@ import org.jacq.common.model.names.taxamatch.Searchresult;
 import org.jacq.common.model.names.taxamatch.Species;
 import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
 import org.jacq.common.model.names.taxamatch.TaxamatchResponse;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNamesService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
@@ -81,7 +83,14 @@ public class DataImportManager {
     @PersistenceContext
     protected EntityManager em;
 
+    protected OrganisationService organisationService;
+
     protected SimpleDateFormat separationDateFormat = new SimpleDateFormat("YYYY-mm-dd");
+
+    @PostConstruct
+    public void init() {
+        organisationService = ServicesUtil.getOrganisationService();
+    }
 
     /**
      * @throws java.io.IOException
@@ -359,11 +368,18 @@ public class DataImportManager {
             livingPlant.setId(derivative.getDerivativeId());
             livingPlant.setLabelAnnotation(importRecord.getLabelAnnotation());
             livingPlant.setIncomingDateId(incomingDate);
-            livingPlant.setIpenNumber(importRecord.getIpenNumber());
             livingPlant.setCultureNotes(importRecord.getCultureNotes());
             livingPlant.setPlaceNumber(importRecord.getPlaceNumber());
             livingPlant.setCultivarId(cultivar);
-            livingPlant.setIpenType("custom");
+            // check for valid ipen, if not cast a new one
+            if (!StringUtils.isEmpty(importRecord.getIpenNumber())) {
+                livingPlant.setIpenType("custom");
+                livingPlant.setIpenNumber(importRecord.getIpenNumber());
+            }
+            else {
+                livingPlant.setIpenType("default");
+                livingPlant.setIpenNumber("XX-0-" + organisationService.getIpenCode(organisation.getId()));
+            }
             em.persist(livingPlant);
 
             // store alternative accession number

@@ -57,4 +57,9 @@ public class OrganisationServiceImpl implements OrganisationService {
     public List<OrganisationResult> findAll() {
         return organisationManager.search(null, null, null, null, null, null, null, null, null);
     }
+
+    @Override
+    public String getIpenCode(Long organisationId) {
+        return organisationManager.getIpenCode(organisationId);
+    }
 }
