@@ -74,10 +74,10 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.processed']}" />
+                                    <h:outputText value="#{messages['livingplant.reviewed']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="processed" />
+                                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.reviewed}" />
                                 </div>
                             </div>
                         </div>
@@ -107,38 +107,52 @@
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.ipentyp']}" />
+                                    <h:outputText value="#{messages['livingplant.ipentype']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="ipentyp">
+                                    <p:selectOneMenu id="ipentype" value="#{livingPlantEditController.livingPlantResult.ipenType}" >
                                         <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="Custom" itemValue="custom" />
+                                        <f:selectItem itemLabel="Default" itemValue="default" />
+
+                                        <p:ajax event="change" update="ipennumber" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-g-6 ui-g-nopad">
+                        <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="ipennumber">
                             <div class="ui-g">
                                 <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.ipennummer']}" />
+                                    <h:outputText value="#{messages['livingplant.ipennumber']}" />
                                 </div>
-                                <div class="ui-g-6">
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'default' and !livingPlantEditController.livingPlantResult.ipenLocked}">
                                     <h:panelGrid columns="3" cellpadding="2">
-                                        <p:inputText style="width: 50px" />
-                                        <p:selectOneMenu id="ipennummerselect">
-                                            <f:selectItem itemLabel="X" noSelectionOption="true" />
+                                        <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberCountry}" />
+                                        <p:selectOneMenu value="#{livingPlantEditController.ipenNumberRestriction}">
+                                            <f:selectItem itemLabel="X" itemValue="X" />
+                                            <f:selectItem itemLabel="0" itemValue="0" />
+                                            <f:selectItem itemLabel="1" itemValue="1" />
                                         </p:selectOneMenu>
-                                        <p:inputText style="width: 50px" />
+                                        <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberGardenCode}" />
                                     </h:panelGrid>
-                                </div>
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'custom' and !livingPlantEditController.livingPlantResult.ipenLocked}">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenLocked}">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
+                                </h:panelGroup>
                             </div>
-                        </div>
+                        </h:panelGroup>
                         <div class="ui-g-6 ui-g-nopad">
                             <div class="ui-g">
                                 <div class="ui-g-6">
                                     <h:outputText value="#{messages['livingplant.ipenlocked']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="ipenlocked" />
+                                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.ipenLocked}" />
                                 </div>
                             </div>
                         </div>
