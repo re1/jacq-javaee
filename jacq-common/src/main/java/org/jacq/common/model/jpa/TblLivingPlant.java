@@ -72,7 +72,7 @@ public class TblLivingPlant implements Serializable {
     @Basic(optional = false)
     @Column(name = "accession_number")
     private long accessionNumber;
-    @Size(max = 20)
+    @Size(max = 40)
     @Column(name = "ipen_number")
     private String ipenNumber;
     @Basic(optional = false)

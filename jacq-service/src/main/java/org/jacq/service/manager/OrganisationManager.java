@@ -28,6 +28,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -121,7 +122,8 @@ public class OrganisationManager {
         TblOrganisation tblOrganisation = null;
         if (organisationResult.getOrganisationId() != null) {
             tblOrganisation = em.find(TblOrganisation.class, organisationResult.getOrganisationId());
-        } else {
+        }
+        else {
             tblOrganisation = new TblOrganisation();
         }
         if (tblOrganisation != null) {
@@ -134,7 +136,8 @@ public class OrganisationManager {
 
             if (tblOrganisation.getId() != null) {
                 em.merge(tblOrganisation);
-            } else {
+            }
+            else {
                 em.persist(tblOrganisation);
             }
 
@@ -144,14 +147,31 @@ public class OrganisationManager {
     }
 
     /**
+     * @see OrganisationService#getIpenCode(java.lang.Long)
+     */
+    public String getIpenCode(Long organisationId) {
+        TblOrganisation tblOrganisation = em.find(TblOrganisation.class, organisationId);
+        // go up the hierarchy until we hit the top or we find a valid ipen-code
+        while (tblOrganisation != null && StringUtils.isEmpty(tblOrganisation.getIpenCode())) {
+            tblOrganisation = tblOrganisation.getParentOrganisationId();
+        }
+
+        // found a matching organisation? if yes return the ipen code
+        if (tblOrganisation != null) {
+            return tblOrganisation.getIpenCode();
+        }
+
+        return null;
+    }
+
+    /**
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
-     * java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String)
      *
      * @param cb
      * @param cq

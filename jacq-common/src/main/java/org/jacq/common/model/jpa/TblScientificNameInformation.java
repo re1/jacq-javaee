@@ -18,7 +18,6 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,7 +49,6 @@ public class TblScientificNameInformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "scientific_name_id")
     private Long scientificNameId;
@@ -63,7 +61,7 @@ public class TblScientificNameInformation implements Serializable {
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")
     @ManyToOne
     private TblHabitusType habitusTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId")
+    @OneToMany(mappedBy = "scientificNameId")
     private List<TblCultivar> tblCultivarList;
 
     public TblScientificNameInformation() {

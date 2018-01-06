@@ -106,4 +106,15 @@ public interface OrganisationService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrganisationResult> findAll();
 
+    /**
+     * Returns the valid IPEN-Code (prefix) which should be used for this organisation - takes into account hierarchy
+     *
+     * @param organisationId
+     * @return
+     */
+    @GET
+    @Path("/ipenCode")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getIpenCode(@QueryParam("organisationId") Long organisationId);
 }
