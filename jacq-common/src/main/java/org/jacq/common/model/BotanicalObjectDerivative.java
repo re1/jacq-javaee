@@ -20,7 +20,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -72,6 +71,8 @@ public class BotanicalObjectDerivative implements Serializable {
     private String placeNumber;
     @Column(name = "derivative_count")
     private Long derivativeCount;
+    @Column(name = "separated")
+    private Boolean separated;
 
     public BotanicalObjectDerivative() {
     }
@@ -146,6 +147,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setDerivativeCount(Long derivativeCount) {
         this.derivativeCount = derivativeCount;
+    }
+
+    public Boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(Boolean separated) {
+        this.separated = separated;
     }
 
 }

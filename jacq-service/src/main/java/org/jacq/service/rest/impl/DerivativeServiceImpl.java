@@ -41,16 +41,16 @@ public class DerivativeServiceImpl implements DerivativeService {
      * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
      */
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, orderColumn, orderDirection, offset, count);
     }
 
     /**
      * @see DerivativeService#count(java.lang.String, java.lang.Long)
      */
     @Override
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber) {
-        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber);
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated) {
+        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated);
     }
 
     /**

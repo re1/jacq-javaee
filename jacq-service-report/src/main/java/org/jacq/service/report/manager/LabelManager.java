@@ -64,7 +64,7 @@ public class LabelManager {
      * @see LabelService#getWork(java.lang.String, long)
      */
     public Response getWork(String type, Long derivativeId) throws EngineException {
-        List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null, null, null);
+        List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null, null, null, null);
 
         // if no result is found, return an error
         if (results == null || results.size() <= 0) {

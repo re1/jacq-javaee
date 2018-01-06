@@ -66,10 +66,14 @@
                     <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-3">
-                                <h:outputText value="#{messages['livingplant.eliminated']}" />
+                                <h:outputText value="#{messages['livingplant.separated']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectBooleanCheckbox value="eliminated" />
+                                <p:selectOneButton value="#{livingPlantController.dataModel.separated}">
+                                    <f:selectItem itemLabel="Alle" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                                </p:selectOneButton>
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.label']}" />

@@ -52,6 +52,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
      */
     protected String placeNumber;
     protected String accessionNumber;
+    protected Boolean separated;
 
     /**
      * Default constructor, needs a reference to the derivative service for later querying
@@ -92,12 +93,12 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         }
 
         // get count first
-        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber);
+        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber, separated);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, separated, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
@@ -117,6 +118,14 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
 
     public void setAccessionNumber(String accessionNumber) {
         this.accessionNumber = accessionNumber;
+    }
+
+    public Boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(Boolean separated) {
+        this.separated = separated;
     }
 
 }
