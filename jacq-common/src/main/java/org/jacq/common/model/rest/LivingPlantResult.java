@@ -26,6 +26,10 @@ import org.jacq.common.model.jpa.TblLivingPlant;
 public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected Long scientificNameId;
+    protected boolean reviewed;
+    protected String ipenType;
+    protected String ipenNumber;
+    protected boolean ipenLocked;
 
     public LivingPlantResult() {
     }
@@ -44,6 +48,10 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
         // new properties
         this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+        this.setReviewed(tblLivingPlant.getReviewed());
+        this.setIpenType(tblLivingPlant.getIpenType());
+        this.setIpenNumber(tblLivingPlant.getIpenNumber());
+        this.setIpenLocked(tblLivingPlant.getIpenLocked());
     }
 
     public Long getScientificNameId() {
@@ -53,4 +61,37 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
+
+    public boolean isReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
+    }
+
+    public String getIpenType() {
+        return ipenType;
+    }
+
+    public void setIpenType(String ipenType) {
+        this.ipenType = ipenType;
+    }
+
+    public String getIpenNumber() {
+        return ipenNumber;
+    }
+
+    public void setIpenNumber(String ipenNumber) {
+        this.ipenNumber = ipenNumber;
+    }
+
+    public boolean isIpenLocked() {
+        return ipenLocked;
+    }
+
+    public void setIpenLocked(boolean ipenLocked) {
+        this.ipenLocked = ipenLocked;
+    }
+
 }
