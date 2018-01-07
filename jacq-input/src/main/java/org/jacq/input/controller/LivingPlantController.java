@@ -5,6 +5,7 @@
  */
 package org.jacq.input.controller;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import org.jacq.input.view.LazyDerivativeDataModel;
  */
 @ManagedBean
 @ViewScoped
-public class LivingPlantController {
+public class LivingPlantController implements Serializable {
 
     public static final String TYPE_ALL = "all";
     public static final String TYPE_LIVING = "living";

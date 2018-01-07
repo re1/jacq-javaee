@@ -16,8 +16,11 @@
 package org.jacq.input.controller;
 
 import java.io.Serializable;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -27,13 +30,26 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class SessionController implements Serializable {
 
-    protected String language;
+    protected Locale language;
 
-    public String getLanguage() {
+    @PostConstruct
+    public void init() {
+        this.language = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+    }
+
+    public String getLanguageTag() {
+        return language.getLanguage();
+    }
+
+    public void setLanguageTag(String languageTag) {
+        this.language = Locale.forLanguageTag(languageTag);
+    }
+
+    public Locale getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(Locale language) {
         this.language = language;
     }
 
