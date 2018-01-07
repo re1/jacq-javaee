@@ -22,9 +22,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblCultivar;
 import org.jacq.common.model.jpa.TblNomEpithet;
 import org.jacq.common.model.jpa.TblNomName;
 import org.jacq.common.model.jpa.TblNomSubstantive;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.names.ScientificNameService;
 
@@ -118,6 +120,36 @@ public class ScientificNameManager {
             return new ScientificNameResult(nomName);
 
         }
+        return null;
+    }
+
+    /**
+     * @see ScientificNameService#cultivarFind(java.lang.Long)
+     */
+    public List<CultivarResult> cultivarFind(Long scientificNameId) {
+        List<CultivarResult> results = new ArrayList<>();
+
+        TypedQuery<TblCultivar> cultivarQuery = em.createNamedQuery("TblCultivar.findByScientificNameId", TblCultivar.class);
+        cultivarQuery.setParameter("scientificNameId", scientificNameId);
+        List<TblCultivar> tblCultivars = cultivarQuery.getResultList();
+
+        if (tblCultivars != null && tblCultivars.size() > 0) {
+            return CultivarResult.fromList(tblCultivars);
+        }
+
+        return results;
+    }
+
+    /**
+     * @see ScientificNameService#cultivarLoad(java.lang.Long)
+     */
+    public CultivarResult cultivarLoad(Long cultivarId) {
+        TblCultivar cultivar = em.find(TblCultivar.class, cultivarId);
+
+        if (cultivar != null) {
+            return new CultivarResult(cultivar);
+        }
+
         return null;
     }
 }

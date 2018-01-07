@@ -15,13 +15,16 @@
  */
 package org.jacq.input.controller;
 
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
 /**
@@ -43,11 +46,19 @@ public class LivingPlantEditController {
      */
     protected DerivativeService derivativeService;
 
+    /**
+     * Reference to scientific name service which is used for cultivar and scientific name editing
+     */
+    protected ScientificNameService scientificNameService;
+
     protected LivingPlantResult livingPlantResult;
+
+    protected List<CultivarResult> cultivarResults;
 
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
+        this.scientificNameService = ServicesUtil.getScientificNameService();
         this.livingPlantResult = new LivingPlantResult();
     }
 
@@ -62,6 +73,9 @@ public class LivingPlantEditController {
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
+
+            // load matching list of possible cultivar entries
+            this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
         }
     }
 
@@ -95,4 +109,13 @@ public class LivingPlantEditController {
     public void setIpenNumberGardenCode(String ipenNumberGardenCode) {
         this.livingPlantResult.setIpenNumber(String.format("%s-%s-%s", getIpenNumberCountry(), getIpenNumberRestriction(), ipenNumberGardenCode));
     }
+
+    public List<CultivarResult> getCultivarResults() {
+        return cultivarResults;
+    }
+
+    public void setCultivarResults(List<CultivarResult> cultivarResults) {
+        this.cultivarResults = cultivarResults;
+    }
+
 }

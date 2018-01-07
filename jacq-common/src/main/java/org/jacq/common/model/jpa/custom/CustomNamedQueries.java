@@ -42,6 +42,7 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "TblNomName.findBySubstantiveAndFirstEpithetAndSecondEpithet", query = "SELECT t FROM TblNomName t WHERE t.substantiveId IN (:substantiveIds) AND t.firstEpithetId IN (:firstEpithetIds) AND t.secondEpithetId IN (:secondEpithetIds)")
     , @NamedQuery(name = "TblNomSubstantive.findLikeSubstantive", query = "SELECT t FROM TblNomSubstantive t WHERE t.substantive LIKE :substantive")
     , @NamedQuery(name = "TblNomEpithet.findLikeEpithet", query = "SELECT t FROM TblNomEpithet t WHERE t.epithet LIKE :epithet")
+    , @NamedQuery(name = "TblCultivar.findByScientificNameId", query = "SELECT t FROM TblCultivar t INNER JOIN t.scientificNameId s WHERE s.scientificNameId = :scientificNameId")
 })
 public class CustomNamedQueries {
 

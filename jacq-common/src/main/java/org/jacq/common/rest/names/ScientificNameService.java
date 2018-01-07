@@ -22,6 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 
 /**
@@ -56,4 +57,28 @@ public interface ScientificNameService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ScientificNameResult load(@QueryParam("scientificNameId") Long scientificNameId);
+
+    /**
+     * Find cultivar entries for the given scientific name id
+     *
+     * @param scientificNameId
+     * @return
+     */
+    @GET
+    @Path("/cultivar/find")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CultivarResult> cultivarFind(@QueryParam("scientificNameId") Long scientificNameId);
+
+    /**
+     * Load a single cultivar entry by its id
+     *
+     * @param cultivarId
+     * @return
+     */
+    @GET
+    @Path("/cultivar/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
 }

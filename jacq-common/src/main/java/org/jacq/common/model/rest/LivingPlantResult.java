@@ -29,6 +29,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String ipenType;
     protected String ipenNumber;
     protected boolean ipenLocked;
+    protected CultivarResult cultivar;
 
     public LivingPlantResult() {
     }
@@ -45,13 +46,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setPlaceNumber(tblLivingPlant.getPlaceNumber());
         this.setDerivativeCount(tblLivingPlant.getTblDerivative().getCount());
         this.setSeparated(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getSeparated());
+        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
 
         // new properties
-        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
         this.setReviewed(tblLivingPlant.getReviewed());
         this.setIpenType(tblLivingPlant.getIpenType());
         this.setIpenNumber(tblLivingPlant.getIpenNumber());
         this.setIpenLocked(tblLivingPlant.getIpenLocked());
+        this.setCultivar(new CultivarResult(tblLivingPlant.getCultivarId()));
     }
 
     public boolean isReviewed() {
@@ -86,4 +88,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.ipenLocked = ipenLocked;
     }
 
+    public CultivarResult getCultivar() {
+        return cultivar;
+    }
+
+    public void setCultivar(CultivarResult cultivar) {
+        this.cultivar = cultivar;
+    }
 }

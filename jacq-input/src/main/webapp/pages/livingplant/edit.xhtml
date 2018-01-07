@@ -65,8 +65,9 @@
                                     <h:outputText value="#{messages['livingplant.variety']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:selectOneMenu id="sorteselect">
+                                    <p:selectOneMenu id="cultivarSelect" value="#{livingPlantEditController.livingPlantResult.cultivar.cultivarId}">
                                         <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                        <f:selectItems value="#{livingPlantEditController.cultivarResults}" var="cultivar" itemLabel="#{cultivar.cultivar}" itemValue="#{cultivar.cultivarId}" />
                                     </p:selectOneMenu>
                                 </div>
                             </div>
