@@ -5,9 +5,12 @@
  */
 package org.jacq.input.controller;
 
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 import org.jacq.input.view.LazyDerivativeDataModel;
 
@@ -24,10 +27,13 @@ public class LivingPlantController {
     public static final String TYPE_VEGETATIVE = "vegetative";
 
     protected LazyDerivativeDataModel dataModel;
+    protected ScientificNameService scientificNameService;
+    protected ScientificNameResult selectedScientificName;
 
     @PostConstruct
     public void init() {
         this.dataModel = new LazyDerivativeDataModel(ServicesUtil.getDerivativeService());
+        this.scientificNameService = ServicesUtil.getScientificNameService();
     }
 
     public LazyDerivativeDataModel getDataModel() {
@@ -44,6 +50,18 @@ public class LivingPlantController {
 
     public String getTypeVegetative() {
         return TYPE_VEGETATIVE;
+    }
+
+    public List<ScientificNameResult> completeScientificName(String query) {
+        return this.scientificNameService.find(query, Boolean.TRUE);
+    }
+
+    public ScientificNameResult getSelectedScientificName() {
+        return selectedScientificName;
+    }
+
+    public void setSelectedScientificName(ScientificNameResult selectedScientificName) {
+        this.selectedScientificName = selectedScientificName;
     }
 
 }

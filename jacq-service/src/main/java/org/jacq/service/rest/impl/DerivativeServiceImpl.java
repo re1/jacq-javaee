@@ -20,7 +20,7 @@ import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.jacq.service.manager.DerivativeManager;
-import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 

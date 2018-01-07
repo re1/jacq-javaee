@@ -19,7 +19,12 @@
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:autoComplete value="#{livingPlantController.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
+                                    <p:column>
+                                        <h:outputText value="#{scientificName.scientificName}" />
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>

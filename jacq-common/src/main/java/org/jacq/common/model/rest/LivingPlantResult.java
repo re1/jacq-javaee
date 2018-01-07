@@ -15,7 +15,7 @@
  */
 package org.jacq.common.model.rest;
 
-import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 
 /**

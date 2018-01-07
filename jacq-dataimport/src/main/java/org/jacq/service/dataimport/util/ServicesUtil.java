@@ -17,7 +17,7 @@ package org.jacq.service.dataimport.util;
 
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.filter.ContentTypeResponseFilter;
-import org.jacq.common.rest.names.ScientificNamesService;
+import org.jacq.common.external.rest.ScientificNamesService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;

@@ -19,7 +19,7 @@ import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.report.WorkLabel;
-import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;

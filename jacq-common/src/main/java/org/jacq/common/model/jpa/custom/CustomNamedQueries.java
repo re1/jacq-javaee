@@ -37,6 +37,11 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "TblLivingPlant.findByAccessionNumberList", query = "SELECT t FROM TblLivingPlant t WHERE t.accessionNumber in (:accessionNumberList)")
     , @NamedQuery(name = "TblImportProperties.findByOriginalBotanicalObjectIdAndSourceName", query = "SELECT t FROM TblImportProperties t WHERE t.originalBotanicalObjectId = :originalBotanicalObjectId AND t.sourceName = :sourceName")
     , @NamedQuery(name = "TblCultivar.findByCultivarAndScientificNameId", query = "SELECT t FROM TblCultivar t INNER JOIN t.scientificNameId sni WHERE t.cultivar = :cultivar AND sni.scientificNameId = :scientificNameId")
+    , @NamedQuery(name = "TblNomName.findBySubstantive", query = "SELECT t FROM TblNomName t WHERE t.substantiveId IN (:substantiveIds) AND t.firstEpithetId IS NULL AND t.secondEpithetId IS NULL")
+    , @NamedQuery(name = "TblNomName.findBySubstantiveAndFirstEpithet", query = "SELECT t FROM TblNomName t WHERE t.substantiveId IN (:substantiveIds) AND t.firstEpithetId IN (:firstEpithetIds) AND t.secondEpithetId IS NULL")
+    , @NamedQuery(name = "TblNomName.findBySubstantiveAndFirstEpithetAndSecondEpithet", query = "SELECT t FROM TblNomName t WHERE t.substantiveId IN (:substantiveIds) AND t.firstEpithetId IN (:firstEpithetIds) AND t.secondEpithetId IN (:secondEpithetIds)")
+    , @NamedQuery(name = "TblNomSubstantive.findLikeSubstantive", query = "SELECT t FROM TblNomSubstantive t WHERE t.substantive LIKE :substantive")
+    , @NamedQuery(name = "TblNomEpithet.findLikeEpithet", query = "SELECT t FROM TblNomEpithet t WHERE t.epithet LIKE :epithet")
 })
 public class CustomNamedQueries {
 

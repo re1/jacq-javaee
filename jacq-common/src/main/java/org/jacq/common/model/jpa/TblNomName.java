@@ -201,4 +201,18 @@ public class TblNomName implements Serializable {
         return "org.jacq.common.model.jpa.TblNomName[ nameId=" + nameId + " ]";
     }
 
+    /**
+     * Custom Mappings
+     */
+    @JoinColumn(name = "name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private ViewScientificName viewScientificName;
+
+    public ViewScientificName getViewScientificName() {
+        return viewScientificName;
+    }
+
+    public void setViewScientificName(ViewScientificName viewScientificName) {
+        this.viewScientificName = viewScientificName;
+    }
 }

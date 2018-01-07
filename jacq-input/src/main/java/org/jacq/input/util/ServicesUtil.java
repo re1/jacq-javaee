@@ -22,6 +22,7 @@ import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
+import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -35,6 +36,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 public class ServicesUtil {
 
     private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
+    private static final String JACQ_SERVICE_NAMES_URL = System.getProperty("jacq.serviceNamesUrl");
 
     public static DerivativeService getDerivativeService() {
         return getProxy(DerivativeService.class, JACQ_SERVICE_URL);
@@ -62,6 +64,10 @@ public class ServicesUtil {
 
     public static IndexSeminumService getIndexSeminumService() {
         return getProxy(IndexSeminumService.class, JACQ_SERVICE_URL);
+    }
+
+    public static ScientificNameService getScientificNameService() {
+        return getProxy(ScientificNameService.class, JACQ_SERVICE_NAMES_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
