@@ -54,6 +54,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     protected String accessionNumber;
     protected int separated = 0;
     protected Long scientificNameId = null;
+    protected Long organisationId = null;
 
     /**
      * Default constructor, needs a reference to the derivative service for later querying
@@ -102,12 +103,12 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         }
 
         // get count first
-        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId);
+        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId, organisationId);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId, organisationId, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
@@ -145,4 +146,11 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         this.scientificNameId = scientificNameId;
     }
 
+    public Long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
+    }
 }

@@ -68,6 +68,8 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 65535)
     @Column(name = "organisation_description")
     private String organisationDescription;
+    @Column(name = "organisation_id")
+    private long organisationId;
     @Size(max = 20)
     @Column(name = "place_number")
     private String placeNumber;
@@ -141,6 +143,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setOrganisationDescription(String organisationDescription) {
         this.organisationDescription = organisationDescription;
+    }
+
+    public long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(long organisationId) {
+        this.organisationId = organisationId;
     }
 
     public String getPlaceNumber() {
