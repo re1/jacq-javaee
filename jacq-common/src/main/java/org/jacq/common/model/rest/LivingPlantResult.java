@@ -25,7 +25,6 @@ import org.jacq.common.model.jpa.TblLivingPlant;
  */
 public class LivingPlantResult extends BotanicalObjectDerivative {
 
-    protected Long scientificNameId;
     protected boolean reviewed;
     protected String ipenType;
     protected String ipenNumber;
@@ -53,14 +52,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setIpenType(tblLivingPlant.getIpenType());
         this.setIpenNumber(tblLivingPlant.getIpenNumber());
         this.setIpenLocked(tblLivingPlant.getIpenLocked());
-    }
-
-    public Long getScientificNameId() {
-        return scientificNameId;
-    }
-
-    public void setScientificNameId(Long scientificNameId) {
-        this.scientificNameId = scientificNameId;
     }
 
     public boolean isReviewed() {

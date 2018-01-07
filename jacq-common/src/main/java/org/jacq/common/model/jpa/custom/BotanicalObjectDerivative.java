@@ -50,6 +50,8 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 65535)
     @Column(name = "scientific_name")
     private String scientificName;
+    @Column(name = "scientific_name_id")
+    private long scientificNameId;
     @Size(max = 7)
     @Column(name = "accession_number")
     private String accessionNumber;
@@ -99,6 +101,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
+    }
+
+    public long getScientificNameId() {
+        return scientificNameId;
+    }
+
+    public void setScientificNameId(long scientificNameId) {
+        this.scientificNameId = scientificNameId;
     }
 
     public String getAccessionNumber() {

@@ -62,6 +62,13 @@ public class LivingPlantController {
 
     public void setSelectedScientificName(ScientificNameResult selectedScientificName) {
         this.selectedScientificName = selectedScientificName;
+
+        if (selectedScientificName != null) {
+            this.dataModel.setScientificNameId(selectedScientificName.getScientificNameId());
+        }
+        else {
+            this.dataModel.setScientificNameId(null);
+        }
     }
 
 }
