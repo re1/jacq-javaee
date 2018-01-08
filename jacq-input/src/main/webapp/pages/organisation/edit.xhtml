@@ -48,12 +48,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g-12 ui-g-nopad">
                             <div class="ui-g">
-                                <div class="ui-g-6">
+                                <div class="ui-g-3">
                                     <h:outputText value="#{messages['organisation.parentOrganisation']}" />
                                 </div>
-                                <div class="ui-g-6">
+                                <div class="ui-g-9">
                                     <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
                                         <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
                                     </p:selectOneMenu>

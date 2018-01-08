@@ -17,6 +17,18 @@
     text-align: center;
 }
 
+/* Content Page
+-------------------------*/
 .jacq-header {
-    float: right;
+    right: 10px;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+}
+
+.ui-g-6 {
+    min-width: 210px;
+}
+.ui-g-3 {
+    min-width: 210px;
 }

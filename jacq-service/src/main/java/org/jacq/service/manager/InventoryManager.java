@@ -141,6 +141,7 @@ public class InventoryManager {
      * @param organisationId
      * @throws IOException
      */
+    @Transactional
     protected void defaultinventory(Boolean separated, TblInventory tblInventory, BufferedReader bufferedReader, Long organisationId) throws IOException {
         // get Organisation
         TblOrganisation organisation = em.find(TblOrganisation.class, organisationId);
@@ -162,6 +163,7 @@ public class InventoryManager {
      * @param bufferedReader
      * @throws IOException
      */
+    @Transactional
     protected void advancedinventory(Boolean separated, TblInventory tblInventory, BufferedReader bufferedReader) throws IOException {
         String line;
         List<Long> livingPlantIdList = new ArrayList<>();
@@ -198,15 +200,16 @@ public class InventoryManager {
      * @return
      * @throws IOException
      */
+    @Transactional
     protected List<Long> accessionNumberToLivingPlantIdList(BufferedReader bufferedReader) throws IOException {
         String line;
         List<TblLivingPlant> livingPlantList = new ArrayList<>();
-        List<Integer> accessionNumberList = new ArrayList<>();
+        List<Long> accessionNumberList = new ArrayList<>();
         List<Long> livingPlantIdList = new ArrayList<>();
 
         // Reads Line and adds AccessionNumber from BufferedReader
         while ((line = bufferedReader.readLine()) != null && line.length() <= 8) {
-            accessionNumberList.add(Integer.parseInt(line));
+            accessionNumberList.add(Long.parseLong(line));
         }
         // Create and execute Query to get Livinplant List from AccessionNumberList
         Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumberList").setParameter("accessionNumberList", accessionNumberList);
@@ -223,6 +226,7 @@ public class InventoryManager {
      * @param livingPlantIdList
      * @param organisation
      */
+    @Transactional
     protected void setSeparatedByLivingPlantIdListAndOrganisation(List<Long> livingPlantIdList, TblOrganisation organisation) {
         List<TblDerivative> derivativeList = new ArrayList<>();
         // Get all BotanicalObjects which have the right Organisation and are not in the AccessionNumberList
@@ -241,6 +245,7 @@ public class InventoryManager {
      * @param organisation
      * @param tblInventory
      */
+    @Transactional
     protected void setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(List<Long> livingPlantIdList, TblOrganisation organisation, TblInventory tblInventory) {
         List<TblDerivative> derivativeList = new ArrayList<>();
         // Get all BotanicalObjects with the accession number from the uploaded File
