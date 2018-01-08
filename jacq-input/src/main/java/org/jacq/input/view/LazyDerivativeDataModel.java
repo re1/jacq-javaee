@@ -55,9 +55,13 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     protected int separated = 0;
     protected Long scientificNameId = null;
     protected Long organisationId = null;
+    protected Long id = null;
+    protected String type;
+    protected Boolean separatedFilter;
 
     /**
-     * Default constructor, needs a reference to the derivative service for later querying
+     * Default constructor, needs a reference to the derivative service for
+     * later querying
      *
      * @param derivativeService
      */
@@ -86,18 +90,15 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     @Override
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // try to parse the id filter
-        Long id = (filters.get(FILTER_ID) == null) ? null : Long.valueOf(String.valueOf(filters.get(FILTER_ID)));
-        // convert the separated filter
-        Boolean separatedFilter = null;
+        this.id = (filters.get(FILTER_ID) == null) ? null : Long.valueOf(String.valueOf(filters.get(FILTER_ID)));
         if (this.separated == 1) {
-            separatedFilter = true;
-        }
-        else if (this.separated == 2) {
-            separatedFilter = false;
+            this.separatedFilter = true;
+        } else if (this.separated == 2) {
+            this.separatedFilter = false;
         }
 
         // quote type filter and set to null if empty
-        String type = String.valueOf(filters.get(FILTER_TYPE));
+        this.type = String.valueOf(filters.get(FILTER_TYPE));
         if (StringUtils.isEmpty(type) || FILTER_TYPE_EMPTY.equalsIgnoreCase(type) || LivingPlantController.TYPE_ALL.equalsIgnoreCase(type)) {
             type = null;
         }
@@ -153,4 +154,29 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     public void setOrganisationId(Long organisationId) {
         this.organisationId = organisationId;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Boolean getSeparatedFilter() {
+        return separatedFilter;
+    }
+
+    public void setSeparatedFilter(Boolean separatedFilter) {
+        this.separatedFilter = separatedFilter;
+    }
+
 }

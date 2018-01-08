@@ -16,6 +16,7 @@ import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 import org.jacq.input.view.LazyDerivativeDataModel;
+import org.jacq.input.view.LazyDerivativeDownloadDataModel;
 
 /**
  *
@@ -30,20 +31,28 @@ public class LivingPlantController implements Serializable {
     public static final String TYPE_VEGETATIVE = "vegetative";
 
     protected LazyDerivativeDataModel dataModel;
+    protected LazyDerivativeDownloadDataModel downloadDataModel;
     protected ScientificNameService scientificNameService;
     protected ScientificNameResult selectedScientificName;
     protected OrganisationService organisationService;
     protected OrganisationResult selectedOrganisation;
 
+    protected Boolean downloadRender;
+
     @PostConstruct
     public void init() {
         this.dataModel = new LazyDerivativeDataModel(ServicesUtil.getDerivativeService());
+        this.downloadDataModel = new LazyDerivativeDownloadDataModel(ServicesUtil.getDerivativeService(), this.dataModel);
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.organisationService = ServicesUtil.getOrganisationService();
     }
 
     public LazyDerivativeDataModel getDataModel() {
         return dataModel;
+    }
+
+    public LazyDerivativeDownloadDataModel getDownloadDataModel() {
+        return downloadDataModel;
     }
 
     public String getTypeAll() {
@@ -66,13 +75,20 @@ public class LivingPlantController implements Serializable {
         return selectedScientificName;
     }
 
+    public Boolean getDownloadRender() {
+        return downloadRender;
+    }
+
+    public void setDownloadRender(Boolean downloadRender) {
+        this.downloadRender = downloadRender;
+    }
+
     public void setSelectedScientificName(ScientificNameResult selectedScientificName) {
         this.selectedScientificName = selectedScientificName;
 
         if (selectedScientificName != null) {
             this.dataModel.setScientificNameId(selectedScientificName.getScientificNameId());
-        }
-        else {
+        } else {
             this.dataModel.setScientificNameId(null);
         }
     }
@@ -90,9 +106,12 @@ public class LivingPlantController implements Serializable {
 
         if (selectedOrganisation != null) {
             this.dataModel.setOrganisationId(selectedOrganisation.getOrganisationId());
-        }
-        else {
+        } else {
             this.dataModel.setOrganisationId(null);
         }
+    }
+
+    public void setRenderedTrue() {
+        this.downloadRender = true;
     }
 }
