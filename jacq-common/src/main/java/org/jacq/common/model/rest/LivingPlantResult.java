@@ -30,6 +30,9 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String ipenNumber;
     protected boolean ipenLocked;
     protected CultivarResult cultivar;
+    protected String gatheringNumber;
+    protected String cultureNotes;
+    protected long count;
 
     public LivingPlantResult() {
     }
@@ -54,6 +57,9 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setIpenNumber(tblLivingPlant.getIpenNumber());
         this.setIpenLocked(tblLivingPlant.getIpenLocked());
         this.setCultivar(new CultivarResult(tblLivingPlant.getCultivarId()));
+        this.setGatheringNumber(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber());
+        this.setCultureNotes(tblLivingPlant.getCultureNotes());
+        this.setCount(tblLivingPlant.getTblDerivative().getCount());
     }
 
     public boolean isReviewed() {
@@ -95,4 +101,29 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public void setCultivar(CultivarResult cultivar) {
         this.cultivar = cultivar;
     }
+
+    public String getGatheringNumber() {
+        return gatheringNumber;
+    }
+
+    public void setGatheringNumber(String gatheringNumber) {
+        this.gatheringNumber = gatheringNumber;
+    }
+
+    public String getCultureNotes() {
+        return cultureNotes;
+    }
+
+    public void setCultureNotes(String cultureNotes) {
+        this.cultureNotes = cultureNotes;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
+
 }
