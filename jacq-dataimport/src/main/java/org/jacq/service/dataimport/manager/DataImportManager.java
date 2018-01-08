@@ -59,7 +59,7 @@ import org.jacq.common.model.names.taxamatch.Species;
 import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
 import org.jacq.common.model.names.taxamatch.TaxamatchResponse;
 import org.jacq.common.rest.OrganisationService;
-import org.jacq.common.rest.names.ScientificNamesService;
+import org.jacq.common.external.rest.ScientificNamesService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
 /**

@@ -24,23 +24,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
-import org.jacq.common.rest.names.CommonNamesService;
-import org.jacq.service.names.manager.CommonNamesManager;
+import org.jacq.service.names.manager.CommonNameManager;
+import org.jacq.common.rest.names.CommonNameService;
 
 /**
  * Main common names, OpenRefine compliant, service
  *
  * @author wkoller
  */
-public class CommonNamesServiceImpl implements CommonNamesService {
+public class CommonNameServiceImpl implements CommonNameService {
 
-    private static final Logger LOGGER = Logger.getLogger(CommonNamesServiceImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommonNameServiceImpl.class.getName());
 
     @Inject
-    protected CommonNamesManager commonNamesManager;
+    protected CommonNameManager commonNamesManager;
 
     /**
-     * @see CommonNamesService#query(java.lang.String)
+     * @see CommonNameService#query(java.lang.String)
      */
     @Override
     public Response query(String query) {

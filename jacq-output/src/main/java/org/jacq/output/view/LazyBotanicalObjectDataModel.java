@@ -18,7 +18,7 @@ package org.jacq.output.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.BotanicalObjectDerivative;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 import org.primefaces.model.LazyDataModel;
@@ -82,12 +82,12 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
         //int rowCount = this.derivativeService.count(getScientificName(), getOrganization(), hasImage);
-        int rowCount = this.derivativeService.count(null, null, null, null);
+        int rowCount = this.derivativeService.count(null, null, null, null, null, null, null);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(null, null, null, null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.find(null, null, null, null, null, null, null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.common.model;
+package org.jacq.common.model.jpa.custom;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -51,6 +50,8 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 65535)
     @Column(name = "scientific_name")
     private String scientificName;
+    @Column(name = "scientific_name_id")
+    private long scientificNameId;
     @Size(max = 7)
     @Column(name = "accession_number")
     private String accessionNumber;
@@ -67,11 +68,15 @@ public class BotanicalObjectDerivative implements Serializable {
     @Size(max = 65535)
     @Column(name = "organisation_description")
     private String organisationDescription;
+    @Column(name = "organisation_id")
+    private long organisationId;
     @Size(max = 20)
     @Column(name = "place_number")
     private String placeNumber;
     @Column(name = "derivative_count")
     private Long derivativeCount;
+    @Column(name = "separated")
+    private Boolean separated;
 
     public BotanicalObjectDerivative() {
     }
@@ -98,6 +103,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
+    }
+
+    public long getScientificNameId() {
+        return scientificNameId;
+    }
+
+    public void setScientificNameId(long scientificNameId) {
+        this.scientificNameId = scientificNameId;
     }
 
     public String getAccessionNumber() {
@@ -132,6 +145,14 @@ public class BotanicalObjectDerivative implements Serializable {
         this.organisationDescription = organisationDescription;
     }
 
+    public long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(long organisationId) {
+        this.organisationId = organisationId;
+    }
+
     public String getPlaceNumber() {
         return placeNumber;
     }
@@ -146,6 +167,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setDerivativeCount(Long derivativeCount) {
         this.derivativeCount = derivativeCount;
+    }
+
+    public Boolean getSeparated() {
+        return separated;
+    }
+
+    public void setSeparated(Boolean separated) {
+        this.separated = separated;
     }
 
 }

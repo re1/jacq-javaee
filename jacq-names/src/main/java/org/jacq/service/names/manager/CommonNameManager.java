@@ -55,9 +55,9 @@ import org.jacq.service.names.sources.ylist.YListSource;
 @ManagedBean
 @RequestScoped
 @Transactional
-public class CommonNamesManager {
+public class CommonNameManager {
 
-    private static final Logger LOGGER = Logger.getLogger(CommonNamesManager.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommonNameManager.class.getName());
 
     @PersistenceContext(unitName = "openup")
     protected EntityManager em;

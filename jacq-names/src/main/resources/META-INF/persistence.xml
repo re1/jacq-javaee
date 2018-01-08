@@ -4,7 +4,25 @@
         <jta-data-source>java:/openupDS</jta-data-source>
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jar-file>../WEB-INF/lib/jacq-common-0.3.0.jar</jar-file>
+        <jar-file>../WEB-INF/lib/jacq-common-0.4.1.jar</jar-file>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class, hbm"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="false" />
+            <property name="hibernate.hbm2ddl.auto" value="" />
+            <property name="hibernate.connection.autocommit" value="true" />
+            <property name="hibernate.connection.zeroDateTimeBehavior" value="convertToNull" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="jacq-names">
+        <jta-data-source>java:/jacqDS</jta-data-source>
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jar-file>../WEB-INF/lib/jacq-common-0.4.1.jar</jar-file>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.archive.autodetection" value="class, hbm"/>

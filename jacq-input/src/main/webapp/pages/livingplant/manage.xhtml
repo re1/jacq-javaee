@@ -19,7 +19,12 @@
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:autoComplete value="#{livingPlantController.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
+                                    <p:column>
+                                        <h:outputText value="#{scientificName.scientificName}" />
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -29,7 +34,12 @@
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:autoComplete value="#{livingPlantController.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
+                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter">
+                                    <p:column>
+                                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -66,10 +76,14 @@
                     <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-3">
-                                <h:outputText value="#{messages['livingplant.eliminated']}" />
+                                <h:outputText value="#{messages['livingplant.separated']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectBooleanCheckbox value="eliminated" />
+                                <p:selectOneButton value="#{livingPlantController.dataModel.separated}">
+                                    <f:selectItem itemLabel="Alle" itemValue="0" />
+                                    <f:selectItem itemLabel="Ja" itemValue="1"/>
+                                    <f:selectItem itemLabel="Nein" itemValue="2"/>
+                                </p:selectOneButton>
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.label']}" />
@@ -122,7 +136,7 @@
                                 <h:outputText value="#{botanicalObjectDerivative.placeNumber}" />
                             </p:column>
 
-                            <p:column filterBy="" headerText="#{messages['livingplant.count']}">
+                            <p:column filterBy="" headerText="#{messages['livingplant.derivative_count']}">
                                 <h:outputText value="#{(botanicalObjectDerivative.derivativeCount == null) ? 0 : botanicalObjectDerivative.derivativeCount}" />
                             </p:column>
 
