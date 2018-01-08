@@ -15,6 +15,7 @@
  */
 package org.jacq.common.model.rest;
 
+import java.util.List;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 
@@ -33,6 +34,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String gatheringNumber;
     protected String cultureNotes;
     protected long count;
+    protected List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults;
 
     public LivingPlantResult() {
     }
@@ -52,14 +54,15 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
 
         // new properties
-        this.setReviewed(tblLivingPlant.getReviewed());
-        this.setIpenType(tblLivingPlant.getIpenType());
-        this.setIpenNumber(tblLivingPlant.getIpenNumber());
-        this.setIpenLocked(tblLivingPlant.getIpenLocked());
-        this.setCultivar(new CultivarResult(tblLivingPlant.getCultivarId()));
-        this.setGatheringNumber(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber());
-        this.setCultureNotes(tblLivingPlant.getCultureNotes());
-        this.setCount(tblLivingPlant.getTblDerivative().getCount());
+        this.reviewed = tblLivingPlant.getReviewed();
+        this.ipenType = tblLivingPlant.getIpenType();
+        this.ipenNumber = tblLivingPlant.getIpenNumber();
+        this.ipenLocked = tblLivingPlant.getIpenLocked();
+        this.cultivar = new CultivarResult(tblLivingPlant.getCultivarId());
+        this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
+        this.cultureNotes = tblLivingPlant.getCultureNotes();
+        this.count = tblLivingPlant.getTblDerivative().getCount();
+        this.alternativeAccessionNumberResults = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
     }
 
     public boolean isReviewed() {
@@ -124,6 +127,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setCount(long count) {
         this.count = count;
+    }
+
+    public List<AlternativeAccessionNumberResult> getAlternativeAccessionNumberResults() {
+        return alternativeAccessionNumberResults;
+    }
+
+    public void setAlternativeAccessionNumberResults(List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults) {
+        this.alternativeAccessionNumberResults = alternativeAccessionNumberResults;
     }
 
 }

@@ -21,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.rest.DerivativeService;
@@ -116,6 +117,14 @@ public class LivingPlantEditController {
 
     public void setCultivarResults(List<CultivarResult> cultivarResults) {
         this.cultivarResults = cultivarResults;
+    }
+
+    public void addAlternativeAccessionNumber() {
+        this.livingPlantResult.getAlternativeAccessionNumberResults().add(new AlternativeAccessionNumberResult());
+    }
+
+    public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
+        this.livingPlantResult.getAlternativeAccessionNumberResults().remove(alternativeAccessionNumberResult);
     }
 
 }
