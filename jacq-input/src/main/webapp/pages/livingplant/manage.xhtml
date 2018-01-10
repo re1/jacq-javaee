@@ -109,8 +109,8 @@
                 <div class="jacq-buttons">
                     <p:commandButton value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
-                <p:commandButton action="#{livingPlantController.setRenderedTrue}" update="downloadDerivativeTable">
-                    <p:dataExporter type="csv" target="derivativeTable" fileName="derivativeTable"/>
+                <p:commandButton ajax="false" value="Test" action="#{livingPlantController.setRenderedTrue}"  update="downloadDerivativePanel">
+                    <p:dataExporter type="csv" target="downloadDerivativeTable" fileName="derivativeTable"/>
                 </p:commandButton>
                 <div class="ui-g">
                     <div class="ui-g-12">
@@ -168,8 +168,8 @@
                     </div>
                 </div>
                 <div class="ui-g">
-                    <div class="ui-g-12">
-                        <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
+                    <h:panelGroup rendered="#{livingPlantController.downloadRender}" layout="block" styleClass="ui-g-12" id="downloadDerivativePanel">
+                        <p:dataTable var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
                             <p:column headerText="#{messages['livingplant.derivative_id']}">
                                 <h:outputText value="#{botanicalObjectDownloadResult.derivativeId}" />
                             </p:column>
@@ -199,7 +199,7 @@
                             </p:column>
 
                         </p:dataTable>
-                    </div>
+                    </h:panelGroup>
                 </div>
             </h:panelGroup>
         </ui:define>

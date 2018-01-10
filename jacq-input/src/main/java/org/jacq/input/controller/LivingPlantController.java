@@ -45,6 +45,7 @@ public class LivingPlantController implements Serializable {
         this.downloadDataModel = new LazyDerivativeDownloadDataModel(ServicesUtil.getDerivativeService(), this.dataModel);
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.organisationService = ServicesUtil.getOrganisationService();
+        this.downloadRender = false;
     }
 
     public LazyDerivativeDataModel getDataModel() {
@@ -112,6 +113,6 @@ public class LivingPlantController implements Serializable {
     }
 
     public void setRenderedTrue() {
-        this.downloadRender = true;
+        this.setDownloadRender(true);
     }
 }
