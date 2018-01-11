@@ -19,7 +19,7 @@
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:autoComplete value="#{livingPlantController.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
                                                 var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
                                     <p:column>
                                         <h:outputText value="#{scientificName.scientificName}" />
@@ -34,7 +34,7 @@
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:autoComplete value="#{livingPlantController.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
                                                 var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter">
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
@@ -49,7 +49,7 @@
                                 <h:outputText value="#{messages['livingplant.placenumber']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText value="#{livingPlantController.dataModel.placeNumber}" />
+                                <p:inputText value="#{livingPlantController.derivativeSearchModel.placeNumber}" />
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                                 <h:outputText value="#{messages['livingplant.accessionnumber']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText value="#{livingPlantController.dataModel.accessionNumber}" />
+                                <p:inputText value="#{livingPlantController.derivativeSearchModel.accessionNumber}" />
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                                 <h:outputText value="#{messages['livingplant.separated']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectOneButton value="#{livingPlantController.dataModel.separated}">
+                                <p:selectOneButton value="#{livingPlantController.derivativeSearchModel.separated}">
                                     <f:selectItem itemLabel="Alle" itemValue="0" />
                                     <f:selectItem itemLabel="Ja" itemValue="1"/>
                                     <f:selectItem itemLabel="Nein" itemValue="2"/>
@@ -109,16 +109,26 @@
                 <div class="jacq-buttons">
                     <p:commandButton value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
-                <p:commandButton ajax="false" value="Test" action="#{livingPlantController.setRenderedTrue}"  update="downloadDerivativePanel">
-                    <p:dataExporter type="csv" target="downloadDerivativeTable" fileName="derivativeTable"/>
-                </p:commandButton>
+
                 <div class="ui-g">
                     <div class="ui-g-12">
                         <p:remoteCommand update="derivativeTable:rowCount" name="update_derivativeFooter" />
 
-                        <p:dataTable var="botanicalObjectDerivative" lazy="true" value="#{livingPlantController.dataModel}" paginator="true" rows="10" widgetVar="derivativeTable" id="derivativeTable" rowsPerPageTemplate="10,20,30,50,100">
+                        <p:dataTable var="botanicalObjectDerivative"
+                                     lazy="true"
+                                     value="#{livingPlantController.dataModel}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                     rows="10"
+                                     widgetVar="derivativeTable"
+                                     id="derivativeTable"
+                                     rowsPerPageTemplate="10,20,30,50,100">
 
                             <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
+
+                            <f:facet name="{Exporters}">
+                                <p:commandButton icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeButton').jq.click();" />
+                            </f:facet>
 
                             <p:column filterBy="#{botanicalObjectDerivative.id}" headerText="#{messages['livingplant.derivative_id']}">
                                 <h:outputText value="#{botanicalObjectDerivative.derivativeId}" />
@@ -168,8 +178,11 @@
                     </div>
                 </div>
                 <div class="ui-g">
-                    <h:panelGroup rendered="#{livingPlantController.downloadRender}" layout="block" styleClass="ui-g-12" id="downloadDerivativePanel">
-                        <p:dataTable var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
+                    <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
+                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeButton">
+                            <p:dataExporter type="csv" target="downloadDerivativeTable" fileName="derivativeTable"/>
+                        </p:commandButton>
+                        <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
                             <p:column headerText="#{messages['livingplant.derivative_id']}">
                                 <h:outputText value="#{botanicalObjectDownloadResult.derivativeId}" />
                             </p:column>

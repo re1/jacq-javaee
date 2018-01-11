@@ -18,7 +18,6 @@ package org.jacq.input.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
@@ -77,12 +76,12 @@ public class LazyDerivativeDownloadDataModel extends LazyDataModel<BotanicalObje
     public List<BotanicalObjectDownloadResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
         // get count first
-        int rowCount = this.derivativeService.count(this.lazyDerivativeDataModel.getType(), this.lazyDerivativeDataModel.getId(), this.lazyDerivativeDataModel.getPlaceNumber(), this.lazyDerivativeDataModel.getAccessionNumber(), this.lazyDerivativeDataModel.getSeparatedFilter(), this.lazyDerivativeDataModel.getScientificNameId(), this.lazyDerivativeDataModel.getOrganisationId());
+        int rowCount = this.derivativeService.count(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId());
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDownloadResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.downloadFind(this.lazyDerivativeDataModel.getType(), this.lazyDerivativeDataModel.getId(), this.lazyDerivativeDataModel.getPlaceNumber(), this.lazyDerivativeDataModel.getAccessionNumber(), this.lazyDerivativeDataModel.getSeparatedFilter(), this.lazyDerivativeDataModel.getScientificNameId(), this.lazyDerivativeDataModel.getOrganisationId(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.downloadFind(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

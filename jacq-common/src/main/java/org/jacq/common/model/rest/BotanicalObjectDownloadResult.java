@@ -30,6 +30,13 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
 
+    protected String habitat;
+    protected String altitudeMin;
+    protected String altitudeMax;
+    protected String latitude;
+    protected String longitude;
+    protected String recordedDate;
+
     public BotanicalObjectDownloadResult() {
     }
 
