@@ -80,6 +80,8 @@ public class DataImportManager {
 
     private static final Logger LOGGER = Logger.getLogger(DataImportManager.class.getName());
 
+    private static final Long INDET_SCIENTIFIC_NAME_ID = 46996L;
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -132,6 +134,7 @@ public class DataImportManager {
             importRecord.setSourceName(record.get(i++));
             importRecord.setOriginalBotanicalObjectId(Long.valueOf(record.get(i++)));
             importRecord.setCultivar(record.get(i++));
+            importRecord.setCommonNames(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -287,12 +290,39 @@ public class DataImportManager {
                 if (scientificNameId == 0L) {
                     if (genusScientificNameId == 0L) {
                         LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                        scientificNameId = 46236L;
+                        scientificNameId = INDET_SCIENTIFIC_NAME_ID;
                     }
                     else {
                         LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
                         scientificNameId = genusScientificNameId;
                     }
+                }
+
+                // check for common names
+                if (!StringUtils.isBlank(importRecord.getCommonNames())) {
+                    // try to find a matching scientific name information entry
+                    TypedQuery<TblScientificNameInformation> scientificNameInformationQuery = em.createNamedQuery("TblScientificNameInformation.findByScientificNameId", TblScientificNameInformation.class);
+                    scientificNameInformationQuery.setParameter("scientificNameId", scientificNameId);
+                    List<TblScientificNameInformation> scientificNameInformations = scientificNameInformationQuery.getResultList();
+                    TblScientificNameInformation scientificNameInformation = null;
+                    if (scientificNameInformations != null && scientificNameInformations.size() > 0) {
+                        scientificNameInformation = scientificNameInformations.get(0);
+                    }
+                    else {
+                        // create a new scientific name information entry
+                        scientificNameInformation = new TblScientificNameInformation();
+                        scientificNameInformation.setScientificNameId(scientificNameId);
+
+                        LOGGER.log(Level.INFO, "No scientific name information found for id ''{0}''. Added new entry.", scientificNameId);
+                    }
+
+                    // check if scientific name information already contains the common names information
+                    if (StringUtils.isBlank(scientificNameInformation.getCommonNames()) || !StringUtils.containsIgnoreCase(scientificNameInformation.getCommonNames(), importRecord.getCommonNames())) {
+                        scientificNameInformation.setCommonNames(scientificNameInformation.getCommonNames() + "; " + importRecord.getCommonNames());
+                    }
+
+                    // finally save the scientific name information
+                    em.merge(scientificNameInformation);
                 }
 
                 // check for cultivar entry
@@ -347,13 +377,23 @@ public class DataImportManager {
             em.persist(incomingDate);
 
             // lookup the organization by name
-            TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findByDescription", TblOrganisation.class);
-            organisationQuery.setParameter("description", importRecord.getOrganization());
-            List<TblOrganisation> organisations = organisationQuery.getResultList();
-            if (organisations.size() <= 0) {
-                throw new IllegalArgumentException("Unable to find organisation: '" + importRecord.getOrganization() + "'");
+            // check if organization entry is a number, if yes we assume it is an id which we use directly
+            TblOrganisation organisation = null;
+            try {
+                organisation = em.find(TblOrganisation.class, Long.valueOf(importRecord.getOrganization()));
+            } catch (NumberFormatException e) {
             }
-            TblOrganisation organisation = organisations.get(0);
+
+            // if no organisation was found or no id was used, try to find by name
+            if (organisation == null) {
+                TypedQuery<TblOrganisation> organisationQuery = em.createNamedQuery("TblOrganisation.findByDescription", TblOrganisation.class);
+                organisationQuery.setParameter("description", importRecord.getOrganization());
+                List<TblOrganisation> organisations = organisationQuery.getResultList();
+                if (organisations.size() <= 0) {
+                    throw new IllegalArgumentException("Unable to find organisation: '" + importRecord.getOrganization() + "'");
+                }
+                organisation = organisations.get(0);
+            }
 
             // create derivative entry
             TblDerivative derivative = new TblDerivative();
