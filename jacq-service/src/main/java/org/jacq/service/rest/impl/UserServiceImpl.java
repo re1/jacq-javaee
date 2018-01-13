@@ -74,4 +74,12 @@ public class UserServiceImpl implements UserService {
         return userManager.findAllGroup();
     }
 
+    /**
+     * @see UserService#authenticate(java.lang.String, java.lang.String)
+     */
+    @Override
+    public UserResult authenticate(String username, String password) {
+        return userManager.authenticate(username, password);
+    }
+
 }

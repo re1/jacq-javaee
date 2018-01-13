@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
+import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
@@ -37,8 +38,9 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected DerivativeManager derivativeManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
-     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * java.lang.Integer, java.lang.Integer)
      */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -59,6 +61,11 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public Response load(Long derivativeId, String type) {
         return Response.ok().entity(derivativeManager.load(derivativeId, type)).build();
+    }
+
+    @Override
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
     }
 
 }

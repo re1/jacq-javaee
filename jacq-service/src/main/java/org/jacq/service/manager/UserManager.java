@@ -29,6 +29,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jacq.common.model.rest.EmploymentTypeResult;
 import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.UserResult;
@@ -38,6 +39,7 @@ import org.jacq.common.model.jpa.FrmwrkGroup;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkUserType;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.rest.UserService;
 
 /**
  *
@@ -121,7 +123,8 @@ public class UserManager {
         FrmwrkUser frmwrkUser = null;
         if (userResult.getId() != null) {
             frmwrkUser = em.find(FrmwrkUser.class, userResult.getId());
-        } else {
+        }
+        else {
             frmwrkUser = new FrmwrkUser();
         }
         if (frmwrkUser != null) {
@@ -146,7 +149,8 @@ public class UserManager {
 
             if (frmwrkUser.getId() != null) {
                 em.merge(frmwrkUser);
-            } else {
+            }
+            else {
                 em.persist(frmwrkUser);
             }
 
@@ -231,6 +235,27 @@ public class UserManager {
         }
 
         return results;
+    }
+
+    /**
+     * @see UserService#authenticate(java.lang.String, java.lang.String)
+     */
+    @Transactional
+    public UserResult authenticate(String username, String password) {
+        TypedQuery<FrmwrkUser> userQuery = em.createNamedQuery("FrmwrkUser.findByUsername", FrmwrkUser.class);
+        userQuery.setParameter("username", username);
+        List<FrmwrkUser> userList = userQuery.getResultList();
+        if (userList != null && userList.size() > 0) {
+            FrmwrkUser frmwrkUser = userList.get(0);
+
+            // Now check password
+            String passwordHash = DigestUtils.sha1Hex(password + DigestUtils.sha1Hex(frmwrkUser.getSalt()));
+            if (passwordHash.equals(frmwrkUser.getPassword())) {
+                return new UserResult(frmwrkUser);
+            }
+        }
+
+        return null;
     }
 
     /**

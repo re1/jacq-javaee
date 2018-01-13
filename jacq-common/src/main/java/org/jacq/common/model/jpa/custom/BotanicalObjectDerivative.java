@@ -41,17 +41,17 @@ public class BotanicalObjectDerivative implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "derivative_id")
-    private long derivativeId;
+    private Long derivativeId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "botanical_object_id")
-    private long botanicalObjectId;
+    private Long botanicalObjectId;
     @Lob
     @Size(max = 65535)
     @Column(name = "scientific_name")
     private String scientificName;
     @Column(name = "scientific_name_id")
-    private long scientificNameId;
+    private Long scientificNameId;
     @Size(max = 7)
     @Column(name = "accession_number")
     private String accessionNumber;
@@ -69,7 +69,7 @@ public class BotanicalObjectDerivative implements Serializable {
     @Column(name = "organisation_description")
     private String organisationDescription;
     @Column(name = "organisation_id")
-    private long organisationId;
+    private Long organisationId;
     @Size(max = 20)
     @Column(name = "place_number")
     private String placeNumber;
@@ -81,19 +81,19 @@ public class BotanicalObjectDerivative implements Serializable {
     public BotanicalObjectDerivative() {
     }
 
-    public long getDerivativeId() {
+    public Long getDerivativeId() {
         return derivativeId;
     }
 
-    public void setDerivativeId(long derivativeId) {
+    public void setDerivativeId(Long derivativeId) {
         this.derivativeId = derivativeId;
     }
 
-    public long getBotanicalObjectId() {
+    public Long getBotanicalObjectId() {
         return botanicalObjectId;
     }
 
-    public void setBotanicalObjectId(long botanicalObjectId) {
+    public void setBotanicalObjectId(Long botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
     }
 
@@ -105,11 +105,11 @@ public class BotanicalObjectDerivative implements Serializable {
         this.scientificName = scientificName;
     }
 
-    public long getScientificNameId() {
+    public Long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(long scientificNameId) {
+    public void setScientificNameId(Long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -145,11 +145,11 @@ public class BotanicalObjectDerivative implements Serializable {
         this.organisationDescription = organisationDescription;
     }
 
-    public long getOrganisationId() {
+    public Long getOrganisationId() {
         return organisationId;
     }
 
-    public void setOrganisationId(long organisationId) {
+    public void setOrganisationId(Long organisationId) {
         this.organisationId = organisationId;
     }
 

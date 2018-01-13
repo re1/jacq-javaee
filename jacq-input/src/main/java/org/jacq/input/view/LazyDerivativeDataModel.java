@@ -50,19 +50,17 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     /**
      * Search criteria
      */
-    protected String placeNumber;
-    protected String accessionNumber;
-    protected int separated = 0;
-    protected Long scientificNameId = null;
-    protected Long organisationId = null;
+    protected DerivativeSearchModel derivativeSearchModel;
 
     /**
-     * Default constructor, needs a reference to the derivative service for later querying
+     * Default constructor, needs a reference to the derivative service for
+     * later querying
      *
      * @param derivativeService
      */
-    public LazyDerivativeDataModel(DerivativeService derivativeService) {
+    public LazyDerivativeDataModel(DerivativeService derivativeService, DerivativeSearchModel derivativeSearchModel) {
         this.derivativeService = derivativeService;
+        this.derivativeSearchModel = derivativeSearchModel;
     }
 
     @Override
@@ -85,72 +83,41 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
 
     @Override
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
         // try to parse the id filter
-        Long id = (filters.get(FILTER_ID) == null) ? null : Long.valueOf(String.valueOf(filters.get(FILTER_ID)));
-        // convert the separated filter
-        Boolean separatedFilter = null;
-        if (this.separated == 1) {
-            separatedFilter = true;
-        }
-        else if (this.separated == 2) {
-            separatedFilter = false;
+        this.derivativeSearchModel.setId((filters.get(FILTER_ID) == null) ? null : Long.valueOf(String.valueOf(filters.get(FILTER_ID))));
+        if (this.derivativeSearchModel.getSeparated()
+                == 1) {
+            this.derivativeSearchModel.setSeparatedFilter(true);
+        } else if (this.derivativeSearchModel.getSeparated()
+                == 2) {
+            this.derivativeSearchModel.setSeparatedFilter(false);
         }
 
         // quote type filter and set to null if empty
-        String type = String.valueOf(filters.get(FILTER_TYPE));
-        if (StringUtils.isEmpty(type) || FILTER_TYPE_EMPTY.equalsIgnoreCase(type) || LivingPlantController.TYPE_ALL.equalsIgnoreCase(type)) {
-            type = null;
+        this.derivativeSearchModel.setType(String.valueOf(filters.get(FILTER_TYPE)));
+
+        if (StringUtils.isEmpty(this.derivativeSearchModel.getType())
+                || FILTER_TYPE_EMPTY.equalsIgnoreCase(this.derivativeSearchModel.getType()) || LivingPlantController.TYPE_ALL.equalsIgnoreCase(this.derivativeSearchModel.getType())) {
+            this.derivativeSearchModel.setType(null);
         }
 
         // get count first
-        int rowCount = this.derivativeService.count(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId, organisationId);
+        int rowCount = this.derivativeService.count(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId());
+
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
-        if (rowCount > 0) {
-            results = this.derivativeService.find(type, id, placeNumber, accessionNumber, separatedFilter, scientificNameId, organisationId, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+        if (rowCount
+                > 0) {
+            results = this.derivativeService.find(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
     }
 
-    public String getPlaceNumber() {
-        return placeNumber;
+    public DerivativeSearchModel getDerivativeSearchModel() {
+        return derivativeSearchModel;
     }
 
-    public void setPlaceNumber(String placeNumber) {
-        this.placeNumber = placeNumber;
-    }
-
-    public String getAccessionNumber() {
-        return accessionNumber;
-    }
-
-    public void setAccessionNumber(String accessionNumber) {
-        this.accessionNumber = accessionNumber;
-    }
-
-    public int getSeparated() {
-        return separated;
-    }
-
-    public void setSeparated(int separated) {
-        this.separated = separated;
-    }
-
-    public Long getScientificNameId() {
-        return scientificNameId;
-    }
-
-    public void setScientificNameId(Long scientificNameId) {
-        this.scientificNameId = scientificNameId;
-    }
-
-    public Long getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(Long organisationId) {
-        this.organisationId = organisationId;
-    }
 }

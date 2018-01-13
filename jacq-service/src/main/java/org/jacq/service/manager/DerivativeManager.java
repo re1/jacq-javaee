@@ -19,14 +19,16 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -54,8 +56,9 @@ public class DerivativeManager {
     private EntityManager em;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -138,6 +141,25 @@ public class DerivativeManager {
     }
 
     /**
+     *
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param orderColumn
+     * @param orderDirection
+     * @param offset
+     * @param count
+     * @return
+     */
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return BotanicalObjectDownloadResult.fromList(this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count));
+    }
+
+    /**
      * Apply search criteria for querying
      *
      * @param baseSql
@@ -194,11 +216,9 @@ public class DerivativeManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        }
-        else if (offset != null) {
+        } else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        }
-        else if (count != null) {
+        } else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -206,7 +226,8 @@ public class DerivativeManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a given column attribute name
+     * Helper function for retrieving the actual database column name for a
+     * given column attribute name
      *
      * @param attributeName
      * @return

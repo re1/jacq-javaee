@@ -25,4 +25,27 @@
     <welcome-file-list>
         <welcome-file>faces/pages/login.xhtml</welcome-file>
     </welcome-file-list>
+
+    <!-- by default only resources and login is allowed -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Resources</web-resource-name>
+            <url-pattern>/faces/javax.faces.resource/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Login</web-resource-name>
+            <url-pattern>/faces/pages/login.xhtml</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Livingplants</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>authenticated</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>
