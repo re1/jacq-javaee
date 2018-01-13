@@ -49,4 +49,8 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>jacq-names</finalName>
+    </build>
 </project>

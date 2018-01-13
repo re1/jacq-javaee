@@ -15,7 +15,8 @@
  */
 package org.jacq.common.model.rest;
 
-import org.jacq.common.model.BotanicalObjectDerivative;
+import java.util.List;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 
 /**
@@ -25,11 +26,15 @@ import org.jacq.common.model.jpa.TblLivingPlant;
  */
 public class LivingPlantResult extends BotanicalObjectDerivative {
 
-    protected Long scientificNameId;
     protected boolean reviewed;
     protected String ipenType;
     protected String ipenNumber;
     protected boolean ipenLocked;
+    protected CultivarResult cultivar;
+    protected String gatheringNumber;
+    protected String cultureNotes;
+    protected long count;
+    protected List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults;
 
     public LivingPlantResult() {
     }
@@ -45,21 +50,19 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.setOrganisationDescription(tblLivingPlant.getTblDerivative().getOrganisationId().getDescription());
         this.setPlaceNumber(tblLivingPlant.getPlaceNumber());
         this.setDerivativeCount(tblLivingPlant.getTblDerivative().getCount());
+        this.setSeparated(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getSeparated());
+        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
 
         // new properties
-        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
-        this.setReviewed(tblLivingPlant.getReviewed());
-        this.setIpenType(tblLivingPlant.getIpenType());
-        this.setIpenNumber(tblLivingPlant.getIpenNumber());
-        this.setIpenLocked(tblLivingPlant.getIpenLocked());
-    }
-
-    public Long getScientificNameId() {
-        return scientificNameId;
-    }
-
-    public void setScientificNameId(Long scientificNameId) {
-        this.scientificNameId = scientificNameId;
+        this.reviewed = tblLivingPlant.getReviewed();
+        this.ipenType = tblLivingPlant.getIpenType();
+        this.ipenNumber = tblLivingPlant.getIpenNumber();
+        this.ipenLocked = tblLivingPlant.getIpenLocked();
+        this.cultivar = new CultivarResult(tblLivingPlant.getCultivarId());
+        this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
+        this.cultureNotes = tblLivingPlant.getCultureNotes();
+        this.count = tblLivingPlant.getTblDerivative().getCount();
+        this.alternativeAccessionNumberResults = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
     }
 
     public boolean isReviewed() {
@@ -92,6 +95,46 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setIpenLocked(boolean ipenLocked) {
         this.ipenLocked = ipenLocked;
+    }
+
+    public CultivarResult getCultivar() {
+        return cultivar;
+    }
+
+    public void setCultivar(CultivarResult cultivar) {
+        this.cultivar = cultivar;
+    }
+
+    public String getGatheringNumber() {
+        return gatheringNumber;
+    }
+
+    public void setGatheringNumber(String gatheringNumber) {
+        this.gatheringNumber = gatheringNumber;
+    }
+
+    public String getCultureNotes() {
+        return cultureNotes;
+    }
+
+    public void setCultureNotes(String cultureNotes) {
+        this.cultureNotes = cultureNotes;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    public List<AlternativeAccessionNumberResult> getAlternativeAccessionNumberResults() {
+        return alternativeAccessionNumberResults;
+    }
+
+    public void setAlternativeAccessionNumberResults(List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults) {
+        this.alternativeAccessionNumberResults = alternativeAccessionNumberResults;
     }
 
 }

@@ -36,12 +36,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g-12 ui-g-nopad">
                             <div class="ui-g">
-                                <div class="ui-g-6">
+                                <div class="ui-g-3">
                                     <h:outputText value="#{messages['user.organisationDescription']}" />
                                 </div>
-                                <div class="ui-g-6">
+                                <div class="ui-g-9">
                                     <p:selectOneMenu id="organisation" value="#{inventoryEditController.inventory.organisationId}">
                                         <f:selectItems value="#{inventoryEditController.organisations}" var="organisations" itemLabel="#{organisations.description}" itemValue="#{organisations.organisationId}" />
                                     </p:selectOneMenu>
