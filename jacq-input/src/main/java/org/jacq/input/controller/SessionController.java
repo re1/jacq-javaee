@@ -33,6 +33,7 @@ public class SessionController implements Serializable {
 
     protected Locale language;
     protected DerivativeSearchModel derivativeSearchModel;
+    protected String authorizationHeader;
 
     @PostConstruct
     public void init() {
@@ -60,4 +61,11 @@ public class SessionController implements Serializable {
         return derivativeSearchModel;
     }
 
+    public String getAuthorizationHeader() {
+        return authorizationHeader;
+    }
+
+    public void setAuthorizationHeader(String authorizationHeader) {
+        this.authorizationHeader = authorizationHeader;
+    }
 }

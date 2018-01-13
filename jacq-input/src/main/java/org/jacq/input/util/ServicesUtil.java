@@ -24,6 +24,7 @@ import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
+import org.jacq.input.security.BasicClientRequestFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -73,6 +74,7 @@ public class ServicesUtil {
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
         resteasyClient.register(new CustomDateParamConverterProvider());
+        resteasyClient.register(new BasicClientRequestFilter());
         //resteasyClient.register(new ContentTypeResponseFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);

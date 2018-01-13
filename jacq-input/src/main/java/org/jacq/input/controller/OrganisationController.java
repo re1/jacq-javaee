@@ -9,6 +9,7 @@ import org.jacq.input.view.LazyOrganisationDataModel;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.jacq.input.util.ServicesUtil;

@@ -13,19 +13,21 @@
     </h:head>
     <h:body>
         <div class="jacq-login">
-            <img class="jacq-logo-img" src="resources/jacq/jacq_logo.png" alt="JACQ LOGO"></img>
+            <h:graphicImage library="jacq" name="jacq_logo.png" />
             <h:form style="">
+                <p:messages />
+
                 <h:panelGrid columns="2" cellpadding="5">
                     <h:outputLabel for="username" value="Username:" />
-                    <p:inputText id="username" value="" required="true" label="username" />
+                    <p:inputText id="username" value="#{loginController.username}" required="true" label="username" />
 
                     <h:outputLabel for="password" value="Password:" />
-                    <p:password id="password" value="" required="true" label="password" />
+                    <p:password id="password" value="#{loginController.password}" required="true" label="password" />
                 </h:panelGrid>
                 <p:selectManyCheckbox id="basic">
-                    <f:selectItem itemLabel="Save Password" itemValue="Save Password" />
+                    <f:selectItem itemLabel="Remember me" itemValue="Remember me" />
                 </p:selectManyCheckbox>
-                <p:commandButton value="Login" onclick="window.open('/jacq-input/faces/pages/livingplant/manage.xhtml')"/>
+                <p:commandButton value="Login" action="#{loginController.login}" ajax="false" />
             </h:form>
         </div>
     </h:body>
