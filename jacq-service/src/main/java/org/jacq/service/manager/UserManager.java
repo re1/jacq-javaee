@@ -30,6 +30,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.EmploymentTypeResult;
 import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.UserResult;
@@ -126,13 +128,12 @@ public class UserManager {
         }
         else {
             frmwrkUser = new FrmwrkUser();
+            frmwrkUser.setFrmwrkGroupList(new ArrayList<FrmwrkGroup>());
         }
         if (frmwrkUser != null) {
-            frmwrkUser.setPassword(userResult.getPassword());
             frmwrkUser.setFirstname(userResult.getFirstname());
             frmwrkUser.setLastname(userResult.getLastname());
             frmwrkUser.setUsername(userResult.getUsername());
-            frmwrkUser.setSalt(userResult.getSalt());
             frmwrkUser.setTitlePrefix(userResult.getTitlePrefix());
             frmwrkUser.setTitleSuffix(userResult.getTitleSuffix());
             frmwrkUser.setBirthdate(userResult.getBirthdate());
@@ -145,6 +146,12 @@ public class UserManager {
                 if (frmwrkGroup != null) {
                     frmwrkUser.getFrmwrkGroupList().add(frmwrkGroup);
                 }
+            }
+
+            // setting the password requires salt to be re-created and hash the password
+            if (!StringUtils.isBlank(userResult.getPassword())) {
+                frmwrkUser.setSalt(generateSalt());
+                frmwrkUser.setPassword(DigestUtils.sha1Hex(userResult.getPassword() + DigestUtils.sha1Hex(frmwrkUser.getSalt())));
             }
 
             if (frmwrkUser.getId() != null) {
@@ -311,6 +318,15 @@ public class UserManager {
 
         // add all predicates as where clause
         cq.where(predicates.toArray(new Predicate[0]));
+    }
+
+    /**
+     * Small helper function for generating a salt for the password hash
+     *
+     * @return
+     */
+    protected String generateSalt() {
+        return RandomStringUtils.randomAlphanumeric(16);
     }
 
 }
