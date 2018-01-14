@@ -178,6 +178,7 @@ public class UserResult {
     }
 
     public UserResult() {
+        this.groupList = new ArrayList<>();
     }
 
     public UserResult(FrmwrkUser user) {
@@ -196,7 +197,7 @@ public class UserResult {
         this.organisationDescription = (user.getOrganisationId() != null) ? user.getOrganisationId().getDescription().toString() : "";
         this.userType = (user.getUserTypeId() != null) ? user.getUserTypeId().getType().toString() : "";
         this.employmentType = (user.getEmploymentTypeId() != null) ? user.getEmploymentTypeId().getType().toString() : "";
-        this.groupList = (user.getFrmwrkGroupList() != null) ? GroupResult.fromList(user.getFrmwrkGroupList()) : null;
+        this.groupList = (user.getFrmwrkGroupList() != null) ? GroupResult.fromList(user.getFrmwrkGroupList()) : new ArrayList<GroupResult>();
 
     }
 
