@@ -25,7 +25,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.ext.Provider;
-import org.jacq.input.controller.SessionController;
+import org.jacq.input.controller.SessionManager;
 
 /**
  *
@@ -36,7 +36,7 @@ public class BasicClientRequestFilter implements ClientRequestFilter {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        SessionController sessionController = getSessionController();
+        SessionManager sessionController = getSessionController();
 
         if (sessionController.getAuthorizationHeader() != null) {
             List<Object> authorization = new ArrayList<Object>() {
@@ -49,11 +49,11 @@ public class BasicClientRequestFilter implements ClientRequestFilter {
         }
     }
 
-    protected SessionController getSessionController() {
+    protected SessionManager getSessionController() {
         BeanManager bm = CDI.current().getBeanManager();
-        Bean<SessionController> bean = (Bean<SessionController>) bm.getBeans(SessionController.class).iterator().next();
-        CreationalContext<SessionController> ctx = bm.createCreationalContext(bean);
-        return (SessionController) bm.getReference(bean, SessionController.class, ctx);
+        Bean<SessionManager> bean = (Bean<SessionManager>) bm.getBeans(SessionManager.class).iterator().next();
+        CreationalContext<SessionManager> ctx = bm.createCreationalContext(bean);
+        return (SessionManager) bm.getReference(bean, SessionManager.class, ctx);
     }
 
 }

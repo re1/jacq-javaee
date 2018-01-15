@@ -7,7 +7,7 @@
 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:view locale="#{sessionController.language}">
+    <f:view locale="#{sessionManager.language}">
 
         <h:head>
             <title>JACQ</title>
@@ -23,8 +23,8 @@
                         <h:graphicImage library="jacq" name="jacq_logo.png" />
                         <h:form>
                             <p:splitButton icon="flag-de">
-                                <p:menuitem value="Deutsch" icon="flag-de" action="#{sessionController.setLanguageTag('de')}" update="@all" />
-                                <p:menuitem value="English" icon="flag-en" action="#{sessionController.setLanguageTag('en')}" update="@all" />
+                                <p:menuitem value="Deutsch" icon="flag-de" action="#{sessionManager.setLanguageTag('de')}" update="@all" />
+                                <p:menuitem value="English" icon="flag-en" action="#{sessionManager.setLanguageTag('en')}" update="@all" />
                             </p:splitButton>
                         </h:form>
                     </header>
