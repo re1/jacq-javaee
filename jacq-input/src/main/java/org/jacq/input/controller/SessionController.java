@@ -17,10 +17,11 @@ package org.jacq.input.controller;
 
 import java.io.Serializable;
 import java.util.Locale;
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.jacq.input.view.DerivativeSearchModel;
 
 /**
  *
@@ -31,10 +32,13 @@ import javax.faces.context.FacesContext;
 public class SessionController implements Serializable {
 
     protected Locale language;
+    protected DerivativeSearchModel derivativeSearchModel;
+    protected String authorizationHeader;
 
     @PostConstruct
     public void init() {
         this.language = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        this.derivativeSearchModel = new DerivativeSearchModel();
     }
 
     public String getLanguageTag() {
@@ -53,4 +57,15 @@ public class SessionController implements Serializable {
         this.language = language;
     }
 
+    public DerivativeSearchModel getDerivativeSearchModel() {
+        return derivativeSearchModel;
+    }
+
+    public String getAuthorizationHeader() {
+        return authorizationHeader;
+    }
+
+    public void setAuthorizationHeader(String authorizationHeader) {
+        this.authorizationHeader = authorizationHeader;
+    }
 }

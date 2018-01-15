@@ -133,8 +133,20 @@ public interface UserService {
      * @return
      */
     @GET
-    @Path("findAllGroup")
+    @Path("/findAllGroup")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<GroupResult> findAllGroup();
+
+    /**
+     * Authenticate a user against the database
+     *
+     * @param username
+     * @param password
+     */
+    @GET
+    @Path("/authenticate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResult authenticate(@QueryParam("username") String username, @QueryParam("password") String password);
 }

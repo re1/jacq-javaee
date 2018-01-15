@@ -16,6 +16,7 @@
 package org.jacq.common.rest;
 
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,6 +25,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
+import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.OrderDirection;
 
 /**
@@ -84,4 +86,26 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response load(@QueryParam("derivativeId") Long derivativeId, @QueryParam("type") String type);
+
+    /**
+     * Search for a specific derivative and return it
+     *
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param orderColumn
+     * @param scientificNameId
+     * @param orderDirection
+     * @param offset
+     * @param count
+     * @return
+     */
+    @GET
+    @Path("/download/find")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BotanicalObjectDownloadResult> downloadFind(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+
 }

@@ -29,6 +29,9 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.EmploymentTypeResult;
 import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.UserResult;
@@ -38,6 +41,7 @@ import org.jacq.common.model.jpa.FrmwrkGroup;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkUserType;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.rest.UserService;
 
 /**
  *
@@ -121,15 +125,15 @@ public class UserManager {
         FrmwrkUser frmwrkUser = null;
         if (userResult.getId() != null) {
             frmwrkUser = em.find(FrmwrkUser.class, userResult.getId());
-        } else {
+        }
+        else {
             frmwrkUser = new FrmwrkUser();
+            frmwrkUser.setFrmwrkGroupList(new ArrayList<FrmwrkGroup>());
         }
         if (frmwrkUser != null) {
-            frmwrkUser.setPassword(userResult.getPassword());
             frmwrkUser.setFirstname(userResult.getFirstname());
             frmwrkUser.setLastname(userResult.getLastname());
             frmwrkUser.setUsername(userResult.getUsername());
-            frmwrkUser.setSalt(userResult.getSalt());
             frmwrkUser.setTitlePrefix(userResult.getTitlePrefix());
             frmwrkUser.setTitleSuffix(userResult.getTitleSuffix());
             frmwrkUser.setBirthdate(userResult.getBirthdate());
@@ -144,9 +148,16 @@ public class UserManager {
                 }
             }
 
+            // setting the password requires salt to be re-created and hash the password
+            if (!StringUtils.isBlank(userResult.getPassword())) {
+                frmwrkUser.setSalt(generateSalt());
+                frmwrkUser.setPassword(DigestUtils.sha1Hex(userResult.getPassword() + DigestUtils.sha1Hex(frmwrkUser.getSalt())));
+            }
+
             if (frmwrkUser.getId() != null) {
                 em.merge(frmwrkUser);
-            } else {
+            }
+            else {
                 em.persist(frmwrkUser);
             }
 
@@ -234,6 +245,27 @@ public class UserManager {
     }
 
     /**
+     * @see UserService#authenticate(java.lang.String, java.lang.String)
+     */
+    @Transactional
+    public UserResult authenticate(String username, String password) {
+        TypedQuery<FrmwrkUser> userQuery = em.createNamedQuery("FrmwrkUser.findByUsername", FrmwrkUser.class);
+        userQuery.setParameter("username", username);
+        List<FrmwrkUser> userList = userQuery.getResultList();
+        if (userList != null && userList.size() > 0) {
+            FrmwrkUser frmwrkUser = userList.get(0);
+
+            // Now check password
+            String passwordHash = DigestUtils.sha1Hex(password + DigestUtils.sha1Hex(frmwrkUser.getSalt()));
+            if (passwordHash.equals(frmwrkUser.getPassword())) {
+                return new UserResult(frmwrkUser);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      *
      * @param cb
      * @param cq
@@ -286,6 +318,15 @@ public class UserManager {
 
         // add all predicates as where clause
         cq.where(predicates.toArray(new Predicate[0]));
+    }
+
+    /**
+     * Small helper function for generating a salt for the password hash
+     *
+     * @return
+     */
+    protected String generateSalt() {
+        return RandomStringUtils.randomAlphanumeric(16);
     }
 
 }

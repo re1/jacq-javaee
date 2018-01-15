@@ -23,7 +23,6 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
-import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIndexSeminumContent;
 import org.jacq.common.model.jpa.TblIndexSeminumPerson;
