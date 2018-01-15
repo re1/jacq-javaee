@@ -30,7 +30,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://131.130.131.9/";
+    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://development.jacq.org/jacq-legacy/";
     private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
 
     public static ScientificNamesService getScientificNamesService() {

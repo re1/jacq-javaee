@@ -52,10 +52,10 @@ public class TblScientificNameInformation implements Serializable {
     @Basic(optional = false)
     @Column(name = "scientific_name_id")
     private Long scientificNameId;
-    @Size(max = 255)
+    @Size(max = 65535)
     @Column(name = "spatial_distribution")
     private String spatialDistribution;
-    @Size(max = 255)
+    @Size(max = 65535)
     @Column(name = "common_names")
     private String commonNames;
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")

@@ -24,7 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Model for holding a single import record
@@ -85,6 +84,8 @@ public class ImportRecord implements Serializable {
     protected Long originalBotanicalObjectId;
     @Column(name = "cultivar")
     protected String cultivar;
+    @Column(name = "common_names")
+    protected String commonNames;
 
     public Long getOriginalId() {
         return originalId;
@@ -260,6 +261,14 @@ public class ImportRecord implements Serializable {
 
     public void setCultivar(String cultivar) {
         this.cultivar = cultivar;
+    }
+
+    public String getCommonNames() {
+        return commonNames;
+    }
+
+    public void setCommonNames(String commonNames) {
+        this.commonNames = commonNames;
     }
 
     /**
