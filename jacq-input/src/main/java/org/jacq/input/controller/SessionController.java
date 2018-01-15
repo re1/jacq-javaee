@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,57 +15,27 @@
  */
 package org.jacq.input.controller;
 
-import java.io.Serializable;
-import java.util.Locale;
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import org.jacq.input.view.DerivativeSearchModel;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
 
 /**
+ * JSF Session scoped bean for handling session wide settings
  *
  * @author wkoller
  */
 @ManagedBean
 @SessionScoped
-public class SessionController implements Serializable {
+public class SessionController {
 
-    protected Locale language;
-    protected DerivativeSearchModel derivativeSearchModel;
-    protected String authorizationHeader;
-
-    @PostConstruct
-    public void init() {
-        this.language = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
-        this.derivativeSearchModel = new DerivativeSearchModel();
-    }
+    @Inject
+    protected SessionManager sessionManager;
 
     public String getLanguageTag() {
-        return language.getLanguage();
+        return sessionManager.getLanguageTag();
     }
 
     public void setLanguageTag(String languageTag) {
-        this.language = Locale.forLanguageTag(languageTag);
-    }
-
-    public Locale getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Locale language) {
-        this.language = language;
-    }
-
-    public DerivativeSearchModel getDerivativeSearchModel() {
-        return derivativeSearchModel;
-    }
-
-    public String getAuthorizationHeader() {
-        return authorizationHeader;
-    }
-
-    public void setAuthorizationHeader(String authorizationHeader) {
-        this.authorizationHeader = authorizationHeader;
+        sessionManager.setLanguageTag(languageTag);
     }
 }

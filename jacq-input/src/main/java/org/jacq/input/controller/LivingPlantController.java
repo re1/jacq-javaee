@@ -29,7 +29,7 @@ import org.jacq.input.view.LazyDerivativeDownloadDataModel;
 public class LivingPlantController implements Serializable {
 
     @Inject
-    protected SessionController sessionController;
+    protected SessionManager sessionController;
 
     public static final String TYPE_ALL = "all";
     public static final String TYPE_LIVING = "living";

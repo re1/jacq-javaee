@@ -43,7 +43,7 @@ public class LoginController {
     protected SecurityContext securityContext;
 
     @Inject
-    protected SessionController sessionController;
+    protected SessionManager sessionController;
 
     protected String username;
     protected String password;

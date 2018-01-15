@@ -65,6 +65,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         this.setDerivativeCount(botanicalObjectDerivative.getDerivativeCount());
         this.setSeparated(botanicalObjectDerivative.getSeparated());
         this.setScientificNameId(botanicalObjectDerivative.getScientificNameId());
+        super.setCultivarName(botanicalObjectDerivative.getCultivarName());
 
         TblDerivative derivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
 
@@ -75,7 +76,8 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             // acquisition_date
             if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                 this.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-            } else {
+            }
+            else {
                 this.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
             }
             if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -113,8 +115,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
     }
 
     /**
-     * Helper function for converting a list of BotanicalObjectDerivative
-     * entries to BotanicalObjectDownloadResult
+     * Helper function for converting a list of BotanicalObjectDerivative entries to BotanicalObjectDownloadResult
      *
      * @param botanicalObjectDerivativeList
      * @return

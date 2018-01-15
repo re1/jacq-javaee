@@ -77,6 +77,8 @@ public class BotanicalObjectDerivative implements Serializable {
     private Long derivativeCount;
     @Column(name = "separated")
     private Boolean separated;
+    @Column(name = "cultivar_name")
+    private String cultivarName;
 
     public BotanicalObjectDerivative() {
     }
@@ -175,6 +177,14 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setSeparated(Boolean separated) {
         this.separated = separated;
+    }
+
+    public String getCultivarName() {
+        return cultivarName;
+    }
+
+    public void setCultivarName(String cultivarName) {
+        this.cultivarName = cultivarName;
     }
 
 }
