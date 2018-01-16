@@ -180,7 +180,7 @@
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
                         <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeButton">
-                            <p:dataExporter type="csv" target="downloadDerivativeTable" fileName="derivativeTable"/>
+                            <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
                         <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
                             <p:column headerText="#{messages['livingplant.derivative_id']}">
@@ -213,6 +213,66 @@
 
                             <p:column headerText="#{messages['livingplant.type']}">
                                 <h:outputText value="#{botanicalObjectDownloadResult.type}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.habitat']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.habitat}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.altitudemin']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.altitudeMin}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.altitudemax']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.altitudeMax}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.latitude']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.latitude}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.longitude']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.longitude}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.collectiondate']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.acquisitionDate}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.collectionnumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.acquisitionNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.ipennumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.ipenNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.family']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.family}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.collectorname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.person}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.scientificnamenoauthor']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.scientificNameNoAuthor}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.spatialdistribution']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.spatialDistribution}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.commonnames']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.commonNames}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.labelsynonymscientificname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.labelSynonymScientificName}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.labelannotation']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.labelAnnotation}" />
                             </p:column>
 
                         </p:dataTable>
