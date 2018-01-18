@@ -55,7 +55,7 @@ public class InputIdentityStore implements IdentityStore {
         UserResult user = this.userService.authenticate(usernamePasswordCredential.getCaller(), usernamePasswordCredential.getPasswordAsString());
 
         if (user != null) {
-            return new CredentialValidationResult(user.getUsername(), new HashSet<String>(Arrays.asList("authenticated")));
+            return new CredentialValidationResult(new InputCallerPrincipal(user.getUsername(), user), new HashSet<String>(Arrays.asList("authenticated")));
         }
 
         return CredentialValidationResult.INVALID_RESULT;

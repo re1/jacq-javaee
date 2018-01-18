@@ -43,7 +43,7 @@ public class ServiceIdentityStore implements IdentityStore {
         UserResult user = userManager.authenticate(usernamePasswordCredential.getCaller(), usernamePasswordCredential.getPasswordAsString());
 
         if (user != null) {
-            return new CredentialValidationResult(user.getUsername(), new HashSet<String>(Arrays.asList("authenticated")));
+            return new CredentialValidationResult(new ServiceCallerPrincipal(user.getUsername(), user), new HashSet<String>(Arrays.asList("authenticated")));
         }
 
         return CredentialValidationResult.INVALID_RESULT;
