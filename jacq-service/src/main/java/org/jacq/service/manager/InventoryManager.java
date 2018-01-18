@@ -27,13 +27,8 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.FrmwrkUser;
-import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblInventory;
 import org.jacq.common.model.jpa.TblInventoryObject;
@@ -109,20 +104,13 @@ public class InventoryManager {
      */
     @Transactional
     public List<InventoryTypeResult> findAllInventoryType() {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TblInventoryType> cq = cb.createQuery(TblInventoryType.class);
-        Root<TblInventoryType> bo = cq.from(TblInventoryType.class);
 
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<TblInventoryType> inventoryTypeSearchQuery = em.createQuery(cq);
+        // Create Query to get TblInventoryType List
+        Query query = em.createNamedQuery("TblInventoryType.findAll");
 
         // finally fetch the results
         ArrayList<InventoryTypeResult> results = new ArrayList<>();
-        List<TblInventoryType> inventoryTypeResults = inventoryTypeSearchQuery.getResultList();
+        List<TblInventoryType> inventoryTypeResults = query.getResultList();
         for (TblInventoryType inventoryType : inventoryTypeResults) {
             InventoryTypeResult inventoryTypeResult = new InventoryTypeResult(inventoryType);
 
