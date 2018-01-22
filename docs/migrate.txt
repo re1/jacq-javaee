@@ -8,3 +8,4 @@
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
 - Add dataimport / dataimport user
 - Run actual dataimport routine
+- Add user for mknaack

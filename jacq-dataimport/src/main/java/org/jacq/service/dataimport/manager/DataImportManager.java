@@ -205,7 +205,7 @@ public class DataImportManager {
             // try to find an original entry by matching the original botanicalobject id and source
             TblBotanicalObject botanicalObject = null;
             TblCultivar cultivar = null;
-            if (importRecord.getOriginalBotanicalObjectId() != null && importRecord.getOriginalBotanicalObjectId() > 1) {
+            if (importRecord.getOriginalBotanicalObjectId() != null && importRecord.getOriginalBotanicalObjectId() > 0) {
                 TypedQuery<TblImportProperties> importPropertiesQuery = em.createNamedQuery("TblImportProperties.findByOriginalBotanicalObjectIdAndSourceName", TblImportProperties.class);
                 importPropertiesQuery.setParameter("originalBotanicalObjectId", importRecord.getOriginalBotanicalObjectId());
                 importPropertiesQuery.setParameter("sourceName", importRecord.getSourceName());
