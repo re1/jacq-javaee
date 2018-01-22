@@ -25,7 +25,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import javax.ws.rs.QueryParam;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.SrvcUuidMinter;
@@ -42,7 +41,9 @@ public class ClassificationManager {
     protected EntityManager em;
 
     /**
-     * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
+     * @see
+     * ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType,
+     * long, java.lang.Long)
      */
     @Transactional
     public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
@@ -52,8 +53,7 @@ public class ClassificationManager {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findTopLevelBySource", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
-        }
-        else {
+        } else {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findBySourceAndParent", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
@@ -74,7 +74,9 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
+     * @see
+     * ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType,
+     * long)
      */
     @Transactional
     public UUID addRevision(ClassificationSourceType source, long sourceId) {
@@ -86,7 +88,8 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long,
+     * java.lang.Integer)
      */
     public List<RevClassification> getRevision(UUID revision, Long parentId, Integer provinceId) {
         // load uuid-minter entry first
@@ -101,8 +104,7 @@ public class ClassificationManager {
             if (provinceId == null) {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
-            }
-            else {
+            } else {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
                 revClassificationQuery.setParameter("provinceId", "%" + provinceId + "%");

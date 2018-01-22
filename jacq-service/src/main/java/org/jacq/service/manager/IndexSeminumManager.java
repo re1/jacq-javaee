@@ -17,6 +17,7 @@ package org.jacq.service.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -30,6 +31,7 @@ import org.jacq.common.model.jpa.TblIndexSeminumRevision;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.rest.IndexSeminumResult;
+import org.jacq.service.SessionManager;
 
 /**
  *
@@ -39,6 +41,9 @@ public class IndexSeminumManager {
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
+
+    @Inject
+    protected SessionManager sessionManager;
 
     /**
      * Create TblIndexSeminumRevision, find Organiation Tree Head of current
@@ -54,7 +59,7 @@ public class IndexSeminumManager {
         // Create new TblIndexSeminumRevision Object set Parameter and Save to DB including set User
         TblIndexSeminumRevision tblIndexSeminumRevision = new TblIndexSeminumRevision();
         tblIndexSeminumRevision.setName(indexSeminumResult.getName());
-        FrmwrkUser user = em.find(FrmwrkUser.class, 27L);
+        FrmwrkUser user = em.find(FrmwrkUser.class, sessionManager.getUser().getId());
         tblIndexSeminumRevision.setUserId(user);
         em.persist(tblIndexSeminumRevision);
 
