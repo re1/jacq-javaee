@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
@@ -52,15 +54,25 @@ public class LivingPlantEditController {
      */
     protected ScientificNameService scientificNameService;
 
+    /**
+     * Index seminum service which is used for displaying the available types
+     */
+    protected IndexSeminumService indexSeminumService;
+
     protected LivingPlantResult livingPlantResult;
 
     protected List<CultivarResult> cultivarResults;
+
+    protected List<IndexSeminumTypeResult> indexSeminumTypes;
 
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
         this.scientificNameService = ServicesUtil.getScientificNameService();
+        this.indexSeminumService = ServicesUtil.getIndexSeminumService();
+
         this.livingPlantResult = new LivingPlantResult();
+        this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
     }
 
     public Long getDerivativeId() {
@@ -125,6 +137,10 @@ public class LivingPlantEditController {
 
     public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
         this.livingPlantResult.getAlternativeAccessionNumberResults().remove(alternativeAccessionNumberResult);
+    }
+
+    public List<IndexSeminumTypeResult> getIndexSeminumTypes() {
+        return indexSeminumTypes;
     }
 
 }

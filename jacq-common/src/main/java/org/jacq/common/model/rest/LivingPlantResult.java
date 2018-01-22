@@ -15,6 +15,8 @@
  */
 package org.jacq.common.model.rest;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
@@ -35,6 +37,25 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String cultureNotes;
     protected long count;
     protected List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults;
+    protected Date gatheringDate;
+    protected String customGatheringDate;
+    protected String gatheringLocation;
+
+    protected Long altitudeMin;
+    protected Long altitudeMax;
+    protected Long exactness;
+    protected Long latitudeDegrees;
+    protected Long latitudeMinutes;
+    protected Long latitudeSeconds;
+    protected String latitudeHalf;
+    protected Long longitudeDegrees;
+    protected Long longitudeMinutes;
+    protected Long longitudeSeconds;
+    protected String longitudeHalf;
+    protected String gatheringAnnotation;
+    protected String habitat;
+    protected Boolean indexSeminum;
+    protected IndexSeminumTypeResult indexSeminumType;
 
     public LivingPlantResult() {
     }
@@ -59,10 +80,41 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.ipenNumber = tblLivingPlant.getIpenNumber();
         this.ipenLocked = tblLivingPlant.getIpenLocked();
         this.cultivar = new CultivarResult(tblLivingPlant.getCultivarId());
-        this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
         this.cultureNotes = tblLivingPlant.getCultureNotes();
         this.count = tblLivingPlant.getTblDerivative().getCount();
         this.alternativeAccessionNumberResults = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
+        this.habitat = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getHabitat();
+        this.indexSeminum = tblLivingPlant.getIndexSeminum();
+        this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
+
+        if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
+            this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
+            this.gatheringAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAnnotation();
+            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId() != null) {
+                this.gatheringDate = (new GregorianCalendar(
+                        Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear()),
+                        Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth()),
+                        Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay()))).getTime();
+                this.customGatheringDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom();
+            }
+            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId() != null) {
+                this.gatheringLocation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId().getLocation();
+            }
+            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
+                this.altitudeMin = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin();
+                this.altitudeMax = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax();
+                this.exactness = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getExactness();
+                this.latitudeDegrees = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees();
+                this.latitudeMinutes = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes();
+                this.latitudeSeconds = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds();
+                this.latitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeHalf();
+                this.longitudeDegrees = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees();
+                this.longitudeMinutes = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes();
+                this.longitudeSeconds = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds();
+                this.longitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeHalf();
+            }
+        }
+
     }
 
     public boolean isReviewed() {
@@ -135,6 +187,150 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setAlternativeAccessionNumberResults(List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults) {
         this.alternativeAccessionNumberResults = alternativeAccessionNumberResults;
+    }
+
+    public Date getGatheringDate() {
+        return gatheringDate;
+    }
+
+    public void setGatheringDate(Date gatheringDate) {
+        this.gatheringDate = gatheringDate;
+    }
+
+    public String getCustomGatheringDate() {
+        return customGatheringDate;
+    }
+
+    public void setCustomGatheringDate(String customGatheringDate) {
+        this.customGatheringDate = customGatheringDate;
+    }
+
+    public String getGatheringLocation() {
+        return gatheringLocation;
+    }
+
+    public void setGatheringLocation(String gatheringLocation) {
+        this.gatheringLocation = gatheringLocation;
+    }
+
+    public Long getAltitudeMin() {
+        return altitudeMin;
+    }
+
+    public void setAltitudeMin(Long altitudeMin) {
+        this.altitudeMin = altitudeMin;
+    }
+
+    public Long getAltitudeMax() {
+        return altitudeMax;
+    }
+
+    public void setAltitudeMax(Long altitudeMax) {
+        this.altitudeMax = altitudeMax;
+    }
+
+    public Long getExactness() {
+        return exactness;
+    }
+
+    public void setExactness(Long exactness) {
+        this.exactness = exactness;
+    }
+
+    public Long getLatitudeDegrees() {
+        return latitudeDegrees;
+    }
+
+    public void setLatitudeDegrees(Long latitudeDegrees) {
+        this.latitudeDegrees = latitudeDegrees;
+    }
+
+    public Long getLatitudeMinutes() {
+        return latitudeMinutes;
+    }
+
+    public void setLatitudeMinutes(Long latitudeMinutes) {
+        this.latitudeMinutes = latitudeMinutes;
+    }
+
+    public Long getLatitudeSeconds() {
+        return latitudeSeconds;
+    }
+
+    public void setLatitudeSeconds(Long latitudeSeconds) {
+        this.latitudeSeconds = latitudeSeconds;
+    }
+
+    public String getLatitudeHalf() {
+        return latitudeHalf;
+    }
+
+    public void setLatitudeHalf(String latitudeHalf) {
+        this.latitudeHalf = latitudeHalf;
+    }
+
+    public Long getLongitudeDegrees() {
+        return longitudeDegrees;
+    }
+
+    public void setLongitudeDegrees(Long longitudeDegrees) {
+        this.longitudeDegrees = longitudeDegrees;
+    }
+
+    public Long getLongitudeMinutes() {
+        return longitudeMinutes;
+    }
+
+    public void setLongitudeMinutes(Long longitudeMinutes) {
+        this.longitudeMinutes = longitudeMinutes;
+    }
+
+    public Long getLongitudeSeconds() {
+        return longitudeSeconds;
+    }
+
+    public void setLongitudeSeconds(Long longitudeSeconds) {
+        this.longitudeSeconds = longitudeSeconds;
+    }
+
+    public String getLongitudeHalf() {
+        return longitudeHalf;
+    }
+
+    public void setLongitudeHalf(String longitudeHalf) {
+        this.longitudeHalf = longitudeHalf;
+    }
+
+    public String getGatheringAnnotation() {
+        return gatheringAnnotation;
+    }
+
+    public void setGatheringAnnotation(String gatheringAnnotation) {
+        this.gatheringAnnotation = gatheringAnnotation;
+    }
+
+    public String getHabitat() {
+        return habitat;
+    }
+
+    public void setHabitat(String habitat) {
+        this.habitat = habitat;
+    }
+
+    public Boolean getIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(Boolean indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
+
+    public IndexSeminumTypeResult getIndexSeminumType() {
+        return indexSeminumType;
+    }
+
+    public void setIndexSeminumType(IndexSeminumTypeResult indexSeminumType) {
+        this.indexSeminumType = indexSeminumType;
     }
 
 }

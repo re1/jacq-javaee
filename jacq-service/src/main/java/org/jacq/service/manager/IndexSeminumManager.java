@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
@@ -29,10 +30,13 @@ import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIndexSeminumContent;
 import org.jacq.common.model.jpa.TblIndexSeminumPerson;
 import org.jacq.common.model.jpa.TblIndexSeminumRevision;
+import org.jacq.common.model.jpa.TblIndexSeminumType;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IndexSeminumResult;
+import org.jacq.common.model.rest.IndexSeminumTypeResult;
+import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.service.JacqConfig;
 import org.jacq.service.SessionManager;
 
@@ -55,9 +59,8 @@ public class IndexSeminumManager {
     protected JacqConfig jacqConfig;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
-     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
-     * List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
+     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -132,7 +135,8 @@ public class IndexSeminumManager {
                 // acquisition_date
                 if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-                } else {
+                }
+                else {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
                 if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -170,6 +174,14 @@ public class IndexSeminumManager {
 
         }
         return new IndexSeminumResult(tblIndexSeminumRevision);
+    }
+
+    /**
+     * @see IndexSeminumService#typeFindAll()
+     */
+    public List<IndexSeminumTypeResult> typeFindAll() {
+        TypedQuery<TblIndexSeminumType> indexSeminumTypeQuery = em.createNamedQuery("TblIndexSeminumType.findAll", TblIndexSeminumType.class);
+        return IndexSeminumTypeResult.fromList(indexSeminumTypeQuery.getResultList());
     }
 
     /**

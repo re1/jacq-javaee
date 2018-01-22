@@ -15,8 +15,10 @@
  */
 package org.jacq.service.rest.impl;
 
+import java.util.List;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.IndexSeminumResult;
+import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.service.manager.IndexSeminumManager;
 
@@ -32,6 +34,14 @@ public class IndexSeminumServiceImpl implements IndexSeminumService {
     @Override
     public IndexSeminumResult save(IndexSeminumResult indexSeminumResult) {
         return indexSeminumManager.save(indexSeminumResult);
+    }
+
+    /**
+     * @see IndexSeminumService#typeFindAll()
+     */
+    @Override
+    public List<IndexSeminumTypeResult> typeFindAll() {
+        return indexSeminumManager.typeFindAll();
     }
 
 }
