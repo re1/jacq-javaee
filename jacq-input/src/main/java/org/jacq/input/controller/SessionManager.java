@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.jacq.common.model.rest.UserResult;
 import org.jacq.input.view.DerivativeSearchModel;
 
 /**
@@ -36,6 +37,7 @@ public class SessionManager implements Serializable {
     protected Locale language;
     protected DerivativeSearchModel derivativeSearchModel;
     protected String authorizationHeader;
+    protected UserResult user;
 
     @PostConstruct
     public void init() {
@@ -70,4 +72,13 @@ public class SessionManager implements Serializable {
     public void setAuthorizationHeader(String authorizationHeader) {
         this.authorizationHeader = authorizationHeader;
     }
+
+    public UserResult getUser() {
+        return user;
+    }
+
+    public void setUser(UserResult user) {
+        this.user = user;
+    }
+
 }

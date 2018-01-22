@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -125,8 +126,7 @@ public class UserManager {
         FrmwrkUser frmwrkUser = null;
         if (userResult.getId() != null) {
             frmwrkUser = em.find(FrmwrkUser.class, userResult.getId());
-        }
-        else {
+        } else {
             frmwrkUser = new FrmwrkUser();
             frmwrkUser.setFrmwrkGroupList(new ArrayList<FrmwrkGroup>());
         }
@@ -156,8 +156,7 @@ public class UserManager {
 
             if (frmwrkUser.getId() != null) {
                 em.merge(frmwrkUser);
-            }
-            else {
+            } else {
                 em.persist(frmwrkUser);
             }
 
@@ -168,20 +167,12 @@ public class UserManager {
 
     @Transactional
     public List<UserTypeResult> findAllUserType() {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<FrmwrkUserType> cq = cb.createQuery(FrmwrkUserType.class);
-        Root<FrmwrkUserType> bo = cq.from(FrmwrkUserType.class);
-
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<FrmwrkUserType> userTypeSearchQuery = em.createQuery(cq);
+        // Create Query to get FrmwrkUserType List
+        Query query = em.createNamedQuery("FrmwrkUserType.findAll");
 
         // finally fetch the results
         ArrayList<UserTypeResult> results = new ArrayList<>();
-        List<FrmwrkUserType> userTypeResults = userTypeSearchQuery.getResultList();
+        List<FrmwrkUserType> userTypeResults = query.getResultList();
         for (FrmwrkUserType userType : userTypeResults) {
             UserTypeResult userTypeResult = new UserTypeResult(userType);
 
@@ -194,20 +185,12 @@ public class UserManager {
 
     @Transactional
     public List<EmploymentTypeResult> findAllEmploymentType() {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<FrmwrkEmploymentType> cq = cb.createQuery(FrmwrkEmploymentType.class);
-        Root<FrmwrkEmploymentType> bo = cq.from(FrmwrkEmploymentType.class);
-
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<FrmwrkEmploymentType> employmentTypeSearchQuery = em.createQuery(cq);
+        // Create Query to get FrmwrkUserType List
+        Query query = em.createNamedQuery("FrmwrkEmploymentType.findAll");
 
         // finally fetch the results
         ArrayList<EmploymentTypeResult> results = new ArrayList<>();
-        List<FrmwrkEmploymentType> employmentTypeResults = employmentTypeSearchQuery.getResultList();
+        List<FrmwrkEmploymentType> employmentTypeResults = query.getResultList();
         for (FrmwrkEmploymentType employmentType : employmentTypeResults) {
             EmploymentTypeResult employmentTypeResult = new EmploymentTypeResult(employmentType);
 
@@ -220,20 +203,12 @@ public class UserManager {
 
     @Transactional
     public List<GroupResult> findAllGroup() {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<FrmwrkGroup> cq = cb.createQuery(FrmwrkGroup.class);
-        Root<FrmwrkGroup> bo = cq.from(FrmwrkGroup.class);
-
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<FrmwrkGroup> groupSearchQuery = em.createQuery(cq);
+        // Create Query to get FrmwrkGroup List
+        Query query = em.createNamedQuery("FrmwrkGroup.findAll");
 
         // finally fetch the results
         ArrayList<GroupResult> results = new ArrayList<>();
-        List<FrmwrkGroup> groupResults = groupSearchQuery.getResultList();
+        List<FrmwrkGroup> groupResults = query.getResultList();
         for (FrmwrkGroup group : groupResults) {
             GroupResult groupResult = new GroupResult(group);
 

@@ -22,13 +22,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import javax.ws.rs.QueryParam;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.SrvcUuidMinter;
+import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.TblNomName;
 import org.jacq.common.model.jpa.ViewClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 
@@ -42,7 +44,9 @@ public class ClassificationManager {
     protected EntityManager em;
 
     /**
-     * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
+     * @see
+     * ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType,
+     * long, java.lang.Long)
      */
     @Transactional
     public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
@@ -52,8 +56,7 @@ public class ClassificationManager {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findTopLevelBySource", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
-        }
-        else {
+        } else {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findBySourceAndParent", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
@@ -74,7 +77,9 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
+     * @see
+     * ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType,
+     * long)
      */
     @Transactional
     public UUID addRevision(ClassificationSourceType source, long sourceId) {
@@ -86,7 +91,8 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long,
+     * java.lang.Integer)
      */
     public List<RevClassification> getRevision(UUID revision, Long parentId, Integer provinceId) {
         // load uuid-minter entry first
@@ -101,8 +107,7 @@ public class ClassificationManager {
             if (provinceId == null) {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
-            }
-            else {
+            } else {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
                 revClassificationQuery.setParameter("provinceId", "%" + provinceId + "%");
@@ -114,5 +119,47 @@ public class ClassificationManager {
         } catch (NoResultException | NonUniqueResultException e) {
             return new ArrayList<>();
         }
+    }
+
+    @Transactional
+    public TblClassification getAcceptedName(ClassificationSourceType source, long sourceId, long scientificNameId) {
+
+        // Finds first accepted Scientific Name
+        Query query = em.createNamedQuery("TblClassification.findBySourceAndAcceptedAndScientificNameId")
+                .setParameter("scientificNameId", scientificNameId)
+                .setParameter("source", source.toString())
+                .setParameter("sourceId", sourceId);
+        TblClassification tblClassification = (TblClassification) query.getSingleResult();
+
+        if (tblClassification.getAccScientificNameId() != null) {
+            query.setParameter("scientificNameId", tblClassification.getAccScientificNameId());
+            tblClassification = (TblClassification) query.getSingleResult();
+        }
+
+        return tblClassification;
+    }
+
+    @Transactional
+    public TblClassification getFamily(ClassificationSourceType source, long sourceId, long scientificNameId) {
+
+        // Find TblClassification where nomName Rank = 9
+        TblClassification tblClassification = getAcceptedName(source, sourceId, scientificNameId);
+
+        Query query = em.createNamedQuery("TblNomName.findByNameId")
+                .setParameter("nameId", tblClassification.getScientificNameId());
+
+        TblNomName tblNomName = (TblNomName) query.getSingleResult();
+        while (tblNomName.getRankId().getRankId() != 9 && tblClassification.getParentScientificNameId() != null) {
+            tblClassification = getAcceptedName(source, sourceId, tblClassification.getParentScientificNameId());
+
+            query.setParameter("nameId", tblClassification.getScientificNameId());
+
+            tblNomName = (TblNomName) query.getSingleResult();
+        }
+        if (tblNomName.getRankId().getRankId() != 9 && tblClassification.getParentScientificNameId() == null) {
+            return null;
+        }
+
+        return tblClassification;
     }
 }

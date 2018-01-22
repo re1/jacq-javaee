@@ -11,23 +11,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.JacqConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -54,9 +61,16 @@ public class DerivativeManager {
     @PersistenceContext
     private EntityManager em;
 
+    @Inject
+    protected ClassificationManager classificationManager;
+
+    @Inject
+    protected JacqConfig jacqConfig;
+
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -153,8 +167,21 @@ public class DerivativeManager {
      * @param count
      * @return
      */
+    @Transactional
     public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return BotanicalObjectDownloadResult.fromList(this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count));
+        List<BotanicalObjectDownloadResult> botanicalObjectDownloadResultList = new ArrayList<>();
+
+        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+
+        for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
+            TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
+            TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
+            ViewProtolog protolog = em.find(ViewProtolog.class, classification.getSourceId());
+            BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, classification, protolog);
+            botanicalObjectDownloadResultList.add(botanicalObjectDownloadResult);
+        }
+
+        return botanicalObjectDownloadResultList;
     }
 
     /**
@@ -214,11 +241,9 @@ public class DerivativeManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        }
-        else if (offset != null) {
+        } else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        }
-        else if (count != null) {
+        } else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -226,7 +251,8 @@ public class DerivativeManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a given column attribute name
+     * Helper function for retrieving the actual database column name for a
+     * given column attribute name
      *
      * @param attributeName
      * @return

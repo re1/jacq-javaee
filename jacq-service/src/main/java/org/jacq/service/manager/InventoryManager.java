@@ -24,16 +24,13 @@ import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.ManagedBean;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.FrmwrkUser;
-import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblInventory;
 import org.jacq.common.model.jpa.TblInventoryObject;
@@ -43,17 +40,22 @@ import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.rest.InventoryService;
+import org.jacq.service.SessionManager;
 
 /**
  *
  * @author fhafner
  */
+@ManagedBean
 public class InventoryManager {
 
     private static final Logger LOGGER = Logger.getLogger(TreeRecordFileManager.class.getName());
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
+
+    @Inject
+    protected SessionManager sessionManager;
 
     /**
      * @param inventoryResult
@@ -66,7 +68,7 @@ public class InventoryManager {
         //Create inventory Table entry
         TblInventory tblInventory = new TblInventory();
         tblInventory.setInventoryTypeId(em.find(TblInventoryType.class, inventoryResult.getInventoryTypeId()));
-        tblInventory.setUserId(em.find(FrmwrkUser.class, 1L));
+        tblInventory.setUserId(em.find(FrmwrkUser.class, sessionManager.getUser().getId()));
         em.persist(tblInventory);
 
         //get inventorytyp
@@ -109,20 +111,13 @@ public class InventoryManager {
      */
     @Transactional
     public List<InventoryTypeResult> findAllInventoryType() {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TblInventoryType> cq = cb.createQuery(TblInventoryType.class);
-        Root<TblInventoryType> bo = cq.from(TblInventoryType.class);
 
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<TblInventoryType> inventoryTypeSearchQuery = em.createQuery(cq);
+        // Create Query to get TblInventoryType List
+        Query query = em.createNamedQuery("TblInventoryType.findAll");
 
         // finally fetch the results
         ArrayList<InventoryTypeResult> results = new ArrayList<>();
-        List<TblInventoryType> inventoryTypeResults = inventoryTypeSearchQuery.getResultList();
+        List<TblInventoryType> inventoryTypeResults = query.getResultList();
         for (TblInventoryType inventoryType : inventoryTypeResults) {
             InventoryTypeResult inventoryTypeResult = new InventoryTypeResult(inventoryType);
 
@@ -193,8 +188,8 @@ public class InventoryManager {
     }
 
     /**
-     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants
-     * by AccessionNumberList return LivinplantId list
+     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants by AccessionNumberList return
+     * LivinplantId list
      *
      * @param bufferedReader
      * @return

@@ -270,7 +270,7 @@
                                         <h:outputText value="#{messages['livingplant.collectiondate']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.gatheringDate}" pattern="dd-MM-yyyy" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -290,7 +290,7 @@
                                         <h:outputText value="#{messages['livingplant.freecollectiondate']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.customGatheringDate}" />
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +310,7 @@
                                         <h:outputText value="#{messages['livingplant.location']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" />
                                     </div>
                                 </div>
                             </div>
@@ -321,9 +321,9 @@
                                     </div>
                                     <div class="ui-g-6">
                                         <h:panelGrid columns="3" cellpadding="2">
-                                            <p:inputText style="width: 50px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMin}" style="width: 50px" />
                                             -
-                                            <p:inputText style="width: 50px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMax}" style="width: 50px" />
                                         </h:panelGrid>
                                     </div>
                                 </div>
@@ -334,7 +334,7 @@
                                         <h:outputText value="#{messages['livingplant.accuracy']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.exactness}" />
                                     </div>
                                 </div>
                             </div>
@@ -345,11 +345,12 @@
                                     </div>
                                     <div class="ui-g-6">
                                         <h:panelGrid columns="4" cellpadding="2">
-                                            <p:inputText style="width: 30px" />
-                                            <p:inputText style="width: 30px" />
-                                            <p:inputText style="width: 30px" />
-                                            <p:selectOneMenu id="latitudeselect">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeDegrees}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeMinutes}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeSeconds}" style="width: 30px" />
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.latitudeHalf}" id="latitudeselect">
                                                 <f:selectItem itemLabel="N" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="S" noSelectionOption="true" />
                                             </p:selectOneMenu>
                                         </h:panelGrid>
                                     </div>
@@ -362,11 +363,12 @@
                                     </div>
                                     <div class="ui-g-6">
                                         <h:panelGrid columns="4" cellpadding="2">
-                                            <p:inputText style="width: 30px" />
-                                            <p:inputText style="width: 30px" />
-                                            <p:inputText style="width: 30px" />
-                                            <p:selectOneMenu id="longitudeselect">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeDegrees}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeMinutes}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeSeconds}" style="width: 30px" />
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.longitudeHalf}" id="longitudeselect">
                                                 <f:selectItem itemLabel="E" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="W" noSelectionOption="true" />
                                             </p:selectOneMenu>
                                         </h:panelGrid>
                                     </div>
@@ -378,7 +380,7 @@
                                         <h:outputText value="#{messages['livingplant.annotation']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringAnnotation}" />
                                     </div>
                                 </div>
                             </div>
@@ -388,7 +390,7 @@
                                         <h:outputText value="#{messages['livingplant.habitat']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.habitat}" />
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +400,7 @@
                                         <h:outputText value="#{messages['livingplant.indexseminum']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="indexseminum" />
+                                        <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.indexSeminum}" />
                                     </div>
                                 </div>
                             </div>
@@ -408,8 +410,8 @@
                                         <h:outputText value="#{messages['livingplant.type']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="type">
-                                            <f:selectItem itemLabel="WS" noSelectionOption="true" />
+                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.indexSeminumType.indexSeminumTypeId}">
+                                            <f:selectItems value="#{livingPlantEditController.indexSeminumTypes}" var="indexSeminumType" itemLabel="#{indexSeminumType.type}" itemValue="#{indexSeminumType.indexSeminumTypeId}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>

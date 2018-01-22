@@ -15,16 +15,15 @@
  */
 package org.jacq.common.model.rest;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 
 /**
@@ -35,24 +34,30 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
 
-    @PersistenceContext(unitName = "jacq-service")
-    protected EntityManager em;
-
     protected String habitat;
     protected String altitudeMin;
     protected String altitudeMax;
     protected String latitude;
     protected String longitude;
     protected String acquisitionDate;
-    protected String acquisitionNumber;
+    protected String gatheringNumber;
     protected String ipenNumber;
     protected String family;
     protected String person;
+    protected String scientificNameNoAuthor;
+    protected String spatialDistribution;
+    protected String commonNames;
+    protected String labelSynonymScientificName;
+    protected String aquesitionLocation;
+    protected String scientificNameAuthor;
+    protected String familyAuthor;
+    protected String familyNoAuthor;
+    protected String familyReference;
 
     public BotanicalObjectDownloadResult() {
     }
 
-    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative) {
+    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative, TblDerivative derivative, TblClassification classificationFamily, ViewProtolog protolog) {
         // BotanicalObjectDerivative properties
         this.setType(botanicalObjectDerivative.getType());
         this.setDerivativeId(botanicalObjectDerivative.getDerivativeId());
@@ -67,17 +72,31 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         this.setScientificNameId(botanicalObjectDerivative.getScientificNameId());
         super.setCultivarName(botanicalObjectDerivative.getCultivarName());
 
-        TblDerivative derivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
+        if (classificationFamily != null && classificationFamily.getViewScientificName() != null) {
+            this.setFamily(classificationFamily.getViewScientificName().getScientificName() != null ? classificationFamily.getViewScientificName().getScientificName() : null);
+            this.setFamilyAuthor(classificationFamily.getViewScientificName().getScientificNameAuthor() != null ? classificationFamily.getViewScientificName().getScientificNameAuthor() : null);
+            this.setFamilyNoAuthor(classificationFamily.getViewScientificName().getScientificNameNoAuthor() != null ? classificationFamily.getViewScientificName().getScientificNameNoAuthor() : null);
+        }
 
-        //TODO Family
+        if (protolog != null) {
+            this.setFamilyReference(protolog.getProtolog());
+        }
+
+        if (derivative.getBotanicalObjectId().getViewScientificName() != null) {
+            // ScientificNameNoAuthor
+            this.setScientificNameNoAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() : null);
+            // ScientificNameAuthor
+            this.setScientificNameNoAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() : null);
+        }
         if (derivative.getBotanicalObjectId().getAcquisitionEventId() != null) {
+            // acquisition_Location
+            this.setAquesitionLocation(derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationId() != null ? derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationId().getLocation() : null);
             // acqustition_number
-            this.setAcquisitionNumber(derivative.getBotanicalObjectId().getAcquisitionEventId().getNumber() != null ? String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getNumber()) : null);
+            this.setGatheringNumber(derivative.getBotanicalObjectId().getAcquisitionEventId().getNumber() != null ? String.valueOf(derivative.getBotanicalObjectId().getAcquisitionEventId().getNumber()) : null);
             // acquisition_date
             if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                 this.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-            }
-            else {
+            } else {
                 this.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
             }
             if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -100,7 +119,17 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             // accession_number
             this.setAccessionNumber(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()));
             // ipen_number
-            this.setIpenNumber(derivative.getTblLivingPlant().getIpenNumber());
+            this.setIpenNumber(derivative.getTblLivingPlant().getIpenNumber() != null ? derivative.getTblLivingPlant().getIpenNumber() : null);
+            if (derivative.getTblLivingPlant().getCultivarId() != null && derivative.getTblLivingPlant().getCultivarId().getScientificNameId() != null) {
+                // spatialDistribution;
+                this.setSpatialDistribution(derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() != null ? derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() : null);
+                // commonNames;
+                this.setCommonNames(derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getCommonNames() != null ? derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getCommonNames() : null);
+            }
+            //label synonym scientific name
+            if (derivative.getTblLivingPlant().getViewLabelSynonymScientificName() != null) {
+                this.setLabelSynonymScientificName(derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() != null ? derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() : null);
+            }
         }
         // habitat
         this.setHabitat(derivative.getBotanicalObjectId().getHabitat() != null ? derivative.getBotanicalObjectId().getHabitat() : null);
@@ -110,26 +139,90 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         for (TblPerson person : tblPersonList) {
             this.setPerson(this.getPerson() != null ? this.getPerson() : "" + person.getName() + ",");
         }
-        this.setPerson(this.getPerson().replaceAll(", $", ""));
+        if (this.getPerson() != null) {
+            this.setPerson(this.getPerson().replaceAll(", $", ""));
+        }
 
     }
 
-    /**
-     * Helper function for converting a list of BotanicalObjectDerivative entries to BotanicalObjectDownloadResult
-     *
-     * @param botanicalObjectDerivativeList
-     * @return
-     */
-    public static List<BotanicalObjectDownloadResult> fromList(List<BotanicalObjectDerivative> botanicalObjectDerivativeList) {
-        List<BotanicalObjectDownloadResult> botanicalObjectDownloadResults = new ArrayList<>();
+    public String getFamilyReference() {
+        return familyReference;
+    }
 
-        if (botanicalObjectDerivativeList != null) {
-            for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
-                botanicalObjectDownloadResults.add(new BotanicalObjectDownloadResult(botanicalObjectDerivative));
-            }
-        }
+    public void setFamilyReference(String familyReference) {
+        this.familyReference = familyReference;
+    }
 
-        return botanicalObjectDownloadResults;
+    public String getFamilyNoAuthor() {
+        return familyNoAuthor;
+    }
+
+    public void setFamilyNoAuthor(String familyNoAuthor) {
+        this.familyNoAuthor = familyNoAuthor;
+    }
+
+    public String getFamilyAuthor() {
+        return familyAuthor;
+    }
+
+    public void setFamilyAuthor(String familyAuthor) {
+        this.familyAuthor = familyAuthor;
+    }
+
+    public String getScientificNameAuthor() {
+        return scientificNameAuthor;
+    }
+
+    public void setScientificNameAuthor(String scientificNameAuthor) {
+        this.scientificNameAuthor = scientificNameAuthor;
+    }
+
+    public String getGatheringNumber() {
+        return gatheringNumber;
+    }
+
+    public void setGatheringNumber(String gatheringNumber) {
+        this.gatheringNumber = gatheringNumber;
+    }
+
+    public String getAquesitionLocation() {
+        return aquesitionLocation;
+    }
+
+    public void setAquesitionLocation(String aquesitionLocation) {
+        this.aquesitionLocation = aquesitionLocation;
+    }
+
+    public String getLabelSynonymScientificName() {
+        return labelSynonymScientificName;
+    }
+
+    public void setLabelSynonymScientificName(String labelSynonymScientificName) {
+        this.labelSynonymScientificName = labelSynonymScientificName;
+    }
+
+    public String getSpatialDistribution() {
+        return spatialDistribution;
+    }
+
+    public void setSpatialDistribution(String spatialDistribution) {
+        this.spatialDistribution = spatialDistribution;
+    }
+
+    public String getCommonNames() {
+        return commonNames;
+    }
+
+    public void setCommonNames(String commonNames) {
+        this.commonNames = commonNames;
+    }
+
+    public String getScientificNameNoAuthor() {
+        return scientificNameNoAuthor;
+    }
+
+    public void setScientificNameNoAuthor(String scientificNameNoAuthor) {
+        this.scientificNameNoAuthor = scientificNameNoAuthor;
     }
 
     public String getPerson() {
@@ -138,14 +231,6 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
 
     public void setPerson(String person) {
         this.person = person;
-    }
-
-    public String getAcquisitionNumber() {
-        return acquisitionNumber;
-    }
-
-    public void setAcquisitionNumber(String acquisitionNumber) {
-        this.acquisitionNumber = acquisitionNumber;
     }
 
     public String getHabitat() {
