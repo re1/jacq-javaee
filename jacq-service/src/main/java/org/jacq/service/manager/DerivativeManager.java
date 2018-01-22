@@ -11,19 +11,24 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.JacqConfig;
 
 /**
  * Helper class for querying all derivatives in a unified way Due to MySQL not
@@ -55,6 +60,12 @@ public class DerivativeManager {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Inject
+    protected ClassificationManager classificationManager;
+
+    @Inject
+    protected JacqConfig jacqConfig;
 
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long,
@@ -164,7 +175,9 @@ public class DerivativeManager {
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
-            BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative);
+            TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
+            ViewProtolog protolog = em.find(ViewProtolog.class, classification.getSourceId());
+            BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, classification, protolog);
             botanicalObjectDownloadResultList.add(botanicalObjectDownloadResult);
         }
 

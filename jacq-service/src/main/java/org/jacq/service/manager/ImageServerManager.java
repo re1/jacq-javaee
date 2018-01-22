@@ -31,7 +31,6 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.rest.ImageServerResource;
-import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblImageServer;
 import org.jacq.common.model.jpa.TblLivingPlant;
@@ -125,7 +124,8 @@ public class ImageServerManager {
     }
 
     /**
-     * Helper function for synchronizing image server content with has-image flags in botanical object list
+     * Helper function for synchronizing image server content with has-image
+     * flags in botanical object list
      */
     @Transactional
     public void synchronizeImageFlags() {
@@ -194,7 +194,8 @@ public class ImageServerManager {
     }
 
     /**
-     * Traverses the organisation hierarchy in order to find a suitable image server
+     * Traverses the organisation hierarchy in order to find a suitable image
+     * server
      *
      * @param organisation
      * @return ImageServer or null if none is found
@@ -207,8 +208,7 @@ public class ImageServerManager {
 
         if (organisation.getTblImageServer() != null) {
             return organisation.getTblImageServer();
-        }
-        else {
+        } else {
             return findImageServer(organisation.getParentOrganisationId());
         }
     }
@@ -232,7 +232,8 @@ public class ImageServerManager {
     }
 
     /**
-     * Find all organisations belonging to a partial organisations tree, taking into account image-server assignments
+     * Find all organisations belonging to a partial organisations tree, taking
+     * into account image-server assignments
      *
      * @param parentOrganisation
      * @return

@@ -21,7 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 
 /**
@@ -48,11 +50,14 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
     protected String labelSynonymScientificName;
     protected String aquesitionLocation;
     protected String scientificNameAuthor;
+    protected String familyAuthor;
+    protected String familyNoAuthor;
+    protected String familyReference;
 
     public BotanicalObjectDownloadResult() {
     }
 
-    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative, TblDerivative derivative) {
+    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative, TblDerivative derivative, TblClassification classificationFamily, ViewProtolog protolog) {
         // BotanicalObjectDerivative properties
         this.setType(botanicalObjectDerivative.getType());
         this.setDerivativeId(botanicalObjectDerivative.getDerivativeId());
@@ -67,7 +72,16 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         this.setScientificNameId(botanicalObjectDerivative.getScientificNameId());
         super.setCultivarName(botanicalObjectDerivative.getCultivarName());
 
-        //TODO Family
+        if (classificationFamily != null && classificationFamily.getViewScientificName() != null) {
+            this.setFamily(classificationFamily.getViewScientificName().getScientificName() != null ? classificationFamily.getViewScientificName().getScientificName() : null);
+            this.setFamilyAuthor(classificationFamily.getViewScientificName().getScientificNameAuthor() != null ? classificationFamily.getViewScientificName().getScientificNameAuthor() : null);
+            this.setFamilyNoAuthor(classificationFamily.getViewScientificName().getScientificNameNoAuthor() != null ? classificationFamily.getViewScientificName().getScientificNameNoAuthor() : null);
+        }
+
+        if (protolog != null) {
+            this.setFamilyReference(protolog.getProtolog());
+        }
+
         if (derivative.getBotanicalObjectId().getViewScientificName() != null) {
             // ScientificNameNoAuthor
             this.setScientificNameNoAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() : null);
@@ -129,6 +143,30 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             this.setPerson(this.getPerson().replaceAll(", $", ""));
         }
 
+    }
+
+    public String getFamilyReference() {
+        return familyReference;
+    }
+
+    public void setFamilyReference(String familyReference) {
+        this.familyReference = familyReference;
+    }
+
+    public String getFamilyNoAuthor() {
+        return familyNoAuthor;
+    }
+
+    public void setFamilyNoAuthor(String familyNoAuthor) {
+        this.familyNoAuthor = familyNoAuthor;
+    }
+
+    public String getFamilyAuthor() {
+        return familyAuthor;
+    }
+
+    public void setFamilyAuthor(String familyAuthor) {
+        this.familyAuthor = familyAuthor;
     }
 
     public String getScientificNameAuthor() {

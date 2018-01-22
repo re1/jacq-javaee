@@ -30,6 +30,8 @@ public class JacqConfig {
     public static final String BIRT_WORK_LABEL = BIRT + CONFIG_SEPARATOR + "work_label";
     protected static final String TREERECORD = "treerecord";
     public static final String TREERECORD_PDF_PATH = TREERECORD + CONFIG_SEPARATOR + "pdf_path";
+    protected static final String CLASSIFICATION = "classification";
+    public static final String CLASSIFICATION_FAMILY_REFERENCE_ID = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceId";
 
     protected HashMap<String, String> config;
 
@@ -60,5 +62,15 @@ public class JacqConfig {
      */
     public String getString(String name) {
         return config.get(name);
+    }
+
+    /**
+     * Return a config value as Long
+     *
+     * @param name Name of configuration value to return
+     * @return
+     */
+    public Long getLong(String name) {
+        return Long.parseLong(config.get(name));
     }
 }

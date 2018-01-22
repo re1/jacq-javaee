@@ -24,13 +24,16 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
+import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIndexSeminumContent;
 import org.jacq.common.model.jpa.TblIndexSeminumPerson;
 import org.jacq.common.model.jpa.TblIndexSeminumRevision;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IndexSeminumResult;
+import org.jacq.service.JacqConfig;
 import org.jacq.service.SessionManager;
 
 /**
@@ -44,6 +47,12 @@ public class IndexSeminumManager {
 
     @Inject
     protected SessionManager sessionManager;
+
+    @Inject
+    protected ClassificationManager classificationManager;
+
+    @Inject
+    protected JacqConfig jacqConfig;
 
     /**
      * Create TblIndexSeminumRevision, find Organiation Tree Head of current
@@ -82,7 +91,6 @@ public class IndexSeminumManager {
 
         // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
         for (TblDerivative derivative : derivativeList) {
-            //TODO Family
 
             // Tbl_index_seminum_content
             TblIndexSeminumContent tblIndexSeminumContent = new TblIndexSeminumContent();
@@ -94,8 +102,16 @@ public class IndexSeminumManager {
             // index_seminum_revision_id
             tblIndexSeminumContent.setIndexSeminumRevisionId(tblIndexSeminumRevision);
 
-            // scientificname
-            tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName());
+            if (derivative.getBotanicalObjectId().getViewScientificName() != null) {
+                // scientificname
+                tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificName() : null);
+
+                // family
+                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
+                if (classification != null && classification.getViewScientificName() != null) {
+                    tblIndexSeminumContent.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
+                }
+            }
 
             if (derivative.getTblLivingPlant() != null) {
                 // accession_number
