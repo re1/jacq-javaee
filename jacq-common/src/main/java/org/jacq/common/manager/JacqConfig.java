@@ -55,12 +55,16 @@ public abstract class JacqConfig {
     }
 
     /**
-     * Return a config value as Long
+     * Return a config value as Long, in case of a parse error returns 0
      *
      * @param name Name of configuration value to return
      * @return
      */
     public Long getLong(String name) {
-        return Long.parseLong(config.get(name));
+        try {
+            return Long.parseLong(config.get(name));
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
     }
 }
