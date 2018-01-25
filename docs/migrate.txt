@@ -1,3 +1,4 @@
+- Drop view_scientifcName (DROP VIEW view_scientificName)
 - Synchronize only Tables and Routines, except tbl_botanical_object and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Synchronize all other changes (again except tbl_botanical_object and tbl_derivative_vegetative)
 - Insert derivative_type entries (1 && 2)
