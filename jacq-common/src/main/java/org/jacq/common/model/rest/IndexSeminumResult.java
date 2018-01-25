@@ -16,6 +16,7 @@
 package org.jacq.common.model.rest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,7 +31,19 @@ import org.jacq.common.model.jpa.TblIndexSeminumRevision;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IndexSeminumResult {
 
+    protected Long indexSeminumRevisionId;
+    protected Date timestamp;
+    protected Long userId;
+    protected String username;
     protected String name;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getName() {
         return name;
@@ -40,11 +53,39 @@ public class IndexSeminumResult {
         this.name = name;
     }
 
+    public Long getIndexSeminumRevisionId() {
+        return indexSeminumRevisionId;
+    }
+
+    public void setIndexSeminumRevisionId(Long indexSeminumRevisionId) {
+        this.indexSeminumRevisionId = indexSeminumRevisionId;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public IndexSeminumResult() {
     }
 
     public IndexSeminumResult(TblIndexSeminumRevision tblIndexSeminumRevision) {
         this.name = tblIndexSeminumRevision.getName();
+        this.indexSeminumRevisionId = tblIndexSeminumRevision.getIndexSeminumRevisionId();
+        this.timestamp = tblIndexSeminumRevision.getTimestamp();
+        this.userId = tblIndexSeminumRevision.getUserId().getId();
+        this.username = tblIndexSeminumRevision.getUserId().getUsername();
     }
 
     /**
