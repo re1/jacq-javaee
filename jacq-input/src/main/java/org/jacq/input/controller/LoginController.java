@@ -15,6 +15,7 @@
  */
 package org.jacq.input.controller;
 
+import org.jacq.input.SessionManager;
 import javax.faces.application.FacesMessage;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import javax.faces.bean.ManagedBean;

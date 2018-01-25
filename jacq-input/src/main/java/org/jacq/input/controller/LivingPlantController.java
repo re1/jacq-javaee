@@ -5,6 +5,7 @@
  */
 package org.jacq.input.controller;
 
+import org.jacq.input.SessionManager;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

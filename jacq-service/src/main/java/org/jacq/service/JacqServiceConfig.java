@@ -13,6 +13,7 @@ import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.jacq.common.manager.JacqConfig;
 import org.jacq.common.model.jpa.FrmwrkConfig;
 
 /**
@@ -22,18 +23,7 @@ import org.jacq.common.model.jpa.FrmwrkConfig;
  */
 @ManagedBean
 @Singleton
-public class JacqConfig {
-
-    protected static final String CONFIG_SEPARATOR = ".";
-
-    protected static final String BIRT = "birt";
-    public static final String BIRT_WORK_LABEL = BIRT + CONFIG_SEPARATOR + "work_label";
-    protected static final String TREERECORD = "treerecord";
-    public static final String TREERECORD_PDF_PATH = TREERECORD + CONFIG_SEPARATOR + "pdf_path";
-    protected static final String CLASSIFICATION = "classification";
-    public static final String CLASSIFICATION_FAMILY_REFERENCE_ID = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceId";
-
-    protected HashMap<String, String> config;
+public class JacqServiceConfig extends JacqConfig {
 
     @PersistenceContext
     protected EntityManager em;
@@ -52,25 +42,5 @@ public class JacqConfig {
         for (FrmwrkConfig configEntry : configList) {
             this.config.put(configEntry.getFcName(), configEntry.getFcValue());
         }
-    }
-
-    /**
-     * Return a config value as string
-     *
-     * @param name Name of configuration value to return
-     * @return
-     */
-    public String getString(String name) {
-        return config.get(name);
-    }
-
-    /**
-     * Return a config value as Long
-     *
-     * @param name Name of configuration value to return
-     * @return
-     */
-    public Long getLong(String name) {
-        return Long.parseLong(config.get(name));
     }
 }

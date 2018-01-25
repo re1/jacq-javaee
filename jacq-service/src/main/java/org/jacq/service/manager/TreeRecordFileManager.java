@@ -41,7 +41,7 @@ import org.jacq.common.model.jpa.TblTreeRecordFile;
 import org.jacq.common.model.jpa.TblTreeRecordFilePage;
 import org.jacq.common.model.rest.TreeRecordFilePageResult;
 import org.jacq.common.rest.TreeRecordFileService;
-import org.jacq.service.JacqConfig;
+import org.jacq.service.JacqServiceConfig;
 
 /**
  *
@@ -52,7 +52,7 @@ public class TreeRecordFileManager {
     private static final Logger LOGGER = Logger.getLogger(TreeRecordFileManager.class.getName());
 
     @Inject
-    protected JacqConfig jacqConfig;
+    protected JacqServiceConfig jacqConfig;
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;

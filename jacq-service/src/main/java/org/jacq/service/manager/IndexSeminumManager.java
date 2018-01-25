@@ -37,7 +37,7 @@ import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
-import org.jacq.service.JacqConfig;
+import org.jacq.service.JacqServiceConfig;
 import org.jacq.service.SessionManager;
 
 /**
@@ -56,7 +56,7 @@ public class IndexSeminumManager {
     protected ClassificationManager classificationManager;
 
     @Inject
-    protected JacqConfig jacqConfig;
+    protected JacqServiceConfig jacqConfig;
 
     /**
      * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
@@ -110,7 +110,7 @@ public class IndexSeminumManager {
                 tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificName() : null);
 
                 // family
-                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
+                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
                 if (classification != null && classification.getViewScientificName() != null) {
                     tblIndexSeminumContent.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
                 }
