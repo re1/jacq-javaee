@@ -22,6 +22,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.FrmwrkUser;
@@ -37,7 +40,7 @@ import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
-import org.jacq.service.JacqConfig;
+import org.jacq.service.JacqServiceConfig;
 import org.jacq.service.SessionManager;
 
 /**
@@ -56,11 +59,12 @@ public class IndexSeminumManager {
     protected ClassificationManager classificationManager;
 
     @Inject
-    protected JacqConfig jacqConfig;
+    protected JacqServiceConfig jacqConfig;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
-     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
+     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
+     * List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -110,7 +114,7 @@ public class IndexSeminumManager {
                 tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificName() : null);
 
                 // family
-                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
+                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
                 if (classification != null && classification.getViewScientificName() != null) {
                     tblIndexSeminumContent.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
                 }
@@ -135,8 +139,7 @@ public class IndexSeminumManager {
                 // acquisition_date
                 if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-                }
-                else {
+                } else {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
                 if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -215,6 +218,50 @@ public class IndexSeminumManager {
         }
         return organisationIdList;
 
+    }
+
+    public List<IndexSeminumResult> search(Integer offset, Integer limit) {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TblIndexSeminumRevision> cq = cb.createQuery(TblIndexSeminumRevision.class);
+        Root<TblIndexSeminumRevision> bo = cq.from(TblIndexSeminumRevision.class);
+
+        // select result list
+        cq.select(bo);
+
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblIndexSeminumRevision> query = em.createQuery(cq);
+        if (offset != null) {
+            query.setFirstResult(offset);
+        }
+        if (limit != null) {
+            query.setMaxResults(limit);
+        }
+
+        // finally fetch the results
+        ArrayList<IndexSeminumResult> results = new ArrayList<>();
+        List<TblIndexSeminumRevision> tblIndexSeminumRevisionResults = query.getResultList();
+        for (TblIndexSeminumRevision tblIndexSeminumRevision : tblIndexSeminumRevisionResults) {
+            IndexSeminumResult indexSeminumResult = new IndexSeminumResult(tblIndexSeminumRevision);
+
+            // add indexSeminumResult to result list
+            results.add(indexSeminumResult);
+        }
+
+        return results;
+    }
+
+    public int searchCount() {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<TblIndexSeminumRevision> bo = cq.from(TblIndexSeminumRevision.class);
+
+        // count result
+        cq.select(cb.count(bo));
+
+        // run query and return count
+        return em.createQuery(cq).getSingleResult().intValue();
     }
 
 }

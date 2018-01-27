@@ -162,17 +162,37 @@ public class InventoryManager {
     protected void advancedinventory(Boolean separated, TblInventory tblInventory, BufferedReader bufferedReader) throws IOException {
         String line;
         List<Long> livingPlantIdList = new ArrayList<>();
+        TblOrganisation organisation = null;
         while ((line = bufferedReader.readLine()) != null) {
-            TblOrganisation organisation = null;
-            if (line.length() > 8) {
+
+            if (line.length() < 10) {
                 Long organisationId = Long.parseLong(line);
                 organisation = em.find(TblOrganisation.class, organisationId);
             }
-            livingPlantIdList.addAll(accessionNumberToLivingPlantIdList(bufferedReader));
+            // Reads Line and adds AccessionNumber from BufferedReader
+            if (line.length() >= 10) {
+                Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Long.parseLong(line.substring(0, 6)));
+                TblLivingPlant livingPlant = (TblLivingPlant) query.getSingleResult();
+                List<TblDerivative> derivativeList = new ArrayList<>();
+                query = em.createNamedQuery("TblDerivative.findByDerivativeId").setParameter("derivativeId", livingPlant.getId());
+                derivativeList.addAll(query.getResultList());
+                // Change the Organisation to the new Organisation from the File
+                for (TblDerivative derivative : derivativeList) {
+                    derivative.setCount(Long.parseLong(line.substring(8, 12)));
+                    derivative.setOrganisationId(organisation);
+                    em.merge(derivative);
+                    // Create tblInventoryObject
+                    TblInventoryObject tblInventoryObject = new TblInventoryObject();
+                    tblInventoryObject.setInventoryId(tblInventory);
+                    tblInventoryObject.setBotanicalObjectId(derivative.getBotanicalObjectId());
+                    tblInventoryObject.setMessage("TEST");
+                    em.persist(tblInventoryObject);
+                }
+                livingPlantIdList.add(livingPlant.getId());
+            }
             if (separated) {
                 setSeparatedByLivingPlantIdListAndOrganisation(livingPlantIdList, organisation);
             }
-            setOrganisationInbotanicalObjectsAndCreateTableInventoryObject(livingPlantIdList, organisation, tblInventory);
         }
     }
 
@@ -188,8 +208,8 @@ public class InventoryManager {
     }
 
     /**
-     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants by AccessionNumberList return
-     * LivinplantId list
+     * Reads line in BufferdReader to acccessionNumberList Gets all LivinPlants
+     * by AccessionNumberList return LivinplantId list
      *
      * @param bufferedReader
      * @return
@@ -203,7 +223,7 @@ public class InventoryManager {
         List<Long> livingPlantIdList = new ArrayList<>();
 
         // Reads Line and adds AccessionNumber from BufferedReader
-        while ((line = bufferedReader.readLine()) != null && line.length() <= 8) {
+        while ((line = bufferedReader.readLine()) != null && line.length() < 8) {
             accessionNumberList.add(Long.parseLong(line));
         }
         // Create and execute Query to get Livinplant List from AccessionNumberList

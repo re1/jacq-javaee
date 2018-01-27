@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblOrganisation;
 
 /**
- * Wrapper model which represents a single result after a search Used to
- * minimize the transfered data and only return the relevant information
+ * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
+ * the relevant information
  *
  * @author fhafner
  */
@@ -41,6 +41,8 @@ public class OrganisationResult {
     protected Long parentOrganisationId;
     protected String gardener;
     protected Long gardenerId;
+    protected boolean indexSeminumStart;
+    protected boolean accessionStart;
 
     public Long getOrganisationId() {
         return organisationId;
@@ -115,6 +117,22 @@ public class OrganisationResult {
         this.parentOrganisationId = parentOrganisationId;
     }
 
+    public boolean isIndexSeminumStart() {
+        return indexSeminumStart;
+    }
+
+    public void setIndexSeminumStart(boolean indexSeminumStart) {
+        this.indexSeminumStart = indexSeminumStart;
+    }
+
+    public boolean isAccessionStart() {
+        return accessionStart;
+    }
+
+    public void setAccessionStart(boolean accessionStart) {
+        this.accessionStart = accessionStart;
+    }
+
     public OrganisationResult() {
     }
 
@@ -128,11 +146,12 @@ public class OrganisationResult {
         this.parentOrganisationId = (organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId().getId() : null;
         this.gardener = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getUsername() : "";
         this.gardenerId = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getId() : null;
+        this.indexSeminumStart = organisation.getIndexSeminumStart();
+        this.accessionStart = organisation.getAccessionStart();
     }
 
     /**
-     * Helper function for converting a list of Organisation entries to
-     * organisation results
+     * Helper function for converting a list of Organisation entries to organisation results
      *
      * @param organisationList
      * @return

@@ -1,4 +1,5 @@
-- Synchronize only Tables, except tbl_botanical_object and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
+- Drop view_scientifcName (DROP VIEW view_scientificName)
+- Synchronize only Tables and Routines, except tbl_botanical_object and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Synchronize all other changes (again except tbl_botanical_object and tbl_derivative_vegetative)
 - Insert derivative_type entries (1 && 2)
 - materialize migration view for derivatives (mig_derivative) INSERT INTO tbl_derivative SELECT * FROM mig_derivative;
@@ -7,5 +8,5 @@
 - Create View for BuGa-Data import (CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData`)
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
 - Add dataimport / dataimport user
-- Run actual dataimport routine
 - Add user for mknaack
+- Run actual dataimport routine

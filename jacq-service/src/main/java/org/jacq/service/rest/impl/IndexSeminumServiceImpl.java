@@ -44,4 +44,14 @@ public class IndexSeminumServiceImpl implements IndexSeminumService {
         return indexSeminumManager.typeFindAll();
     }
 
+    @Override
+    public List<IndexSeminumResult> search(Integer offset, Integer limit) {
+        return indexSeminumManager.search(offset, limit);
+    }
+
+    @Override
+    public int searchCount() {
+        return indexSeminumManager.searchCount();
+    }
+
 }

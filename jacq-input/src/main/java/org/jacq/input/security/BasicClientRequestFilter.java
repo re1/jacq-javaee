@@ -25,7 +25,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.ext.Provider;
-import org.jacq.input.controller.SessionManager;
+import org.jacq.input.SessionManager;
 
 /**
  *
