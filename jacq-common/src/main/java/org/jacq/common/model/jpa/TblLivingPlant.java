@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -395,17 +395,6 @@ public class TblLivingPlant implements Serializable {
     @Override
     public String toString() {
         return "org.jacq.common.model.jpa.TblLivingPlant[ id=" + id + " ]";
-    }
-
-    /**
-     * Custom mappings
-     */
-    @JoinColumn(name = "label_synonym_scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
-    @ManyToOne
-    private ViewScientificName viewLabelSynonymScientificName;
-
-    public ViewScientificName getViewLabelSynonymScientificName() {
-        return viewLabelSynonymScientificName;
     }
 
 }
