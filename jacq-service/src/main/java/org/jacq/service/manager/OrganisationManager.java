@@ -133,6 +133,8 @@ public class OrganisationManager {
             tblOrganisation.setIpenCode(organisationResult.getIpenCode());
             tblOrganisation.setParentOrganisationId(em.find(TblOrganisation.class, organisationResult.getParentOrganisationId()));
             tblOrganisation.setGardenerId(em.find(FrmwrkUser.class, organisationResult.getGardenerId()));
+            tblOrganisation.setIndexSeminumStart(organisationResult.isIndexSeminumStart());
+            tblOrganisation.setAccessionStart(organisationResult.isAccessionStart());
 
             if (tblOrganisation.getId() != null) {
                 em.merge(tblOrganisation);

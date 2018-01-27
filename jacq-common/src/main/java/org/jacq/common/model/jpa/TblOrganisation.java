@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblOrganisation.findByDepartment", query = "SELECT t FROM TblOrganisation t WHERE t.department = :department")
     , @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse")
     , @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")
-    , @NamedQuery(name = "TblOrganisation.findByIndexSeminumStart", query = "SELECT t FROM TblOrganisation t WHERE t.indexSeminumStart = :indexSeminumStart")})
+    , @NamedQuery(name = "TblOrganisation.findByIndexSeminumStart", query = "SELECT t FROM TblOrganisation t WHERE t.indexSeminumStart = :indexSeminumStart")
+    , @NamedQuery(name = "TblOrganisation.findByAccessionStart", query = "SELECT t FROM TblOrganisation t WHERE t.accessionStart = :accessionStart")})
 public class TblOrganisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,6 +77,10 @@ public class TblOrganisation implements Serializable {
     @NotNull
     @Column(name = "index_seminum_start")
     private boolean indexSeminumStart;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "accession_start")
+    private boolean accessionStart;
     @OneToMany(mappedBy = "parentOrganisationId")
     private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
@@ -88,6 +93,8 @@ public class TblOrganisation implements Serializable {
     private TblImageServer tblImageServer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    private TblAccessionNumber tblAccessionNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
     private List<FrmwrkUser> frmwrkUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
@@ -100,10 +107,11 @@ public class TblOrganisation implements Serializable {
         this.id = id;
     }
 
-    public TblOrganisation(Long id, boolean greenhouse, boolean indexSeminumStart) {
+    public TblOrganisation(Long id, boolean greenhouse, boolean indexSeminumStart, boolean accessionStart) {
         this.id = id;
         this.greenhouse = greenhouse;
         this.indexSeminumStart = indexSeminumStart;
+        this.accessionStart = accessionStart;
     }
 
     public Long getId() {
@@ -154,6 +162,14 @@ public class TblOrganisation implements Serializable {
         this.indexSeminumStart = indexSeminumStart;
     }
 
+    public boolean getAccessionStart() {
+        return accessionStart;
+    }
+
+    public void setAccessionStart(boolean accessionStart) {
+        this.accessionStart = accessionStart;
+    }
+
     @XmlTransient
     public List<TblOrganisation> getTblOrganisationList() {
         return tblOrganisationList;
@@ -194,6 +210,14 @@ public class TblOrganisation implements Serializable {
 
     public void setFrmwrkaccessOrganisationList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
         this.frmwrkaccessOrganisationList = frmwrkaccessOrganisationList;
+    }
+
+    public TblAccessionNumber getTblAccessionNumber() {
+        return tblAccessionNumber;
+    }
+
+    public void setTblAccessionNumber(TblAccessionNumber tblAccessionNumber) {
+        this.tblAccessionNumber = tblAccessionNumber;
     }
 
     @XmlTransient

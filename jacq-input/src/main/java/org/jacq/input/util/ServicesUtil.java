@@ -20,6 +20,7 @@ import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.InventoryService;
+import org.jacq.common.rest.PortalService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -69,6 +70,10 @@ public class ServicesUtil {
 
     public static ScientificNameService getScientificNameService() {
         return getProxy(ScientificNameService.class, JACQ_SERVICE_NAMES_URL);
+    }
+
+    public static PortalService getPortalService() {
+        return getProxy(PortalService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

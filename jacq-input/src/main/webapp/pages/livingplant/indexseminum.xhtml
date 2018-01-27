@@ -13,15 +13,15 @@
                         <h1>#{messages['livingplant.indexseminum']}</h1>
                     </div>
                     <div class="jacq-data-table">
-                        <p:dataTable var="item">
+                        <p:dataTable var="indexSeminumResult" widgetVar="indexSeminumTable" lazy="true" value="#{indexSeminumController.dataModel}" paginator="true" rows="10">
                             <p:column headerText="#{messages['username']}">
-                                <h:outputText  />
+                                <h:outputText  value="#{indexSeminumResult.username}"/>
                             </p:column>
                             <p:column headerText="#{messages['livingplant.name']}">
-                                <h:outputText />
+                                <h:outputText value="#{indexSeminumResult.name}"/>
                             </p:column>
                             <p:column headerText="#{messages['livingplant.timestamp']}">
-                                <h:outputText />
+                                <h:outputText value="#{indexSeminumResult.timestamp}" />
                             </p:column>
                             <p:column headerText="">
                                 <h:outputText />

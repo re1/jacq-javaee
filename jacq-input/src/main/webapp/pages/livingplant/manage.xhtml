@@ -131,7 +131,7 @@
                             </f:facet>
 
                             <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
-                                <h:outputText value="#{botanicalObjectDerivative.scientificName}" />
+                                <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
                             </p:column>
 
                             <p:column filterBy="" headerText="#{messages['livingplant.cultivarname']}">

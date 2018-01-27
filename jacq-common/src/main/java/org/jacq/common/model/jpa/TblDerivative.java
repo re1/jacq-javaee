@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblDerivative.findAll", query = "SELECT t FROM TblDerivative t")
     , @NamedQuery(name = "TblDerivative.findByDerivativeId", query = "SELECT t FROM TblDerivative t WHERE t.derivativeId = :derivativeId")
-    , @NamedQuery(name = "TblDerivative.findByCount", query = "SELECT t FROM TblDerivative t WHERE t.count = :count")})
+    , @NamedQuery(name = "TblDerivative.findByCount", query = "SELECT t FROM TblDerivative t WHERE t.count = :count")
+    , @NamedQuery(name = "TblDerivative.findByPrice", query = "SELECT t FROM TblDerivative t WHERE t.price = :price")})
 public class TblDerivative implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,16 +59,20 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "count")
     private long count;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "price")
+    private float price;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
     private TblVegetative tblVegetative;
+    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TblBotanicalObject botanicalObjectId;
     @OneToMany(mappedBy = "parentDerivativeId")
     private List<TblDerivative> tblDerivativeList;
     @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
     @ManyToOne
     private TblDerivative parentDerivativeId;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
     @ManyToOne(optional = false)
     private TblDerivativeType derivativeTypeId;
@@ -84,9 +89,10 @@ public class TblDerivative implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public TblDerivative(Long derivativeId, long count) {
+    public TblDerivative(Long derivativeId, long count, float price) {
         this.derivativeId = derivativeId;
         this.count = count;
+        this.price = price;
     }
 
     public Long getDerivativeId() {
@@ -105,12 +111,28 @@ public class TblDerivative implements Serializable {
         this.count = count;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public TblVegetative getTblVegetative() {
         return tblVegetative;
     }
 
     public void setTblVegetative(TblVegetative tblVegetative) {
         this.tblVegetative = tblVegetative;
+    }
+
+    public TblBotanicalObject getBotanicalObjectId() {
+        return botanicalObjectId;
+    }
+
+    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
+        this.botanicalObjectId = botanicalObjectId;
     }
 
     @XmlTransient
@@ -128,14 +150,6 @@ public class TblDerivative implements Serializable {
 
     public void setParentDerivativeId(TblDerivative parentDerivativeId) {
         this.parentDerivativeId = parentDerivativeId;
-    }
-
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
-    }
-
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
     }
 
     public TblDerivativeType getDerivativeTypeId() {

@@ -16,21 +16,16 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,14 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_image_server")
+@Table(name = "tbl_accession_number")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblImageServer.findAll", query = "SELECT t FROM TblImageServer t")
-    , @NamedQuery(name = "TblImageServer.findByOrganisationId", query = "SELECT t FROM TblImageServer t WHERE t.organisationId = :organisationId")
-    , @NamedQuery(name = "TblImageServer.findByKey", query = "SELECT t FROM TblImageServer t WHERE t.key = :key")
-    , @NamedQuery(name = "TblImageServer.findByLastSynchronized", query = "SELECT t FROM TblImageServer t WHERE t.lastSynchronized = :lastSynchronized")})
-public class TblImageServer implements Serializable {
+    @NamedQuery(name = "TblAccessionNumber.findAll", query = "SELECT t FROM TblAccessionNumber t")
+    , @NamedQuery(name = "TblAccessionNumber.findByOrganisationId", query = "SELECT t FROM TblAccessionNumber t WHERE t.organisationId = :organisationId")
+    , @NamedQuery(name = "TblAccessionNumber.findByAccessionNumber", query = "SELECT t FROM TblAccessionNumber t WHERE t.accessionNumber = :accessionNumber")})
+public class TblAccessionNumber implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,33 +49,22 @@ public class TblImageServer implements Serializable {
     private Long organisationId;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "base_url")
-    private String baseUrl;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "key")
-    private String key;
-    @Column(name = "last_synchronized")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastSynchronized;
+    @Column(name = "accession_number")
+    private long accessionNumber;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private TblOrganisation tblOrganisation;
 
-    public TblImageServer() {
+    public TblAccessionNumber() {
     }
 
-    public TblImageServer(Long organisationId) {
+    public TblAccessionNumber(Long organisationId) {
         this.organisationId = organisationId;
     }
 
-    public TblImageServer(Long organisationId, String baseUrl, String key) {
+    public TblAccessionNumber(Long organisationId, long accessionNumber) {
         this.organisationId = organisationId;
-        this.baseUrl = baseUrl;
-        this.key = key;
+        this.accessionNumber = accessionNumber;
     }
 
     public Long getOrganisationId() {
@@ -92,28 +75,12 @@ public class TblImageServer implements Serializable {
         this.organisationId = organisationId;
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
+    public long getAccessionNumber() {
+        return accessionNumber;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Date getLastSynchronized() {
-        return lastSynchronized;
-    }
-
-    public void setLastSynchronized(Date lastSynchronized) {
-        this.lastSynchronized = lastSynchronized;
+    public void setAccessionNumber(long accessionNumber) {
+        this.accessionNumber = accessionNumber;
     }
 
     public TblOrganisation getTblOrganisation() {
@@ -134,10 +101,10 @@ public class TblImageServer implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblImageServer)) {
+        if (!(object instanceof TblAccessionNumber)) {
             return false;
         }
-        TblImageServer other = (TblImageServer) object;
+        TblAccessionNumber other = (TblAccessionNumber) object;
         if ((this.organisationId == null && other.organisationId != null) || (this.organisationId != null && !this.organisationId.equals(other.organisationId))) {
             return false;
         }
@@ -146,7 +113,7 @@ public class TblImageServer implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblImageServer[ organisationId=" + organisationId + " ]";
+        return "org.jacq.common.model.jpa.TblAccessionNumber[ organisationId=" + organisationId + " ]";
     }
 
 }

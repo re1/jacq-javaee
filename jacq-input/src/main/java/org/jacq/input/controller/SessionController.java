@@ -15,9 +15,12 @@
  */
 package org.jacq.input.controller;
 
+import org.jacq.input.SessionManager;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import org.jacq.common.manager.JacqConfig;
+import org.jacq.input.ApplicationManager;
 
 /**
  * JSF Session scoped bean for handling session wide settings
@@ -31,11 +34,18 @@ public class SessionController {
     @Inject
     protected SessionManager sessionManager;
 
+    @Inject
+    protected ApplicationManager applicationManager;
+
     public String getLanguageTag() {
         return sessionManager.getLanguageTag();
     }
 
     public void setLanguageTag(String languageTag) {
         sessionManager.setLanguageTag(languageTag);
+    }
+
+    public Long getIndetId() {
+        return applicationManager.getJacqPortalConfig().getLong(JacqConfig.GENERAL_INDET_ID);
     }
 }

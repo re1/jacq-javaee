@@ -149,6 +149,9 @@ public class DataImportManager {
      */
     @Transactional(rollbackOn = {Exception.class})
     protected ImportStatus importRecord(ImportRecord importRecord) {
+        // cleanup some properties
+        importRecord.setScientificName(importRecord.getScientificName().trim());
+
         // check if we need to import a living plant
         if (!StringUtils.isEmpty(importRecord.getLivingPlantNumber())) {
             // check if entry already exists
