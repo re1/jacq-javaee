@@ -135,6 +135,7 @@ public class DataImportManager {
             importRecord.setOriginalBotanicalObjectId(Long.valueOf(record.get(i++)));
             importRecord.setCultivar(record.get(i++));
             importRecord.setCommonNames(record.get(i++));
+            importRecord.setPrice(Float.valueOf(record.get(i++)));
 
             // call import function
             this.importRecord(importRecord);
@@ -403,6 +404,7 @@ public class DataImportManager {
             derivative.setBotanicalObjectId(botanicalObject);
             derivative.setOrganisationId(organisation);
             derivative.setCount(importRecord.getCount());
+            derivative.setPrice(importRecord.getPrice());
             derivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 1L));
             em.persist(derivative);
 
