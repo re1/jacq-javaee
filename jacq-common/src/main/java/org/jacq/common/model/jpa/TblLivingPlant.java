@@ -397,4 +397,15 @@ public class TblLivingPlant implements Serializable {
         return "org.jacq.common.model.jpa.TblLivingPlant[ id=" + id + " ]";
     }
 
+    /**
+     * Custom mappings
+     */
+    @JoinColumn(name = "label_synonym_scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne
+    private ViewScientificName viewLabelSynonymScientificName;
+
+    public ViewScientificName getViewLabelSynonymScientificName() {
+        return viewLabelSynonymScientificName;
+    }
+
 }

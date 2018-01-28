@@ -86,6 +86,8 @@ public class ImportRecord implements Serializable {
     protected String cultivar;
     @Column(name = "common_names")
     protected String commonNames;
+    @Column(name = "price")
+    protected Float price;
 
     public Long getOriginalId() {
         return originalId;
@@ -269,6 +271,14 @@ public class ImportRecord implements Serializable {
 
     public void setCommonNames(String commonNames) {
         this.commonNames = commonNames;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     /**
