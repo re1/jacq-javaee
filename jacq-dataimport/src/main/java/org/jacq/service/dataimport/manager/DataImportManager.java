@@ -404,7 +404,7 @@ public class DataImportManager {
             derivative.setBotanicalObjectId(botanicalObject);
             derivative.setOrganisationId(organisation);
             derivative.setCount(importRecord.getCount());
-            derivative.setPrice(importRecord.getPrice());
+            derivative.setPrice((importRecord.getPrice() != null) ? importRecord.getPrice() : 0L);
             derivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 1L));
             em.persist(derivative);
 
