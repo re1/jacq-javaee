@@ -134,8 +134,6 @@ public class TblBotanicalObject implements Serializable {
     private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblDerivative> tblDerivativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
-    private List<TblImportProperties> tblImportPropertiesList;
 
     public TblBotanicalObject() {
     }
@@ -334,15 +332,6 @@ public class TblBotanicalObject implements Serializable {
 
     public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
         this.tblDerivativeList = tblDerivativeList;
-    }
-
-    @XmlTransient
-    public List<TblImportProperties> getTblImportPropertiesList() {
-        return tblImportPropertiesList;
-    }
-
-    public void setTblImportPropertiesList(List<TblImportProperties> tblImportPropertiesList) {
-        this.tblImportPropertiesList = tblImportPropertiesList;
     }
 
     @Override

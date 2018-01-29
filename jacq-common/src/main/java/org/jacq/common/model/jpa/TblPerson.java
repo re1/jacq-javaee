@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,11 +58,11 @@ public class TblPerson implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "tblPersonList")
+    @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
-    @ManyToMany(mappedBy = "tblPersonList")
+    @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
     private List<TblNomName> tblNomNameList;
-    @OneToMany(mappedBy = "determinedById")
+    @OneToMany(mappedBy = "determinedById", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblPerson() {

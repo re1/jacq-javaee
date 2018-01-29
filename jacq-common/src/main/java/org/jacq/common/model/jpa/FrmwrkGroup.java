@@ -59,7 +59,7 @@ public class FrmwrkGroup implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "frmwrkGroupList")
+    @ManyToMany(mappedBy = "frmwrkGroupList", fetch = FetchType.LAZY)
     private List<FrmwrkUser> frmwrkUserList;
 
     public FrmwrkGroup() {

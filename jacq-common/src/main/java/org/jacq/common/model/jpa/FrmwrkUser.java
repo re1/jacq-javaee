@@ -106,7 +106,7 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "frmwrk_user_group", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "group_id", referencedColumnName = "group_id")})
