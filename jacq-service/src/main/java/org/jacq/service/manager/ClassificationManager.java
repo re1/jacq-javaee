@@ -129,11 +129,20 @@ public class ClassificationManager {
                 .setParameter("scientificNameId", scientificNameId)
                 .setParameter("source", source.toString())
                 .setParameter("sourceId", sourceId);
-        TblClassification tblClassification = (TblClassification) query.getSingleResult();
+        List<TblClassification> tblClassificationList = query.getResultList();
+        if (tblClassificationList.size() == 0) {
+            return null;
+        }
+        TblClassification tblClassification = tblClassificationList.get(0);
 
         if (tblClassification.getAccScientificNameId() != null) {
             query.setParameter("scientificNameId", tblClassification.getAccScientificNameId());
-            tblClassification = (TblClassification) query.getSingleResult();
+            tblClassificationList = query.getResultList();
+            if (tblClassificationList.size() == 0) {
+                return null;
+            }
+            tblClassification = tblClassificationList.get(0);
+
         }
 
         return tblClassification;
@@ -144,6 +153,9 @@ public class ClassificationManager {
 
         // Find TblClassification where nomName Rank = 9
         TblClassification tblClassification = getAcceptedName(source, sourceId, scientificNameId);
+        if (tblClassification == null) {
+            return null;
+        }
 
         Query query = em.createNamedQuery("TblNomName.findByNameId")
                 .setParameter("nameId", tblClassification.getScientificNameId());

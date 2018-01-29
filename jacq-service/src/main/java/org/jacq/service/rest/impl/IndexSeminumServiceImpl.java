@@ -17,6 +17,7 @@ package org.jacq.service.rest.impl;
 
 import java.util.List;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.IndexSeminumDownloadResult;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
@@ -52,6 +53,16 @@ public class IndexSeminumServiceImpl implements IndexSeminumService {
     @Override
     public int searchCount() {
         return indexSeminumManager.searchCount();
+    }
+
+    @Override
+    public List<IndexSeminumDownloadResult> searchContent(Long indexSeminumRevisionId, Integer offset, Integer limit) {
+        return indexSeminumManager.searchContent(indexSeminumRevisionId, offset, limit);
+    }
+
+    @Override
+    public int searchCountContent(Long indexSeminumRevisionId) {
+        return indexSeminumManager.searchCountContent(indexSeminumRevisionId);
     }
 
 }

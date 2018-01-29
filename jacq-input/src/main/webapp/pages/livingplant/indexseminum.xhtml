@@ -3,33 +3,87 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['livingplant.indexseminum']}</h1>
-                    </div>
-                    <div class="jacq-data-table">
-                        <p:dataTable var="indexSeminumResult" widgetVar="indexSeminumTable" lazy="true" value="#{indexSeminumController.dataModel}" paginator="true" rows="10">
-                            <p:column headerText="#{messages['username']}">
-                                <h:outputText  value="#{indexSeminumResult.username}"/>
+            <div class="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['livingplant.indexseminum']}</h1>
+                </div>
+                <div class="jacq-data-table">
+                    <p:dataTable var="indexSeminumResult" widgetVar="indexSeminumTable" lazy="true" value="#{indexSeminumController.dataModel}" paginator="true" rows="10">
+                        <p:column headerText="#{messages['username']}">
+                            <h:outputText  value="#{indexSeminumResult.username}"/>
+                        </p:column>
+                        <p:column headerText="#{messages['livingplant.name']}">
+                            <h:outputText value="#{indexSeminumResult.name}"/>
+                        </p:column>
+                        <p:column headerText="#{messages['livingplant.timestamp']}">
+                            <h:outputText value="#{indexSeminumResult.timestamp}" />
+                        </p:column>
+                        <p:column headerText="#{messages['action']}">
+                            <p:commandButton icon="ui-icon-document" action="#{indexSeminumController.setRenderedTrue(indexSeminumResult.indexSeminumRevisionId)}" update="jacq_form:downloadIndexSeminumPanel" oncomplete="PF('downloadIndexSeminumButton').jq.click();" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="ui-g">
+                    <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadIndexSeminumPanel">
+                        <p:commandButton value="Export" ajax="false" widgetVar="downloadIndexSeminumButton">
+                            <p:dataExporter type="csv"  target="downloadIndexSeminum" fileName="IndexSeminum"/>
+                        </p:commandButton>
+                        <p:dataTable  rendered="#{indexSeminumController.downloadRender}" var="indexSeminumDownloadResult" lazy="true" value="#{indexSeminumController.downloadDataModel}" paginator="true" rows="1" id="downloadIndexSeminum">
+                            <p:column headerText="#{messages['livingplant.indexseminumcontentid']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.indexSeminumContentId}"/>
                             </p:column>
-                            <p:column headerText="#{messages['livingplant.name']}">
-                                <h:outputText value="#{indexSeminumResult.name}"/>
+                            <p:column headerText="#{messages['livingplant.indexseminumrevisionid']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.indexSeminumRevisionId}"/>
                             </p:column>
-                            <p:column headerText="#{messages['livingplant.timestamp']}">
-                                <h:outputText value="#{indexSeminumResult.timestamp}" />
+                            <p:column headerText="#{messages['livingplant.botanicalobjectid']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.botanicalObjectId}"/>
                             </p:column>
-                            <p:column headerText="">
-                                <h:outputText />
+                            <p:column headerText="#{messages['livingplant.accessionnumber']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.accessionNumber}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.family']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.family}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.scientificname']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.scientificName}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.indexseminumtype']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.indexSeminumType}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.ipennumber']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.ipenNumber}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.acquisitionlocation']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.acquisitionLocation}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.habitat']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.habitat}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.altitudemin']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.altitudeMin}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.altitudemax']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.altitudeMax}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.latitude']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.latitude}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.longitude']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.longitude}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['livingplant.acquisitiondate']}">
+                                <h:outputText  value="#{indexSeminumDownloadResult.acquisitionDate}"/>
                             </p:column>
                         </p:dataTable>
-                    </div>
+                    </h:panelGroup>
                 </div>
-            </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </html>
