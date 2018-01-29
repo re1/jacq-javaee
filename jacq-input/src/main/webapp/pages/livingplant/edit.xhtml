@@ -84,6 +84,16 @@
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.price']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputNumber value="#{livingPlantEditController.livingPlantResult.price}" symbol=" €" decimalPlaces="2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
                                 <h:outputText value="#{messages['livingplant.reviewed']}" />
                             </div>
                             <div class="ui-g-6">
