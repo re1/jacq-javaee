@@ -151,6 +151,7 @@ public class OrganisationManager {
     /**
      * @see OrganisationService#getIpenCode(java.lang.Long)
      */
+    @Transactional
     public String getIpenCode(Long organisationId) {
         TblOrganisation tblOrganisation = em.find(TblOrganisation.class, organisationId);
         // go up the hierarchy until we hit the top or we find a valid ipen-code
