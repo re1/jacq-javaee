@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -70,6 +71,7 @@ public class TblLivingPlant implements Serializable {
     @Column(name = "id")
     private Long id;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "accession_number")
     private long accessionNumber;
     @Size(max = 40)
@@ -124,27 +126,27 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "has_public_image")
     private boolean hasPublicImage;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblRelevancy> tblRelevancyList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblCertificate> tblCertificateList;
     @JoinColumn(name = "id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative tblDerivative;
     @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblAcquisitionDate incomingDateId;
     @JoinColumn(name = "cultivar_id", referencedColumnName = "cultivar_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblCultivar cultivarId;
     @JoinColumn(name = "index_seminum_type_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblIndexSeminumType indexSeminumTypeId;
 
     public TblLivingPlant() {
@@ -401,7 +403,7 @@ public class TblLivingPlant implements Serializable {
      * Custom mappings
      */
     @JoinColumn(name = "label_synonym_scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ViewScientificName viewLabelSynonymScientificName;
 
     public ViewScientificName getViewLabelSynonymScientificName() {

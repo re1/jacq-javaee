@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -74,17 +75,17 @@ public class FrmwrkAuthItem implements Serializable {
     @JoinTable(name = "frmwrk_AuthItemChild", joinColumns = {
         @JoinColumn(name = "parent", referencedColumnName = "name")}, inverseJoinColumns = {
         @JoinColumn(name = "child", referencedColumnName = "name")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<FrmwrkAuthItem> frmwrkAuthItemList;
-    @ManyToMany(mappedBy = "frmwrkAuthItemList")
+    @ManyToMany(mappedBy = "frmwrkAuthItemList", fetch = FetchType.LAZY)
     private List<FrmwrkAuthItem> frmwrkAuthItemList1;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkAuthItem", fetch = FetchType.LAZY)
     private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
-    @OneToMany(mappedBy = "authItemname")
+    @OneToMany(mappedBy = "authItemname", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
 
     public FrmwrkAuthItem() {

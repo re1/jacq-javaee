@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -65,7 +66,7 @@ public class TblTreeRecordFile implements Serializable {
     @Size(max = 20)
     @Column(name = "document_number")
     private String documentNumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFileId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFileId", fetch = FetchType.LAZY)
     private List<TblTreeRecordFilePage> tblTreeRecordFilePageList;
 
     public TblTreeRecordFile() {

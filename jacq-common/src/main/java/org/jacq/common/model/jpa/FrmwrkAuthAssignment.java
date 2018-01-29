@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -53,10 +54,10 @@ public class FrmwrkAuthAssignment implements Serializable {
     @Column(name = "data")
     private String data;
     @JoinColumn(name = "userid", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser frmwrkUser;
     @JoinColumn(name = "itemname", referencedColumnName = "name", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkAuthItem frmwrkAuthItem;
 
     public FrmwrkAuthAssignment() {

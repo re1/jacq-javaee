@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
@@ -52,7 +53,7 @@ public class TblAccessionNumber implements Serializable {
     @Column(name = "accession_number")
     private long accessionNumber;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
 
     public TblAccessionNumber() {

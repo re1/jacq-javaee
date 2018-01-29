@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +58,7 @@ public class TblSex implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "sex")
     private String sex;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sexId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sexId", fetch = FetchType.LAZY)
     private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
 
     public TblSex() {

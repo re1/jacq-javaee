@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -121,13 +122,13 @@ public class TblIndexSeminumContent implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumPerson> tblIndexSeminumPersonList;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "index_seminum_revision_id", referencedColumnName = "index_seminum_revision_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblIndexSeminumRevision indexSeminumRevisionId;
 
     public TblIndexSeminumContent() {

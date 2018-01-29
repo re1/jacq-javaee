@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,7 +49,7 @@ public class RevFlora implements Serializable {
     @Column(name = "rev_flora_id")
     private Long revFloraId;
     @JoinColumn(name = "uuid_minter_id", referencedColumnName = "uuid_minter_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinter uuidMinterId;
 
     public RevFlora() {

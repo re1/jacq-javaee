@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,7 +61,7 @@ public class TblRelevancyType implements Serializable {
     @NotNull
     @Column(name = "important")
     private boolean important;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId", fetch = FetchType.LAZY)
     private List<TblRelevancy> tblRelevancyList;
 
     public TblRelevancyType() {

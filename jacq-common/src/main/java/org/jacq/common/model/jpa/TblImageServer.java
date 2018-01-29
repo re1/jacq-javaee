@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -68,7 +69,7 @@ public class TblImageServer implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSynchronized;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation tblOrganisation;
 
     public TblImageServer() {

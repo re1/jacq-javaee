@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,23 +67,23 @@ public class TblAcquisitionEvent implements Serializable {
     @JoinTable(name = "tbl_acquisition_event_person", joinColumns = {
         @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "person_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<TblPerson> tblPersonList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionEventId", fetch = FetchType.LAZY)
     private List<TblAcquisitionEventSource> tblAcquisitionEventSourceList;
     @JoinColumn(name = "acquisition_date_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionDate acquisitionDateId;
     @JoinColumn(name = "acquisition_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionType acquisitionTypeId;
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblLocation locationId;
     @JoinColumn(name = "location_coordinates_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLocationCoordinates locationCoordinatesId;
 
     public TblAcquisitionEvent() {

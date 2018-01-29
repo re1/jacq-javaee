@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,7 +64,7 @@ public class TblIndexSeminumPerson implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "index_seminum_content_id", referencedColumnName = "index_seminum_content_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblIndexSeminumContent indexSeminumContentId;
 
     public TblIndexSeminumPerson() {

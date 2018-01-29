@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,7 +55,7 @@ public class TblDiasporaBank implements Serializable {
     @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diasporaBankId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diasporaBankId", fetch = FetchType.LAZY)
     private List<TblDiaspora> tblDiasporaList;
 
     public TblDiasporaBank() {

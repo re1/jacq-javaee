@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,10 +62,10 @@ public class TblLivingPlantTreeRecordFilePage implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date correctionsDate;
     @JoinColumn(name = "living_plant_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant livingPlantId;
     @JoinColumn(name = "tree_record_file_page_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblTreeRecordFilePage treeRecordFilePageId;
 
     public TblLivingPlantTreeRecordFilePage() {

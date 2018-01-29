@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,13 +62,13 @@ public class TblSeparation implements Serializable {
     @Column(name = "annotation")
     private String annotation;
     @JoinColumn(name = "derivative_vegetative_id", referencedColumnName = "vegetative_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblVegetative derivativeVegetativeId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "separation_type_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblSeparationType separationTypeId;
 
     public TblSeparation() {

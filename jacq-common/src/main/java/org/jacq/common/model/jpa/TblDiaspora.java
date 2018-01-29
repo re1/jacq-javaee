@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,10 +50,10 @@ public class TblDiaspora implements Serializable {
     @Column(name = "id")
     private Long id;
     @JoinColumn(name = "diaspora_bank_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblDiasporaBank diasporaBankId;
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject tblBotanicalObject;
 
     public TblDiaspora() {
