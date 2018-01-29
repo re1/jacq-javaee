@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,9 +68,9 @@ public class TblImportProperties implements Serializable {
     private String sourceName;
     @Column(name = "original_botanical_object_id")
     private Long originalBotanicalObjectId;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative derivativeId;
 
     public TblImportProperties() {
     }
@@ -126,12 +127,12 @@ public class TblImportProperties implements Serializable {
         this.originalBotanicalObjectId = originalBotanicalObjectId;
     }
 
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
+    public TblDerivative getDerivativeId() {
+        return derivativeId;
     }
 
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
+    public void setDerivativeId(TblDerivative derivativeId) {
+        this.derivativeId = derivativeId;
     }
 
     @Override

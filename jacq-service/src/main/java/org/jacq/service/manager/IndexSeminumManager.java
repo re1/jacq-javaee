@@ -24,6 +24,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,7 @@ import org.jacq.common.model.jpa.TblIndexSeminumType;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.rest.ClassificationSourceType;
+import org.jacq.common.model.rest.IndexSeminumDownloadResult;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
@@ -93,7 +96,7 @@ public class IndexSeminumManager {
         organisationList.add(tblOrganisation);
 
         // Load the BotanicalObject list with Organisation Id in List
-        Query query = em.createNamedQuery("TblDerivative.findByOrganisationListAndIndexSeminum").setParameter("organisationList", organisationList);
+        TypedQuery<TblDerivative> query = em.createNamedQuery("TblDerivative.findByOrganisationListAndIndexSeminum", TblDerivative.class).setParameter("organisationList", organisationList);
         List<TblDerivative> derivativeList = query.getResultList();
 
         // Create TblIndexSeminumContent and TblIndexSeminumPerson based on the BotanicalObject list
@@ -220,6 +223,7 @@ public class IndexSeminumManager {
 
     }
 
+    @Transactional
     public List<IndexSeminumResult> search(Integer offset, Integer limit) {
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -262,6 +266,86 @@ public class IndexSeminumManager {
 
         // run query and return count
         return em.createQuery(cq).getSingleResult().intValue();
+    }
+
+    public List<IndexSeminumDownloadResult> searchContent(Long indexSeminumRevisionId, Integer offset, Integer limit) {
+
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TblIndexSeminumContent> cq = cb.createQuery(TblIndexSeminumContent.class);
+        Root<TblIndexSeminumContent> bo = cq.from(TblIndexSeminumContent.class);
+
+        // select result list
+        cq.select(bo);
+
+        // apply search criteria
+        applySearchCriteria(cb, cq, bo, indexSeminumRevisionId);
+
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblIndexSeminumContent> query = em.createQuery(cq);
+        if (offset != null) {
+            query.setFirstResult(offset);
+        }
+        if (limit != null) {
+            query.setMaxResults(limit);
+        }
+
+        // finally fetch the results
+        ArrayList<IndexSeminumDownloadResult> results = new ArrayList<>();
+        List<TblIndexSeminumContent> tblIndexSeminumContentResults = query.getResultList();
+        for (TblIndexSeminumContent tblIndexSeminumContent : tblIndexSeminumContentResults) {
+            IndexSeminumDownloadResult indexSeminumDownloadResult = new IndexSeminumDownloadResult(tblIndexSeminumContent);
+
+            // add indexSeminumResult to result list
+            results.add(indexSeminumDownloadResult);
+        }
+
+        return results;
+    }
+
+    public int searchCountContent(Long indexSeminumRevisionId) {
+
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<TblIndexSeminumContent> bo = cq.from(TblIndexSeminumContent.class);
+
+        // count result
+        cq.select(cb.count(bo));
+
+        // apply search criteria
+        applySearchCriteria(cb, cq, bo, indexSeminumRevisionId);
+
+        // run query and return count
+        return em.createQuery(cq).getSingleResult().intValue();
+    }
+
+    /**
+     * Helper function for applying the search criteria for counting / selecting
+     *
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
+     *
+     * @param cb
+     * @param cq
+     * @param bo
+     */
+    protected void applySearchCriteria(CriteriaBuilder cb, CriteriaQuery cq, Root<TblIndexSeminumContent> bo, Long indexSeminumRevisionId) {
+        // helper variable for handling different paths
+        Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (indexSeminumRevisionId != null) {
+            path = bo.get("indexSeminumRevisionId");
+            predicates.add(cb.equal(path, indexSeminumRevisionId));
+        }
+
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
     }
 
 }

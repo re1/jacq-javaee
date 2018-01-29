@@ -22,10 +22,12 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -38,8 +40,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 
 /**
  *
@@ -106,33 +106,33 @@ public class FrmwrkUser implements Serializable {
     @NotNull
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "frmwrk_user_group", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "group_id", referencedColumnName = "group_id")})
     private List<FrmwrkGroup> frmwrkGroupList;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
-    @OneToMany(mappedBy = "gardenerId")
+    @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
     private List<TblOrganisation> tblOrganisationList;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private List<TblInventory> tblInventoryList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frmwrkUser", fetch = FetchType.LAZY)
     private List<FrmwrkAuthAssignment> frmwrkAuthAssignmentList;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumRevision> tblIndexSeminumRevisionList;
     @JoinColumn(name = "employment_type_id", referencedColumnName = "employment_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkEmploymentType employmentTypeId;
     @JoinColumn(name = "user_type_id", referencedColumnName = "user_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUserType userTypeId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
 
     public FrmwrkUser() {

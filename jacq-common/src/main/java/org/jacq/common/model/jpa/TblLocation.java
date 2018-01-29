@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,9 +60,9 @@ public class TblLocation implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "location")
     private String location;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblLocation")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblLocation", fetch = FetchType.LAZY)
     private TblLocationGeonames tblLocationGeonames;
-    @OneToMany(mappedBy = "locationId")
+    @OneToMany(mappedBy = "locationId", fetch = FetchType.LAZY)
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
 
     public TblLocation() {

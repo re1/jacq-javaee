@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -81,23 +82,23 @@ public class TblOrganisation implements Serializable {
     @NotNull
     @Column(name = "accession_start")
     private boolean accessionStart;
-    @OneToMany(mappedBy = "parentOrganisationId")
+    @OneToMany(mappedBy = "parentOrganisationId", fetch = FetchType.LAZY)
     private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblOrganisation parentOrganisationId;
     @JoinColumn(name = "gardener_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser gardenerId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
     private TblImageServer tblImageServer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblOrganisation", fetch = FetchType.LAZY)
     private TblAccessionNumber tblAccessionNumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private List<FrmwrkUser> frmwrkUserList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organisationId", fetch = FetchType.LAZY)
     private List<TblDerivative> tblDerivativeList;
 
     public TblOrganisation() {

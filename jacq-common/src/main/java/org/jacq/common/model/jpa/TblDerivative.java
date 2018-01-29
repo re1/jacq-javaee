@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,23 +64,25 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "price")
     private float price;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblVegetative tblVegetative;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
-    @OneToMany(mappedBy = "parentDerivativeId")
-    private List<TblDerivative> tblDerivativeList;
-    @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
-    @ManyToOne
-    private TblDerivative parentDerivativeId;
     @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivativeType derivativeTypeId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative")
+    @OneToMany(mappedBy = "parentDerivativeId", fetch = FetchType.LAZY)
+    private List<TblDerivative> tblDerivativeList;
+    @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblDerivative parentDerivativeId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
+    private List<TblImportProperties> tblImportPropertiesList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblLivingPlant tblLivingPlant;
 
     public TblDerivative() {
@@ -135,6 +138,22 @@ public class TblDerivative implements Serializable {
         this.botanicalObjectId = botanicalObjectId;
     }
 
+    public TblDerivativeType getDerivativeTypeId() {
+        return derivativeTypeId;
+    }
+
+    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
+        this.derivativeTypeId = derivativeTypeId;
+    }
+
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
+    }
+
     @XmlTransient
     public List<TblDerivative> getTblDerivativeList() {
         return tblDerivativeList;
@@ -152,20 +171,13 @@ public class TblDerivative implements Serializable {
         this.parentDerivativeId = parentDerivativeId;
     }
 
-    public TblDerivativeType getDerivativeTypeId() {
-        return derivativeTypeId;
+    @XmlTransient
+    public List<TblImportProperties> getTblImportPropertiesList() {
+        return tblImportPropertiesList;
     }
 
-    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
-        this.derivativeTypeId = derivativeTypeId;
-    }
-
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
+    public void setTblImportPropertiesList(List<TblImportProperties> tblImportPropertiesList) {
+        this.tblImportPropertiesList = tblImportPropertiesList;
     }
 
     public TblLivingPlant getTblLivingPlant() {

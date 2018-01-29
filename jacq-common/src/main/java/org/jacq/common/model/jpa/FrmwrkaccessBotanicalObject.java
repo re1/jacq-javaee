@@ -19,6 +19,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,13 +55,13 @@ public class FrmwrkaccessBotanicalObject implements Serializable {
     @Column(name = "allowDeny")
     private boolean allowDeny;
     @JoinColumn(name = "AuthItem_name", referencedColumnName = "name")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkAuthItem authItemname;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private FrmwrkUser userId;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblLivingPlant botanicalObjectId;
 
     public FrmwrkaccessBotanicalObject() {

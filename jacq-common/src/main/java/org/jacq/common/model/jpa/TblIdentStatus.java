@@ -20,6 +20,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public class TblIdentStatus implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "identStatusId")
+    @OneToMany(mappedBy = "identStatusId", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblIdentStatus() {

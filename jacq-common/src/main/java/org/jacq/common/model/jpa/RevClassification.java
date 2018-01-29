@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -131,7 +132,7 @@ public class RevClassification implements Serializable {
     @Column(name = "province_codes")
     private String provinceCodes;
     @JoinColumn(name = "uuid_minter_id", referencedColumnName = "uuid_minter_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinter uuidMinterId;
 
     public RevClassification() {

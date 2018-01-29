@@ -20,6 +20,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public class TblIndexSeminumType implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "type")
     private String type;
-    @OneToMany(mappedBy = "indexSeminumTypeId")
+    @OneToMany(mappedBy = "indexSeminumTypeId", fetch = FetchType.LAZY)
     private List<TblLivingPlant> tblLivingPlantList;
 
     public TblIndexSeminumType() {

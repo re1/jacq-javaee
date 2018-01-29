@@ -56,6 +56,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String habitat;
     protected Boolean indexSeminum;
     protected IndexSeminumTypeResult indexSeminumType;
+    protected float price;
 
     public LivingPlantResult() {
     }
@@ -86,6 +87,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.habitat = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getHabitat();
         this.indexSeminum = tblLivingPlant.getIndexSeminum();
         this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
+        this.price = tblLivingPlant.getTblDerivative().getPrice();
 
         if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
             this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
@@ -333,6 +335,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setIndexSeminumType(IndexSeminumTypeResult indexSeminumType) {
         this.indexSeminumType = indexSeminumType;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
 }

@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -74,11 +75,11 @@ public class SrvcUuidMinter implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinterType uuidMinterTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
     private List<RevFlora> revFloraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
     private List<RevClassification> revClassificationList;
 
     public SrvcUuidMinter() {

@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,10 +67,10 @@ public class TblIndexSeminumRevision implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private FrmwrkUser userId;
 
     public TblIndexSeminumRevision() {

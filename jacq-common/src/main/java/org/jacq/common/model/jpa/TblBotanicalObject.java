@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -105,36 +106,34 @@ public class TblBotanicalObject implements Serializable {
     @JoinTable(name = "tbl_botanical_object_label", joinColumns = {
         @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<TblLabelType> tblLabelTypeList;
     @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblIdentStatus identStatusId;
     @JoinColumn(name = "determined_by_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblPerson determinedById;
     @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionEvent acquisitionEventId;
     @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblPhenology phenologyId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject", fetch = FetchType.LAZY)
     private TblDiaspora tblDiaspora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblSpecimen> tblSpecimenList;
-    @OneToMany(mappedBy = "botanicalObjectId")
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblSeparation> tblSeparationList;
-    @OneToMany(mappedBy = "botanicalObjectId")
+    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblInventoryObject> tblInventoryObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblDerivative> tblDerivativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId")
-    private List<TblImportProperties> tblImportPropertiesList;
 
     public TblBotanicalObject() {
     }
@@ -333,15 +332,6 @@ public class TblBotanicalObject implements Serializable {
 
     public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
         this.tblDerivativeList = tblDerivativeList;
-    }
-
-    @XmlTransient
-    public List<TblImportProperties> getTblImportPropertiesList() {
-        return tblImportPropertiesList;
-    }
-
-    public void setTblImportPropertiesList(List<TblImportProperties> tblImportPropertiesList) {
-        this.tblImportPropertiesList = tblImportPropertiesList;
     }
 
     @Override

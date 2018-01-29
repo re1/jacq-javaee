@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,10 +65,10 @@ public class TblInventoryObject implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblInventory inventoryId;
 
     public TblInventoryObject() {

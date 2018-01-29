@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -84,13 +85,13 @@ public class TblVegetative implements Serializable {
     @NotNull
     @Column(name = "separated")
     private boolean separated;
-    @OneToMany(mappedBy = "derivativeVegetativeId")
+    @OneToMany(mappedBy = "derivativeVegetativeId", fetch = FetchType.LAZY)
     private List<TblSeparation> tblSeparationList;
     @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblPhenology phenologyId;
     @JoinColumn(name = "vegetative_id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative tblDerivative;
 
     public TblVegetative() {

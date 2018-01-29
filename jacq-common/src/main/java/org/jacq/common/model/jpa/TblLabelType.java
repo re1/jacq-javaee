@@ -20,6 +20,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public class TblLabelType implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "type")
     private String type;
-    @ManyToMany(mappedBy = "tblLabelTypeList")
+    @ManyToMany(mappedBy = "tblLabelTypeList", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblLabelType() {

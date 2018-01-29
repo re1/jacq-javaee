@@ -21,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.jacq.input.util.ServicesUtil;
 import org.jacq.input.view.LazyIndexSeminumDataModel;
+import org.jacq.input.view.LazyIndexSeminumDownloadDataModel;
 
 /**
  *
@@ -32,13 +33,22 @@ public class IndexSeminumController implements Serializable {
 
     protected LazyIndexSeminumDataModel dataModel;
 
+    protected LazyIndexSeminumDownloadDataModel downloadDataModel;
+
+    protected Boolean downloadRender;
+
     @PostConstruct
     public void init() {
         this.dataModel = new LazyIndexSeminumDataModel(ServicesUtil.getIndexSeminumService());
+        this.downloadDataModel = new LazyIndexSeminumDownloadDataModel(ServicesUtil.getIndexSeminumService());
     }
 
     public LazyIndexSeminumDataModel getDataModel() {
         return dataModel;
+    }
+
+    public LazyIndexSeminumDownloadDataModel getDownloadDataModel() {
+        return downloadDataModel;
     }
 
     /**
@@ -58,6 +68,19 @@ public class IndexSeminumController implements Serializable {
      */
     public String updateRowCount() {
         return null;
+    }
+
+    public void setRenderedTrue(Long indexSeminumRevisionId) {
+        this.downloadDataModel.setIndexSeminumRevisionId(indexSeminumRevisionId);
+        this.setDownloadRender(true);
+    }
+
+    public Boolean getDownloadRender() {
+        return downloadRender;
+    }
+
+    public void setDownloadRender(Boolean downloadRender) {
+        this.downloadRender = downloadRender;
     }
 
 }

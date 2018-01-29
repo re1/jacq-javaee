@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,6 +89,11 @@ public class DataImportManager {
     protected OrganisationService organisationService;
 
     protected SimpleDateFormat separationDateFormat = new SimpleDateFormat("YYYY-mm-dd");
+
+    protected HashMap<Integer, Long> taxamatchCache = new HashMap<>();
+
+    public DataImportManager() {
+    }
 
     @PostConstruct
     public void init() {
@@ -215,7 +221,7 @@ public class DataImportManager {
                 importPropertiesQuery.setParameter("sourceName", importRecord.getSourceName());
                 List<TblImportProperties> importProperties = importPropertiesQuery.getResultList();
                 if (importProperties != null & importProperties.size() > 0) {
-                    botanicalObject = importProperties.get(0).getBotanicalObjectId();
+                    botanicalObject = importProperties.get(0).getDerivativeId().getBotanicalObjectId();
                 }
             }
 
@@ -247,37 +253,46 @@ public class DataImportManager {
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
                 em.persist(acquisitionEvent);
 
-                // lookup scientific name id through taxamatch service
-                // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
-                TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
-                taxamatchOptions.setNearMatch(false);
-                taxamatchOptions.setShowSyn(false);
-
-                ArrayList<Object> params = new ArrayList<>();
-                params.add("vienna");
-                params.add(importRecord.getScientificName());
-                params.add(taxamatchOptions);
-
-                JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
-                jsonRpcRequest.setId(1L);
-                jsonRpcRequest.setMethod("getMatchesService");
-                jsonRpcRequest.setParams(params);
-
-                ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
-                TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
-
+                // lookup scientific name id through taxamatch service, but check cache first
                 Long scientificNameId = 0L;
-                Long genusScientificNameId = 0L;
-                for (Result result : response.getResult().getResult()) {
-                    for (Searchresult searchResult : result.getSearchresult()) {
-                        // check for genus match
-                        if (searchResult.getDistance() == 0) {
-                            genusScientificNameId = searchResult.getTaxonID();
-                        }
+                if (taxamatchCache.get(importRecord.getScientificName().hashCode()) != null) {
+                    scientificNameId = taxamatchCache.get(importRecord.getScientificName().hashCode());
+                }
+                else {
+                    // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
+                    TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
+                    taxamatchOptions.setNearMatch(false);
+                    taxamatchOptions.setShowSyn(false);
 
-                        for (Species species : searchResult.getSpecies()) {
-                            if (species.getDistance() <= 0L) {
-                                scientificNameId = species.getTaxonID();
+                    ArrayList<Object> params = new ArrayList<>();
+                    params.add("vienna");
+                    params.add(importRecord.getScientificName());
+                    params.add(taxamatchOptions);
+
+                    JsonRpcRequest jsonRpcRequest = new JsonRpcRequest();
+                    jsonRpcRequest.setId(1L);
+                    jsonRpcRequest.setMethod("getMatchesService");
+                    jsonRpcRequest.setParams(params);
+
+                    ScientificNamesService scientificNamesService = ServicesUtil.getScientificNamesService();
+                    TaxamatchResponse response = scientificNamesService.taxamatchMdld(jsonRpcRequest);
+
+                    Long genusScientificNameId = 0L;
+                    for (Result result : response.getResult().getResult()) {
+                        for (Searchresult searchResult : result.getSearchresult()) {
+                            // check for genus match
+                            if (searchResult.getDistance() == 0) {
+                                genusScientificNameId = searchResult.getTaxonID();
+                            }
+
+                            for (Species species : searchResult.getSpecies()) {
+                                if (species.getDistance() <= 0L) {
+                                    scientificNameId = species.getTaxonID();
+                                    break;
+                                }
+                            }
+
+                            if (scientificNameId != 0L) {
                                 break;
                             }
                         }
@@ -286,20 +301,18 @@ public class DataImportManager {
                             break;
                         }
                     }
-
-                    if (scientificNameId != 0L) {
-                        break;
+                    if (scientificNameId == 0L) {
+                        if (genusScientificNameId == 0L) {
+                            LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                            scientificNameId = INDET_SCIENTIFIC_NAME_ID;
+                        }
+                        else {
+                            LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
+                            scientificNameId = genusScientificNameId;
+                        }
                     }
-                }
-                if (scientificNameId == 0L) {
-                    if (genusScientificNameId == 0L) {
-                        LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                        scientificNameId = INDET_SCIENTIFIC_NAME_ID;
-                    }
-                    else {
-                        LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
-                        scientificNameId = genusScientificNameId;
-                    }
+                    // remember taxamatch result in cache so we don't have to ask again
+                    taxamatchCache.put(importRecord.getScientificName().hashCode(), scientificNameId);
                 }
 
                 // check for common names
@@ -467,7 +480,7 @@ public class DataImportManager {
 
             // persist the import properties
             TblImportProperties importProperties = new TblImportProperties();
-            importProperties.setBotanicalObjectId(botanicalObject);
+            importProperties.setDerivativeId(derivative);
             importProperties.setIDPflanze(importRecord.getOriginalId());
             importProperties.setSpeciesName(importRecord.getScientificName());
             importProperties.setSourceName(importRecord.getSourceName());

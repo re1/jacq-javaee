@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,15 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,26 +45,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblScientificNameInformation.findAll", query = "SELECT t FROM TblScientificNameInformation t")
-    , @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId")
-    , @NamedQuery(name = "TblScientificNameInformation.findBySpatialDistribution", query = "SELECT t FROM TblScientificNameInformation t WHERE t.spatialDistribution = :spatialDistribution")
-    , @NamedQuery(name = "TblScientificNameInformation.findByCommonNames", query = "SELECT t FROM TblScientificNameInformation t WHERE t.commonNames = :commonNames")})
+    , @NamedQuery(name = "TblScientificNameInformation.findByScientificNameId", query = "SELECT t FROM TblScientificNameInformation t WHERE t.scientificNameId = :scientificNameId")})
 public class TblScientificNameInformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "scientific_name_id")
     private Long scientificNameId;
+    @Lob
     @Size(max = 65535)
     @Column(name = "spatial_distribution")
     private String spatialDistribution;
+    @Lob
     @Size(max = 65535)
     @Column(name = "common_names")
     private String commonNames;
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblHabitusType habitusTypeId;
-    @OneToMany(mappedBy = "scientificNameId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY)
     private List<TblCultivar> tblCultivarList;
 
     public TblScientificNameInformation() {

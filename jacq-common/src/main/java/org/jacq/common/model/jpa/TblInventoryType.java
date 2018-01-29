@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,7 +65,7 @@ public class TblInventoryType implements Serializable {
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
     private List<TblInventory> tblInventoryList;
 
     public TblInventoryType() {

@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,10 +56,10 @@ public class TblAcquisitionEventSource implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date sourceDate;
     @JoinColumn(name = "acquisition_event_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionEvent acquisitionEventId;
     @JoinColumn(name = "acquisition_source_id", referencedColumnName = "acquisition_source_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblAcquisitionSource acquisitionSourceId;
 
     public TblAcquisitionEventSource() {

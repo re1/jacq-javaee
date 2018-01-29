@@ -23,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.IndexSeminumDownloadResult;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 
@@ -79,5 +80,31 @@ public interface IndexSeminumService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public int searchCount();
+
+    /**
+     * Search the database using the given filter
+     *
+     *
+     * @param indexSeminumRevisionId
+     * @param offset Return result with an offset
+     * @param limit Limit total count of results
+     * @return
+     */
+    @GET
+    @Path("/searchContent")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<IndexSeminumDownloadResult> searchContent(@QueryParam("indexSeminumRevisionId") Long indexSeminumRevisionId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     *
+     * @param indexSeminumRevisionId
+     * @return
+     */
+    @GET
+    @Path("/searchCountContent")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int searchCountContent(@QueryParam("indexSeminumRevisionId") Long indexSeminumRevisionId);
 
 }
