@@ -18,6 +18,8 @@ package org.jacq.service.rest.names.impl;
 import java.util.List;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.model.rest.HabitusTypeResult;
+import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.service.names.manager.ScientificNameManager;
@@ -55,5 +57,21 @@ public class ScientificNameServiceImpl implements ScientificNameService {
     @Override
     public CultivarResult cultivarLoad(Long cultivarId) {
         return scientificNameManager.cultivarLoad(cultivarId);
+    }
+
+    /**
+     * @see ScientificNameService#scientificNameInformationLoad(java.lang.Long)
+     */
+    @Override
+    public ScientificNameInformationResult scientificNameInformationLoad(Long scientificNameId) {
+        return scientificNameManager.scientificNameInformationLoad(scientificNameId);
+    }
+
+    /**
+     * @see ScientificNameService#findAllHabitusType()
+     */
+    @Override
+    public List<HabitusTypeResult> findAllHabitusType() {
+        return scientificNameManager.findAllHabitusType();
     }
 }

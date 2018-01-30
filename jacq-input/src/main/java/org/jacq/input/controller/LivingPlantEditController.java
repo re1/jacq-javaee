@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -65,6 +67,10 @@ public class LivingPlantEditController {
 
     protected List<IndexSeminumTypeResult> indexSeminumTypes;
 
+    protected ScientificNameInformationResult scientificNameInformationResult;
+
+    protected List<HabitusTypeResult> habitusTypes;
+
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
@@ -72,7 +78,39 @@ public class LivingPlantEditController {
         this.indexSeminumService = ServicesUtil.getIndexSeminumService();
 
         this.livingPlantResult = new LivingPlantResult();
+
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
+    }
+
+    /**
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
+     *
+     * @return
+     */
+    public void showScientificNameInformation() {
+        if (this.habitusTypes == null) {
+            this.habitusTypes = this.scientificNameService.findAllHabitusType();
+        }
+
+        // load scientific name information
+        this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationLoad(this.livingPlantResult.getScientificNameId());
+    }
+
+    public void addCultivar() {
+        this.scientificNameInformationResult.getCultivarList().add(new CultivarResult());
+    }
+
+    public void removeCultivar(CultivarResult cultivarResult) {
+        this.scientificNameInformationResult.getCultivarList().remove(cultivarResult);
+    }
+
+    public void addAlternativeAccessionNumber() {
+        this.livingPlantResult.getAlternativeAccessionNumberResults().add(new AlternativeAccessionNumberResult());
+    }
+
+    public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
+        this.livingPlantResult.getAlternativeAccessionNumberResults().remove(alternativeAccessionNumberResult);
     }
 
     public Long getDerivativeId() {
@@ -89,6 +127,7 @@ public class LivingPlantEditController {
 
             // load matching list of possible cultivar entries
             this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
+
         }
     }
 
@@ -131,16 +170,20 @@ public class LivingPlantEditController {
         this.cultivarResults = cultivarResults;
     }
 
-    public void addAlternativeAccessionNumber() {
-        this.livingPlantResult.getAlternativeAccessionNumberResults().add(new AlternativeAccessionNumberResult());
-    }
-
-    public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
-        this.livingPlantResult.getAlternativeAccessionNumberResults().remove(alternativeAccessionNumberResult);
-    }
-
     public List<IndexSeminumTypeResult> getIndexSeminumTypes() {
         return indexSeminumTypes;
+    }
+
+    public ScientificNameInformationResult getScientificNameInformationResult() {
+        return scientificNameInformationResult;
+    }
+
+    public void setScientificNameInformationResult(ScientificNameInformationResult scientificNameInformationResult) {
+        this.scientificNameInformationResult = scientificNameInformationResult;
+    }
+
+    public List<HabitusTypeResult> getHabitusTypes() {
+        return habitusTypes;
     }
 
 }

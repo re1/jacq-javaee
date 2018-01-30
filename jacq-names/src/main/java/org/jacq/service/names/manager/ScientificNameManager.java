@@ -21,12 +21,17 @@ import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.TblCultivar;
+import org.jacq.common.model.jpa.TblHabitusType;
 import org.jacq.common.model.jpa.TblNomEpithet;
 import org.jacq.common.model.jpa.TblNomName;
 import org.jacq.common.model.jpa.TblNomSubstantive;
+import org.jacq.common.model.jpa.TblScientificNameInformation;
 import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.model.rest.HabitusTypeResult;
+import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.names.ScientificNameService;
 
@@ -44,6 +49,7 @@ public class ScientificNameManager {
     /**
      * @see ScientificNameService#find(java.lang.String, java.lang.Boolean)
      */
+    @Transactional
     public List<ScientificNameResult> find(String search, Boolean autocomplete) {
         List<ScientificNameResult> results = new ArrayList<>();
 
@@ -113,6 +119,7 @@ public class ScientificNameManager {
     /**
      * @see ScientificNameService#load(java.lang.Long)
      */
+    @Transactional
     public ScientificNameResult load(Long scientificNameId) {
         TblNomName nomName = em.find(TblNomName.class, scientificNameId);
 
@@ -126,6 +133,7 @@ public class ScientificNameManager {
     /**
      * @see ScientificNameService#cultivarFind(java.lang.Long)
      */
+    @Transactional
     public List<CultivarResult> cultivarFind(Long scientificNameId) {
         List<CultivarResult> results = new ArrayList<>();
 
@@ -143,6 +151,7 @@ public class ScientificNameManager {
     /**
      * @see ScientificNameService#cultivarLoad(java.lang.Long)
      */
+    @Transactional
     public CultivarResult cultivarLoad(Long cultivarId) {
         TblCultivar cultivar = em.find(TblCultivar.class, cultivarId);
 
@@ -151,5 +160,29 @@ public class ScientificNameManager {
         }
 
         return null;
+    }
+
+    /**
+     * @see ScientificNameService#scientificNameInformationLoad(java.lang.Long)
+     */
+    @Transactional
+    public ScientificNameInformationResult scientificNameInformationLoad(Long scientificNameId) {
+        TblScientificNameInformation scientificNameInformation = em.find(TblScientificNameInformation.class, scientificNameId);
+
+        if (scientificNameInformation != null) {
+            return new ScientificNameInformationResult(scientificNameInformation);
+        }
+
+        return null;
+    }
+
+    /**
+     * @see ScientificNameService#findAllHabitusType()
+     */
+    @Transactional
+    public List<HabitusTypeResult> findAllHabitusType() {
+        TypedQuery<TblHabitusType> habitusTypeQuery = em.createNamedQuery("TblHabitusType.findAll", TblHabitusType.class);
+
+        return HabitusTypeResult.fromList(habitusTypeQuery.getResultList());
     }
 }
