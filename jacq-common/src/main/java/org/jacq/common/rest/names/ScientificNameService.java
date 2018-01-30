@@ -23,6 +23,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.model.rest.HabitusTypeResult;
+import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 
 /**
@@ -81,4 +83,27 @@ public interface ScientificNameService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
+
+    /**
+     * Load the scientific name information for a given id
+     *
+     * @param scientificNameId
+     * @return
+     */
+    @GET
+    @Path("/scientificNameInformation/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ScientificNameInformationResult scientificNameInformationLoad(@QueryParam("scientificNameId") Long scientificNameId);
+
+    /**
+     * Fetch a list of all habitus types
+     *
+     * @return
+     */
+    @GET
+    @Path("/habitusType/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<HabitusTypeResult> findAllHabitusType();
 }
