@@ -472,30 +472,30 @@
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.acquisitiondate']}" />
+                                        <h:outputText value="#{messages['livingplant.recording_date']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.entrydate']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.recordingDate}" pattern="dd-MM-yyyy" mask="true" />
                                     </div>
                                 </div>
                             </div>
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.cultivationdate']}" />
+                                        <h:outputText value="#{messages['livingplant.incoming_date']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.incomingDate}" pattern="dd-MM-yyyy" mask="true" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-6 ui-g-nopad">
+                                <div class="ui-g">
+                                    <div class="ui-g-6">
+                                        <h:outputText value="#{messages['livingplant.cultivation_date']}" />
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.cultivationDate}" pattern="dd-MM-yyyy" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -552,7 +552,7 @@
                                         <h:outputText value="#{messages['livingplant.annotation']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.generalAnnotation}" />
                                     </div>
                                 </div>
                             </div>
@@ -562,8 +562,8 @@
                                         <h:outputText value="#{messages['livingplant.phenology']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="phenology">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.phenology.phenologyId}">
+                                            <f:selectItems value="#{livingPlantEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>

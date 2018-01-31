@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.PhenologyResult;
 
 /**
  * Main service for searching derivatives
@@ -107,5 +108,16 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<BotanicalObjectDownloadResult> downloadFind(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+
+    /**
+     * Returns a list of available phenology types
+     *
+     * @return
+     */
+    @GET
+    @Path("/phenology/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PhenologyResult> findAllPhenology();
 
 }

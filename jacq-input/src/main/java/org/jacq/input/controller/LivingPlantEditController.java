@@ -28,6 +28,7 @@ import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
@@ -54,8 +55,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -73,6 +73,7 @@ public class LivingPlantEditController {
     protected ScientificNameInformationResult scientificNameInformationResult;
 
     protected List<HabitusTypeResult> habitusTypes;
+    protected List<PhenologyResult> phenologies;
 
     @PostConstruct
     public void init() {
@@ -83,11 +84,12 @@ public class LivingPlantEditController {
         this.livingPlantResult = new LivingPlantResult();
 
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
+        this.phenologies = this.derivativeService.findAllPhenology();
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -98,6 +100,12 @@ public class LivingPlantEditController {
 
         // load scientific name information
         this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationLoad(this.livingPlantResult.getScientificNameId());
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 
     public void addCultivar() {
@@ -189,10 +197,8 @@ public class LivingPlantEditController {
         return habitusTypes;
     }
 
-    public void saveMessage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        context.addMessage(null, new FacesMessage("", ""));
+    public List<PhenologyResult> getPhenologies() {
+        return phenologies;
     }
 
 }

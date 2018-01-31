@@ -15,29 +15,24 @@
  */
 package org.jacq.service.manager;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
-import javax.persistence.Column;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.manager.DerivativeSearchManager;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.JacqServiceConfig;
 
@@ -102,5 +97,15 @@ public class DerivativeManager extends DerivativeSearchManager {
         }
 
         return botanicalObjectDownloadResultList;
+    }
+
+    /**
+     * @see DerivativeService#findAllPhenology()
+     */
+    @Transactional
+    public List<PhenologyResult> findAllPhenology() {
+        TypedQuery<TblPhenology> phenologyQuery = em.createNamedQuery("TblPhenology.findAll", TblPhenology.class);
+
+        return PhenologyResult.fromList(phenologyQuery.getResultList());
     }
 }
