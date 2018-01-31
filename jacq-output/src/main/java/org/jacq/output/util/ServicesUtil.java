@@ -16,7 +16,7 @@
 package org.jacq.output.util;
 
 import org.jacq.common.rest.ClassificationService;
-import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.output.SearchService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -28,14 +28,15 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String JACQ_SERVICE_URL = "http://localhost:8081/jacq-service/rest/";
+    private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
+    private static final String JACQ_SERVICE_OUTPUT_URL = System.getProperty("jacq.serviceOutputUrl");
 
     public static ClassificationService getClassificationService() {
         return getProxy(ClassificationService.class, JACQ_SERVICE_URL);
     }
 
-    public static DerivativeService getDerivativeService() {
-        return getProxy(DerivativeService.class, JACQ_SERVICE_URL);
+    public static SearchService getSearchService() {
+        return getProxy(SearchService.class, JACQ_SERVICE_OUTPUT_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
