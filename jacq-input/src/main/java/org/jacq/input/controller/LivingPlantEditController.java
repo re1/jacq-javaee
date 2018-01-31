@@ -17,8 +17,10 @@ package org.jacq.input.controller;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
@@ -52,7 +54,8 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and scientific name editing
+     * Reference to scientific name service which is used for cultivar and
+     * scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -83,8 +86,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
-     * loaded
+     * Called when the user clicks on the button for reviewing the scientific
+     * name information, only then this info is loaded
      *
      * @return
      */
@@ -184,6 +187,12 @@ public class LivingPlantEditController {
 
     public List<HabitusTypeResult> getHabitusTypes() {
         return habitusTypes;
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 
 }

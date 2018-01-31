@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{userEditController.edit}" />
+                        <p:commandButton value="#{messages['create']}" actionListener="#{userEditController.saveMessage}" update="jacq_form:messages" action="#{userEditController.edit}" />
                     </div>
                 </div>
             </h:form>

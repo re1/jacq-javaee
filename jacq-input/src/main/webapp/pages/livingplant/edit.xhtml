@@ -712,7 +712,7 @@
                     </p:tab>
                 </p:tabView>
                 <div class="jacq-buttons">
-                    <p:commandButton value="#{messages['create']}" />
+                    <p:commandButton value="#{messages['create']}" actionListener="#{livingPlantEditController.saveMessage}" update="jacq_form:messages" />
                 </div>
             </div>
         </ui:define>

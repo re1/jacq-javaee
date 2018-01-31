@@ -16,8 +16,10 @@
 package org.jacq.input.controller;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.input.util.ServicesUtil;
@@ -61,6 +63,12 @@ public class IndexSeminumEditController {
 
     public void setIndexSeminumId(Long indexSeminumId) {
         this.indexSeminumId = indexSeminumId;
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 
 }
