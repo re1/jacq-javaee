@@ -8,7 +8,7 @@
 - Create View for BuGa-Data import (CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData`)
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
 - Create accession_number entry for WU: INSERT INTO tbl_accession_number SELECT 6, MAX(accession_number) FROM tbl_living_plant;
-- Adding setting for Indet Name!
+- Adding setting for Indet Name! INSERT INTO `jacq_input`.`frmwrk_config` (`fc_id`, `fc_name`, `fc_value`) VALUES (NULL, 'general.indet_id', '46996');
 - Add dataimport / dataimport user
 - Add user for mknaack
 - Run actual dataimport routine
