@@ -15,14 +15,9 @@
  */
 package org.jacq.common.model.rest;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 
@@ -43,7 +38,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String gatheringNumber;
     protected String cultureNotes;
     protected long count;
-    protected List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults;
+    protected List<AlternativeAccessionNumberResult> alternativeAccessionNumbers;
     protected Date gatheringDate;
     protected String customGatheringDate;
     protected String gatheringLocation;
@@ -71,7 +66,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String generalAnnotation;
     protected PhenologyResult phenology;
 
+    protected List<AcquistionEventSourceResult> acquistionEventSources;
+
     public LivingPlantResult() {
+        this.indexSeminumType = new IndexSeminumTypeResult();
+        this.phenology = new PhenologyResult();
+        this.cultivar = new CultivarResult();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -96,7 +96,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.cultivar = new CultivarResult(tblLivingPlant.getCultivarId());
         this.cultureNotes = tblLivingPlant.getCultureNotes();
         this.count = tblLivingPlant.getTblDerivative().getCount();
-        this.alternativeAccessionNumberResults = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
+        this.alternativeAccessionNumbers = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
         this.habitat = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getHabitat();
         this.indexSeminum = tblLivingPlant.getIndexSeminum();
         this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
@@ -116,6 +116,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.cultivationDate = tblLivingPlant.getCultivationDate();
         this.generalAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAnnotation();
         this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
+        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
 
         if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
             this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
@@ -220,12 +221,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.count = count;
     }
 
-    public List<AlternativeAccessionNumberResult> getAlternativeAccessionNumberResults() {
-        return alternativeAccessionNumberResults;
+    public List<AlternativeAccessionNumberResult> getAlternativeAccessionNumbers() {
+        return alternativeAccessionNumbers;
     }
 
-    public void setAlternativeAccessionNumberResults(List<AlternativeAccessionNumberResult> alternativeAccessionNumberResults) {
-        this.alternativeAccessionNumberResults = alternativeAccessionNumberResults;
+    public void setAlternativeAccessionNumbers(List<AlternativeAccessionNumberResult> alternativeAccessionNumbers) {
+        this.alternativeAccessionNumbers = alternativeAccessionNumbers;
     }
 
     public Date getGatheringDate() {
@@ -418,6 +419,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setPhenology(PhenologyResult phenology) {
         this.phenology = phenology;
+    }
+
+    public List<AcquistionEventSourceResult> getAcquistionEventSources() {
+        return acquistionEventSources;
+    }
+
+    public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
+        this.acquistionEventSources = acquistionEventSources;
     }
 
 }

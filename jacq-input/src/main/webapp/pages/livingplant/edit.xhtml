@@ -159,9 +159,9 @@
                                 <h:outputText value="#{messages['livingplant.accessionnumbers']}" />
                             </div>
                             <h:panelGroup layout="block" styleClass="ui-g-6" id="alternativeAccessionNumbers">
-                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.alternativeAccessionNumberResults}" var="alternativeAccessionNumberResult">
-                                    <p:inputText id="alternativeAccessionNumber" value="#{alternativeAccessionNumberResult.number}" />
-                                    <p:commandButton icon="ui-icon-minus" update="jacq_form:alternativeAccessionNumbers" action="#{livingPlantEditController.removeAlternativeAccessionNumber(alternativeAccessionNumberResult)}" />
+                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.alternativeAccessionNumbers}" var="alternativeAccessionNumber">
+                                    <p:inputText id="alternativeAccessionNumber" value="#{alternativeAccessionNumber.number}" />
+                                    <p:commandButton icon="ui-icon-minus" update="jacq_form:alternativeAccessionNumbers" action="#{livingPlantEditController.removeAlternativeAccessionNumber(alternativeAccessionNumber)}" />
                                 </ui:repeat>
                                 <p:commandButton icon="ui-icon-plus" update="alternativeAccessionNumbers" action="#{livingPlantEditController.addAlternativeAccessionNumber}" />
                             </h:panelGroup>
@@ -509,19 +509,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--
-                            <div class="jacq-panel-grid">
-                                <h:panelGrid columns="1"  cellpadding="2" width="100%">
-                                    <h:panelGrid columns="3"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                        <h:outputText value="Bezugsdatum" />
-                                        <h:outputText value="Bezugsquelle *" />
-                                        <h:outputText value="Aktion" />
-                                        <p:inputText />
-                                        <p:inputText />
-                                        <p:inputText />
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                            </div>-->
+                            <div class="ui-g-12 ui-g-nopad">
+                                <div class="ui-g">
+                                    <div class="ui-g-4">
+                                        <h:outputText value="#{messages['livingplant.acquisition.source_date']}" />
+                                    </div>
+                                    <div class="ui-g-4">
+                                        <h:outputText value="#{messages['livingplant.acquisition.source_name']}" />
+                                    </div>
+                                    <div class="ui-g-4">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-g-nopad">
+                                <h:panelGroup id="acquistionEventSources" layout="block" styleClass="ui-g">
+                                    <ui:repeat value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}" var="acquistionEventSource">
+                                        <div class="ui-g-4">
+                                            <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        </div>
+                                        <div class="ui-g-4">
+                                            <p:inputText value="#{acquistionEventSource.acquisitionEventSource.name}" />
+                                        </div>
+                                        <div class="ui-g-4">
+                                            <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />
+                                        </div>
+                                    </ui:repeat>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-g-12 ui-g-nopad">
+                                <p:commandButton icon="ui-icon-plus" update="acquistionEventSources" action="#{livingPlantEditController.addAcquisitionEventSource()}" />
+                            </div>
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">
@@ -712,7 +729,7 @@
                     </p:tab>
                 </p:tabView>
                 <div class="jacq-buttons">
-                    <p:commandButton value="#{messages['create']}" actionListener="#{livingPlantEditController.saveMessage}" update="jacq_form:messages" />
+                    <p:commandButton value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" actionListener="#{livingPlantEditController.saveMessage}" update="jacq_form:messages" />
                 </div>
             </div>
         </ui:define>

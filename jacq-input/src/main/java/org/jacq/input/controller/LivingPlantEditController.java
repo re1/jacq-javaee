@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
@@ -117,11 +118,19 @@ public class LivingPlantEditController {
     }
 
     public void addAlternativeAccessionNumber() {
-        this.livingPlantResult.getAlternativeAccessionNumberResults().add(new AlternativeAccessionNumberResult());
+        this.livingPlantResult.getAlternativeAccessionNumbers().add(new AlternativeAccessionNumberResult());
     }
 
     public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
-        this.livingPlantResult.getAlternativeAccessionNumberResults().remove(alternativeAccessionNumberResult);
+        this.livingPlantResult.getAlternativeAccessionNumbers().remove(alternativeAccessionNumberResult);
+    }
+
+    public void addAcquisitionEventSource() {
+        this.livingPlantResult.getAcquistionEventSources().add(new AcquistionEventSourceResult());
+    }
+
+    public void removeAcquisitionEventSource(AcquistionEventSourceResult acquistionEventSourceResult) {
+        this.livingPlantResult.getAcquistionEventSources().remove(acquistionEventSourceResult);
     }
 
     public Long getDerivativeId() {
