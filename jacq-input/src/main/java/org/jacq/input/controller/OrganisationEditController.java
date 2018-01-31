@@ -17,8 +17,10 @@ package org.jacq.input.controller;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.UserResult;
@@ -95,5 +97,11 @@ public class OrganisationEditController {
 
     public List<GroupResult> getGroups() {
         return groups;
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 }

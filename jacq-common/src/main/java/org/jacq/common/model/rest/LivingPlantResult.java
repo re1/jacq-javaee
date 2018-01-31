@@ -15,9 +15,14 @@
  */
 package org.jacq.common.model.rest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 
@@ -27,6 +32,8 @@ import org.jacq.common.model.jpa.TblLivingPlant;
  * @author wkoller
  */
 public class LivingPlantResult extends BotanicalObjectDerivative {
+
+    protected static final SimpleDateFormat acquisitionDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     protected boolean reviewed;
     protected String ipenType;
@@ -58,6 +65,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
 
+    protected Date recordingDate;
+    protected Date incomingDate;
+    protected Date cultivationDate;
+    protected String generalAnnotation;
+    protected PhenologyResult phenology;
+
     public LivingPlantResult() {
     }
 
@@ -88,16 +101,38 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.indexSeminum = tblLivingPlant.getIndexSeminum();
         this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
         this.price = tblLivingPlant.getTblDerivative().getPrice();
+        this.recordingDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getRecordingDate();
+        try {
+            this.incomingDate = acquisitionDateFormat.parse(
+                    String.format(
+                            "%04d-%02d-%02d",
+                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getYear()),
+                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getMonth()),
+                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getDay())
+                    )
+            );
+        } catch (Exception ex) {
+        }
+        this.cultivationDate = tblLivingPlant.getCultivationDate();
+        this.generalAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAnnotation();
+        this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
 
         if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
             this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
             this.gatheringAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAnnotation();
             if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId() != null) {
                 if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear() != null) {
-                    this.gatheringDate = (new GregorianCalendar(
-                            Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear()),
-                            Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth()),
-                            Integer.parseInt(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay()))).getTime();
+                    try {
+                        this.gatheringDate = acquisitionDateFormat.parse(
+                                String.format(
+                                        "%04d-%02d-%02d",
+                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear()),
+                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth()),
+                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay())
+                                )
+                        );
+                    } catch (Exception ex) {
+                    }
                 }
                 this.customGatheringDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom();
             }
@@ -343,6 +378,46 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Date getRecordingDate() {
+        return recordingDate;
+    }
+
+    public void setRecordingDate(Date recordingDate) {
+        this.recordingDate = recordingDate;
+    }
+
+    public Date getIncomingDate() {
+        return incomingDate;
+    }
+
+    public void setIncomingDate(Date incomingDate) {
+        this.incomingDate = incomingDate;
+    }
+
+    public Date getCultivationDate() {
+        return cultivationDate;
+    }
+
+    public void setCultivationDate(Date cultivationDate) {
+        this.cultivationDate = cultivationDate;
+    }
+
+    public String getGeneralAnnotation() {
+        return generalAnnotation;
+    }
+
+    public void setGeneralAnnotation(String generalAnnotation) {
+        this.generalAnnotation = generalAnnotation;
+    }
+
+    public PhenologyResult getPhenology() {
+        return phenology;
+    }
+
+    public void setPhenology(PhenologyResult phenology) {
+        this.phenology = phenology;
     }
 
 }

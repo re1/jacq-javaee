@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{organisationEditController.edit}" />
+                        <p:commandButton value="#{messages['create']}" actionListener="#{organisationEditController.saveMessage}" update="jacq_form:messages" action="#{organisationEditController.edit}" />
                     </div>
                 </div>
             </h:form>

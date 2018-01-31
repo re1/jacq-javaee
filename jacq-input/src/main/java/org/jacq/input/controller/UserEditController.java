@@ -18,8 +18,10 @@ package org.jacq.input.controller;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.jacq.common.model.rest.EmploymentTypeResult;
 import org.jacq.common.model.rest.GroupResult;
@@ -130,6 +132,12 @@ public class UserEditController {
 
     public void setSelectedGroupIds(List<String> selectedGroupIds) {
         this.selectedGroupIds = selectedGroupIds;
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 
 }

@@ -17,8 +17,10 @@ package org.jacq.input.controller;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
@@ -26,6 +28,7 @@ import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
@@ -70,6 +73,7 @@ public class LivingPlantEditController {
     protected ScientificNameInformationResult scientificNameInformationResult;
 
     protected List<HabitusTypeResult> habitusTypes;
+    protected List<PhenologyResult> phenologies;
 
     @PostConstruct
     public void init() {
@@ -80,6 +84,7 @@ public class LivingPlantEditController {
         this.livingPlantResult = new LivingPlantResult();
 
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
+        this.phenologies = this.derivativeService.findAllPhenology();
     }
 
     /**
@@ -95,6 +100,12 @@ public class LivingPlantEditController {
 
         // load scientific name information
         this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationLoad(this.livingPlantResult.getScientificNameId());
+    }
+
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("", ""));
     }
 
     public void addCultivar() {
@@ -184,6 +195,10 @@ public class LivingPlantEditController {
 
     public List<HabitusTypeResult> getHabitusTypes() {
         return habitusTypes;
+    }
+
+    public List<PhenologyResult> getPhenologies() {
+        return phenologies;
     }
 
 }

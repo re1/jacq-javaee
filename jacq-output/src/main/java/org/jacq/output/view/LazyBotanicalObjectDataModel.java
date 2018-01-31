@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
-import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.output.SearchService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -34,7 +34,7 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     /**
      * Reference to botanical object service which is used during querying
      */
-    protected DerivativeService derivativeService;
+    protected SearchService searchService;
 
     /**
      * Internal storage of result list
@@ -56,8 +56,8 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
      */
     protected Boolean hasImage;
 
-    public LazyBotanicalObjectDataModel(DerivativeService derivativeService) {
-        this.derivativeService = derivativeService;
+    public LazyBotanicalObjectDataModel(SearchService searchService) {
+        this.searchService = searchService;
     }
 
     @Override
@@ -82,12 +82,12 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
         //int rowCount = this.derivativeService.count(getScientificName(), getOrganization(), hasImage);
-        int rowCount = this.derivativeService.count(null, null, null, null, null, null, null);
+        int rowCount = this.searchService.count(null, null, null, null, null, null, null);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(null, null, null, null, null, null, null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.searchService.find(null, null, null, null, null, null, null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

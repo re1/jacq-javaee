@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{inventoryEditController.edit}" ajax="false" />
+                        <p:commandButton value="#{messages['create']}" actionListener="#{inventoryEditController.saveMessage}" update="jacq_form:messages" action="#{inventoryEditController.edit}" ajax="false" />
                     </div>
                 </div>
             </h:form>

@@ -40,7 +40,7 @@ public class SearchController implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getDerivativeService());
+        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getSearchService());
     }
 
     public String getScientificName() {

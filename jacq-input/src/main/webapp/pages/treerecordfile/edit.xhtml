@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" action="#{treeRecordFileEditController.edit}" ajax="false" />
+                        <p:commandButton value="#{messages['create']}" actionListener="#{treeRecordFileEditController.saveMessage}" update="jacq_form:messages" action="#{treeRecordFileEditController.edit}" ajax="false" />
                     </div>
                 </div>
             </h:form>
