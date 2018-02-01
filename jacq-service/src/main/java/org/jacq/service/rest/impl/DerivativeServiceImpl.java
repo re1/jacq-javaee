@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
+import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.rest.DerivativeService;
@@ -74,6 +75,14 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public List<PhenologyResult> findAllPhenology() {
         return derivativeManager.findAllPhenology();
+    }
+
+    /**
+     * @see DerivativeService#findAllIdentStatus()
+     */
+    @Override
+    public List<IdentStatusResult> findAllIdentStatus() {
+        return derivativeManager.findAllIdentStatus();
     }
 
 }

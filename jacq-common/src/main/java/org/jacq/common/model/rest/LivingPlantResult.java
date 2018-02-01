@@ -68,10 +68,19 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<AcquistionEventSourceResult> acquistionEventSources;
 
+    protected Boolean redetermine;
+    protected Date determinationDate;
+    protected IdentStatusResult identStatus;
+    protected PersonResult determinedBy;
+    protected Boolean phytoControl;
+    protected Boolean bgci;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
         this.cultivar = new CultivarResult();
+        this.identStatus = new IdentStatusResult();
+        this.determinedBy = new PersonResult();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -102,6 +111,13 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
         this.price = tblLivingPlant.getTblDerivative().getPrice();
         this.recordingDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getRecordingDate();
+        this.redetermine = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getRedetermine();
+        this.determinationDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminationDate();
+        this.identStatus = new IdentStatusResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getIdentStatusId());
+        this.determinedBy = new PersonResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminedById());
+        this.phytoControl = tblLivingPlant.getPhytoControl();
+        this.bgci = tblLivingPlant.getBgci();
+
         try {
             this.incomingDate = acquisitionDateFormat.parse(
                     String.format(
@@ -427,6 +443,54 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
         this.acquistionEventSources = acquistionEventSources;
+    }
+
+    public Boolean getRedetermine() {
+        return redetermine;
+    }
+
+    public void setRedetermine(Boolean redetermine) {
+        this.redetermine = redetermine;
+    }
+
+    public Date getDeterminationDate() {
+        return determinationDate;
+    }
+
+    public void setDeterminationDate(Date determinationDate) {
+        this.determinationDate = determinationDate;
+    }
+
+    public IdentStatusResult getIdentStatus() {
+        return identStatus;
+    }
+
+    public void setIdentStatus(IdentStatusResult identStatus) {
+        this.identStatus = identStatus;
+    }
+
+    public PersonResult getDeterminedBy() {
+        return determinedBy;
+    }
+
+    public void setDeterminedBy(PersonResult determinedBy) {
+        this.determinedBy = determinedBy;
+    }
+
+    public Boolean getPhytoControl() {
+        return phytoControl;
+    }
+
+    public void setPhytoControl(Boolean phytoControl) {
+        this.phytoControl = phytoControl;
+    }
+
+    public Boolean getBgci() {
+        return bgci;
+    }
+
+    public void setBgci(Boolean bgci) {
+        this.bgci = bgci;
     }
 
 }

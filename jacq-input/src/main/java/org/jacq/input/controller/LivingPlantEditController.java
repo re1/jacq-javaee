@@ -27,6 +27,7 @@ import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
+import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -75,6 +76,7 @@ public class LivingPlantEditController {
 
     protected List<HabitusTypeResult> habitusTypes;
     protected List<PhenologyResult> phenologies;
+    protected List<IdentStatusResult> identStatus;
 
     @PostConstruct
     public void init() {
@@ -86,6 +88,7 @@ public class LivingPlantEditController {
 
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
+        this.identStatus = this.derivativeService.findAllIdentStatus();
     }
 
     /**
@@ -208,6 +211,10 @@ public class LivingPlantEditController {
 
     public List<PhenologyResult> getPhenologies() {
         return phenologies;
+    }
+
+    public List<IdentStatusResult> getIdentStatus() {
+        return identStatus;
     }
 
 }

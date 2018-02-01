@@ -24,12 +24,14 @@ import javax.transaction.Transactional;
 import org.jacq.common.manager.DerivativeSearchManager;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
+import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
+import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -107,5 +109,15 @@ public class DerivativeManager extends DerivativeSearchManager {
         TypedQuery<TblPhenology> phenologyQuery = em.createNamedQuery("TblPhenology.findAll", TblPhenology.class);
 
         return PhenologyResult.fromList(phenologyQuery.getResultList());
+    }
+
+    /**
+     * @see DerivativeService#findAllIdentStatus()
+     */
+    @Transactional
+    public List<IdentStatusResult> findAllIdentStatus() {
+        TypedQuery<TblIdentStatus> identStatusQuery = em.createNamedQuery("TblIdentStatus.findAll", TblIdentStatus.class);
+
+        return IdentStatusResult.fromList(identStatusQuery.getResultList());
     }
 }

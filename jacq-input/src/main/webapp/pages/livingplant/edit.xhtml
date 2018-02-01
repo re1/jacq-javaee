@@ -595,7 +595,7 @@
                                         <h:outputText value="#{messages['livingplant.redetermine']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="redetermine" />
+                                        <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.redetermine}" />
                                     </div>
                                 </div>
                             </div>
@@ -605,20 +605,18 @@
                                         <h:outputText value="#{messages['livingplant.determinedate']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="determinedate">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
-                                        </p:selectOneMenu>
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.determinationDate}" pattern="dd-MM-yyyy" mask="true" />
                                     </div>
                                 </div>
                             </div>
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.determiningstatus']}" />
+                                        <h:outputText value="#{messages['livingplant.ident_status']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="determiningstatus">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.identStatus.identStatusId}">
+                                            <f:selectItems value="#{livingPlantEditController.identStatus}" var="identStatus" itemLabel="#{identStatus.status}" itemValue="#{identStatus.identStatusId}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -629,9 +627,7 @@
                                         <h:outputText value="#{messages['livingplant.determineby']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="determineby">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
-                                        </p:selectOneMenu>
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.determinedBy.name}" />
                                     </div>
                                 </div>
                             </div>
@@ -707,7 +703,7 @@
                                         <h:outputText value="#{messages['livingplant.phytocontrol']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="phytocontrol" />
+                                        <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.phytoControl}" />
                                     </div>
                                 </div>
                             </div>
@@ -717,7 +713,7 @@
                                         <h:outputText value="#{messages['livingplant.bgci']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="bgci" />
+                                        <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.bgci}" />
                                     </div>
                                 </div>
                             </div>
