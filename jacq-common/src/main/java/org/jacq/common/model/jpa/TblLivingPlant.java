@@ -25,7 +25,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -126,12 +128,15 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "has_public_image")
     private boolean hasPublicImage;
+    @JoinTable(name = "tbl_relevancy", joinColumns = {
+        @JoinColumn(name = "living_plant_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TblRelevancyType> tblRelevancyTypeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private List<TblRelevancy> tblRelevancyList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
@@ -298,6 +303,15 @@ public class TblLivingPlant implements Serializable {
     }
 
     @XmlTransient
+    public List<TblRelevancyType> getTblRelevancyTypeList() {
+        return tblRelevancyTypeList;
+    }
+
+    public void setTblRelevancyTypeList(List<TblRelevancyType> tblRelevancyTypeList) {
+        this.tblRelevancyTypeList = tblRelevancyTypeList;
+    }
+
+    @XmlTransient
     public List<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberList() {
         return tblAlternativeAccessionNumberList;
     }
@@ -313,15 +327,6 @@ public class TblLivingPlant implements Serializable {
 
     public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
         this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
-    }
-
-    @XmlTransient
-    public List<TblRelevancy> getTblRelevancyList() {
-        return tblRelevancyList;
-    }
-
-    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
-        this.tblRelevancyList = tblRelevancyList;
     }
 
     @XmlTransient
