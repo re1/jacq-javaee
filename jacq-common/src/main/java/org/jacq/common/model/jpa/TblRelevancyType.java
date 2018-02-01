@@ -18,16 +18,15 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -61,8 +60,8 @@ public class TblRelevancyType implements Serializable {
     @NotNull
     @Column(name = "important")
     private boolean important;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "relevancyTypeId", fetch = FetchType.LAZY)
-    private List<TblRelevancy> tblRelevancyList;
+    @ManyToMany(mappedBy = "tblRelevancyTypeList", fetch = FetchType.LAZY)
+    private List<TblLivingPlant> tblLivingPlantList;
 
     public TblRelevancyType() {
     }
@@ -101,12 +100,12 @@ public class TblRelevancyType implements Serializable {
     }
 
     @XmlTransient
-    public List<TblRelevancy> getTblRelevancyList() {
-        return tblRelevancyList;
+    public List<TblLivingPlant> getTblLivingPlantList() {
+        return tblLivingPlantList;
     }
 
-    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
-        this.tblRelevancyList = tblRelevancyList;
+    public void setTblLivingPlantList(List<TblLivingPlant> tblLivingPlantList) {
+        this.tblLivingPlantList = tblLivingPlantList;
     }
 
     @Override
