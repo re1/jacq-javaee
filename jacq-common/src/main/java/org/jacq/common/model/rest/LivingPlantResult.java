@@ -75,6 +75,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected Boolean phytoControl;
     protected Boolean bgci;
 
+    protected List<RelevancyTypeResult> relevancyTypes;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -133,6 +135,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.generalAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAnnotation();
         this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
+        this.relevancyTypes = RelevancyTypeResult.fromList(tblLivingPlant.getTblRelevancyTypeList());
 
         if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
             this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
@@ -491,6 +494,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setBgci(Boolean bgci) {
         this.bgci = bgci;
+    }
+
+    public List<RelevancyTypeResult> getRelevancyTypes() {
+        return relevancyTypes;
+    }
+
+    public void setRelevancyTypes(List<RelevancyTypeResult> relevancyTypes) {
+        this.relevancyTypes = relevancyTypes;
     }
 
 }

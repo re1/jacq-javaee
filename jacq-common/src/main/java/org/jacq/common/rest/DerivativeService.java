@@ -29,6 +29,7 @@ import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
+import org.jacq.common.model.rest.RelevancyTypeResult;
 
 /**
  * Main service for searching derivatives
@@ -132,4 +133,26 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<IdentStatusResult> findAllIdentStatus();
+
+    /**
+     * Get a list of all non-important relevancy types
+     *
+     * @return
+     */
+    @GET
+    @Path("/relevancyType/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<RelevancyTypeResult> findAllRelevancyTypes();
+
+    /**
+     * Get a list of all important relevancy types
+     *
+     * @return
+     */
+    @GET
+    @Path("/relevancyType/findAllImportant")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<RelevancyTypeResult> findAllImportantRelevancyTypes();
 }

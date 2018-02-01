@@ -28,6 +28,7 @@ import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblPhenology;
+import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
@@ -35,6 +36,7 @@ import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
+import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.JacqServiceConfig;
 
@@ -119,5 +121,33 @@ public class DerivativeManager extends DerivativeSearchManager {
         TypedQuery<TblIdentStatus> identStatusQuery = em.createNamedQuery("TblIdentStatus.findAll", TblIdentStatus.class);
 
         return IdentStatusResult.fromList(identStatusQuery.getResultList());
+    }
+
+    /**
+     * @see DerivativeService#findAllRelevancyTypes()
+     */
+    public List<RelevancyTypeResult> findAllRelevancyTypes() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(false));
+    }
+
+    /**
+     * @see DerivativeService#findAllImportantRelevancyTypes()
+     */
+    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(true));
+    }
+
+    /**
+     * Small helper function for fetching relevancy type based on important parameter
+     *
+     * @param important
+     * @return
+     */
+    @Transactional
+    protected List<TblRelevancyType> findAllRelevancyTypes(boolean important) {
+        TypedQuery<TblRelevancyType> relevancyTypeQuery = em.createNamedQuery("TblRelevancyType.findByImportant", TblRelevancyType.class);
+        relevancyTypeQuery.setParameter("important", important);
+
+        return relevancyTypeQuery.getResultList();
     }
 }

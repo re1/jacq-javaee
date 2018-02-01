@@ -631,53 +631,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g-12 ui-g-nopad">
                                 <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.research']}" />
+                                    <div class="ui-g-3">
+                                        <h:outputText value="#{messages['livingplant.relevancy']}" />
                                     </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="research" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.historical']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="historical" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.doctrine']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="doctrine" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.naturalreserve']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="naturalreserve" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.public']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="public" />
+                                    <div class="ui-g-9">
+                                        <p:selectManyCheckbox value="#{livingPlantEditController.livingPlantResult.relevancyTypes}">
+                                            <f:selectItems value="#{livingPlantEditController.relevancyTypes}" var="relevancyType" itemLabel="#{relevancyType.type}" itemValue="#{relevancyType}" />
+                                        </p:selectManyCheckbox>
                                     </div>
                                 </div>
                             </div>

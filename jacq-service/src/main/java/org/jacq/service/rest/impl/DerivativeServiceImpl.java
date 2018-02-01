@@ -25,6 +25,7 @@ import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
+import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -83,6 +84,22 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public List<IdentStatusResult> findAllIdentStatus() {
         return derivativeManager.findAllIdentStatus();
+    }
+
+    /**
+     * @see DerivativeService#findAllRelevancyTypes()
+     */
+    @Override
+    public List<RelevancyTypeResult> findAllRelevancyTypes() {
+        return derivativeManager.findAllRelevancyTypes();
+    }
+
+    /**
+     * @see DerivativeService#findAllImportantRelevancyTypes()
+     */
+    @Override
+    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
+        return derivativeManager.findAllImportantRelevancyTypes();
     }
 
 }
