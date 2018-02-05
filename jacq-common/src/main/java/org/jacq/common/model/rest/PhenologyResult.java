@@ -32,8 +32,10 @@ public class PhenologyResult {
     }
 
     public PhenologyResult(TblPhenology tblPhenology) {
-        this.phenologyId = tblPhenology.getId();
-        this.phenology = tblPhenology.getPhenology();
+        if (tblPhenology != null) {
+            this.phenologyId = tblPhenology.getId();
+            this.phenology = tblPhenology.getPhenology();
+        }
     }
 
     public Long getPhenologyId() {
@@ -53,7 +55,8 @@ public class PhenologyResult {
     }
 
     /**
-     * Helper function for converting a list of phenology entries to phenology results
+     * Helper function for converting a list of phenology entries to phenology
+     * results
      *
      * @param phenologyList
      * @return
