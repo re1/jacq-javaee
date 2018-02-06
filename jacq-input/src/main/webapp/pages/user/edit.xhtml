@@ -14,7 +14,7 @@
             <h:form>
                 <div class="jacq-content">
                     <div class="jacq-content-header">
-                        <h1>#{messages['user.usercreate']}</h1>
+                        <h1>#{messages['user']} #{(userEditController.user.id == null) ? messages['create'] : messages['edit']}</h1>
                     </div>
                     <div class="ui-g">
                         <div class="ui-g-6 ui-g-nopad">
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" actionListener="#{userEditController.saveMessage}" update="jacq_form:messages" action="#{userEditController.edit}" />
+                        <p:commandButton value="#{(userEditController.user.id == null) ? messages['create'] : messages['edit']}" actionListener="#{userEditController.saveMessage}" update="jacq_form:messages" action="#{userEditController.edit}" />
                     </div>
                 </div>
             </h:form>

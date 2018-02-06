@@ -15,9 +15,12 @@
  */
 package org.jacq.input.controller;
 
+import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
 import org.jacq.input.SessionManager;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.jacq.common.manager.JacqConfig;
 import org.jacq.input.ApplicationManager;
@@ -47,5 +50,12 @@ public class SessionController {
 
     public Long getIndetId() {
         return applicationManager.getJacqPortalConfig().getLong(JacqConfig.GENERAL_INDET_ID);
+    }
+
+    public void setGrowlMessage(String title, String message) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle messages = ResourceBundle.getBundle("org.jacq.messages", sessionManager.getLanguage());
+
+        context.addMessage(null, new FacesMessage(messages.getString(title), messages.getString(message)));
     }
 }

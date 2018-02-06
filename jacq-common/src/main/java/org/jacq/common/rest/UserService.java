@@ -106,6 +106,18 @@ public interface UserService {
     public UserResult save(UserResult userResult);
 
     /**
+     * Update Password Single User entry
+     *
+     * @param password
+     * @return
+     */
+    @POST
+    @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResult update(@QueryParam("password") String password);
+
+    /**
      * Retrieve a list of all usertype entries
      *
      * @return

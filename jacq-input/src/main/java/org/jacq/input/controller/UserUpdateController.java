@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 fhafner.
+ * Copyright 2018 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import org.jacq.common.model.rest.IndexSeminumResult;
-import org.jacq.common.rest.IndexSeminumService;
+import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.rest.UserService;
 import org.jacq.input.util.ServicesUtil;
 
 /**
@@ -29,42 +29,49 @@ import org.jacq.input.util.ServicesUtil;
  */
 @ManagedBean
 @ViewScoped
-public class IndexSeminumEditController {
+public class UserUpdateController {
 
     @Inject
     protected SessionController sessionController;
 
-    protected Long indexSeminumId;
+    protected String newPassword;
+    protected String newPasswordValidate;
 
-    protected IndexSeminumResult indexSeminum;
+    protected UserResult user;
 
-    protected IndexSeminumService indexSeminumService;
+    protected UserService userService;
 
     @PostConstruct
     public void init() {
+        this.userService = ServicesUtil.getUserService();
 
-        this.indexSeminumService = ServicesUtil.getIndexSeminumService();
-
-        this.indexSeminum = new IndexSeminumResult();
+        this.user = new UserResult();
 
     }
 
-    public String edit() {
-        this.indexSeminum = this.indexSeminumService.save(this.indexSeminum);
-
+    public String update() {
+        if (!this.newPasswordValidate.isEmpty() && this.newPassword.equals(this.newPasswordValidate)) {
+            this.user = this.userService.update(this.newPassword);
+        } else {
+            sessionController.setGrowlMessage("error", "entrynotsaved");
+        }
         return null;
     }
 
-    public IndexSeminumResult getIndexSeminum() {
-        return indexSeminum;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public Long getIndexSeminumId() {
-        return indexSeminumId;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
-    public void setIndexSeminumId(Long indexSeminumId) {
-        this.indexSeminumId = indexSeminumId;
+    public String getNewPasswordValidate() {
+        return newPasswordValidate;
+    }
+
+    public void setNewPasswordValidate(String newPasswordValidate) {
+        this.newPasswordValidate = newPasswordValidate;
     }
 
     public void saveMessage() {

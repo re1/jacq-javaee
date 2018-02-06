@@ -21,10 +21,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -40,6 +39,9 @@ import org.primefaces.model.UploadedFile;
 @ManagedBean
 @ViewScoped
 public class InventoryEditController {
+
+    @Inject
+    protected SessionController sessionController;
 
     private static final Logger LOGGER = Logger.getLogger(TreeRecordFileEditController.class.getName());
 
@@ -113,9 +115,7 @@ public class InventoryEditController {
     }
 
     public void saveMessage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        context.addMessage(null, new FacesMessage("", ""));
+        sessionController.setGrowlMessage("successful", "entrysaved");
     }
 
 }
