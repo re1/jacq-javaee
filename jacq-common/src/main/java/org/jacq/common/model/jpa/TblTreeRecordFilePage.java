@@ -61,7 +61,7 @@ public class TblTreeRecordFilePage implements Serializable {
     @Column(name = "page")
     private long page;
     @Lob
-    @Size(max = 65535)
+    @Size(max = 2147483647)
     @Column(name = "content")
     private String content;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treeRecordFilePageId", fetch = FetchType.LAZY)
