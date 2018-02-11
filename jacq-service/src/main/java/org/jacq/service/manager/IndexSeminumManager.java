@@ -43,7 +43,6 @@ import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.service.JacqServiceConfig;
-import org.jacq.service.SessionManager;
 
 /**
  *
@@ -55,7 +54,7 @@ public class IndexSeminumManager {
     protected EntityManager em;
 
     @Inject
-    protected SessionManager sessionManager;
+    protected SecurityManager sessionManager;
 
     @Inject
     protected ClassificationManager classificationManager;

@@ -40,7 +40,6 @@ import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.rest.InventoryService;
-import org.jacq.service.SessionManager;
 
 /**
  *
@@ -55,7 +54,7 @@ public class InventoryManager {
     protected EntityManager em;
 
     @Inject
-    protected SessionManager sessionManager;
+    protected SecurityManager sessionManager;
 
     /**
      * @param inventoryResult

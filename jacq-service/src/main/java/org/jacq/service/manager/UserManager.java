@@ -44,7 +44,6 @@ import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkUserType;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.UserService;
-import org.jacq.service.SessionManager;
 
 /**
  *
@@ -53,7 +52,7 @@ import org.jacq.service.SessionManager;
 public class UserManager {
 
     @Inject
-    protected SessionManager sessionManager;
+    protected SecurityManager sessionManager;
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;

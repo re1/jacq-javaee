@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service;
+package org.jacq.service.manager;
 
 import java.io.Serializable;
 import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.service.security.ServiceCallerPrincipal;
 
 /**
+ * Helper Manager for retrieving information from the security context
  *
  * @author wkoller
  */
 @ManagedBean
-@SessionScoped
-public class SessionManager implements Serializable {
+public class SecurityManager implements Serializable {
 
     @Inject
     protected SecurityContext securityContext;

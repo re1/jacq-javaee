@@ -5,7 +5,6 @@
  */
 package org.jacq.service;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
