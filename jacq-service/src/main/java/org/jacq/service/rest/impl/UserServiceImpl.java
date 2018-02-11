@@ -82,4 +82,9 @@ public class UserServiceImpl implements UserService {
         return userManager.authenticate(username, password);
     }
 
+    @Override
+    public UserResult update(String password) {
+        return userManager.update(password);
+    }
+
 }

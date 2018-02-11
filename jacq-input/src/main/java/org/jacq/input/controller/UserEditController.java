@@ -18,11 +18,10 @@ package org.jacq.input.controller;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import org.jacq.common.model.rest.EmploymentTypeResult;
 import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -39,6 +38,9 @@ import org.jacq.input.util.ServicesUtil;
 @ManagedBean
 @ViewScoped
 public class UserEditController {
+
+    @Inject
+    protected SessionController sessionController;
 
     protected Long id;
 
@@ -135,9 +137,7 @@ public class UserEditController {
     }
 
     public void saveMessage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        context.addMessage(null, new FacesMessage("", ""));
+        sessionController.setGrowlMessage("successful", "entrysaved");
     }
 
 }

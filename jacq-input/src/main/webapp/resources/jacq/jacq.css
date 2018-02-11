@@ -32,3 +32,7 @@
 .ui-g-3 {
     min-width: 210px;
 }
+
+.jacq-menu-item {
+    width: auto !important;
+}

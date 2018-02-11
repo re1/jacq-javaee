@@ -18,6 +18,7 @@ package org.jacq.service.manager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -49,6 +50,9 @@ import org.jacq.common.rest.UserService;
  * @author fhafner
  */
 public class UserManager {
+
+    @Inject
+    protected SecurityManager sessionManager;
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
@@ -302,6 +306,15 @@ public class UserManager {
      */
     protected String generateSalt() {
         return RandomStringUtils.randomAlphanumeric(16);
+    }
+
+    @Transactional
+    public UserResult update(String password) {
+        FrmwrkUser frmwrkUser = em.find(FrmwrkUser.class, sessionManager.getUser().getId());
+        frmwrkUser.setSalt(generateSalt());
+        frmwrkUser.setPassword(DigestUtils.sha1Hex(password + DigestUtils.sha1Hex(frmwrkUser.getSalt())));
+        em.merge(frmwrkUser);
+        return new UserResult(frmwrkUser);
     }
 
 }

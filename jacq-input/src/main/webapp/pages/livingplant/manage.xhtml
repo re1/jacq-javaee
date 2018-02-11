@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="jacq-buttons">
-                    <p:commandButton value="#{messages['search']}" update="jacq_livingplant-search" />
+                    <p:commandButton id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
 
                 <div class="ui-g">
@@ -130,7 +130,7 @@
                                 <p:commandButton icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeButton').jq.click();" />
                             </f:facet>
 
-                            <p:column filterBy="" headerText="#{messages['livingplant.scientificname']}">
+                            <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
                                 <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
                             </p:column>
 
@@ -175,6 +175,10 @@
                                 Showing a total of <h:outputText value="#{livingPlantController.dataModel.rowCount}" id="rowCount" /> entries.
                             </f:facet>
                         </p:dataTable>
+
+                        <p:blockUI block="derivativeTable" trigger="derivativeTable searchButton">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
                     </div>
                 </div>
                 <div class="ui-g">

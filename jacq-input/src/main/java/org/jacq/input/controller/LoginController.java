@@ -27,6 +27,7 @@ import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
@@ -76,6 +77,19 @@ public class LoginController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR, "Authentication failed", null));
 
         return null;
+    }
+
+    /**
+     * Logout the user and redirect to login page
+     *
+     * @return
+     * @throws ServletException
+     */
+    public String logout() throws ServletException {
+        this.getRequest().logout();
+        this.getRequest().getSession().invalidate();
+
+        return "login";
     }
 
     public String getUsername() {
