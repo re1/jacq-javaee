@@ -467,7 +467,7 @@ public class DataImportManager {
                 TblSeparationType separationType = separationTypes.get(0);
 
                 TblSeparation separation = new TblSeparation();
-                separation.setBotanicalObjectId(botanicalObject);
+                separation.setDerivativeId(derivative);
                 separation.setSeparationTypeId(separationType);
                 separation.setDate(importRecord.getSeparationDate());
                 separation.setAnnotation(importRecord.getSeparationAnnotation());

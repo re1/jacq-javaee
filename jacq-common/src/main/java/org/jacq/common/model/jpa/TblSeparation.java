@@ -61,12 +61,9 @@ public class TblSeparation implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @JoinColumn(name = "derivative_vegetative_id", referencedColumnName = "vegetative_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblVegetative derivativeVegetativeId;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative derivativeId;
     @JoinColumn(name = "separation_type_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblSeparationType separationTypeId;
@@ -102,20 +99,12 @@ public class TblSeparation implements Serializable {
         this.annotation = annotation;
     }
 
-    public TblVegetative getDerivativeVegetativeId() {
-        return derivativeVegetativeId;
+    public TblDerivative getDerivativeId() {
+        return derivativeId;
     }
 
-    public void setDerivativeVegetativeId(TblVegetative derivativeVegetativeId) {
-        this.derivativeVegetativeId = derivativeVegetativeId;
-    }
-
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
-    }
-
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
+    public void setDerivativeId(TblDerivative derivativeId) {
+        this.derivativeId = derivativeId;
     }
 
     public TblSeparationType getSeparationTypeId() {

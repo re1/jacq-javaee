@@ -17,7 +17,6 @@ package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,7 +36,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -85,14 +82,12 @@ public class TblVegetative implements Serializable {
     @NotNull
     @Column(name = "separated")
     private boolean separated;
-    @OneToMany(mappedBy = "derivativeVegetativeId", fetch = FetchType.LAZY)
-    private List<TblSeparation> tblSeparationList;
-    @JoinColumn(name = "phenology_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TblPhenology phenologyId;
     @JoinColumn(name = "vegetative_id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative tblDerivative;
+    @JoinColumn(name = "phenology_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblPhenology phenologyId;
 
     public TblVegetative() {
     }
@@ -164,13 +159,12 @@ public class TblVegetative implements Serializable {
         this.separated = separated;
     }
 
-    @XmlTransient
-    public List<TblSeparation> getTblSeparationList() {
-        return tblSeparationList;
+    public TblDerivative getTblDerivative() {
+        return tblDerivative;
     }
 
-    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
-        this.tblSeparationList = tblSeparationList;
+    public void setTblDerivative(TblDerivative tblDerivative) {
+        this.tblDerivative = tblDerivative;
     }
 
     public TblPhenology getPhenologyId() {
@@ -179,14 +173,6 @@ public class TblVegetative implements Serializable {
 
     public void setPhenologyId(TblPhenology phenologyId) {
         this.phenologyId = phenologyId;
-    }
-
-    public TblDerivative getTblDerivative() {
-        return tblDerivative;
-    }
-
-    public void setTblDerivative(TblDerivative tblDerivative) {
-        this.tblDerivative = tblDerivative;
     }
 
     @Override
