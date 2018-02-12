@@ -77,6 +77,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<RelevancyTypeResult> relevancyTypes;
 
+    protected List<SeparationResult> separations;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -119,6 +121,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.determinedBy = new PersonResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminedById());
         this.phytoControl = tblLivingPlant.getPhytoControl();
         this.bgci = tblLivingPlant.getBgci();
+        this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
 
         try {
             this.incomingDate = acquisitionDateFormat.parse(
@@ -502,6 +505,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setRelevancyTypes(List<RelevancyTypeResult> relevancyTypes) {
         this.relevancyTypes = relevancyTypes;
+    }
+
+    public List<SeparationResult> getSeparations() {
+        return separations;
+    }
+
+    public void setSeparations(List<SeparationResult> separations) {
+        this.separations = separations;
     }
 
 }

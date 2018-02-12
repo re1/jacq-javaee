@@ -32,6 +32,7 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
+import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -60,8 +61,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -98,8 +98,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -138,6 +138,14 @@ public class LivingPlantEditController {
 
     public void removeAcquisitionEventSource(AcquistionEventSourceResult acquistionEventSourceResult) {
         this.livingPlantResult.getAcquistionEventSources().remove(acquistionEventSourceResult);
+    }
+
+    public void addSeparation() {
+        this.livingPlantResult.getSeparations().add(new SeparationResult());
+    }
+
+    public void removeSeparation(SeparationResult separationResult) {
+        this.livingPlantResult.getSeparations().remove(separationResult);
     }
 
     public Long getDerivativeId() {

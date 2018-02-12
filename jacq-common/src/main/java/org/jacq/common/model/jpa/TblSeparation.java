@@ -52,8 +52,8 @@ public class TblSeparation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "separation_id")
+    private Long separationId;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -72,15 +72,15 @@ public class TblSeparation implements Serializable {
     }
 
     public TblSeparation(Long id) {
-        this.id = id;
+        this.separationId = id;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSeparationId() {
+        return separationId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSeparationId(Long separationId) {
+        this.separationId = separationId;
     }
 
     public Date getDate() {
@@ -118,7 +118,7 @@ public class TblSeparation implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (separationId != null ? separationId.hashCode() : 0);
         return hash;
     }
 
@@ -129,7 +129,7 @@ public class TblSeparation implements Serializable {
             return false;
         }
         TblSeparation other = (TblSeparation) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.separationId == null && other.separationId != null) || (this.separationId != null && !this.separationId.equals(other.separationId))) {
             return false;
         }
         return true;
@@ -137,7 +137,7 @@ public class TblSeparation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblSeparation[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblSeparation[ id=" + separationId + " ]";
     }
 
 }
