@@ -18,7 +18,10 @@ package org.jacq.service.manager;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.jacq.common.manager.DerivativeSearchManager;
@@ -56,13 +59,24 @@ public class DerivativeManager extends DerivativeSearchManager {
     @Inject
     protected JacqServiceConfig jacqConfig;
 
+    @PersistenceContext
+    protected EntityManager em;
+
+    /**
+     * Initialize bean and make sure abstract base class has entity manager
+     */
+    @PostConstruct
+    public void init() {
+        this.setEntityManager(em);
+    }
+
     /**
      * @see DerivativeService#load(java.lang.Long, java.lang.String)
      */
     @Transactional
     public BotanicalObjectDerivative load(Long derivativeId, String type) {
         if (LivingPlantResult.LIVING.equalsIgnoreCase(type)) {
-            TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, derivativeId);
+            TblLivingPlant tblLivingPlant = entityManager.find(TblLivingPlant.class, derivativeId);
             if (tblLivingPlant != null) {
                 return new LivingPlantResult(tblLivingPlant);
             }
@@ -93,9 +107,9 @@ public class DerivativeManager extends DerivativeSearchManager {
         List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
-            TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
+            TblDerivative dervivative = entityManager.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
             TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
-            ViewProtolog protolog = em.find(ViewProtolog.class, classification.getSourceId());
+            ViewProtolog protolog = entityManager.find(ViewProtolog.class, classification.getSourceId());
             BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, classification, protolog);
             botanicalObjectDownloadResultList.add(botanicalObjectDownloadResult);
         }
@@ -108,7 +122,7 @@ public class DerivativeManager extends DerivativeSearchManager {
      */
     @Transactional
     public List<PhenologyResult> findAllPhenology() {
-        TypedQuery<TblPhenology> phenologyQuery = em.createNamedQuery("TblPhenology.findAll", TblPhenology.class);
+        TypedQuery<TblPhenology> phenologyQuery = entityManager.createNamedQuery("TblPhenology.findAll", TblPhenology.class);
 
         return PhenologyResult.fromList(phenologyQuery.getResultList());
     }
@@ -118,7 +132,7 @@ public class DerivativeManager extends DerivativeSearchManager {
      */
     @Transactional
     public List<IdentStatusResult> findAllIdentStatus() {
-        TypedQuery<TblIdentStatus> identStatusQuery = em.createNamedQuery("TblIdentStatus.findAll", TblIdentStatus.class);
+        TypedQuery<TblIdentStatus> identStatusQuery = entityManager.createNamedQuery("TblIdentStatus.findAll", TblIdentStatus.class);
 
         return IdentStatusResult.fromList(identStatusQuery.getResultList());
     }
@@ -145,7 +159,7 @@ public class DerivativeManager extends DerivativeSearchManager {
      */
     @Transactional
     protected List<TblRelevancyType> findAllRelevancyTypes(boolean important) {
-        TypedQuery<TblRelevancyType> relevancyTypeQuery = em.createNamedQuery("TblRelevancyType.findByImportant", TblRelevancyType.class);
+        TypedQuery<TblRelevancyType> relevancyTypeQuery = entityManager.createNamedQuery("TblRelevancyType.findByImportant", TblRelevancyType.class);
         relevancyTypeQuery.setParameter("important", important);
 
         return relevancyTypeQuery.getResultList();

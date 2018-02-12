@@ -30,10 +30,9 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs Note: Make sure the entity manager is set prior calling any functions
  *
  * @author wkoller
  */
@@ -56,12 +55,15 @@ public abstract class DerivativeSearchManager {
     protected static final String FILTER_SCIENTIFIC_NAME_ID = "`scientific_name_id` = ?";
     protected static final String FILTER_ORGANISATION_ID = "`organisation_id` = ?";
 
-    protected EntityManager em;
+    protected EntityManager entityManager;
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -85,7 +87,7 @@ public abstract class DerivativeSearchManager {
             }
         }
 
-        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString, BotanicalObjectDerivative.class);
+        Query botanicalObjectSearchQuery = entityManager.createNativeQuery(botanicalObjectSearchQueryString, BotanicalObjectDerivative.class);
         for (int i = 0; i < params.size(); i++) {
             botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
         }
@@ -120,7 +122,7 @@ public abstract class DerivativeSearchManager {
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
-        Query botanicalObjectSearchQuery = em.createNativeQuery(botanicalObjectSearchQueryString);
+        Query botanicalObjectSearchQuery = entityManager.createNativeQuery(botanicalObjectSearchQueryString);
         for (int i = 0; i < params.size(); i++) {
             botanicalObjectSearchQuery.setParameter(i + 1, params.get(i));
         }
@@ -185,9 +187,11 @@ public abstract class DerivativeSearchManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        } else if (offset != null) {
+        }
+        else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        } else if (count != null) {
+        }
+        else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -195,8 +199,7 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a
-     * given column attribute name
+     * Helper function for retrieving the actual database column name for a given column attribute name
      *
      * @param attributeName
      * @return
