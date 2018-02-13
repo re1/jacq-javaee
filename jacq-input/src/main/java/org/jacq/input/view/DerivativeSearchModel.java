@@ -36,6 +36,7 @@ public class DerivativeSearchModel implements Serializable {
     protected Long id = null;
     protected String type;
     protected Boolean separatedFilter;
+    protected Boolean hierarchic;
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
 
@@ -129,6 +130,14 @@ public class DerivativeSearchModel implements Serializable {
         } else {
             this.scientificNameId = null;
         }
+    }
+
+    public Boolean getHierarchic() {
+        return hierarchic;
+    }
+
+    public void setHierarchic(Boolean hierarchic) {
+        this.hierarchic = hierarchic;
     }
 
 }

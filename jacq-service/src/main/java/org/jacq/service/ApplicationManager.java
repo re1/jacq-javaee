@@ -5,6 +5,8 @@
  */
 package org.jacq.service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -23,6 +25,8 @@ public class ApplicationManager {
 
     private static final Logger LOGGER = Logger.getLogger(ApplicationManager.class.getName());
 
+    HashMap<Long, List<Long>> organisationHierachyCache;
+
     /**
      * Application scoped timer manager for running schedulded jobs
      */
@@ -34,6 +38,7 @@ public class ApplicationManager {
      */
     @PostConstruct
     public void init() {
+        this.organisationHierachyCache = new HashMap<>();
     }
 
     /**
@@ -41,5 +46,14 @@ public class ApplicationManager {
      */
     @PreDestroy
     public void destroy() {
+    }
+
+    public void addOrganisationHierachyCache(Long organisationId, List<Long> organisationIdList) {
+
+    }
+
+    public List<Long> findOrganisationHierachyCache(Long organisationId) {
+
+        return null;
     }
 }

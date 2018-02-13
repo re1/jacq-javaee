@@ -30,6 +30,8 @@ import org.primefaces.model.SortOrder;
  */
 public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult> {
 
+    protected Boolean hierarchic;
+
     /**
      * Reference to organisation service which is used during querying
      */
@@ -95,4 +97,5 @@ public class LazyOrganisationDataModel extends LazyDataModel<OrganisationResult>
 
         return results;
     }
+
 }

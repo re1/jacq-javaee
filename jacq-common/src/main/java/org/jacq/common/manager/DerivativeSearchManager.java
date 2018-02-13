@@ -17,6 +17,7 @@ package org.jacq.common.manager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,15 +25,19 @@ import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs Note: Make sure the entity manager is set prior calling any functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs Note: Make sure the entity manager is set prior calling any
+ * functions
  *
  * @author wkoller
  */
@@ -53,7 +58,7 @@ public abstract class DerivativeSearchManager {
     protected static final String FILTER_ACCESSIONNUMBER = "`accession_number` = ?";
     protected static final String FILTER_SEPARATED = "`separated` = ?";
     protected static final String FILTER_SCIENTIFIC_NAME_ID = "`scientific_name_id` = ?";
-    protected static final String FILTER_ORGANISATION_ID = "`organisation_id` = ?";
+    protected static final String FILTER_ORGANISATION_ID = "`organisation_id` in (?)";
 
     protected EntityManager entityManager;
 
@@ -62,19 +67,30 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    @Transactional
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
+
+        List<Long> organisationIdList = new ArrayList<>();
+        // organisation List for hierarchic
+        if (hierarchic != null && organisationId != null) {
+            if (hierarchic == true) {
+                organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+            }
+            organisationIdList.add(organisationId);
+        }
 
         // translate order column into database column
         orderColumn = getColumnName(orderColumn);
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, orderColumn, orderDirection, offset, count);
 
         String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
@@ -113,12 +129,22 @@ public abstract class DerivativeSearchManager {
      * @param derivativeId
      * @return
      */
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId) {
+    @Transactional
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic) {
         List<Object> params = new ArrayList<>();
 
+        List<Long> organisationIdList = new ArrayList<>();
+        // organisation List for hierarchic
+        if (hierarchic != null && organisationId != null) {
+            if (hierarchic == true) {
+                organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+            }
+            organisationIdList.add(organisationId);
+        }
+
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null, null, null, null);
-        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null, null, null, null);
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, null, null, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, null, null, null, null);
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
@@ -141,7 +167,7 @@ public abstract class DerivativeSearchManager {
      * @param count
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -169,9 +195,19 @@ public abstract class DerivativeSearchManager {
             queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID;
             params.add(scientificNameId);
         }
-        if (organisationId != null) {
+        if (organisationIdList != null && organisationIdList.size() > 0) {
             queryString += " AND " + FILTER_ORGANISATION_ID;
-            params.add(organisationId);
+            int i = 0;
+            String organisationIds = "";
+            while (i < organisationIdList.size()) {
+                if (i != organisationIdList.size()) {
+                    organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
+                } else {
+                    organisationIds = organisationIds + organisationIdList.get(i).toString();
+                }
+                i++;
+            }
+            params.add(organisationIds);
         }
 
         // apply order
@@ -187,11 +223,9 @@ public abstract class DerivativeSearchManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        }
-        else if (offset != null) {
+        } else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        }
-        else if (count != null) {
+        } else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -199,7 +233,8 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a given column attribute name
+     * Helper function for retrieving the actual database column name for a
+     * given column attribute name
      *
      * @param attributeName
      * @return
@@ -219,6 +254,23 @@ public abstract class DerivativeSearchManager {
         }
 
         return null;
+    }
+
+    /**
+     * Find all childs to the Head of the organisation Tree Recursiv
+     *
+     * @param tblOrganisation
+     * @return
+     */
+    @Transactional
+    protected List<Long> findChildren(TblOrganisation tblOrganisation) {
+        List<Long> organisationIdList = new ArrayList<>();
+        for (TblOrganisation organisation : tblOrganisation.getTblOrganisationList()) {
+            organisationIdList.add(organisation.getId());
+            organisationIdList.addAll(findChildren(organisation));
+        }
+        return organisationIdList;
+
     }
 
 }

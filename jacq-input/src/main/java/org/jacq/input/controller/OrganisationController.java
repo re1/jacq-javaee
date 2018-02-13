@@ -41,16 +41,8 @@ public class OrganisationController implements Serializable {
     }
 
     /**
-     * Execute search using the provided filters and redirect to result list
-     *
-     * @return
-     */
-    public String search() {
-        return "manage";
-    }
-
-    /**
-     * Noop action listener for refreshing the row count after loading the data-table
+     * Noop action listener for refreshing the row count after loading the
+     * data-table
      *
      * @return
      */
@@ -86,4 +78,5 @@ public class OrganisationController implements Serializable {
     public void setSelectedBirthdate(Date selectedBirthdate) {
         this.selectedBirthdate = selectedBirthdate;
     }
+
 }

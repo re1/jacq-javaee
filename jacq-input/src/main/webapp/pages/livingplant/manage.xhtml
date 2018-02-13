@@ -28,18 +28,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui-g-6 ui-g-nopad">
+                    <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
-                            <div class="ui-g-6">
+                            <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
-                            <div class="ui-g-6">
+                            <div class="ui-g-3">
                                 <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
                                                 var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter">
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                                     </p:column>
                                 </p:autoComplete>
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.hierarchic']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.hierarchic}" />
                             </div>
                         </div>
                     </div>

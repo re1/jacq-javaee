@@ -90,7 +90,7 @@ public class IndexSeminumManager {
         }
 
         //Find all Organisation childs for a complet Botanical Object List
-        List<TblOrganisation> organisationList = findchilds(tblOrganisation);
+        List<TblOrganisation> organisationList = findChildren(tblOrganisation);
         organisationList.add(tblOrganisation);
 
         // Load the BotanicalObject list with Organisation Id in List
@@ -211,11 +211,11 @@ public class IndexSeminumManager {
      * @param tblOrganisation
      * @return
      */
-    protected List<TblOrganisation> findchilds(TblOrganisation tblOrganisation) {
+    protected List<TblOrganisation> findChildren(TblOrganisation tblOrganisation) {
         List<TblOrganisation> organisationIdList = new ArrayList<>();
         for (TblOrganisation organisation : tblOrganisation.getTblOrganisationList()) {
             organisationIdList.add(organisation);
-            organisationIdList.addAll(findchilds(organisation));
+            organisationIdList.addAll(findChildren(organisation));
         }
         return organisationIdList;
 
@@ -266,6 +266,7 @@ public class IndexSeminumManager {
         return em.createQuery(cq).getSingleResult().intValue();
     }
 
+    @Transactional
     public List<IndexSeminumDownloadResult> searchContent(Long indexSeminumRevisionId, Integer offset, Integer limit) {
 
         // prepare criteria builder & query
