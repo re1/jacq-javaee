@@ -8,13 +8,20 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['user.usermanage']}</h1>
-                    </div>
-                    <div class="jacq-data-table">
-                        <p:dataTable var="userResult" lazy="true" value="#{userController.dataModel}" widgetVar="userTable" paginator="true" rows="10">
+            <div class="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['user.usermanage']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:dataTable
+                            var="userResult"
+                            lazy="true"
+                            value="#{userController.dataModel}"
+                            widgetVar="userTable"
+                            id="userTable"
+                            paginator="true"
+                            rows="10">
                             <p:column filterBy="#{userResult.id}" headerText="#{messages['user.id']}">
                                 <h:outputText value="#{userResult.id}" />
                             </p:column>
@@ -46,9 +53,13 @@
                                 </p:button>
                             </p:column>
                         </p:dataTable>
+
+                        <p:blockUI block="userTable" trigger="userTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
                     </div>
                 </div>
-            </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

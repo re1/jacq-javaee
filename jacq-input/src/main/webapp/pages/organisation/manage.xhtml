@@ -8,13 +8,20 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['organisation.manage']}</h1>
-                    </div>
-                    <div class="jacq-data-table">
-                        <p:dataTable var="organisationResult" lazy="true" value="#{organisationController.dataModel}" widgetVar="organisationTable" paginator="true" rows="10">
+            <div class="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['organisation.manage']}</h1>
+                </div>
+                <div class="ui-g-12 ui-g-nopad">
+                    <div class="ui-g-12">
+                        <p:dataTable
+                            var="organisationResult"
+                            lazy="true"
+                            value="#{organisationController.dataModel}"
+                            widgetVar="organisationTable"
+                            id="organisationTable"
+                            paginator="true"
+                            rows="10">
                             <p:column filterBy="#{organisationResult.organisationId}" headerText="#{messages['organisation.id']}">
                                 <h:outputText value="#{organisationResult.organisationId}"/>
                             </p:column>
@@ -49,12 +56,13 @@
                                 </p:button>
                             </p:column>
                         </p:dataTable>
-                    </div>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['search']}" action="#{organisationController.search()}" />
+
+                        <p:blockUI block="organisationTable" trigger="organisationTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
                     </div>
                 </div>
-            </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

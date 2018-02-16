@@ -125,8 +125,6 @@ public class TblBotanicalObject implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblSpecimen> tblSpecimenList;
     @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
-    private List<TblSeparation> tblSeparationList;
-    @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblInventoryObject> tblInventoryObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
@@ -287,15 +285,6 @@ public class TblBotanicalObject implements Serializable {
 
     public void setTblSpecimenList(List<TblSpecimen> tblSpecimenList) {
         this.tblSpecimenList = tblSpecimenList;
-    }
-
-    @XmlTransient
-    public List<TblSeparation> getTblSeparationList() {
-        return tblSeparationList;
-    }
-
-    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
-        this.tblSeparationList = tblSeparationList;
     }
 
     @XmlTransient

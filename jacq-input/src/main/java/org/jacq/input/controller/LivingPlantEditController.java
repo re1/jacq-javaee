@@ -32,6 +32,8 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
+import org.jacq.common.model.rest.SeparationResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -60,8 +62,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -82,6 +83,7 @@ public class LivingPlantEditController {
     protected List<PhenologyResult> phenologies;
     protected List<IdentStatusResult> identStatus;
     protected List<RelevancyTypeResult> relevancyTypes;
+    protected List<SeparationTypeResult> separationTypes;
 
     @PostConstruct
     public void init() {
@@ -94,12 +96,13 @@ public class LivingPlantEditController {
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
-        this.relevancyTypes = this.derivativeService.findAllRelevancyTypes();
+        this.relevancyTypes = this.derivativeService.findAllRelevancyType();
+        this.separationTypes = this.derivativeService.findAllSeparationType();
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -138,6 +141,14 @@ public class LivingPlantEditController {
 
     public void removeAcquisitionEventSource(AcquistionEventSourceResult acquistionEventSourceResult) {
         this.livingPlantResult.getAcquistionEventSources().remove(acquistionEventSourceResult);
+    }
+
+    public void addSeparation() {
+        this.livingPlantResult.getSeparations().add(new SeparationResult());
+    }
+
+    public void removeSeparation(SeparationResult separationResult) {
+        this.livingPlantResult.getSeparations().remove(separationResult);
     }
 
     public Long getDerivativeId() {
@@ -223,6 +234,14 @@ public class LivingPlantEditController {
 
     public List<RelevancyTypeResult> getRelevancyTypes() {
         return relevancyTypes;
+    }
+
+    public List<SeparationTypeResult> getSeparationTypes() {
+        return separationTypes;
+    }
+
+    public void setSeparationTypes(List<SeparationTypeResult> separationTypes) {
+        this.separationTypes = separationTypes;
     }
 
 }

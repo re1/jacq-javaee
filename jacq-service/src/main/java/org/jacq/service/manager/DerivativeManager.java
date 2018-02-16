@@ -18,7 +18,10 @@ package org.jacq.service.manager;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.jacq.common.manager.DerivativeSearchManager;
@@ -29,6 +32,7 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
+import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
@@ -37,13 +41,15 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -55,6 +61,17 @@ public class DerivativeManager extends DerivativeSearchManager {
 
     @Inject
     protected JacqServiceConfig jacqConfig;
+
+    @PersistenceContext
+    protected EntityManager em;
+
+    /**
+     * Initialize bean and make sure abstract base class has entity manager
+     */
+    @PostConstruct
+    public void init() {
+        this.setEntityManager(em);
+    }
 
     /**
      * @see DerivativeService#load(java.lang.Long, java.lang.String)
@@ -87,10 +104,10 @@ public class DerivativeManager extends DerivativeSearchManager {
      * @return
      */
     @Transactional
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<BotanicalObjectDownloadResult> botanicalObjectDownloadResultList = new ArrayList<>();
 
-        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, orderColumn, orderDirection, offset, count);
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
@@ -126,25 +143,35 @@ public class DerivativeManager extends DerivativeSearchManager {
     /**
      * @see DerivativeService#findAllRelevancyTypes()
      */
-    public List<RelevancyTypeResult> findAllRelevancyTypes() {
-        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(false));
+    public List<RelevancyTypeResult> findAllRelevancyType() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyType(false));
     }
 
     /**
      * @see DerivativeService#findAllImportantRelevancyTypes()
      */
-    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
-        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(true));
+    public List<RelevancyTypeResult> findAllImportantRelevancyType() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyType(true));
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important parameter
+     * @see DerivativeService#findAllSeparationType()
+     */
+    public List<SeparationTypeResult> findAllSeparationType() {
+        TypedQuery<TblSeparationType> separationTypeQuery = em.createNamedQuery("TblSeparationType.findAll", TblSeparationType.class);
+
+        return SeparationTypeResult.fromList(separationTypeQuery.getResultList());
+    }
+
+    /**
+     * Small helper function for fetching relevancy type based on important
+     * parameter
      *
      * @param important
      * @return
      */
     @Transactional
-    protected List<TblRelevancyType> findAllRelevancyTypes(boolean important) {
+    protected List<TblRelevancyType> findAllRelevancyType(boolean important) {
         TypedQuery<TblRelevancyType> relevancyTypeQuery = em.createNamedQuery("TblRelevancyType.findByImportant", TblRelevancyType.class);
         relevancyTypeQuery.setParameter("important", important);
 

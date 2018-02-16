@@ -64,22 +64,24 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "price")
     private float price;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
+    private List<TblSeparation> tblSeparationList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblVegetative tblVegetative;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
+    @OneToMany(mappedBy = "parentDerivativeId", fetch = FetchType.LAZY)
+    private List<TblDerivative> tblDerivativeList;
+    @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TblDerivative parentDerivativeId;
     @JoinColumn(name = "derivative_type_id", referencedColumnName = "derivative_type_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivativeType derivativeTypeId;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
-    @OneToMany(mappedBy = "parentDerivativeId", fetch = FetchType.LAZY)
-    private List<TblDerivative> tblDerivativeList;
-    @JoinColumn(name = "parent_derivative_id", referencedColumnName = "derivative_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblDerivative parentDerivativeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
     private List<TblImportProperties> tblImportPropertiesList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
@@ -122,6 +124,15 @@ public class TblDerivative implements Serializable {
         this.price = price;
     }
 
+    @XmlTransient
+    public List<TblSeparation> getTblSeparationList() {
+        return tblSeparationList;
+    }
+
+    public void setTblSeparationList(List<TblSeparation> tblSeparationList) {
+        this.tblSeparationList = tblSeparationList;
+    }
+
     public TblVegetative getTblVegetative() {
         return tblVegetative;
     }
@@ -136,22 +147,6 @@ public class TblDerivative implements Serializable {
 
     public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
         this.botanicalObjectId = botanicalObjectId;
-    }
-
-    public TblDerivativeType getDerivativeTypeId() {
-        return derivativeTypeId;
-    }
-
-    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
-        this.derivativeTypeId = derivativeTypeId;
-    }
-
-    public TblOrganisation getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(TblOrganisation organisationId) {
-        this.organisationId = organisationId;
     }
 
     @XmlTransient
@@ -169,6 +164,22 @@ public class TblDerivative implements Serializable {
 
     public void setParentDerivativeId(TblDerivative parentDerivativeId) {
         this.parentDerivativeId = parentDerivativeId;
+    }
+
+    public TblDerivativeType getDerivativeTypeId() {
+        return derivativeTypeId;
+    }
+
+    public void setDerivativeTypeId(TblDerivativeType derivativeTypeId) {
+        this.derivativeTypeId = derivativeTypeId;
+    }
+
+    public TblOrganisation getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(TblOrganisation organisationId) {
+        this.organisationId = organisationId;
     }
 
     @XmlTransient

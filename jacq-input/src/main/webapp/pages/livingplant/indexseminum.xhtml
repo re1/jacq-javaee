@@ -13,7 +13,7 @@
                     <h1>#{messages['livingplant.indexseminum']}</h1>
                 </div>
                 <div class="jacq-data-table">
-                    <p:dataTable var="indexSeminumResult" widgetVar="indexSeminumTable" lazy="true" value="#{indexSeminumController.dataModel}" paginator="true" rows="10">
+                    <p:dataTable id="indexSeminumTable" var="indexSeminumResult" widgetVar="indexSeminumTable" lazy="true" value="#{indexSeminumController.dataModel}" paginator="true" rows="10">
                         <p:column headerText="#{messages['username']}">
                             <h:outputText  value="#{indexSeminumResult.username}"/>
                         </p:column>
@@ -31,10 +31,18 @@
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadIndexSeminumPanel">
-                        <p:commandButton value="Export" ajax="false" widgetVar="downloadIndexSeminumButton">
+                        <p:commandButton id="downloadIndexSeminumButton" value="Export" ajax="false" widgetVar="downloadIndexSeminumButton">
                             <p:dataExporter type="csv"  target="downloadIndexSeminum" fileName="IndexSeminum"/>
                         </p:commandButton>
-                        <p:dataTable  rendered="#{indexSeminumController.downloadRender}" var="indexSeminumDownloadResult" lazy="true" value="#{indexSeminumController.downloadDataModel}" paginator="true" rows="1" id="downloadIndexSeminum">
+                        <p:dataTable
+                            rendered="#{indexSeminumController.downloadRender}"
+                            var="indexSeminumDownloadResult"
+                            lazy="true"
+                            value="#{indexSeminumController.downloadDataModel}"
+                            paginator="true"
+                            rows="1"
+                            id="downloadIndexSeminum">
+
                             <p:column headerText="#{messages['livingplant.indexseminumcontentid']}">
                                 <h:outputText  value="#{indexSeminumDownloadResult.indexSeminumContentId}"/>
                             </p:column>
@@ -81,6 +89,12 @@
                                 <h:outputText  value="#{indexSeminumDownloadResult.acquisitionDate}"/>
                             </p:column>
                         </p:dataTable>
+
+
+
+                        <p:blockUI block="indexSeminumTable" trigger="indexSeminumTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
                     </h:panelGroup>
                 </div>
             </div>

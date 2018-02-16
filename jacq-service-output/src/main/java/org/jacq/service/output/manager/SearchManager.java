@@ -16,6 +16,9 @@
 package org.jacq.service.output.manager;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.jacq.common.manager.DerivativeSearchManager;
 
 /**
@@ -24,5 +27,16 @@ import org.jacq.common.manager.DerivativeSearchManager;
  */
 @ManagedBean
 public class SearchManager extends DerivativeSearchManager {
+
+    @PersistenceContext
+    protected EntityManager em;
+
+    /**
+     * Initialize bean and make sure abstract base class has entity manager
+     */
+    @PostConstruct
+    public void init() {
+        super.setEntityManager(em);
+    }
 
 }

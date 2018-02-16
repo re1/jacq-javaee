@@ -26,6 +26,7 @@ import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -41,20 +42,21 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected DerivativeManager derivativeManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
-     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * java.lang.Integer, java.lang.Integer)
      */
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, orderColumn, orderDirection, offset, count);
     }
 
     /**
      * @see DerivativeService#count(java.lang.String, java.lang.Long)
      */
     @Override
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId) {
-        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId);
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic) {
+        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic);
     }
 
     /**
@@ -66,8 +68,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     @Override
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -87,19 +89,26 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#findAllRelevancyTypes()
+     * @see DerivativeService#findAllRelevancyType()
      */
     @Override
-    public List<RelevancyTypeResult> findAllRelevancyTypes() {
-        return derivativeManager.findAllRelevancyTypes();
+    public List<RelevancyTypeResult> findAllRelevancyType() {
+        return derivativeManager.findAllRelevancyType();
     }
 
     /**
-     * @see DerivativeService#findAllImportantRelevancyTypes()
+     * @see DerivativeService#findAllImportantRelevancyType()
      */
     @Override
-    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
-        return derivativeManager.findAllImportantRelevancyTypes();
+    public List<RelevancyTypeResult> findAllImportantRelevancyType() {
+        return derivativeManager.findAllImportantRelevancyType();
     }
 
+    /**
+     * @see DerivativeService#findAllSeparationType()
+     */
+    @Override
+    public List<SeparationTypeResult> findAllSeparationType() {
+        return derivativeManager.findAllSeparationType();
+    }
 }

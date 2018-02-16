@@ -1,9 +1,13 @@
 - Drop view_scientifcName (DROP VIEW view_scientificName)
+- Materialize mig_separation: CREATE TABLE tmp_mig_separation AS SELECT * FROM mig_separation
+- truncate separation table: TRUNCATE TABLE tbl_separation
 - Synchronize only Tables and Routines, except tbl_botanical_object and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Synchronize all other changes (again except tbl_botanical_object and tbl_derivative_vegetative)
 - Insert derivative_type entries (1 && 2) INSERT INTO `jacq_input`.`tbl_derivative_type` (`derivative_type_id`, `type`) VALUES ('1', 'living'), ('2', 'vegetative');
 - materialize migration view for derivatives (mig_derivative) INSERT INTO tbl_derivative SELECT * FROM mig_derivative;
 - materialize migration view for vegetatives (mig_vegetative) INSERT INTO tbl_vegetative SELECT * FROM mig_vegetative;
+- copy separation data: INSERT INTO tbl_separation SELECT * FROM tmp_mig_separation
+- drop temporary separation table: DROP TABLE tmp_mig_separation
 - synchronize changes in tbl_botanical_object and tbl_derivative_vegetative, ignore mig_derivative & mig_vegetative (becomes invalid)
 - Create View for BuGa-Data import (CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData`)
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
