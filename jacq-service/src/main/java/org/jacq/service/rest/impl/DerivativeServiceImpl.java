@@ -26,6 +26,7 @@ import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -88,19 +89,26 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#findAllRelevancyTypes()
+     * @see DerivativeService#findAllRelevancyType()
      */
     @Override
-    public List<RelevancyTypeResult> findAllRelevancyTypes() {
-        return derivativeManager.findAllRelevancyTypes();
+    public List<RelevancyTypeResult> findAllRelevancyType() {
+        return derivativeManager.findAllRelevancyType();
     }
 
     /**
-     * @see DerivativeService#findAllImportantRelevancyTypes()
+     * @see DerivativeService#findAllImportantRelevancyType()
      */
     @Override
-    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
-        return derivativeManager.findAllImportantRelevancyTypes();
+    public List<RelevancyTypeResult> findAllImportantRelevancyType() {
+        return derivativeManager.findAllImportantRelevancyType();
     }
 
+    /**
+     * @see DerivativeService#findAllSeparationType()
+     */
+    @Override
+    public List<SeparationTypeResult> findAllSeparationType() {
+        return derivativeManager.findAllSeparationType();
+    }
 }

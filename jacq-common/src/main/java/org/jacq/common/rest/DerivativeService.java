@@ -30,6 +30,7 @@ import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 
 /**
  * Main service for searching derivatives
@@ -143,7 +144,7 @@ public interface DerivativeService {
     @Path("/relevancyType/findAll")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<RelevancyTypeResult> findAllRelevancyTypes();
+    public List<RelevancyTypeResult> findAllRelevancyType();
 
     /**
      * Get a list of all important relevancy types
@@ -154,5 +155,16 @@ public interface DerivativeService {
     @Path("/relevancyType/findAllImportant")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<RelevancyTypeResult> findAllImportantRelevancyTypes();
+    public List<RelevancyTypeResult> findAllImportantRelevancyType();
+
+    /**
+     * Get a list of all separation types
+     *
+     * @return
+     */
+    @GET
+    @Path("/separationType/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SeparationTypeResult> findAllSeparationType();
 }

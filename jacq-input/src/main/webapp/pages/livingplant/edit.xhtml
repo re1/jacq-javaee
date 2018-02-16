@@ -296,6 +296,7 @@
                         </div>
                     </div>
                 </div>
+                <h3>#{messages['livingplant.separation']}</h3>
                 <div class="ui-g">
                     <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
@@ -316,7 +317,9 @@
                         <h:panelGroup id="separations" layout="block" styleClass="ui-g">
                             <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
                                 <div class="ui-g-3">
-                                    <h:outputText value="#{separation.separationType.type}" />
+                                    <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
+                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{separationType.type}" itemValue="#{separationType.separationTypeId}" />
+                                    </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-3">
                                     <p:calendar value="#{separation.date}" pattern="dd-MM-yyyy" mask="true" />

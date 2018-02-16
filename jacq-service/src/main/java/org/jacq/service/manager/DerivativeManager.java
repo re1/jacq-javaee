@@ -32,6 +32,7 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
+import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
@@ -40,6 +41,7 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.JacqServiceConfig;
 
@@ -141,15 +143,24 @@ public class DerivativeManager extends DerivativeSearchManager {
     /**
      * @see DerivativeService#findAllRelevancyTypes()
      */
-    public List<RelevancyTypeResult> findAllRelevancyTypes() {
-        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(false));
+    public List<RelevancyTypeResult> findAllRelevancyType() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyType(false));
     }
 
     /**
      * @see DerivativeService#findAllImportantRelevancyTypes()
      */
-    public List<RelevancyTypeResult> findAllImportantRelevancyTypes() {
-        return RelevancyTypeResult.fromList(this.findAllRelevancyTypes(true));
+    public List<RelevancyTypeResult> findAllImportantRelevancyType() {
+        return RelevancyTypeResult.fromList(this.findAllRelevancyType(true));
+    }
+
+    /**
+     * @see DerivativeService#findAllSeparationType()
+     */
+    public List<SeparationTypeResult> findAllSeparationType() {
+        TypedQuery<TblSeparationType> separationTypeQuery = em.createNamedQuery("TblSeparationType.findAll", TblSeparationType.class);
+
+        return SeparationTypeResult.fromList(separationTypeQuery.getResultList());
     }
 
     /**
@@ -160,7 +171,7 @@ public class DerivativeManager extends DerivativeSearchManager {
      * @return
      */
     @Transactional
-    protected List<TblRelevancyType> findAllRelevancyTypes(boolean important) {
+    protected List<TblRelevancyType> findAllRelevancyType(boolean important) {
         TypedQuery<TblRelevancyType> relevancyTypeQuery = em.createNamedQuery("TblRelevancyType.findByImportant", TblRelevancyType.class);
         relevancyTypeQuery.setParameter("important", important);
 

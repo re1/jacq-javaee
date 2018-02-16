@@ -33,6 +33,7 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.SeparationResult;
+import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -82,6 +83,7 @@ public class LivingPlantEditController {
     protected List<PhenologyResult> phenologies;
     protected List<IdentStatusResult> identStatus;
     protected List<RelevancyTypeResult> relevancyTypes;
+    protected List<SeparationTypeResult> separationTypes;
 
     @PostConstruct
     public void init() {
@@ -94,7 +96,8 @@ public class LivingPlantEditController {
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
-        this.relevancyTypes = this.derivativeService.findAllRelevancyTypes();
+        this.relevancyTypes = this.derivativeService.findAllRelevancyType();
+        this.separationTypes = this.derivativeService.findAllSeparationType();
     }
 
     /**
@@ -231,6 +234,14 @@ public class LivingPlantEditController {
 
     public List<RelevancyTypeResult> getRelevancyTypes() {
         return relevancyTypes;
+    }
+
+    public List<SeparationTypeResult> getSeparationTypes() {
+        return separationTypes;
+    }
+
+    public void setSeparationTypes(List<SeparationTypeResult> separationTypes) {
+        this.separationTypes = separationTypes;
     }
 
 }
