@@ -50,6 +50,10 @@ public class LivingPlantController implements Serializable {
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.organisationService = ServicesUtil.getOrganisationService();
         this.downloadRender = false;
+        if (sessionController.getUser() != null) {
+            this.dataModel.getDerivativeSearchModel().setOrganisationId(sessionController.getUser().getOrganisationId() != null ? sessionController.getUser().getOrganisationId() : null);
+            this.dataModel.getDerivativeSearchModel().setSelectedOrganisation(this.organisationService.load(this.dataModel.getDerivativeSearchModel().getOrganisationId()));
+        }
     }
 
     public DerivativeSearchModel getDerivativeSearchModel() {

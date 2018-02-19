@@ -62,15 +62,14 @@ public class LoginController {
             FacesContext.getCurrentInstance().responseComplete();
 
             return null;
-        }
-        else if (as.equals(AuthenticationStatus.SUCCESS)) {
+        } else if (as.equals(AuthenticationStatus.SUCCESS)) {
             // remember authorization header in session controller
             sessionController.setAuthorizationHeader("Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
             // remember user object in session controller
             sessionController.setUser(((InputCallerPrincipal) securityContext.getCallerPrincipal()).getUser());
 
             // redirect to manage page
-            return "livingplant/manage.xhtml";
+            return "livingplant/manage.xhtml?faces-redirect=true";
         }
 
         // by default send error message and stay on page

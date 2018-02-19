@@ -18,10 +18,12 @@ package org.jacq.input.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.input.SessionManager;
 import org.jacq.input.controller.LivingPlantController;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -92,6 +94,8 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         } else if (this.derivativeSearchModel.getSeparated()
                 == 2) {
             this.derivativeSearchModel.setSeparatedFilter(false);
+        } else {
+            this.derivativeSearchModel.setSeparatedFilter(null);
         }
 
         // quote type filter and set to null if empty
