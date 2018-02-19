@@ -174,6 +174,7 @@ public class LivingPlantEditController {
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
+            botanicalObjectDerivative.close();
 
             // load matching list of possible cultivar entries
             this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
