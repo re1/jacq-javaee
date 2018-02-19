@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
+import org.jacq.common.model.rest.CertificateResult;
+import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
@@ -84,6 +86,7 @@ public class LivingPlantEditController {
     protected List<IdentStatusResult> identStatus;
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
+    protected List<CertificateTypeResult> certificateTypes;
 
     @PostConstruct
     public void init() {
@@ -98,6 +101,7 @@ public class LivingPlantEditController {
         this.identStatus = this.derivativeService.findAllIdentStatus();
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
         this.separationTypes = this.derivativeService.findAllSeparationType();
+        this.certificateTypes = this.derivativeService.findAllCertificateType();
     }
 
     /**
@@ -149,6 +153,14 @@ public class LivingPlantEditController {
 
     public void removeSeparation(SeparationResult separationResult) {
         this.livingPlantResult.getSeparations().remove(separationResult);
+    }
+
+    public void addCertificate() {
+        this.livingPlantResult.getCertificates().add(new CertificateResult());
+    }
+
+    public void removeCertificate(CertificateResult certificateResult) {
+        this.livingPlantResult.getCertificates().remove(certificateResult);
     }
 
     public Long getDerivativeId() {
@@ -240,8 +252,8 @@ public class LivingPlantEditController {
         return separationTypes;
     }
 
-    public void setSeparationTypes(List<SeparationTypeResult> separationTypes) {
-        this.separationTypes = separationTypes;
+    public List<CertificateTypeResult> getCertificateTypes() {
+        return certificateTypes;
     }
 
 }

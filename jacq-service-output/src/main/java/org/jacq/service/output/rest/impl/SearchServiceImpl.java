@@ -40,7 +40,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return searchManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, orderColumn, orderDirection, offset, count);
+        return searchManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -49,7 +49,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId) {
-        return searchManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId);
+        return searchManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null);
     }
 
 }
