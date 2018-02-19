@@ -18,16 +18,13 @@
                 <p:messages />
 
                 <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputLabel for="username" value="Username:" />
+                    <h:outputLabel for="username" value="#{messages['user.username']}" />
                     <p:inputText id="username" value="#{loginController.username}" required="true" label="username" />
 
-                    <h:outputLabel for="password" value="Password:" />
+                    <h:outputLabel for="password" value="#{messages['user.password']}" />
                     <p:password id="password" value="#{loginController.password}" required="true" label="password" />
                 </h:panelGrid>
-                <p:selectManyCheckbox id="basic">
-                    <f:selectItem itemLabel="Remember me" itemValue="Remember me" />
-                </p:selectManyCheckbox>
-                <p:commandButton value="Login" action="#{loginController.login}" ajax="false" />
+                <p:commandButton value="#{messages['login']}" action="#{loginController.login}" ajax="false" />
             </h:form>
         </div>
     </h:body>

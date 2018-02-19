@@ -17,13 +17,11 @@ package org.jacq.common.manager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
@@ -78,11 +76,11 @@ public abstract class DerivativeSearchManager {
 
         List<Long> organisationIdList = new ArrayList<>();
         // organisation List for hierarchic
-        if (hierarchic != null && organisationId != null) {
-            if (hierarchic == true) {
+        if (organisationId != null) {
+            organisationIdList.add(organisationId);
+            if (hierarchic != null && hierarchic == true) {
                 organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
             }
-            organisationIdList.add(organisationId);
         }
 
         // translate order column into database column
@@ -135,11 +133,11 @@ public abstract class DerivativeSearchManager {
 
         List<Long> organisationIdList = new ArrayList<>();
         // organisation List for hierarchic
-        if (hierarchic != null && organisationId != null) {
-            if (hierarchic == true) {
+        if (organisationId != null) {
+            organisationIdList.add(organisationId);
+            if (hierarchic != null && hierarchic == true) {
                 organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
             }
-            organisationIdList.add(organisationId);
         }
 
         // apply search criteria to all derivative views

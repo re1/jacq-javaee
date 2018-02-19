@@ -671,22 +671,47 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <br />
-                             <div class="jacq-panel-grid">
-                                 <h:panelGrid columns="1"  cellpadding="2" width="100%">
-                                     <h:panelGrid columns="4"  cellpadding="2" columnClasses="firstColumn,secondColumn">
-                                         <h:outputText value="Zertifikat-Art *" />
-                                         <h:outputText value="Nummer" />
-                                         <h:outputText value="Bemerkung" />
-                                         <h:outputText value="Aktionen" />
-                                         <p:inputText />
-                                         <p:inputText />
-                                         <p:inputText />
-                                         <p:inputText />
-                                     </h:panelGrid>
-                                 </h:panelGrid>
-                             </div>
-                             <br />-->
+                            <h3>#{messages['livingplant.certificate']}</h3>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-3">
+                                            <h:outputText value="#{messages['livingplant.certificate.type']}" />
+                                        </div>
+                                        <div class="ui-g-3">
+                                            <h:outputText value="#{messages['livingplant.certificate.number']}" />
+                                        </div>
+                                        <div class="ui-g-5">
+                                            <h:outputText value="#{messages['livingplant.certificate.annotation']}" />
+                                        </div>
+                                        <div class="ui-g-1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+                                        <ui:repeat value="#{livingPlantEditController.livingPlantResult.certificates}" var="certificate">
+                                            <div class="ui-g-3">
+                                                <p:selectOneMenu value="#{certificate.certificateType.certificateTypeId}">
+                                                    <f:selectItems value="#{livingPlantEditController.certificateTypes}" var="certificateType" itemLabel="#{certificateType.type}" itemValue="#{certificateType.certificateTypeId}" />
+                                                </p:selectOneMenu>
+                                            </div>
+                                            <div class="ui-g-3">
+                                                <p:inputText value="#{certificate.number}" />
+                                            </div>
+                                            <div class="ui-g-5">
+                                                <p:inputText value="#{certificate.annotation}" />
+                                            </div>
+                                            <div class="ui-g-1">
+                                                <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCertificate(certificate)}" />
+                                            </div>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <p:commandButton icon="ui-icon-plus" update="separations" action="#{livingPlantEditController.addCertificate}" />
+                                </div>
+                            </div>
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">

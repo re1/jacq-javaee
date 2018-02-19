@@ -26,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
+import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -167,4 +168,15 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<SeparationTypeResult> findAllSeparationType();
+
+    /**
+     * Get a list of all certificate types
+     *
+     * @return
+     */
+    @GET
+    @Path("/certificateType/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CertificateTypeResult> findAllCertificateType();
 }

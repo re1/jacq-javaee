@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
+import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -42,9 +43,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected DerivativeManager derivativeManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
-     * java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
      */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -110,5 +110,13 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public List<SeparationTypeResult> findAllSeparationType() {
         return derivativeManager.findAllSeparationType();
+    }
+
+    /**
+     * @see DerivativeService#findAllCertificateType()
+     */
+    @Override
+    public List<CertificateTypeResult> findAllCertificateType() {
+        return derivativeManager.findAllCertificateType();
     }
 }
