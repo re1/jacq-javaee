@@ -24,6 +24,7 @@ import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticati
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
+import org.jacq.common.model.rest.GroupResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.service.manager.UserManager;
 
@@ -43,7 +44,13 @@ public class ServiceIdentityStore implements IdentityStore {
         UserResult user = userManager.authenticate(usernamePasswordCredential.getCaller(), usernamePasswordCredential.getPasswordAsString());
 
         if (user != null) {
-            return new CredentialValidationResult(new ServiceCallerPrincipal(user.getUsername(), user), new HashSet<String>(Arrays.asList("authenticated")));
+            HashSet<String> userPermissionsGroupHashSet = new HashSet<>();
+            for (GroupResult groupResult : user.getGroupList()) {
+                userPermissionsGroupHashSet.add(groupResult.toString());
+            }
+            userPermissionsGroupHashSet.add("authenticated");
+
+            return new CredentialValidationResult(new ServiceCallerPrincipal(user.getUsername(), user), userPermissionsGroupHashSet);
         }
 
         return CredentialValidationResult.INVALID_RESULT;
