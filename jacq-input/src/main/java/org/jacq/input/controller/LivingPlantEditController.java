@@ -119,10 +119,6 @@ public class LivingPlantEditController {
         this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationLoad(this.livingPlantResult.getScientificNameId());
     }
 
-    public void saveMessage() {
-        sessionController.setGrowlMessage("successful", "entrysaved");
-    }
-
     public void addCultivar() {
         this.scientificNameInformationResult.getCultivarList().add(new CultivarResult());
     }
@@ -167,6 +163,11 @@ public class LivingPlantEditController {
         return derivativeId;
     }
 
+    /**
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     *
+     * @param derivativeId
+     */
     public void setDerivativeId(Long derivativeId) {
         this.derivativeId = derivativeId;
 
@@ -182,6 +183,24 @@ public class LivingPlantEditController {
         }
     }
 
+    /**
+     * Called when user clicks on save
+     */
+    public void save() {
+        this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
+        saveMessage();
+    }
+
+    /**
+     * Add the save message to growl
+     */
+    protected void saveMessage() {
+        sessionController.setGrowlMessage("successful", "entrysaved");
+    }
+
+    /*
+    * Getter & Setter
+     */
     public LivingPlantResult getLivingPlantResult() {
         return livingPlantResult;
     }

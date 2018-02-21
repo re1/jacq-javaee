@@ -12,7 +12,7 @@
                 <f:viewParam name="derivativeId" value="#{livingPlantEditController.derivativeId}"/>
             </f:metadata>
 
-            <div class="jacq-content">
+            <h:panelGroup layout="block" styleClass="jacq-content" id="livingplant_form">
                 <div class="jacq-content-header">
                     <h1>#{messages['livingplant.livingplantcreate']}</h1>
                 </div>
@@ -740,9 +740,9 @@
                     </p:tab>
                 </p:tabView>
                 <div class="jacq-buttons">
-                    <p:commandButton value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" actionListener="#{livingPlantEditController.saveMessage}" update="jacq_form:messages" />
+                    <p:commandButton value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form" />
                 </div>
-            </div>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </html>

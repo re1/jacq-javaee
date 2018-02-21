@@ -174,24 +174,6 @@ public class DerivativeManager extends DerivativeSearchManager {
     }
 
     /**
-     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
-     */
-    @Transactional
-    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
-        TblLivingPlant tblLivingPlant = null;
-
-        // check if we edit an existing entry or create a new one
-        if (livingPlantResult.getDerivativeId() != null) {
-            tblLivingPlant = em.find(TblLivingPlant.class, livingPlantResult.getDerivativeId());
-        }
-        else {
-            tblLivingPlant = new TblLivingPlant();
-        }
-
-        return null;
-    }
-
-    /**
      * Small helper function for fetching relevancy type based on important parameter
      *
      * @param important

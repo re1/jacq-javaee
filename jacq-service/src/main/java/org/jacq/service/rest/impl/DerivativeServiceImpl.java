@@ -30,6 +30,7 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.manager.LivingPlantManager;
 
 /**
  * Implementation of derivative service
@@ -42,6 +43,9 @@ public class DerivativeServiceImpl implements DerivativeService {
 
     @Inject
     protected DerivativeManager derivativeManager;
+
+    @Inject
+    protected LivingPlantManager livingPlantManager;
 
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
@@ -126,6 +130,6 @@ public class DerivativeServiceImpl implements DerivativeService {
      */
     @Override
     public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
-        return derivativeManager.saveLivingPlant(livingPlantResult);
+        return livingPlantManager.saveLivingPlant(livingPlantResult);
     }
 }

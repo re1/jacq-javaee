@@ -90,12 +90,20 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
         // BotanicalObjectDerivative properties
         this.setType(BotanicalObjectDerivative.LIVING);
+        this.setBotanicalObjectId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getId());
+        this.setSeparated(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getSeparated());
+        this.setScientificName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName());
+        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+        this.setDerivativeId(tblLivingPlant.getTblDerivative().getDerivativeId());
+        this.setOrganisationDescription(tblLivingPlant.getTblDerivative().getOrganisationId().getDescription());
+        this.setOrganisationId(tblLivingPlant.getTblDerivative().getOrganisationId().getId());
+        this.setDerivativeCount(tblLivingPlant.getTblDerivative().getCount());
+        this.setAccessionNumber(String.format("%07d", tblLivingPlant.getAccessionNumber()));
+        this.setLabelAnnotation(tblLivingPlant.getLabelAnnotation());
+        this.setPlaceNumber(tblLivingPlant.getPlaceNumber());
+        this.setCultivarName((tblLivingPlant.getCultivarId() != null) ? tblLivingPlant.getCultivarId().getCultivar() : null);
 
         // Botanical object properties
-        this.setBotanicalObjectId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getId());
-        this.setScientificName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName());
-        this.setSeparated(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getSeparated());
-        this.setScientificNameId(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
         this.habitat = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getHabitat();
         this.recordingDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getRecordingDate();
         this.redetermine = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getRedetermine();
@@ -107,17 +115,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
 
         // Derivative properties
-        this.setDerivativeId(tblLivingPlant.getTblDerivative().getDerivativeId());
-        this.setOrganisationDescription(tblLivingPlant.getTblDerivative().getOrganisationId().getDescription());
-        this.setDerivativeCount(tblLivingPlant.getTblDerivative().getCount());
         this.count = tblLivingPlant.getTblDerivative().getCount();
         this.price = tblLivingPlant.getTblDerivative().getPrice();
         this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
 
         // Livingplant properties
-        this.setAccessionNumber(String.format("%07d", tblLivingPlant.getAccessionNumber()));
-        this.setLabelAnnotation(tblLivingPlant.getLabelAnnotation());
-        this.setPlaceNumber(tblLivingPlant.getPlaceNumber());
         this.reviewed = tblLivingPlant.getReviewed();
         this.ipenType = tblLivingPlant.getIpenType();
         this.ipenNumber = tblLivingPlant.getIpenNumber();
@@ -181,7 +183,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
                 this.longitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeHalf();
             }
         }
-
     }
 
     public boolean isReviewed() {
