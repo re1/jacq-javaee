@@ -23,7 +23,13 @@
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText id="scientificNameInformationText" value="#{livingPlantEditController.livingPlantResult.scientificName}" />
+                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.scientificNameResult}" completeMethod="#{livingPlantEditController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" required="true">
+                                    <p:column>
+                                        <h:outputText value="#{scientificName.scientificName}" />
+                                    </p:column>
+                                </p:autoComplete>
+
                                 <h:inputHidden value="#{livingPlantEditController.livingPlantResult.scientificNameId}" />
                                 <p:commandButton action="#{livingPlantEditController.showScientificNameInformation}" update="scientificNameInformationPanelContent" oncomplete="PF('scientificNameInformationPanel').show()" icon="ui-icon-disk" />
 

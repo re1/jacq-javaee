@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
+import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
@@ -196,6 +197,10 @@ public class LivingPlantEditController {
      */
     protected void saveMessage() {
         sessionController.setGrowlMessage("successful", "entrysaved");
+    }
+
+    public List<ScientificNameResult> completeScientificName(String query) {
+        return this.scientificNameService.find(query, Boolean.TRUE);
     }
 
     /*

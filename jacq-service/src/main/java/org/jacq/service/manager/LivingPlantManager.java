@@ -20,9 +20,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblCultivar;
 import org.jacq.common.model.jpa.TblDerivative;
+import org.jacq.common.model.jpa.TblIdentStatus;
+import org.jacq.common.model.jpa.TblIndexSeminumType;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.rest.LivingPlantResult;
 
 /**
@@ -63,10 +68,10 @@ public class LivingPlantManager {
         tblLivingPlant.setCultivationDate(livingPlantResult.getCultivationDate());
         tblLivingPlant.setLabelAnnotation(livingPlantResult.getLabelAnnotation());
         tblLivingPlant.setPlaceNumber(livingPlantResult.getPlaceNumber());
+        tblLivingPlant.setCultivarId((livingPlantResult.getCultivar() != null && livingPlantResult.getCultivar().getCultivarId() != null) ? em.find(TblCultivar.class, livingPlantResult.getCultivar().getCultivarId()) : null);
+        tblLivingPlant.setIndexSeminumTypeId((livingPlantResult.getIndexSeminumType() != null && livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId() != null) ? em.find(TblIndexSeminumType.class, livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId()) : null);
         /*
-        this.cultivar = new CultivarResult(tblLivingPlant.getCultivarId());
         this.alternativeAccessionNumbers = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
-        this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
         this.certificates = CertificateResult.fromList(tblLivingPlant.getTblCertificateList());
         this.relevancyTypes = RelevancyTypeResult.fromList(tblLivingPlant.getTblRelevancyTypeList());
          */
@@ -79,7 +84,7 @@ public class LivingPlantManager {
         }
         tblDerivative.setCount(livingPlantResult.getCount());
         tblDerivative.setPrice(livingPlantResult.getPrice());
-        tblDerivative.setOrganisationId(em.find(TblOrganisation.class, livingPlantResult.getOrganisationId()));
+        tblDerivative.setOrganisationId((livingPlantResult.getOrganisationId() != null) ? em.find(TblOrganisation.class, livingPlantResult.getOrganisationId()) : null);
         /*
         this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
          */
@@ -96,11 +101,11 @@ public class LivingPlantManager {
         tblBotanicalObject.setDeterminationDate(livingPlantResult.getDeterminationDate());
         tblBotanicalObject.setAnnotation(livingPlantResult.getGeneralAnnotation());
         tblBotanicalObject.setSeparated(livingPlantResult.getSeparated());
-        tblBotanicalObject.setScientificNameId(livingPlantResult.getScientificNameId());
+        tblBotanicalObject.setIdentStatusId((livingPlantResult.getIdentStatus() != null && livingPlantResult.getIdentStatus().getIdentStatusId() != null) ? em.find(TblIdentStatus.class, livingPlantResult.getIdentStatus().getIdentStatusId()) : null);
+        tblBotanicalObject.setPhenologyId((livingPlantResult.getPhenology() != null && livingPlantResult.getPhenology().getPhenologyId() != null) ? em.find(TblPhenology.class, livingPlantResult.getPhenology().getPhenologyId()) : null);
+        tblBotanicalObject.setScientificNameId(livingPlantResult.getScientificNameResult().getScientificNameId());
         /*
-        this.identStatus = new IdentStatusResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getIdentStatusId());
-        this.determinedBy = new PersonResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminedById());
-        this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
+        tblBotanicalObject.setDeterminedById(em.find(TblPerson.class, livingPlantResult.getDeterminedBy().getPersonId()));
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
          */
 
