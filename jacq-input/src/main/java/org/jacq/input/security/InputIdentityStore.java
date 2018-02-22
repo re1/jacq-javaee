@@ -25,7 +25,7 @@ import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
 import org.jacq.input.util.ServicesUtil;
@@ -42,7 +42,9 @@ import org.jacq.input.util.ServicesUtil;
         )
 )
 @ApplicationScoped
-@DeclareRoles({"authenticated"})
+@DeclareRoles({"authenticated", "aclBotanicalObject", "aclClassification", "aclOrganisation", "assignLabelType", "clearLabelType", "createLivingplant", "createOrganisation",
+    "createScientificNameInformation", "createTreeRecordFile", "createUser", "deleteLivingplant", "deleteOrganisation", "deleteTreeRecordFile", "deleteUser", "indexSeminum", "inventory",
+    "readLivingplant", "showClassificationBrowser", "showStatistics"})
 public class InputIdentityStore implements IdentityStore {
 
     protected UserService userService;
@@ -56,13 +58,13 @@ public class InputIdentityStore implements IdentityStore {
         UserResult user = this.userService.authenticate(usernamePasswordCredential.getCaller(), usernamePasswordCredential.getPasswordAsString());
 
         if (user != null) {
-            HashSet<String> userPermissionsGroupHashSet = new HashSet<>();
-            for (GroupResult groupResult : user.getGroupList()) {
-                userPermissionsGroupHashSet.add(groupResult.toString());
+            HashSet<String> userRoleHashSet = new HashSet<>();
+            for (RoleResult roleResult : user.getRoleList()) {
+                userRoleHashSet.add(roleResult.getName());
             }
-            userPermissionsGroupHashSet.add("authenticated");
+            userRoleHashSet.add("authenticated");
 
-            return new CredentialValidationResult(new InputCallerPrincipal(user.getUsername(), user), userPermissionsGroupHashSet);
+            return new CredentialValidationResult(new InputCallerPrincipal(user.getUsername(), user), userRoleHashSet);
         }
 
         return CredentialValidationResult.INVALID_RESULT;

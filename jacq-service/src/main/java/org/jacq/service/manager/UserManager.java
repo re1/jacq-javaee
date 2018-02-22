@@ -35,11 +35,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.EmploymentTypeResult;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.UserTypeResult;
 import org.jacq.common.model.jpa.FrmwrkEmploymentType;
-import org.jacq.common.model.jpa.FrmwrkGroup;
+import org.jacq.common.model.jpa.FrmwrkRole;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkUserType;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -132,7 +132,7 @@ public class UserManager {
             frmwrkUser = em.find(FrmwrkUser.class, userResult.getId());
         } else {
             frmwrkUser = new FrmwrkUser();
-            frmwrkUser.setFrmwrkGroupList(new ArrayList<FrmwrkGroup>());
+            frmwrkUser.setFrmwrkRoleList(new ArrayList<FrmwrkRole>());
         }
         if (frmwrkUser != null) {
             frmwrkUser.setFirstname(userResult.getFirstname());
@@ -144,11 +144,11 @@ public class UserManager {
             frmwrkUser.setOrganisationId(em.find(TblOrganisation.class, userResult.getOrganisationId()));
             frmwrkUser.setEmploymentTypeId(em.find(FrmwrkEmploymentType.class, userResult.getEmploymentTypeId()));
             frmwrkUser.setUserTypeId(em.find(FrmwrkUserType.class, userResult.getUserTypeId()));
-            frmwrkUser.getFrmwrkGroupList().clear();
-            for (GroupResult group : userResult.getGroupList()) {
-                FrmwrkGroup frmwrkGroup = em.find(FrmwrkGroup.class, group.getGroupId());
-                if (frmwrkGroup != null) {
-                    frmwrkUser.getFrmwrkGroupList().add(frmwrkGroup);
+            frmwrkUser.getFrmwrkRoleList().clear();
+            for (RoleResult role : userResult.getRoleList()) {
+                FrmwrkRole frmwrkRole = em.find(FrmwrkRole.class, role.getRoleId());
+                if (frmwrkRole != null) {
+                    frmwrkUser.getFrmwrkRoleList().add(frmwrkRole);
                 }
             }
 
@@ -206,18 +206,18 @@ public class UserManager {
     }
 
     @Transactional
-    public List<GroupResult> findAllGroup() {
-        // Create Query to get FrmwrkGroup List
-        Query query = em.createNamedQuery("FrmwrkGroup.findAll");
+    public List<RoleResult> findAllRole() {
+        // Create Query to get FrmwrkRole List
+        Query query = em.createNamedQuery("FrmwrkRole.findAll");
 
         // finally fetch the results
-        ArrayList<GroupResult> results = new ArrayList<>();
-        List<FrmwrkGroup> groupResults = query.getResultList();
-        for (FrmwrkGroup group : groupResults) {
-            GroupResult groupResult = new GroupResult(group);
+        ArrayList<RoleResult> results = new ArrayList<>();
+        List<FrmwrkRole> roleResults = query.getResultList();
+        for (FrmwrkRole role : roleResults) {
+            RoleResult roleResult = new RoleResult(role);
 
             // add botanical object to result list
-            results.add(groupResult);
+            results.add(roleResult);
         }
 
         return results;

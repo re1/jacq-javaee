@@ -23,7 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.EmploymentTypeResult;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.UserTypeResult;
@@ -56,9 +56,9 @@ public class UserEditController {
 
     protected List<EmploymentTypeResult> employmentTypes;
 
-    protected List<SelectItem> groups;
+    protected List<SelectItem> roles;
 
-    protected List<String> selectedGroupIds;
+    protected List<String> selectedRoleIds;
 
     @PostConstruct
     public void init() {
@@ -74,12 +74,12 @@ public class UserEditController {
 
         this.employmentTypes = this.userService.findAllEmploymentType();
 
-        List<GroupResult> groupResults = this.userService.findAllGroup();
-        this.groups = new ArrayList<>();
-        for (GroupResult group : groupResults) {
-            this.groups.add(new SelectItem(group.getGroupId(), group.getName()));
+        List<RoleResult> roleResults = this.userService.findAllRole();
+        this.roles = new ArrayList<>();
+        for (RoleResult role : roleResults) {
+            this.roles.add(new SelectItem(role.getRoleId(), role.getName()));
         }
-        this.selectedGroupIds = new ArrayList<>();
+        this.selectedRoleIds = new ArrayList<>();
 
     }
 
@@ -92,8 +92,8 @@ public class UserEditController {
 
         if (this.id != null) {
             this.user = this.userService.load(this.id);
-            for (GroupResult group : this.user.getGroupList()) {
-                this.selectedGroupIds.add(group.getGroupId().toString());
+            for (RoleResult role : this.user.getRoleList()) {
+                this.selectedRoleIds.add(role.getRoleId().toString());
             }
         }
     }
@@ -103,9 +103,9 @@ public class UserEditController {
     }
 
     public String edit() {
-        this.user.getGroupList().clear();
-        for (String groupId : this.selectedGroupIds) {
-            this.user.getGroupList().add(new GroupResult(Long.parseLong(groupId)));
+        this.user.getRoleList().clear();
+        for (String roleId : this.selectedRoleIds) {
+            this.user.getRoleList().add(new RoleResult(Long.parseLong(roleId)));
         }
         this.user = this.userService.save(this.user);
 
@@ -124,16 +124,16 @@ public class UserEditController {
         return employmentTypes;
     }
 
-    public List<SelectItem> getGroups() {
-        return groups;
+    public List<SelectItem> getRoles() {
+        return roles;
     }
 
-    public List<String> getSelectedGroupIds() {
-        return selectedGroupIds;
+    public List<String> getSelectedRoleIds() {
+        return selectedRoleIds;
     }
 
-    public void setSelectedGroupIds(List<String> selectedGroupIds) {
-        this.selectedGroupIds = selectedGroupIds;
+    public void setSelectedRoleIds(List<String> selectedRoleIds) {
+        this.selectedRoleIds = selectedRoleIds;
     }
 
     public void saveMessage() {

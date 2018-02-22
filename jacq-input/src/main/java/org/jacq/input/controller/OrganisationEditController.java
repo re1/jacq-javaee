@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.OrganisationService;
@@ -50,7 +50,7 @@ public class OrganisationEditController {
 
     protected List<UserResult> users;
 
-    protected List<GroupResult> groups;
+    protected List<RoleResult> roles;
 
     @PostConstruct
     public void init() {
@@ -64,7 +64,7 @@ public class OrganisationEditController {
 
         this.users = this.userService.findAll();
 
-        this.groups = this.userService.findAllGroup();
+        this.roles = this.userService.findAllRole();
     }
 
     public Long getOrganisationId() {
@@ -97,8 +97,8 @@ public class OrganisationEditController {
         return users;
     }
 
-    public List<GroupResult> getGroups() {
-        return groups;
+    public List<RoleResult> getRoles() {
+        return roles;
     }
 
     public void saveMessage() {

@@ -107,10 +107,10 @@ public class FrmwrkUser implements Serializable {
     @Column(name = "force_password_change")
     private boolean forcePasswordChange;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "frmwrk_user_group", joinColumns = {
+    @JoinTable(name = "frmwrk_user_role", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "group_id", referencedColumnName = "group_id")})
-    private List<FrmwrkGroup> frmwrkGroupList;
+        @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
+    private List<FrmwrkRole> frmwrkRoleList;
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessClassification> frmwrkaccessClassificationList;
     @OneToMany(mappedBy = "gardenerId", fetch = FetchType.LAZY)
@@ -233,12 +233,12 @@ public class FrmwrkUser implements Serializable {
     }
 
     @XmlTransient
-    public List<FrmwrkGroup> getFrmwrkGroupList() {
-        return frmwrkGroupList;
+    public List<FrmwrkRole> getFrmwrkRoleList() {
+        return frmwrkRoleList;
     }
 
-    public void setFrmwrkGroupList(List<FrmwrkGroup> frmwrkGroupList) {
-        this.frmwrkGroupList = frmwrkGroupList;
+    public void setFrmwrkRoleList(List<FrmwrkRole> frmwrkRoleList) {
+        this.frmwrkRoleList = frmwrkRoleList;
     }
 
     @XmlTransient

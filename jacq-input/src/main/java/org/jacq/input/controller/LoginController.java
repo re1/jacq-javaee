@@ -122,4 +122,9 @@ public class LoginController {
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
+
+    public SecurityContext getSecurityContext() {
+        return securityContext;
+    }
+
 }

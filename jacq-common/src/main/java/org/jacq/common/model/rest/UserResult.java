@@ -21,7 +21,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.jacq.common.model.jpa.FrmwrkGroup;
 import org.jacq.common.model.jpa.FrmwrkUser;
 
 /**
@@ -47,7 +46,7 @@ public class UserResult {
     protected String employmentType;
     protected Long organisationId;
     protected String organisationDescription;
-    protected List<GroupResult> groupList;
+    protected List<RoleResult> roleList;
 
     public String getOrganisationDescription() {
         return organisationDescription;
@@ -169,16 +168,16 @@ public class UserResult {
         this.birthdate = birthdate;
     }
 
-    public List<GroupResult> getGroupList() {
-        return groupList;
+    public List<RoleResult> getRoleList() {
+        return roleList;
     }
 
-    public void setGroupList(List<GroupResult> groupList) {
-        this.groupList = groupList;
+    public void setRoleList(List<RoleResult> roleList) {
+        this.roleList = roleList;
     }
 
     public UserResult() {
-        this.groupList = new ArrayList<>();
+        this.roleList = new ArrayList<>();
     }
 
     public UserResult(FrmwrkUser user) {
@@ -197,7 +196,7 @@ public class UserResult {
         this.organisationDescription = (user.getOrganisationId() != null) ? user.getOrganisationId().getDescription().toString() : "";
         this.userType = (user.getUserTypeId() != null) ? user.getUserTypeId().getType().toString() : "";
         this.employmentType = (user.getEmploymentTypeId() != null) ? user.getEmploymentTypeId().getType().toString() : "";
-        this.groupList = (user.getFrmwrkGroupList() != null) ? GroupResult.fromList(user.getFrmwrkGroupList()) : new ArrayList<GroupResult>();
+        this.roleList = (user.getFrmwrkRoleList() != null) ? RoleResult.fromList(user.getFrmwrkRoleList()) : new ArrayList<RoleResult>();
 
     }
 
