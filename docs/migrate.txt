@@ -1,7 +1,7 @@
 - Drop view_scientifcName (DROP VIEW view_scientificName)
+- Synchronize only Tables and Routines, except tbl_botanical_object, tbl_separation and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Materialize mig_separation: CREATE TABLE tmp_mig_separation AS SELECT * FROM mig_separation
 - truncate separation table: TRUNCATE TABLE tbl_separation
-- Synchronize only Tables and Routines, except tbl_botanical_object and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Synchronize all other changes (again except tbl_botanical_object and tbl_derivative_vegetative)
 - Insert derivative_type entries (1 && 2) INSERT INTO `jacq_input`.`tbl_derivative_type` (`derivative_type_id`, `type`) VALUES ('1', 'living'), ('2', 'vegetative');
 - materialize migration view for derivatives (mig_derivative) INSERT INTO tbl_derivative SELECT * FROM mig_derivative;
