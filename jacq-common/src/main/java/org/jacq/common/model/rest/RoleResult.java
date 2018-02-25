@@ -20,7 +20,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.jacq.common.model.jpa.FrmwrkGroup;
+import org.jacq.common.model.jpa.FrmwrkRole;
 
 /**
  *
@@ -28,17 +28,17 @@ import org.jacq.common.model.jpa.FrmwrkGroup;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class GroupResult {
+public class RoleResult {
 
-    protected Long groupId;
+    protected Long roleId;
     protected String name;
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getName() {
@@ -49,39 +49,39 @@ public class GroupResult {
         this.name = name;
     }
 
-    public GroupResult() {
+    public RoleResult() {
     }
 
     /**
-     * Helper Constructor for Save of Groups
+     * Helper Constructor for Save of Roles
      *
-     * @param groupId
+     * @param roleId
      */
-    public GroupResult(Long groupId) {
-        this.groupId = groupId;
+    public RoleResult(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public GroupResult(FrmwrkGroup group) {
-        this.groupId = group.getGroupId();
-        this.name = group.getName();
+    public RoleResult(FrmwrkRole role) {
+        this.roleId = role.getRoleId();
+        this.name = role.getName();
     }
 
     /**
-     * Helper function for converting a list of Group entries
+     * Helper function for converting a list of role entries
      *
-     * @param groupList
+     * @param roleList
      * @return
      */
-    public static List<GroupResult> fromList(List<FrmwrkGroup> groupList) {
-        List<GroupResult> groupResult = new ArrayList<>();
+    public static List<RoleResult> fromList(List<FrmwrkRole> roleList) {
+        List<RoleResult> roleResult = new ArrayList<>();
 
-        if (groupList != null) {
-            for (FrmwrkGroup group : groupList) {
-                groupResult.add(new GroupResult(group));
+        if (roleList != null) {
+            for (FrmwrkRole role : roleList) {
+                roleResult.add(new RoleResult(role));
             }
         }
 
-        return groupResult;
+        return roleResult;
     }
 
 }

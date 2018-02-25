@@ -19,6 +19,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -28,6 +29,7 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
@@ -91,6 +93,18 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response load(@QueryParam("derivativeId") Long derivativeId, @QueryParam("type") String type);
+
+    /**
+     * Save a livingplant entry
+     *
+     * @param livingPlantResult
+     * @return
+     */
+    @POST
+    @Path("/livingPlant/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult);
 
     /**
      * Search for a specific derivative and return it

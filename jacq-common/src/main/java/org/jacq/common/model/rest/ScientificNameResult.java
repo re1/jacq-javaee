@@ -36,6 +36,11 @@ public class ScientificNameResult {
         this.scientificNameId = tblNomName.getNameId();
     }
 
+    public ScientificNameResult(String scientificName, Long scientificNameId) {
+        this.scientificName = scientificName;
+        this.scientificNameId = scientificNameId;
+    }
+
     public String getScientificName() {
         return scientificName;
     }

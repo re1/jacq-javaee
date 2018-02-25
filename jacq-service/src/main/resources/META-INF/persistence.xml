@@ -15,6 +15,7 @@
             <property name="hibernate.hbm2ddl.auto" value="" />
             <property name="hibernate.connection.autocommit" value="true" />
             <property name="hibernate.connection.zeroDateTimeBehavior" value="convertToNull" />
+            <property name="hibernate.globally_quoted_identifiers" value="true" />
         </properties>
     </persistence-unit>
 </persistence>

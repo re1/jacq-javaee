@@ -77,10 +77,10 @@ public abstract class DerivativeSearchManager {
         List<Long> organisationIdList = new ArrayList<>();
         // organisation List for hierarchic
         if (organisationId != null) {
-            organisationIdList.add(organisationId);
             if (hierarchic != null && hierarchic == true) {
                 organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
             }
+            organisationIdList.add(organisationId);
         }
 
         // translate order column into database column
@@ -134,10 +134,10 @@ public abstract class DerivativeSearchManager {
         List<Long> organisationIdList = new ArrayList<>();
         // organisation List for hierarchic
         if (organisationId != null) {
-            organisationIdList.add(organisationId);
             if (hierarchic != null && hierarchic == true) {
                 organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
             }
+            organisationIdList.add(organisationId);
         }
 
         // apply search criteria to all derivative views

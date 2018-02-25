@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.rest.EmploymentTypeResult;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.UserTypeResult;
 
@@ -140,15 +140,15 @@ public interface UserService {
     public List<EmploymentTypeResult> findAllEmploymentType();
 
     /**
-     * Retrieve a list of all Group entries
+     * Retrieve a list of all Role entries
      *
      * @return
      */
     @GET
-    @Path("/findAllGroup")
+    @Path("/findAllRole")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<GroupResult> findAllGroup();
+    public List<RoleResult> findAllRole();
 
     /**
      * Authenticate a user against the database

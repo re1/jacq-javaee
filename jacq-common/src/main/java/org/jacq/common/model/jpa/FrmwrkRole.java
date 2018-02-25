@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2018 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,49 +35,49 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
-@Table(name = "frmwrk_group")
+@Table(name = "frmwrk_role")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FrmwrkGroup.findAll", query = "SELECT f FROM FrmwrkGroup f")
-    , @NamedQuery(name = "FrmwrkGroup.findByGroupId", query = "SELECT f FROM FrmwrkGroup f WHERE f.groupId = :groupId")
-    , @NamedQuery(name = "FrmwrkGroup.findByName", query = "SELECT f FROM FrmwrkGroup f WHERE f.name = :name")})
-public class FrmwrkGroup implements Serializable {
+    @NamedQuery(name = "FrmwrkRole.findAll", query = "SELECT f FROM FrmwrkRole f")
+    , @NamedQuery(name = "FrmwrkRole.findByRoleId", query = "SELECT f FROM FrmwrkRole f WHERE f.roleId = :roleId")
+    , @NamedQuery(name = "FrmwrkRole.findByName", query = "SELECT f FROM FrmwrkRole f WHERE f.name = :name")})
+public class FrmwrkRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "group_id")
-    private Long groupId;
+    @Column(name = "role_id")
+    private Long roleId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "frmwrkGroupList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "frmwrkRoleList", fetch = FetchType.LAZY)
     private List<FrmwrkUser> frmwrkUserList;
 
-    public FrmwrkGroup() {
+    public FrmwrkRole() {
     }
 
-    public FrmwrkGroup(Long groupId) {
-        this.groupId = groupId;
+    public FrmwrkRole(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public FrmwrkGroup(Long groupId, String name) {
-        this.groupId = groupId;
+    public FrmwrkRole(Long roleId, String name) {
+        this.roleId = roleId;
         this.name = name;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getName() {
@@ -102,18 +100,18 @@ public class FrmwrkGroup implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (groupId != null ? groupId.hashCode() : 0);
+        hash += (roleId != null ? roleId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FrmwrkGroup)) {
+        if (!(object instanceof FrmwrkRole)) {
             return false;
         }
-        FrmwrkGroup other = (FrmwrkGroup) object;
-        if ((this.groupId == null && other.groupId != null) || (this.groupId != null && !this.groupId.equals(other.groupId))) {
+        FrmwrkRole other = (FrmwrkRole) object;
+        if ((this.roleId == null && other.roleId != null) || (this.roleId != null && !this.roleId.equals(other.roleId))) {
             return false;
         }
         return true;
@@ -121,7 +119,7 @@ public class FrmwrkGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.FrmwrkGroup[ groupId=" + groupId + " ]";
+        return "org.jacq.common.model.jpa.FrmwrkRole[ roleId=" + roleId + " ]";
     }
 
 }

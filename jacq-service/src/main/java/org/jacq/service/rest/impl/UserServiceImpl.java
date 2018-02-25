@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.EmploymentTypeResult;
-import org.jacq.common.model.rest.GroupResult;
+import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.UserTypeResult;
 import org.jacq.common.rest.UserService;
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GroupResult> findAllGroup() {
-        return userManager.findAllGroup();
+    public List<RoleResult> findAllRole() {
+        return userManager.findAllRole();
     }
 
     /**

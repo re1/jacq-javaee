@@ -24,11 +24,13 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.manager.LivingPlantManager;
 
 /**
  * Implementation of derivative service
@@ -41,6 +43,9 @@ public class DerivativeServiceImpl implements DerivativeService {
 
     @Inject
     protected DerivativeManager derivativeManager;
+
+    @Inject
+    protected LivingPlantManager livingPlantManager;
 
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
@@ -118,5 +123,13 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public List<CertificateTypeResult> findAllCertificateType() {
         return derivativeManager.findAllCertificateType();
+    }
+
+    /**
+     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     */
+    @Override
+    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
+        return livingPlantManager.saveLivingPlant(livingPlantResult);
     }
 }

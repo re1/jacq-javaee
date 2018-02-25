@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
+import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
@@ -119,10 +120,6 @@ public class LivingPlantEditController {
         this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationLoad(this.livingPlantResult.getScientificNameId());
     }
 
-    public void saveMessage() {
-        sessionController.setGrowlMessage("successful", "entrysaved");
-    }
-
     public void addCultivar() {
         this.scientificNameInformationResult.getCultivarList().add(new CultivarResult());
     }
@@ -167,6 +164,11 @@ public class LivingPlantEditController {
         return derivativeId;
     }
 
+    /**
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     *
+     * @param derivativeId
+     */
     public void setDerivativeId(Long derivativeId) {
         this.derivativeId = derivativeId;
 
@@ -174,6 +176,7 @@ public class LivingPlantEditController {
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
+            botanicalObjectDerivative.close();
 
             // load matching list of possible cultivar entries
             this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
@@ -181,6 +184,28 @@ public class LivingPlantEditController {
         }
     }
 
+    /**
+     * Called when user clicks on save
+     */
+    public void save() {
+        this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
+        saveMessage();
+    }
+
+    /**
+     * Add the save message to growl
+     */
+    protected void saveMessage() {
+        sessionController.setGrowlMessage("successful", "entrysaved");
+    }
+
+    public List<ScientificNameResult> completeScientificName(String query) {
+        return this.scientificNameService.find(query, Boolean.TRUE);
+    }
+
+    /*
+    * Getter & Setter
+     */
     public LivingPlantResult getLivingPlantResult() {
         return livingPlantResult;
     }
