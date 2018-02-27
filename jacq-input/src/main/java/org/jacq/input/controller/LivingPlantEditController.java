@@ -31,6 +31,7 @@ import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
@@ -39,6 +40,7 @@ import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
@@ -70,6 +72,11 @@ public class LivingPlantEditController {
     protected ScientificNameService scientificNameService;
 
     /**
+     * Reference to organisation service
+     */
+    protected OrganisationService organisationService;
+
+    /**
      * Index seminum service which is used for displaying the available types
      */
     protected IndexSeminumService indexSeminumService;
@@ -94,6 +101,7 @@ public class LivingPlantEditController {
         this.derivativeService = ServicesUtil.getDerivativeService();
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.indexSeminumService = ServicesUtil.getIndexSeminumService();
+        this.organisationService = ServicesUtil.getOrganisationService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -201,6 +209,10 @@ public class LivingPlantEditController {
 
     public List<ScientificNameResult> completeScientificName(String query) {
         return this.scientificNameService.find(query, Boolean.TRUE);
+    }
+
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return this.organisationService.search(null, query, null, null, null, null, null, 0, 10);
     }
 
     /*

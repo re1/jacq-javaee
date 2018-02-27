@@ -15,7 +15,6 @@
  */
 package org.jacq.service.manager;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +52,7 @@ import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationResult;
+import org.jacq.common.rest.DerivativeService;
 
 /**
  * Business logic regarding living plants
@@ -129,7 +129,7 @@ public class LivingPlantManager {
         }
         tblDerivative.setCount(livingPlantResult.getCount());
         tblDerivative.setPrice(livingPlantResult.getPrice());
-        tblDerivative.setOrganisationId((livingPlantResult.getOrganisationId() != null) ? em.find(TblOrganisation.class, livingPlantResult.getOrganisationId()) : null);
+        tblDerivative.setOrganisationId(em.find(TblOrganisation.class, livingPlantResult.getOrganisation().getOrganisationId()));
         tblDerivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 1L));
 
         // botanical object properties
@@ -229,6 +229,9 @@ public class LivingPlantManager {
         em.persist(tblAcquisitionEvent);
         em.persist(tblBotanicalObject);
         em.persist(tblDerivative);
+
+        // living plant needs manual assignment of id
+        tblLivingPlant.setId(tblDerivative.getDerivativeId());
         em.persist(tblLivingPlant);
 
         // save alternative accession numbers

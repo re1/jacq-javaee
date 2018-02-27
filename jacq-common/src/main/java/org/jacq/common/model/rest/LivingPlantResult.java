@@ -82,6 +82,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected ScientificNameResult scientificNameResult;
 
+    protected OrganisationResult organisation;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -89,6 +91,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.identStatus = new IdentStatusResult();
         this.determinedBy = new PersonResult();
         this.scientificNameResult = new ScientificNameResult();
+        this.organisation = new OrganisationResult();
 
         this.alternativeAccessionNumbers = new ArrayList<>();
         this.relevancyTypes = new ArrayList<>();
@@ -129,6 +132,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.count = tblLivingPlant.getTblDerivative().getCount();
         this.price = tblLivingPlant.getTblDerivative().getPrice();
         this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
+        this.organisation = new OrganisationResult(tblLivingPlant.getTblDerivative().getOrganisationId());
 
         // Livingplant properties
         this.reviewed = tblLivingPlant.getReviewed();
@@ -548,4 +552,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.acquistionEventSources = acquistionEventSources;
     }
 
+    public OrganisationResult getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(OrganisationResult organisation) {
+        this.organisation = organisation;
+    }
 }
