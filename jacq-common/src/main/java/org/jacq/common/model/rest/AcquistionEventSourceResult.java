@@ -35,9 +35,11 @@ public class AcquistionEventSourceResult {
     }
 
     public AcquistionEventSourceResult(TblAcquisitionEventSource tblAcquisitionEventSource) {
-        this.acquisitionEventSourceId = tblAcquisitionEventSource.getAcquisitionEventSourceId();
-        this.sourceDate = tblAcquisitionEventSource.getSourceDate();
-        this.acquisitionEventSource = new AcquisitionSourceResult(tblAcquisitionEventSource.getAcquisitionSourceId());
+        if (tblAcquisitionEventSource != null) {
+            this.acquisitionEventSourceId = tblAcquisitionEventSource.getAcquisitionEventSourceId();
+            this.sourceDate = tblAcquisitionEventSource.getSourceDate();
+            this.acquisitionEventSource = new AcquisitionSourceResult(tblAcquisitionEventSource.getAcquisitionSourceId());
+        }
     }
 
     public Long getAcquisitionEventSourceId() {

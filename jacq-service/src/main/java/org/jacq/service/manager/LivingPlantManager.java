@@ -15,20 +15,44 @@
  */
 package org.jacq.service.manager;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import org.jacq.common.model.jpa.TblAcquisitionDate;
+import org.jacq.common.model.jpa.TblAcquisitionEvent;
+import org.jacq.common.model.jpa.TblAcquisitionEventSource;
+import org.jacq.common.model.jpa.TblAcquisitionSource;
+import org.jacq.common.model.jpa.TblAcquisitionType;
+import org.jacq.common.model.jpa.TblAlternativeAccessionNumber;
 import org.jacq.common.model.jpa.TblBotanicalObject;
+import org.jacq.common.model.jpa.TblCertificate;
+import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblCultivar;
 import org.jacq.common.model.jpa.TblDerivative;
+import org.jacq.common.model.jpa.TblDerivativeType;
 import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.TblIndexSeminumType;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.TblLocation;
+import org.jacq.common.model.jpa.TblLocationCoordinates;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.jpa.TblPhenology;
+import org.jacq.common.model.jpa.TblRelevancyType;
+import org.jacq.common.model.jpa.TblSeparation;
+import org.jacq.common.model.jpa.TblSeparationType;
+import org.jacq.common.model.rest.AcquistionEventSourceResult;
+import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
+import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.RelevancyTypeResult;
+import org.jacq.common.model.rest.SeparationResult;
 
 /**
  * Business logic regarding living plants
@@ -62,19 +86,40 @@ public class LivingPlantManager {
         tblLivingPlant.setIpenNumber(livingPlantResult.getIpenNumber());
         tblLivingPlant.setIpenLocked(livingPlantResult.isIpenLocked());
         tblLivingPlant.setCultureNotes(livingPlantResult.getCultureNotes());
-        tblLivingPlant.setIndexSeminum(livingPlantResult.getIndexSeminum());
-        tblLivingPlant.setPhytoControl(livingPlantResult.getPhytoControl());
-        tblLivingPlant.setBgci(livingPlantResult.getBgci());
+        tblLivingPlant.setIndexSeminum(livingPlantResult.isIndexSeminum());
+        tblLivingPlant.setPhytoControl(livingPlantResult.isPhytoControl());
+        tblLivingPlant.setBgci(livingPlantResult.isBgci());
         tblLivingPlant.setCultivationDate(livingPlantResult.getCultivationDate());
         tblLivingPlant.setLabelAnnotation(livingPlantResult.getLabelAnnotation());
         tblLivingPlant.setPlaceNumber(livingPlantResult.getPlaceNumber());
         tblLivingPlant.setCultivarId((livingPlantResult.getCultivar() != null && livingPlantResult.getCultivar().getCultivarId() != null) ? em.find(TblCultivar.class, livingPlantResult.getCultivar().getCultivarId()) : null);
         tblLivingPlant.setIndexSeminumTypeId((livingPlantResult.getIndexSeminumType() != null && livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId() != null) ? em.find(TblIndexSeminumType.class, livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId()) : null);
-        /*
-        this.alternativeAccessionNumbers = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
-        this.certificates = CertificateResult.fromList(tblLivingPlant.getTblCertificateList());
-        this.relevancyTypes = RelevancyTypeResult.fromList(tblLivingPlant.getTblRelevancyTypeList());
-         */
+
+        // assign relevancy
+        if (tblLivingPlant.getTblRelevancyTypeList() == null) {
+            tblLivingPlant.setTblRelevancyTypeList(new ArrayList<TblRelevancyType>());
+        }
+        tblLivingPlant.getTblRelevancyTypeList().clear();
+        for (RelevancyTypeResult relevancyType : livingPlantResult.getRelevancyTypes()) {
+            TblRelevancyType tblRelevancyType = null;
+            if (relevancyType.getRelevancyTypeId() != null) {
+                tblRelevancyType = em.find(TblRelevancyType.class, relevancyType.getRelevancyTypeId());
+
+                tblLivingPlant.getTblRelevancyTypeList().add(tblRelevancyType);
+            }
+        }
+
+        // save incoming date
+        TblAcquisitionDate tblIncomingDate = tblLivingPlant.getIncomingDateId();
+        if (tblIncomingDate == null) {
+            tblIncomingDate = new TblAcquisitionDate();
+            tblLivingPlant.setIncomingDateId(tblIncomingDate);
+        }
+        if (livingPlantResult.getIncomingDate() != null) {
+            tblIncomingDate.setYear(String.valueOf(livingPlantResult.getIncomingDate().getYear() + 1900));
+            tblIncomingDate.setMonth(String.valueOf(livingPlantResult.getIncomingDate().getMonth() + 1));
+            tblIncomingDate.setDay(String.valueOf(livingPlantResult.getIncomingDate().getDate()));
+        }
 
         // derivative properties
         TblDerivative tblDerivative = tblLivingPlant.getTblDerivative();
@@ -85,82 +130,196 @@ public class LivingPlantManager {
         tblDerivative.setCount(livingPlantResult.getCount());
         tblDerivative.setPrice(livingPlantResult.getPrice());
         tblDerivative.setOrganisationId((livingPlantResult.getOrganisationId() != null) ? em.find(TblOrganisation.class, livingPlantResult.getOrganisationId()) : null);
-        /*
-        this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
-         */
+        tblDerivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 1L));
 
         // botanical object properties
         TblBotanicalObject tblBotanicalObject = tblDerivative.getBotanicalObjectId();
         if (tblBotanicalObject == null) {
             tblBotanicalObject = new TblBotanicalObject();
+            tblBotanicalObject.setRecordingDate(new Date());
             tblDerivative.setBotanicalObjectId(tblBotanicalObject);
         }
         tblBotanicalObject.setHabitat(livingPlantResult.getHabitat());
-        tblBotanicalObject.setRecordingDate(livingPlantResult.getRecordingDate());
-        tblBotanicalObject.setRedetermine(livingPlantResult.getRedetermine());
+        tblBotanicalObject.setRedetermine(livingPlantResult.isRedetermine());
         tblBotanicalObject.setDeterminationDate(livingPlantResult.getDeterminationDate());
         tblBotanicalObject.setAnnotation(livingPlantResult.getGeneralAnnotation());
         tblBotanicalObject.setSeparated(livingPlantResult.getSeparated());
         tblBotanicalObject.setIdentStatusId((livingPlantResult.getIdentStatus() != null && livingPlantResult.getIdentStatus().getIdentStatusId() != null) ? em.find(TblIdentStatus.class, livingPlantResult.getIdentStatus().getIdentStatusId()) : null);
         tblBotanicalObject.setPhenologyId((livingPlantResult.getPhenology() != null && livingPlantResult.getPhenology().getPhenologyId() != null) ? em.find(TblPhenology.class, livingPlantResult.getPhenology().getPhenologyId()) : null);
         tblBotanicalObject.setScientificNameId(livingPlantResult.getScientificNameResult().getScientificNameId());
-        /*
-        tblBotanicalObject.setDeterminedById(em.find(TblPerson.class, livingPlantResult.getDeterminedBy().getPersonId()));
-        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
-         */
 
-
- /*
-        try {
-            this.incomingDate = acquisitionDateFormat.parse(
-                    String.format(
-                            "%04d-%02d-%02d",
-                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getYear()),
-                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getMonth()),
-                            Integer.valueOf(tblLivingPlant.getIncomingDateId().getDay())
-                    )
-            );
-        } catch (Exception ex) {
+        // save determined by person
+        if (livingPlantResult.getDeterminedBy().getName() != null) {
+            TypedQuery<TblPerson> personQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+            personQuery.setParameter("name", livingPlantResult.getDeterminedBy().getName());
+            List<TblPerson> personList = personQuery.getResultList();
+            TblPerson determinedBy = null;
+            if (personList != null && personList.size() > 0) {
+                determinedBy = personList.get(0);
+            }
+            else {
+                determinedBy = new TblPerson();
+                determinedBy.setName(livingPlantResult.getDeterminedBy().getName());
+                em.persist(determinedBy);
+            }
+            tblBotanicalObject.setDeterminedById(determinedBy);
         }
 
-        if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId() != null) {
-            this.gatheringNumber = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getNumber();
-            this.gatheringAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAnnotation();
-            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId() != null) {
-                if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear() != null) {
-                    try {
-                        this.gatheringDate = acquisitionDateFormat.parse(
-                                String.format(
-                                        "%04d-%02d-%02d",
-                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear()),
-                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth()),
-                                        Integer.valueOf(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay())
-                                )
-                        );
-                    } catch (Exception ex) {
-                    }
-                }
-                this.customGatheringDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom();
-            }
-            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId() != null) {
-                this.gatheringLocation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId().getLocation();
-            }
-            if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
-                this.altitudeMin = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin();
-                this.altitudeMax = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMax();
-                this.exactness = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getExactness();
-                this.latitudeDegrees = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeDegrees();
-                this.latitudeMinutes = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeMinutes();
-                this.latitudeSeconds = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeSeconds();
-                this.latitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLatitudeHalf();
-                this.longitudeDegrees = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeDegrees();
-                this.longitudeMinutes = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeMinutes();
-                this.longitudeSeconds = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds();
-                this.longitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeHalf();
-            }
+        // lookup or add gathering location
+        TypedQuery<TblLocation> locationQuery = em.createNamedQuery("TblLocation.findByLocation", TblLocation.class);
+        locationQuery.setParameter("location", livingPlantResult.getGatheringLocation());
+        List<TblLocation> locationList = locationQuery.getResultList();
+        TblLocation tblGatheringLocation = null;
+        if (locationList != null & locationList.size() > 0) {
+            tblGatheringLocation = locationList.get(0);
+        }
+        else {
+            tblGatheringLocation = new TblLocation();
+            tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation());
+            em.persist(tblGatheringLocation);
         }
 
-         */
+        // save gathering event
+        TblAcquisitionEvent tblAcquisitionEvent = tblBotanicalObject.getAcquisitionEventId();
+        if (tblAcquisitionEvent == null) {
+            tblAcquisitionEvent = new TblAcquisitionEvent();
+            tblBotanicalObject.setAcquisitionEventId(tblAcquisitionEvent);
+        }
+        tblAcquisitionEvent.setNumber(livingPlantResult.getGatheringNumber());
+        tblAcquisitionEvent.setAnnotation(livingPlantResult.getGatheringAnnotation());
+        // living plants do not use the required acquisition type relation, that's why we set it to unknown by default
+        tblAcquisitionEvent.setAcquisitionTypeId(em.find(TblAcquisitionType.class, 1L));
+        tblAcquisitionEvent.setLocationId(tblGatheringLocation);
+
+        // save gathering date
+        TblAcquisitionDate tblGatheringDate = tblAcquisitionEvent.getAcquisitionDateId();
+        if (tblGatheringDate == null) {
+            tblGatheringDate = new TblAcquisitionDate();
+            tblAcquisitionEvent.setAcquisitionDateId(tblGatheringDate);
+        }
+        tblGatheringDate.setCustom(livingPlantResult.getCustomGatheringDate());
+        if (livingPlantResult.getGatheringDate() != null) {
+            tblGatheringDate.setYear(String.valueOf(livingPlantResult.getGatheringDate().getYear() + 1900));
+            tblGatheringDate.setMonth(String.valueOf(livingPlantResult.getGatheringDate().getMonth() + 1));
+            tblGatheringDate.setDay(String.valueOf(livingPlantResult.getGatheringDate().getDate()));
+        }
+
+        // save gathering coordinates
+        TblLocationCoordinates tblGatheringCoordinates = tblAcquisitionEvent.getLocationCoordinatesId();
+        if (tblGatheringCoordinates == null) {
+            tblGatheringCoordinates = new TblLocationCoordinates();
+            tblAcquisitionEvent.setLocationCoordinatesId(tblGatheringCoordinates);
+        }
+        tblGatheringCoordinates.setAltitudeMin(livingPlantResult.getAltitudeMin());
+        tblGatheringCoordinates.setAltitudeMax(livingPlantResult.getAltitudeMax());
+        tblGatheringCoordinates.setExactness(livingPlantResult.getExactness());
+        tblGatheringCoordinates.setLatitudeDegrees(livingPlantResult.getLatitudeDegrees());
+        tblGatheringCoordinates.setLatitudeMinutes(livingPlantResult.getLatitudeMinutes());
+        tblGatheringCoordinates.setLatitudeSeconds(livingPlantResult.getLatitudeSeconds());
+        tblGatheringCoordinates.setLatitudeHalf(livingPlantResult.getLatitudeHalf());
+        tblGatheringCoordinates.setLongitudeDegrees(livingPlantResult.getLongitudeDegrees());
+        tblGatheringCoordinates.setLongitudeMinutes(livingPlantResult.getLongitudeMinutes());
+        tblGatheringCoordinates.setLongitudeSeconds(livingPlantResult.getLongitudeSeconds());
+        tblGatheringCoordinates.setLongitudeHalf(livingPlantResult.getLongitudeHalf());
+
+        // persist entities in correct order
+        em.persist(tblIncomingDate);
+        em.persist(tblGatheringCoordinates);
+        em.persist(tblGatheringDate);
+        em.persist(tblAcquisitionEvent);
+        em.persist(tblBotanicalObject);
+        em.persist(tblDerivative);
+        em.persist(tblLivingPlant);
+
+        // save alternative accession numbers
+        for (AlternativeAccessionNumberResult alternativeAccessionNumber : livingPlantResult.getAlternativeAccessionNumbers()) {
+            TblAlternativeAccessionNumber tblAlternativeAccessionNumber = null;
+            if (alternativeAccessionNumber.getAlternativeAccessionNumberId() != null) {
+                tblAlternativeAccessionNumber = em.find(TblAlternativeAccessionNumber.class, alternativeAccessionNumber.getAlternativeAccessionNumberId());
+            }
+            else {
+                tblAlternativeAccessionNumber = new TblAlternativeAccessionNumber();
+            }
+
+            // set properties
+            tblAlternativeAccessionNumber.setLivingPlantId(tblLivingPlant);
+            tblAlternativeAccessionNumber.setNumber(alternativeAccessionNumber.getNumber());
+
+            // save alternative accession number
+            em.persist(tblAlternativeAccessionNumber);
+        }
+
+        // save certificates
+        for (CertificateResult certificate : livingPlantResult.getCertificates()) {
+            TblCertificate tblCertificate = null;
+            if (certificate.getCertificateId() != null) {
+                tblCertificate = em.find(TblCertificate.class, certificate.getCertificateId());
+            }
+            else {
+                tblCertificate = new TblCertificate();
+            }
+
+            // set properties
+            tblCertificate.setLivingPlantId(tblLivingPlant);
+            tblCertificate.setNumber(certificate.getNumber());
+            tblCertificate.setAnnotation(certificate.getAnnotation());
+            tblCertificate.setCertificateTypeId(em.find(TblCertificateType.class, certificate.getCertificateType().getCertificateTypeId()));
+
+            // save certificate
+            em.persist(tblCertificate);
+        }
+
+        // save separations
+        for (SeparationResult separation : livingPlantResult.getSeparations()) {
+            TblSeparation tblSeparation = null;
+            if (separation.getSeparationId() != null) {
+                tblSeparation = em.find(TblSeparation.class, separation.getSeparationId());
+            }
+            else {
+                tblSeparation = new TblSeparation();
+            }
+
+            // set properties
+            tblSeparation.setDerivativeId(tblDerivative);
+            tblSeparation.setDate(separation.getDate());
+            tblSeparation.setAnnotation(separation.getAnnotation());
+            tblSeparation.setSeparationTypeId(em.find(TblSeparationType.class, separation.getSeparationType().getSeparationTypeId()));
+
+            // save separation
+            em.persist(tblSeparation);
+        }
+
+        // save acquisition event sources
+        for (AcquistionEventSourceResult acquistionEventSource : livingPlantResult.getAcquistionEventSources()) {
+            TblAcquisitionEventSource tblAcquisitionEventSource = null;
+            if (acquistionEventSource.getAcquisitionEventSourceId() != null) {
+                tblAcquisitionEventSource = em.find(TblAcquisitionEventSource.class, acquistionEventSource.getAcquisitionEventSourceId());
+            }
+            else {
+                tblAcquisitionEventSource = new TblAcquisitionEventSource();
+            }
+
+            TblAcquisitionSource tblAcquisitionSource = null;
+            if (acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId() != null) {
+                tblAcquisitionSource = em.find(TblAcquisitionSource.class, acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId());
+            }
+            else {
+                tblAcquisitionSource = new TblAcquisitionSource();
+            }
+
+            // set properties
+            tblAcquisitionSource.setName(acquistionEventSource.getAcquisitionEventSource().getName());
+            em.persist(tblAcquisitionSource);
+
+            // set properties
+            tblAcquisitionEventSource.setAcquisitionEventId(tblBotanicalObject.getAcquisitionEventId());
+            tblAcquisitionEventSource.setAcquisitionSourceId(tblAcquisitionSource);
+            tblAcquisitionEventSource.setSourceDate(acquistionEventSource.getSourceDate());
+
+            // save acquisition
+            em.persist(tblAcquisitionEventSource);
+        }
+
         // convert back to result and return it to caller
         return new LivingPlantResult(tblLivingPlant);
     }

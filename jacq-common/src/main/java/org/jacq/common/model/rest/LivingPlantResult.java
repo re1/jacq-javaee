@@ -16,6 +16,7 @@
 package org.jacq.common.model.rest;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
@@ -56,7 +57,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String longitudeHalf;
     protected String gatheringAnnotation;
     protected String habitat;
-    protected Boolean indexSeminum;
+    protected boolean indexSeminum;
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
 
@@ -68,12 +69,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<AcquistionEventSourceResult> acquistionEventSources;
 
-    protected Boolean redetermine;
+    protected boolean redetermine;
     protected Date determinationDate;
     protected IdentStatusResult identStatus;
     protected PersonResult determinedBy;
-    protected Boolean phytoControl;
-    protected Boolean bgci;
+    protected boolean phytoControl;
+    protected boolean bgci;
 
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationResult> separations;
@@ -88,6 +89,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.identStatus = new IdentStatusResult();
         this.determinedBy = new PersonResult();
         this.scientificNameResult = new ScientificNameResult();
+
+        this.alternativeAccessionNumbers = new ArrayList<>();
+        this.relevancyTypes = new ArrayList<>();
+        this.separations = new ArrayList<>();
+        this.certificates = new ArrayList<>();
+        this.acquistionEventSources = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -115,8 +122,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.determinedBy = new PersonResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminedById());
         this.generalAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAnnotation();
         this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
-        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
         this.scientificNameResult = new ScientificNameResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName(), tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
 
         // Derivative properties
         this.count = tblLivingPlant.getTblDerivative().getCount();
@@ -389,14 +396,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.habitat = habitat;
     }
 
-    public Boolean getIndexSeminum() {
-        return indexSeminum;
-    }
-
-    public void setIndexSeminum(Boolean indexSeminum) {
-        this.indexSeminum = indexSeminum;
-    }
-
     public IndexSeminumTypeResult getIndexSeminumType() {
         return indexSeminumType;
     }
@@ -453,22 +452,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.phenology = phenology;
     }
 
-    public List<AcquistionEventSourceResult> getAcquistionEventSources() {
-        return acquistionEventSources;
-    }
-
-    public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
-        this.acquistionEventSources = acquistionEventSources;
-    }
-
-    public Boolean getRedetermine() {
-        return redetermine;
-    }
-
-    public void setRedetermine(Boolean redetermine) {
-        this.redetermine = redetermine;
-    }
-
     public Date getDeterminationDate() {
         return determinationDate;
     }
@@ -491,22 +474,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setDeterminedBy(PersonResult determinedBy) {
         this.determinedBy = determinedBy;
-    }
-
-    public Boolean getPhytoControl() {
-        return phytoControl;
-    }
-
-    public void setPhytoControl(Boolean phytoControl) {
-        this.phytoControl = phytoControl;
-    }
-
-    public Boolean getBgci() {
-        return bgci;
-    }
-
-    public void setBgci(Boolean bgci) {
-        this.bgci = bgci;
     }
 
     public List<RelevancyTypeResult> getRelevancyTypes() {
@@ -539,6 +506,46 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setScientificNameResult(ScientificNameResult scientificNameResult) {
         this.scientificNameResult = scientificNameResult;
+    }
+
+    public boolean isIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(boolean indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
+
+    public boolean isRedetermine() {
+        return redetermine;
+    }
+
+    public void setRedetermine(boolean redetermine) {
+        this.redetermine = redetermine;
+    }
+
+    public boolean isPhytoControl() {
+        return phytoControl;
+    }
+
+    public void setPhytoControl(boolean phytoControl) {
+        this.phytoControl = phytoControl;
+    }
+
+    public boolean isBgci() {
+        return bgci;
+    }
+
+    public void setBgci(boolean bgci) {
+        this.bgci = bgci;
+    }
+
+    public List<AcquistionEventSourceResult> getAcquistionEventSources() {
+        return acquistionEventSources;
+    }
+
+    public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
+        this.acquistionEventSources = acquistionEventSources;
     }
 
 }
