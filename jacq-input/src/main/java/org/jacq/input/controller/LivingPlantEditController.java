@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
@@ -188,6 +189,14 @@ public class LivingPlantEditController {
 
     public Long getDerivativeId() {
         return derivativeId;
+    }
+
+    public void addGatherer() {
+        this.livingPlantResult.getGatherers().add(new PersonResult());
+    }
+
+    public void removeGatherer(PersonResult gatherer) {
+        this.livingPlantResult.getGatherers().remove(gatherer);
     }
 
     /**

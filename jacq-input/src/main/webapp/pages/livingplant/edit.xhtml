@@ -374,7 +374,21 @@
                                         <h:outputText value="#{messages['livingplant.collectorname']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <div class="ui-g-12 ui-g-nopad">
+                                            <h:panelGroup id="gatherers" layout="block" styleClass="ui-g">
+                                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.gatherers}" var="gatherer">
+                                                    <div class="ui-g-11">
+                                                        <p:inputText value="#{gatherer.name}" />
+                                                    </div>
+                                                    <div class="ui-g-1">
+                                                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeGatherer(gatherer)}" />
+                                                    </div>
+                                                </ui:repeat>
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="ui-g-12 ui-g-nopad">
+                                            <p:commandButton icon="ui-icon-plus" update="gatherers" action="#{livingPlantEditController.addGatherer}" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

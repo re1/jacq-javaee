@@ -86,6 +86,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<SexResult> sexes;
 
+    protected List<PersonResult> gatherers;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -101,6 +103,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.certificates = new ArrayList<>();
         this.acquistionEventSources = new ArrayList<>();
         this.sexes = new ArrayList<>();
+        this.gatherers = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -131,6 +134,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.scientificNameResult = new ScientificNameResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName(), tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
         this.sexes = SexResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getTblSexList());
+        this.gatherers = PersonResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblPersonList());
 
         // Derivative properties
         this.count = tblLivingPlant.getTblDerivative().getCount();
@@ -570,5 +574,13 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setSexes(List<SexResult> sexes) {
         this.sexes = sexes;
+    }
+
+    public List<PersonResult> getGatherers() {
+        return gatherers;
+    }
+
+    public void setGatherers(List<PersonResult> gatherers) {
+        this.gatherers = gatherers;
     }
 }

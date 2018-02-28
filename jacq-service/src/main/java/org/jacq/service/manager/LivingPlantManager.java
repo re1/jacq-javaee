@@ -51,6 +51,7 @@ import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SexResult;
@@ -200,6 +201,28 @@ public class LivingPlantManager {
         // living plants do not use the required acquisition type relation, that's why we set it to unknown by default
         tblAcquisitionEvent.setAcquisitionTypeId(em.find(TblAcquisitionType.class, 1L));
         tblAcquisitionEvent.setLocationId(tblGatheringLocation);
+
+        // save gatherers list
+        if (tblAcquisitionEvent.getTblPersonList() == null) {
+            tblAcquisitionEvent.setTblPersonList(new ArrayList<TblPerson>());
+        }
+        tblAcquisitionEvent.getTblPersonList().clear();
+        for (PersonResult gatherer : livingPlantResult.getGatherers()) {
+            TypedQuery<TblPerson> tblGathererQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+            tblGathererQuery.setParameter("name", gatherer.getName());
+            List<TblPerson> gatherers = tblGathererQuery.getResultList();
+            TblPerson tblGatherer = null;
+            if (gatherers != null & gatherers.size() > 0) {
+                tblGatherer = gatherers.get(0);
+            }
+            else {
+                tblGatherer = new TblPerson();
+                tblGatherer.setName(gatherer.getName());
+                em.persist(tblGatherer);
+            }
+
+            tblAcquisitionEvent.getTblPersonList().add(tblGatherer);
+        }
 
         // save gathering date
         TblAcquisitionDate tblGatheringDate = tblAcquisitionEvent.getAcquisitionDateId();
