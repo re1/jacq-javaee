@@ -31,7 +31,11 @@ public class ScientificNameConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return ServicesUtil.getScientificNameService().load(Long.valueOf(value));
+        if (value != null && !value.equalsIgnoreCase("null")) {
+            return ServicesUtil.getScientificNameService().load(Long.valueOf(value));
+        }
+
+        return null;
     }
 
     @Override

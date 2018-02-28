@@ -323,6 +323,9 @@ public class LivingPlantManager {
             em.persist(tblAcquisitionEventSource);
         }
 
+        // refresh botanical object in order to resolve manual relations
+        em.refresh(tblBotanicalObject);
+
         // convert back to result and return it to caller
         return new LivingPlantResult(tblLivingPlant);
     }

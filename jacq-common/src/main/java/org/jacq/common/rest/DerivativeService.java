@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
+import org.jacq.common.model.rest.SexResult;
 
 /**
  * Main service for searching derivatives
@@ -193,4 +194,15 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<CertificateTypeResult> findAllCertificateType();
+
+    /**
+     * Get a list of all available sexes
+     *
+     * @return
+     */
+    @GET
+    @Path("/sex/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SexResult> findAllSex();
 }

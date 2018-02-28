@@ -38,6 +38,7 @@ import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
+import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
@@ -95,6 +96,7 @@ public class LivingPlantEditController {
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
+    protected List<SexResult> sexes;
 
     @PostConstruct
     public void init() {
@@ -105,12 +107,17 @@ public class LivingPlantEditController {
 
         this.livingPlantResult = new LivingPlantResult();
 
+        // setup default values
+        this.livingPlantResult.setIpenType("default");
+
+        // load all lookup tables
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
         this.separationTypes = this.derivativeService.findAllSeparationType();
         this.certificateTypes = this.derivativeService.findAllCertificateType();
+        this.sexes = this.derivativeService.findAllSex();
     }
 
     /**
@@ -293,4 +300,11 @@ public class LivingPlantEditController {
         return certificateTypes;
     }
 
+    public List<SexResult> getSexes() {
+        return sexes;
+    }
+
+    public void setSexes(List<SexResult> sexes) {
+        this.sexes = sexes;
+    }
 }

@@ -31,7 +31,11 @@ public class OrganisationConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return ServicesUtil.getOrganisationService().load(Long.valueOf(value));
+        if (value != null && !value.equalsIgnoreCase("null")) {
+            return ServicesUtil.getOrganisationService().load(Long.valueOf(value));
+        }
+
+        return null;
     }
 
     @Override

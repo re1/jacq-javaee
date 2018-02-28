@@ -185,7 +185,6 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:selectOneMenu id="ipentype" value="#{livingPlantEditController.livingPlantResult.ipenType}" >
-                                    <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     <f:selectItem itemLabel="Custom" itemValue="custom" />
                                     <f:selectItem itemLabel="Default" itemValue="default" />
 
@@ -231,27 +230,14 @@
                         </div>
                     </div>
                 </div>
-                <h3>#{messages['livingplant.sex']}</h3>
                 <div class="ui-g">
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.male']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="male" />
-                            </div>
-                        </div>
+                    <div class="ui-g-3">
+                        <h:outputText value="#{messages['livingplant.sex']}" />
                     </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.female']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="female" />
-                            </div>
-                        </div>
+                    <div class="ui-g-9">
+                        <p:selectManyCheckbox>
+                            <f:selectItems value="#{livingPlantEditController.sexes}" var="sex" itemLabel="#{sex.sex}" itemValue="#{sex}" />
+                        </p:selectManyCheckbox>
                     </div>
                 </div>
                 <h3>#{messages['livingplant.label']}</h3>
