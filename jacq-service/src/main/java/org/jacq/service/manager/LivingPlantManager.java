@@ -97,6 +97,7 @@ public class LivingPlantManager {
         tblLivingPlant.setPlaceNumber(livingPlantResult.getPlaceNumber());
         tblLivingPlant.setCultivarId((livingPlantResult.getCultivar() != null && livingPlantResult.getCultivar().getCultivarId() != null) ? em.find(TblCultivar.class, livingPlantResult.getCultivar().getCultivarId()) : null);
         tblLivingPlant.setIndexSeminumTypeId((livingPlantResult.getIndexSeminumType() != null && livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId() != null) ? em.find(TblIndexSeminumType.class, livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId()) : null);
+        tblLivingPlant.setLabelSynonymScientificNameId(livingPlantResult.getLabelSynonymScientificName().getScientificNameId());
 
         // assign relevancy
         if (tblLivingPlant.getTblRelevancyTypeList() == null) {
@@ -361,6 +362,7 @@ public class LivingPlantManager {
 
         // refresh botanical object in order to resolve manual relations
         em.refresh(tblBotanicalObject);
+        em.refresh(tblLivingPlant);
 
         // convert back to result and return it to caller
         return new LivingPlantResult(tblLivingPlant);

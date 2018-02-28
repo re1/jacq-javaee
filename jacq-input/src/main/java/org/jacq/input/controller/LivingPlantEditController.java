@@ -45,6 +45,8 @@ import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
+import org.jacq.common.rest.PersonService;
+import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
@@ -81,6 +83,11 @@ public class LivingPlantEditController {
     protected OrganisationService organisationService;
 
     /**
+     * Reference to person service
+     */
+    protected PersonService personService;
+
+    /**
      * Index seminum service which is used for displaying the available types
      */
     protected IndexSeminumService indexSeminumService;
@@ -109,6 +116,7 @@ public class LivingPlantEditController {
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.indexSeminumService = ServicesUtil.getIndexSeminumService();
         this.organisationService = ServicesUtil.getOrganisationService();
+        this.personService = ServicesUtil.getPersonService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -187,16 +195,16 @@ public class LivingPlantEditController {
         this.livingPlantResult.getCertificates().remove(certificateResult);
     }
 
-    public Long getDerivativeId() {
-        return derivativeId;
-    }
-
     public void addGatherer() {
         this.livingPlantResult.getGatherers().add(new PersonResult());
     }
 
     public void removeGatherer(PersonResult gatherer) {
         this.livingPlantResult.getGatherers().remove(gatherer);
+    }
+
+    public Long getDerivativeId() {
+        return derivativeId;
     }
 
     /**
@@ -260,6 +268,10 @@ public class LivingPlantEditController {
 
     public List<OrganisationResult> completeOrganisation(String query) {
         return this.organisationService.search(null, query, null, null, null, null, null, 0, 10);
+    }
+
+    public List<PersonResult> completePerson(String query) {
+        return this.personService.search(query, 0, 10);
     }
 
     /*

@@ -88,6 +88,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<PersonResult> gatherers;
 
+    protected ScientificNameResult labelSynonymScientificName;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -96,6 +98,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.determinedBy = new PersonResult();
         this.scientificNameResult = new ScientificNameResult();
         this.organisation = new OrganisationResult();
+        this.labelSynonymScientificName = new ScientificNameResult();
 
         this.alternativeAccessionNumbers = new ArrayList<>();
         this.relevancyTypes = new ArrayList<>();
@@ -157,6 +160,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.certificates = CertificateResult.fromList(tblLivingPlant.getTblCertificateList());
         this.cultivationDate = tblLivingPlant.getCultivationDate();
         this.relevancyTypes = RelevancyTypeResult.fromList(tblLivingPlant.getTblRelevancyTypeList());
+        this.labelSynonymScientificName = new ScientificNameResult();
+        if (tblLivingPlant.getViewLabelSynonymScientificName() != null) {
+            this.labelSynonymScientificName.setScientificName(tblLivingPlant.getViewLabelSynonymScientificName().getScientificName());
+            this.labelSynonymScientificName.setScientificNameId(tblLivingPlant.getViewLabelSynonymScientificName().getScientificNameId());
+        }
 
         try {
             this.incomingDate = acquisitionDateFormat.parse(
@@ -583,4 +591,13 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public void setGatherers(List<PersonResult> gatherers) {
         this.gatherers = gatherers;
     }
+
+    public ScientificNameResult getLabelSynonymScientificName() {
+        return labelSynonymScientificName;
+    }
+
+    public void setLabelSynonymScientificName(ScientificNameResult labelSynonymScientificName) {
+        this.labelSynonymScientificName = labelSynonymScientificName;
+    }
+
 }
