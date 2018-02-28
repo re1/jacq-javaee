@@ -84,6 +84,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected OrganisationResult organisation;
 
+    protected List<SexResult> sexes;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -98,6 +100,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.separations = new ArrayList<>();
         this.certificates = new ArrayList<>();
         this.acquistionEventSources = new ArrayList<>();
+        this.sexes = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -558,5 +561,13 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setOrganisation(OrganisationResult organisation) {
         this.organisation = organisation;
+    }
+
+    public List<SexResult> getSexes() {
+        return sexes;
+    }
+
+    public void setSexes(List<SexResult> sexes) {
+        this.sexes = sexes;
     }
 }

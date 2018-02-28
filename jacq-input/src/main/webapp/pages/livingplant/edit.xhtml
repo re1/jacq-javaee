@@ -235,7 +235,7 @@
                         <h:outputText value="#{messages['livingplant.sex']}" />
                     </div>
                     <div class="ui-g-9">
-                        <p:selectManyCheckbox>
+                        <p:selectManyCheckbox value="#{livingPlantEditController.livingPlantResult.sexes}">
                             <f:selectItems value="#{livingPlantEditController.sexes}" var="sex" itemLabel="#{sex.sex}" itemValue="#{sex}" />
                         </p:selectManyCheckbox>
                     </div>
