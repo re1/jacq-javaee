@@ -30,8 +30,10 @@ public class AcquisitionSourceResult {
     }
 
     public AcquisitionSourceResult(TblAcquisitionSource tblAcquisitionSource) {
-        this.acquisitionSourceId = tblAcquisitionSource.getAcquisitionSourceId();
-        this.name = tblAcquisitionSource.getName();
+        if (tblAcquisitionSource != null) {
+            this.acquisitionSourceId = tblAcquisitionSource.getAcquisitionSourceId();
+            this.name = tblAcquisitionSource.getName();
+        }
     }
 
     public Long getAcquisitionSourceId() {

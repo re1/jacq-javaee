@@ -29,6 +29,7 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
+import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.manager.LivingPlantManager;
 
@@ -131,5 +132,13 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
         return livingPlantManager.saveLivingPlant(livingPlantResult);
+    }
+
+    /**
+     * @see DerivativeService#findAllSex()
+     */
+    @Override
+    public List<SexResult> findAllSex() {
+        return derivativeManager.findAllSex();
     }
 }

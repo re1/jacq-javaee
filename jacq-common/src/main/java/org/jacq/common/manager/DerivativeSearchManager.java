@@ -56,7 +56,7 @@ public abstract class DerivativeSearchManager {
     protected static final String FILTER_ACCESSIONNUMBER = "`accession_number` = ?";
     protected static final String FILTER_SEPARATED = "`separated` = ?";
     protected static final String FILTER_SCIENTIFIC_NAME_ID = "`scientific_name_id` = ?";
-    protected static final String FILTER_ORGANISATION_ID = "`organisation_id` in (?)";
+    protected static final String FILTER_ORGANISATION_ID = "`organisation_id` in ";
 
     protected EntityManager entityManager;
 
@@ -194,18 +194,17 @@ public abstract class DerivativeSearchManager {
             params.add(scientificNameId);
         }
         if (organisationIdList != null && organisationIdList.size() > 0) {
-            queryString += " AND " + FILTER_ORGANISATION_ID;
             int i = 0;
             String organisationIds = "";
             while (i < organisationIdList.size()) {
-                if (i != organisationIdList.size()) {
+                if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
                 } else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
             }
-            params.add(organisationIds);
+            queryString += " AND " + FILTER_ORGANISATION_ID + "(" + organisationIds + ")";
         }
 
         // apply order

@@ -16,6 +16,7 @@
 package org.jacq.common.model.rest;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
@@ -56,7 +57,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String longitudeHalf;
     protected String gatheringAnnotation;
     protected String habitat;
-    protected Boolean indexSeminum;
+    protected boolean indexSeminum;
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
 
@@ -68,18 +69,26 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<AcquistionEventSourceResult> acquistionEventSources;
 
-    protected Boolean redetermine;
+    protected boolean redetermine;
     protected Date determinationDate;
     protected IdentStatusResult identStatus;
     protected PersonResult determinedBy;
-    protected Boolean phytoControl;
-    protected Boolean bgci;
+    protected boolean phytoControl;
+    protected boolean bgci;
 
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationResult> separations;
     protected List<CertificateResult> certificates;
 
     protected ScientificNameResult scientificNameResult;
+
+    protected OrganisationResult organisation;
+
+    protected List<SexResult> sexes;
+
+    protected List<PersonResult> gatherers;
+
+    protected ScientificNameResult labelSynonymScientificName;
 
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
@@ -88,6 +97,16 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.identStatus = new IdentStatusResult();
         this.determinedBy = new PersonResult();
         this.scientificNameResult = new ScientificNameResult();
+        this.organisation = new OrganisationResult();
+        this.labelSynonymScientificName = new ScientificNameResult();
+
+        this.alternativeAccessionNumbers = new ArrayList<>();
+        this.relevancyTypes = new ArrayList<>();
+        this.separations = new ArrayList<>();
+        this.certificates = new ArrayList<>();
+        this.acquistionEventSources = new ArrayList<>();
+        this.sexes = new ArrayList<>();
+        this.gatherers = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -115,13 +134,16 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.determinedBy = new PersonResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getDeterminedById());
         this.generalAnnotation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAnnotation();
         this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
-        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
         this.scientificNameResult = new ScientificNameResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName(), tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+        this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
+        this.sexes = SexResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getTblSexList());
+        this.gatherers = PersonResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblPersonList());
 
         // Derivative properties
         this.count = tblLivingPlant.getTblDerivative().getCount();
         this.price = tblLivingPlant.getTblDerivative().getPrice();
         this.separations = SeparationResult.fromList(tblLivingPlant.getTblDerivative().getTblSeparationList());
+        this.organisation = new OrganisationResult(tblLivingPlant.getTblDerivative().getOrganisationId());
 
         // Livingplant properties
         this.reviewed = tblLivingPlant.getReviewed();
@@ -138,6 +160,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.certificates = CertificateResult.fromList(tblLivingPlant.getTblCertificateList());
         this.cultivationDate = tblLivingPlant.getCultivationDate();
         this.relevancyTypes = RelevancyTypeResult.fromList(tblLivingPlant.getTblRelevancyTypeList());
+        this.labelSynonymScientificName = new ScientificNameResult();
+        if (tblLivingPlant.getViewLabelSynonymScientificName() != null) {
+            this.labelSynonymScientificName.setScientificName(tblLivingPlant.getViewLabelSynonymScientificName().getScientificName());
+            this.labelSynonymScientificName.setScientificNameId(tblLivingPlant.getViewLabelSynonymScientificName().getScientificNameId());
+        }
 
         try {
             this.incomingDate = acquisitionDateFormat.parse(
@@ -389,14 +416,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.habitat = habitat;
     }
 
-    public Boolean getIndexSeminum() {
-        return indexSeminum;
-    }
-
-    public void setIndexSeminum(Boolean indexSeminum) {
-        this.indexSeminum = indexSeminum;
-    }
-
     public IndexSeminumTypeResult getIndexSeminumType() {
         return indexSeminumType;
     }
@@ -453,22 +472,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.phenology = phenology;
     }
 
-    public List<AcquistionEventSourceResult> getAcquistionEventSources() {
-        return acquistionEventSources;
-    }
-
-    public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
-        this.acquistionEventSources = acquistionEventSources;
-    }
-
-    public Boolean getRedetermine() {
-        return redetermine;
-    }
-
-    public void setRedetermine(Boolean redetermine) {
-        this.redetermine = redetermine;
-    }
-
     public Date getDeterminationDate() {
         return determinationDate;
     }
@@ -491,22 +494,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setDeterminedBy(PersonResult determinedBy) {
         this.determinedBy = determinedBy;
-    }
-
-    public Boolean getPhytoControl() {
-        return phytoControl;
-    }
-
-    public void setPhytoControl(Boolean phytoControl) {
-        this.phytoControl = phytoControl;
-    }
-
-    public Boolean getBgci() {
-        return bgci;
-    }
-
-    public void setBgci(Boolean bgci) {
-        this.bgci = bgci;
     }
 
     public List<RelevancyTypeResult> getRelevancyTypes() {
@@ -539,6 +526,78 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setScientificNameResult(ScientificNameResult scientificNameResult) {
         this.scientificNameResult = scientificNameResult;
+    }
+
+    public boolean isIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(boolean indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
+
+    public boolean isRedetermine() {
+        return redetermine;
+    }
+
+    public void setRedetermine(boolean redetermine) {
+        this.redetermine = redetermine;
+    }
+
+    public boolean isPhytoControl() {
+        return phytoControl;
+    }
+
+    public void setPhytoControl(boolean phytoControl) {
+        this.phytoControl = phytoControl;
+    }
+
+    public boolean isBgci() {
+        return bgci;
+    }
+
+    public void setBgci(boolean bgci) {
+        this.bgci = bgci;
+    }
+
+    public List<AcquistionEventSourceResult> getAcquistionEventSources() {
+        return acquistionEventSources;
+    }
+
+    public void setAcquistionEventSources(List<AcquistionEventSourceResult> acquistionEventSources) {
+        this.acquistionEventSources = acquistionEventSources;
+    }
+
+    public OrganisationResult getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(OrganisationResult organisation) {
+        this.organisation = organisation;
+    }
+
+    public List<SexResult> getSexes() {
+        return sexes;
+    }
+
+    public void setSexes(List<SexResult> sexes) {
+        this.sexes = sexes;
+    }
+
+    public List<PersonResult> getGatherers() {
+        return gatherers;
+    }
+
+    public void setGatherers(List<PersonResult> gatherers) {
+        this.gatherers = gatherers;
+    }
+
+    public ScientificNameResult getLabelSynonymScientificName() {
+        return labelSynonymScientificName;
+    }
+
+    public void setLabelSynonymScientificName(ScientificNameResult labelSynonymScientificName) {
+        this.labelSynonymScientificName = labelSynonymScientificName;
     }
 
 }

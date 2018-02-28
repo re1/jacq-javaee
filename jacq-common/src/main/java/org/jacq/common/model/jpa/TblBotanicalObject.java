@@ -108,6 +108,11 @@ public class TblBotanicalObject implements Serializable {
         @JoinColumn(name = "label_type_id", referencedColumnName = "label_type_id")})
     @ManyToMany(fetch = FetchType.LAZY)
     private List<TblLabelType> tblLabelTypeList;
+    @JoinTable(name = "tbl_botanical_object_sex", joinColumns = {
+        @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "sex_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TblSex> tblSexList;
     @JoinColumn(name = "ident_status_id", referencedColumnName = "ident_status_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblIdentStatus identStatusId;
@@ -128,8 +133,6 @@ public class TblBotanicalObject implements Serializable {
     private List<TblInventoryObject> tblInventoryObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblIndexSeminumContent> tblIndexSeminumContentList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
-    private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblDerivative> tblDerivativeList;
 
@@ -238,6 +241,15 @@ public class TblBotanicalObject implements Serializable {
         this.tblLabelTypeList = tblLabelTypeList;
     }
 
+    @XmlTransient
+    public List<TblSex> getTblSexList() {
+        return tblSexList;
+    }
+
+    public void setTblSexList(List<TblSex> tblSexList) {
+        this.tblSexList = tblSexList;
+    }
+
     public TblIdentStatus getIdentStatusId() {
         return identStatusId;
     }
@@ -303,15 +315,6 @@ public class TblBotanicalObject implements Serializable {
 
     public void setTblIndexSeminumContentList(List<TblIndexSeminumContent> tblIndexSeminumContentList) {
         this.tblIndexSeminumContentList = tblIndexSeminumContentList;
-    }
-
-    @XmlTransient
-    public List<TblBotanicalObjectSex> getTblBotanicalObjectSexList() {
-        return tblBotanicalObjectSexList;
-    }
-
-    public void setTblBotanicalObjectSexList(List<TblBotanicalObjectSex> tblBotanicalObjectSexList) {
-        this.tblBotanicalObjectSexList = tblBotanicalObjectSexList;
     }
 
     @XmlTransient

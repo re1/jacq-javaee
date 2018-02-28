@@ -19,20 +19,20 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.model.rest.PersonResult;
 import org.jacq.input.util.ServicesUtil;
 
 /**
  *
  * @author wkoller
  */
-@FacesConverter("scientificNameConverter")
-public class ScientificNameConverter implements Converter {
+@FacesConverter("personConverter")
+public class PersonConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && !value.equalsIgnoreCase("null")) {
-            return ServicesUtil.getScientificNameService().load(Long.valueOf(value));
+            return ServicesUtil.getPersonService().load(Long.valueOf(value));
         }
 
         return null;
@@ -41,7 +41,7 @@ public class ScientificNameConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         if (value != null) {
-            return String.valueOf(((ScientificNameResult) value).getScientificNameId());
+            return String.valueOf(((PersonResult) value).getPersonId());
         }
         else {
             return null;

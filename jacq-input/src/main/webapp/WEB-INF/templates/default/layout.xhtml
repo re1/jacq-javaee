@@ -34,25 +34,25 @@
             <div class="jacq-pages">
                 <div class="ui-g">
                     <div class="ui-g-3">
-                        <h:form>
+                        <h:form rendered="#{loginController.securityContext.isCallerInRole('authenticated') ? true : false}">
                             <p:panelMenu>
-                                <p:submenu label="#{messages['livingplant']}" >
-                                    <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/edit.xhtml"/>
+                                <p:submenu label="#{messages['livingplant']}" rendered="#{loginController.securityContext.isCallerInRole('readLivingplant') ? true : false}" >
+                                    <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/edit.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createLivingplant') ? true : false}"/>
                                     <p:menuitem value="#{messages['manage']}"  url="/faces/pages/livingplant/manage.xhtml"/>
-                                    <p:submenu label="#{messages['inventory']}" rendered="#{loginController.securityContext.isCallerInRole('authenticated') ? true : false}" >
+                                    <p:submenu label="#{messages['inventory']}" rendered="#{loginController.securityContext.isCallerInRole('inventory') ? true : false}">
                                         <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/inventoryedit.xhtml"/>
                                         <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
                                     </p:submenu>
-                                    <p:submenu label="#{messages['seminum']}">
+                                    <p:submenu label="#{messages['seminum']}" rendered="#{loginController.securityContext.isCallerInRole('indexSeminum') ? true : false}">
                                         <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
                                         <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/faces/pages/livingplant/revisioncreate.xhtml"/>
                                     </p:submenu>
                                 </p:submenu>
-                                <p:submenu label="#{messages['location']}">
+                                <p:submenu label="#{messages['location']}" rendered="#{loginController.securityContext.isCallerInRole('createOrganisation') ? true : false}">
                                     <p:menuitem value="#{messages['create']}" url="/faces/pages/organisation/edit.xhtml"/>
                                     <p:menuitem value="#{messages['manage']}" url="/faces/pages/organisation/manage.xhtml"/>
                                 </p:submenu>
-                                <p:submenu label="#{messages['treerecordfile']}">
+                                <p:submenu label="#{messages['treerecordfile']}" rendered="#{loginController.securityContext.isCallerInRole('createTreeRecordFile') ? true : false}">
                                     <p:menuitem value="#{messages['create']}" url="/faces/pages/treerecordfile/edit.xhtml"/>
                                     <p:menuitem value="#{messages['manage']}" url="/faces/pages/treerecordfile/manage.xhtml"/>
                                 </p:submenu>
@@ -62,9 +62,9 @@
                                 </p:submenu>
                                 <p:separator />
                                 <p:submenu label="#{messages['user']}">
-                                    <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml"/>
+                                    <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createUser') ? true : false}"/>
                                     <p:menuitem value="#{messages['update']}" url="/faces/pages/user/update.xhtml"/>
-                                    <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml"/>
+                                    <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createUser') ? true : false}"/>
                                 </p:submenu>
                                 <p:submenu label="#{messages['literature']}" rendered="false">
                                     <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>

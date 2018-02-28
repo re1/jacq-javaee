@@ -15,10 +15,12 @@
  */
 package org.jacq.input.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +33,20 @@ import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
+import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
+import org.jacq.common.rest.OrganisationService;
+import org.jacq.common.rest.PersonService;
+import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
@@ -70,6 +78,16 @@ public class LivingPlantEditController {
     protected ScientificNameService scientificNameService;
 
     /**
+     * Reference to organisation service
+     */
+    protected OrganisationService organisationService;
+
+    /**
+     * Reference to person service
+     */
+    protected PersonService personService;
+
+    /**
      * Index seminum service which is used for displaying the available types
      */
     protected IndexSeminumService indexSeminumService;
@@ -88,21 +106,38 @@ public class LivingPlantEditController {
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
+    protected List<SelectItem> sexes;
+
+    protected List<String> selectedSexes;
 
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.indexSeminumService = ServicesUtil.getIndexSeminumService();
+        this.organisationService = ServicesUtil.getOrganisationService();
+        this.personService = ServicesUtil.getPersonService();
 
         this.livingPlantResult = new LivingPlantResult();
 
+        // setup default values
+        this.livingPlantResult.setIpenType("default");
+
+        // load all lookup tables
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
         this.separationTypes = this.derivativeService.findAllSeparationType();
         this.certificateTypes = this.derivativeService.findAllCertificateType();
+
+        // load list of sexes and convert to select item
+        List<SexResult> sexList = this.derivativeService.findAllSex();
+        this.sexes = new ArrayList<>();
+        for (SexResult sex : sexList) {
+            this.sexes.add(new SelectItem(sex.getSexId(), sex.getSex()));
+        }
+        this.selectedSexes = new ArrayList<>();
     }
 
     /**
@@ -160,6 +195,14 @@ public class LivingPlantEditController {
         this.livingPlantResult.getCertificates().remove(certificateResult);
     }
 
+    public void addGatherer() {
+        this.livingPlantResult.getGatherers().add(new PersonResult());
+    }
+
+    public void removeGatherer(PersonResult gatherer) {
+        this.livingPlantResult.getGatherers().remove(gatherer);
+    }
+
     public Long getDerivativeId() {
         return derivativeId;
     }
@@ -178,9 +221,7 @@ public class LivingPlantEditController {
             this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
             botanicalObjectDerivative.close();
 
-            // load matching list of possible cultivar entries
-            this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
-
+            this.syncInfo();
         }
     }
 
@@ -188,8 +229,30 @@ public class LivingPlantEditController {
      * Called when user clicks on save
      */
     public void save() {
+        // convert selected sex entries to SexResult(s)
+        this.livingPlantResult.getSexes().clear();
+        for (String sexId : this.selectedSexes) {
+            this.livingPlantResult.getSexes().add(new SexResult(Long.parseLong(sexId)));
+        }
+
+        // save the living plant entry
         this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
-        saveMessage();
+
+        this.syncInfo();
+        this.saveMessage();
+    }
+
+    /**
+     * Helper function for synchronizing the model properties with the UI info
+     */
+    protected void syncInfo() {
+        // load matching list of possible cultivar entries
+        this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
+
+        // convert selected sex entries
+        for (SexResult sex : this.livingPlantResult.getSexes()) {
+            this.selectedSexes.add(sex.getSexId().toString());
+        }
     }
 
     /**
@@ -201,6 +264,14 @@ public class LivingPlantEditController {
 
     public List<ScientificNameResult> completeScientificName(String query) {
         return this.scientificNameService.find(query, Boolean.TRUE);
+    }
+
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return this.organisationService.search(null, query, null, null, null, null, null, 0, 10);
+    }
+
+    public List<PersonResult> completePerson(String query) {
+        return this.personService.search(query, 0, 10);
     }
 
     /*
@@ -281,4 +352,15 @@ public class LivingPlantEditController {
         return certificateTypes;
     }
 
+    public List<SelectItem> getSexes() {
+        return sexes;
+    }
+
+    public List<String> getSelectedSexes() {
+        return selectedSexes;
+    }
+
+    public void setSelectedSexes(List<String> selectedSexes) {
+        this.selectedSexes = selectedSexes;
+    }
 }

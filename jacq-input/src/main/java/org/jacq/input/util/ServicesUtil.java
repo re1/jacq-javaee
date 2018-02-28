@@ -20,6 +20,7 @@ import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.InventoryService;
+import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.PortalService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
@@ -74,6 +75,10 @@ public class ServicesUtil {
 
     public static PortalService getPortalService() {
         return getProxy(PortalService.class, JACQ_SERVICE_URL);
+    }
+
+    public static PersonService getPersonService() {
+        return getProxy(PersonService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

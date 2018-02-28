@@ -89,7 +89,12 @@
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText value="#{livingPlantEditController.livingPlantResult.organisationDescription}"/>
+                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
+                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter" required="true">
+                                    <p:column>
+                                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -180,7 +185,6 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:selectOneMenu id="ipentype" value="#{livingPlantEditController.livingPlantResult.ipenType}" >
-                                    <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
                                     <f:selectItem itemLabel="Custom" itemValue="custom" />
                                     <f:selectItem itemLabel="Default" itemValue="default" />
 
@@ -226,27 +230,14 @@
                         </div>
                     </div>
                 </div>
-                <h3>#{messages['livingplant.sex']}</h3>
                 <div class="ui-g">
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.male']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="male" />
-                            </div>
-                        </div>
+                    <div class="ui-g-3">
+                        <h:outputText value="#{messages['livingplant.sex']}" />
                     </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.female']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="female" />
-                            </div>
-                        </div>
+                    <div class="ui-g-9">
+                        <p:selectManyCheckbox value="#{livingPlantEditController.selectedSexes}">
+                            <f:selectItems value="#{livingPlantEditController.sexes}" var="sex" itemLabel="#{sex.sex}" itemValue="#{sex}" />
+                        </p:selectManyCheckbox>
                     </div>
                 </div>
                 <h3>#{messages['livingplant.label']}</h3>
@@ -257,7 +248,12 @@
                                 <h:outputText value="#{messages['livingplant.synonymforlabel']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.labelSynonymScientificName}" completeMethod="#{livingPlantEditController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" required="true">
+                                    <p:column>
+                                        <h:outputText value="#{scientificName.scientificName}" />
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -383,7 +379,26 @@
                                         <h:outputText value="#{messages['livingplant.collectorname']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText />
+                                        <div class="ui-g-12 ui-g-nopad">
+                                            <h:panelGroup id="gatherers" layout="block" styleClass="ui-g">
+                                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.gatherers}" var="gatherer">
+                                                    <div class="ui-g-11">
+                                                        <p:autoComplete value="#{gatherer}" completeMethod="#{livingPlantEditController.completePerson}"
+                                                                        var="person" itemLabel="#{person.name}" itemValue="#{person}" minQueryLength="3" queryDelay="300" converter="personConverter">
+                                                            <p:column>
+                                                                <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
+                                                            </p:column>
+                                                        </p:autoComplete>
+                                                    </div>
+                                                    <div class="ui-g-1">
+                                                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeGatherer(gatherer)}" />
+                                                    </div>
+                                                </ui:repeat>
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="ui-g-12 ui-g-nopad">
+                                            <p:commandButton icon="ui-icon-plus" update="gatherers" action="#{livingPlantEditController.addGatherer}" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -661,7 +676,12 @@
                                         <h:outputText value="#{messages['livingplant.determineby']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.determinedBy.name}" />
+                                        <p:autoComplete value="#{livingPlantEditController.livingPlantResult.determinedBy}" completeMethod="#{livingPlantEditController.completePerson}"
+                                                        var="person" itemLabel="#{person.name}" itemValue="#{person}" minQueryLength="3" queryDelay="300" converter="personConverter">
+                                            <p:column>
+                                                <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
+                                            </p:column>
+                                        </p:autoComplete>
                                     </div>
                                 </div>
                             </div>

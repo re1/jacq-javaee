@@ -34,6 +34,7 @@ import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.TblSeparationType;
+import org.jacq.common.model.jpa.TblSex;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
@@ -44,6 +45,7 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
+import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.JacqServiceConfig;
 
@@ -171,6 +173,15 @@ public class DerivativeManager extends DerivativeSearchManager {
         TypedQuery<TblCertificateType> certificateTypeQuery = em.createNamedQuery("TblCertificateType.findAll", TblCertificateType.class);
 
         return CertificateTypeResult.fromList(certificateTypeQuery.getResultList());
+    }
+
+    /**
+     * @see DerivativeService#findAllSex()
+     */
+    public List<SexResult> findAllSex() {
+        TypedQuery<TblSex> sexQuery = em.createNamedQuery("TblSex.findAll", TblSex.class);
+
+        return SexResult.fromList(sexQuery.getResultList());
     }
 
     /**
