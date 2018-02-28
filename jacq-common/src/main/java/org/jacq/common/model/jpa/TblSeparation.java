@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblSeparation.findAll", query = "SELECT t FROM TblSeparation t")
-    , @NamedQuery(name = "TblSeparation.findById", query = "SELECT t FROM TblSeparation t WHERE t.id = :id")
+    , @NamedQuery(name = "TblSeparation.findBySeparationId", query = "SELECT t FROM TblSeparation t WHERE t.separationId = :separationId")
     , @NamedQuery(name = "TblSeparation.findByDate", query = "SELECT t FROM TblSeparation t WHERE t.date = :date")})
 public class TblSeparation implements Serializable {
 
@@ -71,8 +71,8 @@ public class TblSeparation implements Serializable {
     public TblSeparation() {
     }
 
-    public TblSeparation(Long id) {
-        this.separationId = id;
+    public TblSeparation(Long separationId) {
+        this.separationId = separationId;
     }
 
     public Long getSeparationId() {
@@ -137,7 +137,7 @@ public class TblSeparation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblSeparation[ id=" + separationId + " ]";
+        return "org.jacq.common.model.jpa.TblSeparation[ separationId=" + separationId + " ]";
     }
 
 }
