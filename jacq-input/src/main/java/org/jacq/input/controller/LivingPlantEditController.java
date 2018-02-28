@@ -15,10 +15,12 @@
  */
 package org.jacq.input.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +98,9 @@ public class LivingPlantEditController {
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
-    protected List<SexResult> sexes;
+    protected List<SelectItem> sexes;
+
+    protected List<String> selectedSexes;
 
     @PostConstruct
     public void init() {
@@ -117,7 +121,14 @@ public class LivingPlantEditController {
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
         this.separationTypes = this.derivativeService.findAllSeparationType();
         this.certificateTypes = this.derivativeService.findAllCertificateType();
-        this.sexes = this.derivativeService.findAllSex();
+
+        // load list of sexes and convert to select item
+        List<SexResult> sexList = this.derivativeService.findAllSex();
+        this.sexes = new ArrayList<>();
+        for (SexResult sex : sexList) {
+            this.sexes.add(new SelectItem(sex.getSexId(), sex.getSex()));
+        }
+        this.selectedSexes = new ArrayList<>();
     }
 
     /**
@@ -193,9 +204,7 @@ public class LivingPlantEditController {
             this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
             botanicalObjectDerivative.close();
 
-            // load matching list of possible cultivar entries
-            this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
-
+            this.syncInfo();
         }
     }
 
@@ -203,8 +212,30 @@ public class LivingPlantEditController {
      * Called when user clicks on save
      */
     public void save() {
+        // convert selected sex entries to SexResult(s)
+        this.livingPlantResult.getSexes().clear();
+        for (String sexId : this.selectedSexes) {
+            this.livingPlantResult.getSexes().add(new SexResult(Long.parseLong(sexId)));
+        }
+
+        // save the living plant entry
         this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
-        saveMessage();
+
+        this.syncInfo();
+        this.saveMessage();
+    }
+
+    /**
+     * Helper function for synchronizing the model properties with the UI info
+     */
+    protected void syncInfo() {
+        // load matching list of possible cultivar entries
+        this.cultivarResults = this.scientificNameService.cultivarFind(this.livingPlantResult.getScientificNameId());
+
+        // convert selected sex entries
+        for (SexResult sex : this.livingPlantResult.getSexes()) {
+            this.selectedSexes.add(sex.getSexId().toString());
+        }
     }
 
     /**
@@ -300,11 +331,15 @@ public class LivingPlantEditController {
         return certificateTypes;
     }
 
-    public List<SexResult> getSexes() {
+    public List<SelectItem> getSexes() {
         return sexes;
     }
 
-    public void setSexes(List<SexResult> sexes) {
-        this.sexes = sexes;
+    public List<String> getSelectedSexes() {
+        return selectedSexes;
+    }
+
+    public void setSelectedSexes(List<String> selectedSexes) {
+        this.selectedSexes = selectedSexes;
     }
 }

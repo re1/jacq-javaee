@@ -31,6 +31,10 @@ public class SexResult {
     public SexResult() {
     }
 
+    public SexResult(Long sexId) {
+        this.sexId = sexId;
+    }
+
     public SexResult(TblSex tblSex) {
         if (tblSex != null) {
             this.sexId = tblSex.getId();

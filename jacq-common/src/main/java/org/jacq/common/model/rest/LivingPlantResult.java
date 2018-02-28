@@ -130,6 +130,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.phenology = new PhenologyResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getPhenologyId());
         this.scientificNameResult = new ScientificNameResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getViewScientificName().getScientificName(), tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
+        this.sexes = SexResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getTblSexList());
 
         // Derivative properties
         this.count = tblLivingPlant.getTblDerivative().getCount();

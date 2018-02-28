@@ -46,12 +46,14 @@ import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
+import org.jacq.common.model.jpa.TblSex;
 import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationResult;
+import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
 
 /**
@@ -68,7 +70,7 @@ public class LivingPlantManager {
     /**
      * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
      */
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
         TblLivingPlant tblLivingPlant = null;
 
@@ -101,11 +103,8 @@ public class LivingPlantManager {
         }
         tblLivingPlant.getTblRelevancyTypeList().clear();
         for (RelevancyTypeResult relevancyType : livingPlantResult.getRelevancyTypes()) {
-            TblRelevancyType tblRelevancyType = null;
             if (relevancyType.getRelevancyTypeId() != null) {
-                tblRelevancyType = em.find(TblRelevancyType.class, relevancyType.getRelevancyTypeId());
-
-                tblLivingPlant.getTblRelevancyTypeList().add(tblRelevancyType);
+                tblLivingPlant.getTblRelevancyTypeList().add(em.find(TblRelevancyType.class, relevancyType.getRelevancyTypeId()));
             }
         }
 
@@ -147,6 +146,17 @@ public class LivingPlantManager {
         tblBotanicalObject.setIdentStatusId((livingPlantResult.getIdentStatus() != null && livingPlantResult.getIdentStatus().getIdentStatusId() != null) ? em.find(TblIdentStatus.class, livingPlantResult.getIdentStatus().getIdentStatusId()) : null);
         tblBotanicalObject.setPhenologyId((livingPlantResult.getPhenology() != null && livingPlantResult.getPhenology().getPhenologyId() != null) ? em.find(TblPhenology.class, livingPlantResult.getPhenology().getPhenologyId()) : null);
         tblBotanicalObject.setScientificNameId(livingPlantResult.getScientificNameResult().getScientificNameId());
+
+        // assign sexes
+        if (tblBotanicalObject.getTblSexList() == null) {
+            tblBotanicalObject.setTblSexList(new ArrayList<TblSex>());
+        }
+        tblBotanicalObject.getTblSexList().clear();
+        for (SexResult sex : livingPlantResult.getSexes()) {
+            if (sex.getSexId() != null) {
+                tblBotanicalObject.getTblSexList().add(em.find(TblSex.class, sex.getSexId()));
+            }
+        }
 
         // save determined by person
         if (livingPlantResult.getDeterminedBy().getName() != null) {
@@ -322,6 +332,9 @@ public class LivingPlantManager {
             // save acquisition
             em.persist(tblAcquisitionEventSource);
         }
+
+        // make sure changes are flushed to the database
+        em.flush();
 
         // refresh botanical object in order to resolve manual relations
         em.refresh(tblBotanicalObject);
