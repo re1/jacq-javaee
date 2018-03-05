@@ -16,6 +16,8 @@
 package org.jacq.service.dataimport.manager;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -32,7 +34,10 @@ import org.jacq.common.model.dataimport.ImportRecord;
 @ManagedBean
 public class DbViewImportManager {
 
+    private static final Logger LOGGER = Logger.getLogger(DbViewImportManager.class.getName());
+
     protected static final String SQL_SELECT = "SELECT * FROM buga_dataImport";
+    protected static final int MAX_RESULTS = 100;
 
     @PersistenceContext
     protected EntityManager em;
@@ -41,10 +46,28 @@ public class DbViewImportManager {
     protected DataImportManager dataImportManager;
 
     public void importView() {
-        Query viewQuery = em.createNativeQuery(SQL_SELECT, ImportRecord.class);
-        List<ImportRecord> importRecords = viewQuery.getResultList();
-        for (ImportRecord importRecord : importRecords) {
-            dataImportManager.importRecord(importRecord);
+        int currRecord = 0;
+
+        while (true) {
+            LOGGER.log(Level.INFO, "Importing entry {0} - {1}", new Object[]{String.valueOf(currRecord), String.valueOf(currRecord + MAX_RESULTS)});
+
+            Query viewQuery = em.createNativeQuery(SQL_SELECT, ImportRecord.class);
+            viewQuery.setFirstResult(currRecord);
+            viewQuery.setMaxResults(MAX_RESULTS);
+
+            List<ImportRecord> importRecords = viewQuery.getResultList();
+
+            // check if we reached the end of the import queue
+            if (importRecords == null || importRecords.size() <= 0) {
+                break;
+            }
+
+            // run the import for each record
+            for (ImportRecord importRecord : importRecords) {
+                dataImportManager.importRecord(importRecord);
+            }
+
+            currRecord += MAX_RESULTS;
         }
     }
 }
