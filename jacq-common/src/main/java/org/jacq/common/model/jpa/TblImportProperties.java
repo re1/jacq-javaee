@@ -25,9 +25,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -69,7 +69,7 @@ public class TblImportProperties implements Serializable {
     @Column(name = "original_botanical_object_id")
     private Long originalBotanicalObjectId;
     @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative derivativeId;
 
     public TblImportProperties() {

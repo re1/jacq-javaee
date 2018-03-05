@@ -82,8 +82,8 @@ public class TblDerivative implements Serializable {
     @JoinColumn(name = "organisation_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation organisationId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
-    private List<TblImportProperties> tblImportPropertiesList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
+    private TblImportProperties tblImportProperties;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblLivingPlant tblLivingPlant;
 
@@ -182,13 +182,12 @@ public class TblDerivative implements Serializable {
         this.organisationId = organisationId;
     }
 
-    @XmlTransient
-    public List<TblImportProperties> getTblImportPropertiesList() {
-        return tblImportPropertiesList;
+    public TblImportProperties getTblImportProperties() {
+        return tblImportProperties;
     }
 
-    public void setTblImportPropertiesList(List<TblImportProperties> tblImportPropertiesList) {
-        this.tblImportPropertiesList = tblImportPropertiesList;
+    public void setTblImportProperties(TblImportProperties tblImportProperties) {
+        this.tblImportProperties = tblImportProperties;
     }
 
     public TblLivingPlant getTblLivingPlant() {
