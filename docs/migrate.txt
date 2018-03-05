@@ -1,3 +1,4 @@
+- Check migration of tbl_import_properties => derivative_id should not be dropped
 - Drop view_scientifcName (DROP VIEW view_scientificName)
 - Synchronize only Tables and Routines, except tbl_botanical_object, tbl_separation and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
 - Materialize mig_separation: CREATE TABLE tmp_mig_separation AS SELECT * FROM mig_separation
