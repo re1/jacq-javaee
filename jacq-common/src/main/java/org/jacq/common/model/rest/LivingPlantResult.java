@@ -90,6 +90,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected ScientificNameResult labelSynonymScientificName;
 
+    protected ImportPropertiesResult importPropertiesResult;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -213,6 +215,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
                 this.longitudeSeconds = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeSeconds();
                 this.longitudeHalf = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getLongitudeHalf();
             }
+        }
+
+        // Import Properties
+        if (tblLivingPlant.getTblDerivative().getTblImportProperties() != null) {
+            this.importPropertiesResult = new ImportPropertiesResult(tblLivingPlant.getTblDerivative().getTblImportProperties());
         }
     }
 
@@ -598,6 +605,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setLabelSynonymScientificName(ScientificNameResult labelSynonymScientificName) {
         this.labelSynonymScientificName = labelSynonymScientificName;
+    }
+
+    public ImportPropertiesResult getImportPropertiesResult() {
+        return importPropertiesResult;
+    }
+
+    public void setImportPropertiesResult(ImportPropertiesResult importPropertiesResult) {
+        this.importPropertiesResult = importPropertiesResult;
     }
 
 }

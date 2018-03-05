@@ -37,29 +37,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ViewProtolog.findAll", query = "SELECT v FROM ViewProtolog v")
-    , @NamedQuery(name = "ViewProtolog.findById", query = "SELECT v FROM ViewProtolog v WHERE v.id = :id")})
+    , @NamedQuery(name = "ViewProtolog.findByCitationId", query = "SELECT v FROM ViewProtolog v WHERE v.citationId = :citationId")})
 public class ViewProtolog implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "citation_id")
+    private Long citationId;
     @Lob
     @Size(max = 65535)
-    @Column(name = "Protolog")
+    @Column(name = "protolog")
     private String protolog;
 
     public ViewProtolog() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getCitationId() {
+        return citationId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCitationId(Long citationId) {
+        this.citationId = citationId;
     }
 
     public String getProtolog() {

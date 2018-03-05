@@ -765,6 +765,61 @@
                     <p:tab title="#{messages['livingplant.inventories']}">
                     </p:tab>
                 </p:tabView>
+                <h:panelGroup rendered="#{(livingPlantEditController.livingPlantResult.importPropertiesResult == null) ? false : true}" id="importProperties" layout="block" styleClass="ui-g">
+                    <h3>#{messages['livingplant.importproperties']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.idpflanze']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.importPropertiesResult.iDPflanze}" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.speciesname']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.importPropertiesResult.speciesName}" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.spatialdistribution']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.importPropertiesResult.verbreitung}" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.sourcename']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.importPropertiesResult.sourceName}" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.originalbotanicalobjectid']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.importPropertiesResult.originalBotanicalObjectId}" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
                 <div class="jacq-buttons">
                     <p:commandButton value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form" />
                 </div>
