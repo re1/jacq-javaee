@@ -1,7 +1,11 @@
-- Check migration of tbl_import_properties => derivative_id should not be dropped
-- Drop view_scientifcName (DROP VIEW view_scientificName)
-- Synchronize only Tables and Routines, except tbl_botanical_object, tbl_separation and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
-- Materialize mig_separation: CREATE TABLE tmp_mig_separation AS SELECT * FROM mig_separation
+- Drop view_scientifcName
+  DROP VIEW view_scientificName
+- Update import properties:
+  ALTER TABLE `tbl_import_properties` DROP FOREIGN KEY `fk_tbl_import_properties_tbl_botanical_object1` ;
+  ALTER TABLE `tbl_import_properties` CHANGE `botanical_object_id` `derivative_id` INT( 11 ) NOT NULL ;
+- Synchronize only Tables and Routines and mig_separation, except tbl_botanical_object, tbl_separation and tbl_derivative_vegetative (do not drop yet!, set SQL_MODE parameter to empty!)
+- Materialize mig_separation:
+  CREATE TABLE tmp_mig_separation AS SELECT * FROM mig_separation
 - truncate separation table: TRUNCATE TABLE tbl_separation
 - Synchronize all other changes (again except tbl_botanical_object and tbl_derivative_vegetative)
 - Insert derivative_type entries (1 && 2) INSERT INTO `jacq_input`.`tbl_derivative_type` (`derivative_type_id`, `type`) VALUES ('1', 'living'), ('2', 'vegetative');
@@ -10,7 +14,7 @@
 - copy separation data: INSERT INTO tbl_separation SELECT * FROM tmp_mig_separation
 - drop temporary separation table: DROP TABLE tmp_mig_separation
 - synchronize changes in tbl_botanical_object and tbl_derivative_vegetative, ignore mig_derivative & mig_vegetative (becomes invalid)
-- Create View for BuGa-Data import (CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData`)
+- Create View for BuGa-Data import (CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData` UNION ALL `Reservegarten`.`view_importReservegarten`)
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
 - Create accession_number entry for WU: INSERT INTO tbl_accession_number SELECT 6, MAX(accession_number) FROM tbl_living_plant;
 - Adding setting for Indet Name! INSERT INTO `jacq_input`.`frmwrk_config` (`fc_id`, `fc_name`, `fc_value`) VALUES (NULL, 'general.indet_id', '46996');
@@ -19,3 +23,6 @@
 - Run actual dataimport routine
 - Insert Roles: insert into jacq_input.frmwrk_role (name) select * from jacq_input.mig_role;
  insert into jacq_input.frmwrk_user_role (user_id, role_id) select distinct * from jacq_input.mig_role_user;
+
+ 
+ 
