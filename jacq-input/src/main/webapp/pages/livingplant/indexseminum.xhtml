@@ -24,15 +24,20 @@
                             <h:outputText value="#{indexSeminumResult.timestamp}" />
                         </p:column>
                         <p:column headerText="#{messages['action']}">
-                            <p:commandButton icon="ui-icon-document" action="#{indexSeminumController.setRenderedTrue(indexSeminumResult.indexSeminumRevisionId)}" update="jacq_form:downloadIndexSeminumPanel" oncomplete="PF('downloadIndexSeminumButton').jq.click();" >
+                            <p:commandButton icon="ui-icon-document" action="#{indexSeminumController.setRenderedTrue(indexSeminumResult.indexSeminumRevisionId)}" update="jacq_form:downloadIndexSeminumPanel" oncomplete="PF('downloadIndexSeminumCsvButton').jq.click();" >
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-note" action="#{indexSeminumController.setRenderedTrue(indexSeminumResult.indexSeminumRevisionId)}" update="jacq_form:downloadIndexSeminumPanel" oncomplete="PF('downloadIndexSeminumXlsxButton').jq.click();" >
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadIndexSeminumPanel">
-                        <p:commandButton id="downloadIndexSeminumButton" value="Export" ajax="false" widgetVar="downloadIndexSeminumButton">
+                        <p:commandButton id="downloadIndexSeminumCsvButton" value="Export" ajax="false" widgetVar="downloadIndexSeminumCsvButton">
                             <p:dataExporter type="csv"  target="downloadIndexSeminum" fileName="IndexSeminum"/>
+                        </p:commandButton>
+                        <p:commandButton id="downloadIndexSeminumXlsxButton" value="Export" ajax="false" widgetVar="downloadIndexSeminumXlsxButton">
+                            <p:dataExporter type="xlsx"  target="downloadIndexSeminum" fileName="IndexSeminum"/>
                         </p:commandButton>
                         <p:dataTable
                             rendered="#{indexSeminumController.downloadRender}"

@@ -133,7 +133,10 @@
                             <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
 
                             <f:facet name="{Exporters}">
-                                <p:commandButton icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeButton').jq.click();" />
+                                <p:commandButton icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                            </f:facet>
+                            <f:facet name="{Exporters}">
+                                <p:commandButton icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
                             </f:facet>
 
                             <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
@@ -189,8 +192,11 @@
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
-                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeButton">
+                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
                             <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
+                        </p:commandButton>
+                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                            <p:dataExporter type="xlsx"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
                         <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
                             <p:column headerText="#{messages['livingplant.derivative_id']}">
