@@ -101,7 +101,6 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.scientificNameResult = new ScientificNameResult();
         this.organisation = new OrganisationResult();
         this.labelSynonymScientificName = new ScientificNameResult();
-        this.importPropertiesResult = new ImportPropertiesResult();
 
         this.alternativeAccessionNumbers = new ArrayList<>();
         this.relevancyTypes = new ArrayList<>();
