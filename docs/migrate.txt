@@ -16,12 +16,13 @@
 - materialize migration view for vegetatives (mig_vegetative)
   INSERT INTO tbl_vegetative SELECT * FROM mig_vegetative;
 - copy separation data:
+  SET foreign_key_checks = 0;
   INSERT INTO tbl_separation SELECT * FROM tmp_mig_separation
 - drop temporary separation table:
   DROP TABLE tmp_mig_separation
 - synchronize changes in tbl_botanical_object and tbl_derivative_vegetative, ignore mig_derivative & mig_vegetative (becomes invalid)
 - Create View for BuGa-Data import
-  CREATE VIEW buga_dataImport AS SELECT * FROM `BuGa_Data`.`view_importData` UNION ALL SELECT * FROM `Reservegarten`.`view_importReservegarten`
+  CREATE VIEW buga_dataImport AS SELECT * FROM `Alpengarten`.`view_importData` UNION ALL SELECT * FROM `Reservegarten`.`view_importReservegarten`
 - Create organisation entries for buga-data import (Import tblOrganisation.sql)
 - Create accession_number entry for WU:
   INSERT INTO tbl_accession_number SELECT 6, MAX(accession_number) FROM tbl_living_plant;
