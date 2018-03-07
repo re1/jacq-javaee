@@ -88,6 +88,15 @@
                                 </p:submenu>
                             </p:panelMenu>
                             <p:menu styleClass="jacq-menu-item">
+                                <p:menuitem value="#{messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form"  rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
+                                <p:menuitem value="#{messages['copyandnew']}" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
+                                <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.scientificNameResult.scientificName}" />
+                                </p:menuitem>
+                                <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.accessionNumber}" />
+                                    <h:outputText value="#{scientificName.scientificName}" />
+                                </p:menuitem>
                                 <p:menuitem value="#{messages['logout']}" action="#{loginController.logout}" ajax="false" />
                             </p:menu>
                         </h:form>

@@ -14,7 +14,7 @@
 
             <h:panelGroup layout="block" styleClass="jacq-content" id="livingplant_form">
                 <div class="jacq-content-header">
-                    <h1>#{messages['livingplant.livingplantcreate']}</h1>
+                    <h1>#{messages['livingplant']} #{(livingPlantEditController.derivativeId == null) ? messages['create'] : messages['edit']}</h1>
                 </div>
                 <div class="ui-g">
                     <div class="ui-g-6 ui-g-nopad">
