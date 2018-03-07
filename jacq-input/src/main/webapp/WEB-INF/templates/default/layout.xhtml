@@ -33,7 +33,7 @@
             </div>
             <div class="jacq-pages">
                 <div class="ui-g">
-                    <div class="ui-g-3">
+                    <div class="ui-g-3 jacq-menu">
                         <h:form rendered="#{loginController.securityContext.isCallerInRole('authenticated') ? true : false}">
                             <p:panelMenu>
                                 <p:submenu label="#{messages['livingplant']}" rendered="#{loginController.securityContext.isCallerInRole('readLivingplant') ? true : false}" >
@@ -92,7 +92,7 @@
                             </p:menu>
                         </h:form>
                     </div>
-                    <div class="ui-g-9 ui-g-nopad">
+                    <div class="ui-g-9 ui-g-nopad jacq-menu-gap">
                         <h:form id="jacq_form">
                             <p:growl id="messages" showDetail="true" sticky="true" />
 

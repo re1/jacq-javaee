@@ -19,6 +19,14 @@
 
 /* Content Page
 -------------------------*/
+.jacq-menu {
+    position: fixed;
+}
+
+.jacq-menu-gap {
+    margin-left: 25%;
+}
+
 .jacq-header {
     right: 10px;
     position: fixed;
