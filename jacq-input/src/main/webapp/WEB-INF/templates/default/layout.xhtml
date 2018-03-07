@@ -36,9 +36,9 @@
                     <div class="ui-g-3 jacq-menu">
                         <h:form rendered="#{loginController.securityContext.isCallerInRole('authenticated') ? true : false}">
                             <p:panelMenu>
-                                <p:submenu label="#{messages['livingplant']}" rendered="#{loginController.securityContext.isCallerInRole('readLivingplant') ? true : false}" >
+                                <p:submenu label="#{messages['livingplant']}"  rendered="#{loginController.securityContext.isCallerInRole('createLivingplant') || loginController.securityContext.isCallerInRole('readLivingplant') || loginController.securityContext.isCallerInRole('inventory') || loginController.securityContext.isCallerInRole('indexSeminum') ? true : false}">
                                     <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/edit.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createLivingplant') ? true : false}"/>
-                                    <p:menuitem value="#{messages['manage']}"  url="/faces/pages/livingplant/manage.xhtml"/>
+                                    <p:menuitem value="#{messages['manage']}"  url="/faces/pages/livingplant/manage.xhtml" rendered="#{loginController.securityContext.isCallerInRole('readLivingplant') ? true : false}"/>
                                     <p:submenu label="#{messages['inventory']}" rendered="#{loginController.securityContext.isCallerInRole('inventory') ? true : false}">
                                         <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/inventoryedit.xhtml"/>
                                         <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
