@@ -36,7 +36,7 @@ public class DbViewImportManager {
 
     private static final Logger LOGGER = Logger.getLogger(DbViewImportManager.class.getName());
 
-    protected static final String SQL_SELECT = "SELECT * FROM buga_dataImport";
+    protected static final String SQL_SELECT = "SELECT * FROM view_importData";
     protected static final int MAX_RESULTS = 100;
 
     @PersistenceContext
