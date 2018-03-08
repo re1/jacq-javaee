@@ -47,6 +47,7 @@ import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
@@ -68,12 +69,16 @@ public class DerivativeManager extends DerivativeSearchManager {
     @PersistenceContext
     protected EntityManager em;
 
+    @Inject
+    protected ApplicationManager applicationManager;
+
     /**
      * Initialize bean and make sure abstract base class has entity manager
      */
     @PostConstruct
     public void init() {
         this.setEntityManager(em);
+        this.setBaseApplicationManager(applicationManager);
     }
 
     /**
