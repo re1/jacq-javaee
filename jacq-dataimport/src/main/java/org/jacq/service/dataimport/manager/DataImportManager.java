@@ -258,26 +258,27 @@ public class DataImportManager {
                 em.persist(acquisitionEvent);
 
                 // check if gathering source already exists
-                TypedQuery<TblAcquisitionSource> acquisitionSourceQuery = em.createNamedQuery("TblAcquisitionSource.findByName", TblAcquisitionSource.class);
-                acquisitionSourceQuery.setParameter("name", importRecord.getGatheringSource());
-                List<TblAcquisitionSource> acquisitionSourceList = acquisitionSourceQuery.getResultList();
-                TblAcquisitionSource acquisitionSource = null;
-                if (acquisitionSourceList != null && acquisitionSourceList.size() > 0) {
-                    acquisitionSource = acquisitionSourceList.get(0);
+                if (importRecord.getGatheringSource() != null) {
+                    TypedQuery<TblAcquisitionSource> acquisitionSourceQuery = em.createNamedQuery("TblAcquisitionSource.findByName", TblAcquisitionSource.class);
+                    acquisitionSourceQuery.setParameter("name", importRecord.getGatheringSource());
+                    List<TblAcquisitionSource> acquisitionSourceList = acquisitionSourceQuery.getResultList();
+                    TblAcquisitionSource acquisitionSource = null;
+                    if (acquisitionSourceList != null && acquisitionSourceList.size() > 0) {
+                        acquisitionSource = acquisitionSourceList.get(0);
+                    }
+                    else {
+                        acquisitionSource = new TblAcquisitionSource();
+                        acquisitionSource.setName(importRecord.getGatheringSource());
+                        em.persist(acquisitionSource);
+                    }
+                    // save gathering event source
+                    TblAcquisitionEventSource acquisitionEventSource = new TblAcquisitionEventSource();
+                    acquisitionEventSource.setAcquisitionEventId(acquisitionEvent);
+                    acquisitionEventSource.setAcquisitionSourceId(acquisitionSource);
+                    acquisitionEventSource.setSourceDate(importRecord.getGatheringDate());
+                    em.persist(acquisitionEventSource);
                 }
-                else {
-                    acquisitionSource = new TblAcquisitionSource();
-                    acquisitionSource.setName(importRecord.getGatheringSource());
-                    em.persist(acquisitionSource);
-                }
-                // save gathering event source
-                TblAcquisitionEventSource acquisitionEventSource = new TblAcquisitionEventSource();
-                acquisitionEventSource.setAcquisitionEventId(acquisitionEvent);
-                acquisitionEventSource.setAcquisitionSourceId(acquisitionSource);
-                acquisitionEventSource.setSourceDate(importRecord.getGatheringDate());
-                em.persist(acquisitionEventSource);
 
-                // setup gathering source entry
                 // lookup scientific name id through taxamatch service, but check cache first
                 Long scientificNameId = 0L;
                 if (taxamatchCache.get(importRecord.getScientificName().hashCode()) != null) {
