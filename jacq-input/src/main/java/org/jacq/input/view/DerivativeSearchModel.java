@@ -39,6 +39,7 @@ public class DerivativeSearchModel implements Serializable {
     protected Boolean hierarchic;
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
+    protected int callFlag; // Flag 0 User Organisation gets added in Search and 1 not
 
     public String getPlaceNumber() {
         return placeNumber;
@@ -109,6 +110,7 @@ public class DerivativeSearchModel implements Serializable {
     }
 
     public void setSelectedOrganisation(OrganisationResult selectedOrganisation) {
+        this.callFlag = 1;
         this.selectedOrganisation = selectedOrganisation;
 
         if (selectedOrganisation != null) {
@@ -138,6 +140,10 @@ public class DerivativeSearchModel implements Serializable {
 
     public void setHierarchic(Boolean hierarchic) {
         this.hierarchic = hierarchic;
+    }
+
+    public int getCallFlag() {
+        return callFlag;
     }
 
 }
