@@ -249,7 +249,7 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:autoComplete value="#{livingPlantEditController.livingPlantResult.labelSynonymScientificName}" completeMethod="#{livingPlantEditController.completeScientificName}"
-                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" required="true">
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
                                     <p:column>
                                         <h:outputText value="#{scientificName.scientificName}" />
                                     </p:column>
@@ -821,7 +821,8 @@
                     </div>
                 </h:panelGroup>
                 <div class="jacq-buttons">
-                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form" />
+                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
+                    <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
                 </div>
             </h:panelGroup>
         </ui:define>

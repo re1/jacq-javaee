@@ -46,7 +46,6 @@ import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
-import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.input.util.ServicesUtil;
 
@@ -73,7 +72,8 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and scientific name editing
+     * Reference to scientific name service which is used for cultivar and
+     * scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -141,8 +141,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
-     * loaded
+     * Called when the user clicks on the button for reviewing the scientific
+     * name information, only then this info is loaded
      *
      * @return
      */
@@ -208,7 +208,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according
+     * entry will be loaded
      *
      * @param derivativeId
      */
@@ -253,6 +254,13 @@ public class LivingPlantEditController {
         for (SexResult sex : this.livingPlantResult.getSexes()) {
             this.selectedSexes.add(sex.getSexId().toString());
         }
+    }
+
+    /**
+     * Called when user clicks on copy and new
+     */
+    public void copyAndNew() {
+        this.livingPlantResult.setDerivativeId(null);
     }
 
     /**
