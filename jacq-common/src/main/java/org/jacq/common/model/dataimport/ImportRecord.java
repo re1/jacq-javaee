@@ -88,6 +88,10 @@ public class ImportRecord implements Serializable {
     protected String commonNames;
     @Column(name = "price")
     protected Float price;
+    @Column(name = "gathering_date")
+    protected Date gatheringDate;
+    @Column(name = "gathering_source")
+    protected String gatheringSource;
 
     public Long getOriginalId() {
         return originalId;
@@ -279,6 +283,22 @@ public class ImportRecord implements Serializable {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Date getGatheringDate() {
+        return gatheringDate;
+    }
+
+    public void setGatheringDate(Date gatheringDate) {
+        this.gatheringDate = gatheringDate;
+    }
+
+    public String getGatheringSource() {
+        return gatheringSource;
+    }
+
+    public void setGatheringSource(String gatheringSource) {
+        this.gatheringSource = gatheringSource;
     }
 
     /**
