@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import org.jacq.common.manager.JacqConfig;
 import org.jacq.common.rest.PortalService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  *

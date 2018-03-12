@@ -20,8 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import org.jacq.common.util.ServicesUtil;
 import org.jacq.output.SessionManager;
-import org.jacq.output.util.ServicesUtil;
 import org.jacq.output.view.LazyBotanicalObjectDataModel;
 
 /**

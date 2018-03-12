@@ -29,7 +29,7 @@ import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.OrganisationService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 import org.primefaces.model.UploadedFile;
 
 /**

@@ -25,7 +25,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.TreeRecordFileResult;
 import org.jacq.common.rest.TreeRecordFileService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 import org.primefaces.model.UploadedFile;
 
 /**

@@ -15,15 +15,12 @@
  */
 package org.jacq.output.controller;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import org.jacq.output.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 import org.jacq.output.view.LazyClassificationTreeNode;
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 /**

@@ -17,7 +17,11 @@ package org.jacq.input;
 
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.security.BasicClientRequestFilter;
 
 /**
  * Application wide CDI bean
@@ -30,6 +34,10 @@ public class ApplicationManager {
 
     @Inject
     protected JacqPortalConfig jacqPortalConfig;
+
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+        ServicesUtil.registerClientRequestFilter(new BasicClientRequestFilter());
+    }
 
     public JacqPortalConfig getJacqPortalConfig() {
         return jacqPortalConfig;

@@ -16,7 +16,7 @@ import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 import org.jacq.input.view.DerivativeSearchModel;
 import org.jacq.input.view.LazyDerivativeDataModel;
 import org.jacq.input.view.LazyDerivativeDownloadDataModel;
