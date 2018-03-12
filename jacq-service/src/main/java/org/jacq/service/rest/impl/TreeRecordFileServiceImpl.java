@@ -39,12 +39,12 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
      * @see TreeRecordFileService#search()
      */
     @Override
-    public List<TreeRecordFileResult> search(Long treeRecordFileId, Date year, String name, String documentNumber, Integer offset, Integer limit) {
+    public List<TreeRecordFileResult> search(Long treeRecordFileId, Long year, String name, String documentNumber, Integer offset, Integer limit) {
         return treeRecordFileManager.search(treeRecordFileId, year, name, documentNumber, offset, limit);
     }
 
     @Override
-    public int searchCount(Long treeRecordFileId, Date year, String name, String documentNumber) {
+    public int searchCount(Long treeRecordFileId, Long year, String name, String documentNumber) {
         return treeRecordFileManager.searchCount(treeRecordFileId, year, name, documentNumber);
     }
 

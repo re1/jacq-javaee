@@ -31,9 +31,7 @@
                                         <f:converter converterId="javax.faces.Integer" />
                                     </p:spinner>
                                 </f:facet>
-                                <h:outputText value="#{treeRecordFileResult.year}">
-                                    <f:convertDateTime type="date" pattern="yyyy"/>
-                                </h:outputText>
+                                <h:outputText value="#{treeRecordFileResult.year}" />
                             </p:column>
                             <p:column filterBy="#{treeRecordFileResult.name}" headerText="#{messages['treerecordfile.name']}">
                                 <h:outputText value="#{treeRecordFileResult.name}" />

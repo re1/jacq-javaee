@@ -49,7 +49,7 @@ public interface TreeRecordFileService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TreeRecordFileResult> search(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<TreeRecordFileResult> search(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Long year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      * Search the database using the given filter and return the count
@@ -64,7 +64,7 @@ public interface TreeRecordFileService {
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Date year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
+    public int searchCount(@QueryParam("treeRecordFileId") Long id, @QueryParam("year") Long year, @QueryParam("name") String name, @QueryParam("documentNumber") String documentNumber);
 
     /**
      * Update or Add Single TreeRecordFile entry

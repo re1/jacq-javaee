@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public class TreeRecordFileManager {
      * @see TreeRecordFileService#search()
      */
     @Transactional
-    public List<TreeRecordFileResult> search(Long treeRecordFileId, Date year, String name, String documentNumber, Integer offset, Integer limit) {
+    public List<TreeRecordFileResult> search(Long treeRecordFileId, Long year, String name, String documentNumber, Integer offset, Integer limit) {
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TblTreeRecordFile> cq = cb.createQuery(TblTreeRecordFile.class);
@@ -99,7 +100,7 @@ public class TreeRecordFileManager {
      * @see TreeRecordFileService#searchCount()
      */
     @Transactional
-    public int searchCount(Long treeRecordFileId, Date year, String name, String documentNumber) {
+    public int searchCount(Long treeRecordFileId, Long year, String name, String documentNumber) {
         // prepare criteria builder & query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -124,6 +125,7 @@ public class TreeRecordFileManager {
         TblTreeRecordFile tblTreeRecordFile = new TblTreeRecordFile();
         tblTreeRecordFile.setDocumentNumber(treeRecordFileResult.getDocumentNumber());
         tblTreeRecordFile.setName(treeRecordFileResult.getName());
+        tblTreeRecordFile.setYear(Long.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         em.persist(tblTreeRecordFile);
         if (!treeRecordFileResult.getFileContent().equals("")) {
             final Long tblTreeRecordFileid = tblTreeRecordFile.getId();
@@ -186,6 +188,10 @@ public class TreeRecordFileManager {
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
      * @see OrganisationManager#search(java.lang.Long, java.lang.String,
      * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
      * java.lang.Integer)
@@ -196,7 +202,7 @@ public class TreeRecordFileManager {
      * @param cq
      * @param bo
      */
-    protected void applySearchCriteria(CriteriaBuilder cb, CriteriaQuery cq, Root<TblTreeRecordFile> bo, Long treeRecordFileId, Date year, String name, String documentNumber) {
+    protected void applySearchCriteria(CriteriaBuilder cb, CriteriaQuery cq, Root<TblTreeRecordFile> bo, Long treeRecordFileId, Long year, String name, String documentNumber) {
         // helper variable for handling different paths
         Expression<String> path = null;
         // list of predicates to add in where clause
