@@ -17,6 +17,7 @@ package org.jacq.service.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -33,6 +34,7 @@ import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.OrganisationService;
+import org.jacq.service.ApplicationManager;
 
 /**
  *
@@ -42,6 +44,9 @@ public class OrganisationManager {
 
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
+
+    @Inject
+    protected ApplicationManager applicationManager;
 
     /**
      * @see OrganisationService#search()
@@ -122,8 +127,7 @@ public class OrganisationManager {
         TblOrganisation tblOrganisation = null;
         if (organisationResult.getOrganisationId() != null) {
             tblOrganisation = em.find(TblOrganisation.class, organisationResult.getOrganisationId());
-        }
-        else {
+        } else {
             tblOrganisation = new TblOrganisation();
         }
         if (tblOrganisation != null) {
@@ -138,11 +142,10 @@ public class OrganisationManager {
 
             if (tblOrganisation.getId() != null) {
                 em.merge(tblOrganisation);
-            }
-            else {
+            } else {
                 em.persist(tblOrganisation);
             }
-
+            this.applicationManager.clearOrganisationHierachyCache();
             return new OrganisationResult(tblOrganisation);
         }
         return null;
@@ -171,10 +174,11 @@ public class OrganisationManager {
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq

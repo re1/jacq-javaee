@@ -27,9 +27,14 @@ public abstract class BaseApplicationManager {
     protected HashMap<Long, List<Long>> organisationHierachyCache = new HashMap<>();
 
     public void addOrganisationHierachyCache(Long organisationId, List<Long> organisationIdList) {
+        organisationHierachyCache.put(organisationId, organisationIdList);
     }
 
     public List<Long> findOrganisationHierachyCache(Long organisationId) {
-        return null;
+        return organisationHierachyCache.get(organisationId);
+    }
+
+    public void clearOrganisationHierachyCache() {
+        organisationHierachyCache.clear();
     }
 }
