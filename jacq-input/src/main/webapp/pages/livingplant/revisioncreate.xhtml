@@ -29,8 +29,11 @@
                             </div>
                         </div>
                     </div>
+                    <p:blockUI block="jacq_form" trigger="createRevisionButton">
+                        <h:outputText value="#{messages.processing}" />
+                    </p:blockUI>
                     <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['create']}" actionListener="#{indexSeminumEditController.saveMessage}" update="jacq_form:messages" action="#{indexSeminumEditController.edit}" />
+                        <p:commandButton id="createRevisionButton" value="#{messages['create']}" actionListener="#{indexSeminumEditController.saveMessage}" update="jacq_form:messages" action="#{indexSeminumEditController.edit}" />
                     </div>
                 </div>
             </h:form>
