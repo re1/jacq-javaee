@@ -23,7 +23,8 @@
                                     <h:outputText value="#{messages['treerecordfile.description']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText value="#{treeRecordFileEditController.treeRecordFile.name}"/>
+                                    <p:inputText id="description" value="#{treeRecordFileEditController.treeRecordFile.name}" label="#{messages['treerecordfile.description']}" required="true"/>
+                                    <p:message for="description" />
                                 </div>
                             </div>
                         </div>
@@ -33,7 +34,8 @@
                                     <h:outputText value="#{messages['treerecordfile.filesnumber']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:inputText value="#{treeRecordFileEditController.treeRecordFile.documentNumber}"/>
+                                    <p:inputText id="filesnumber" value="#{treeRecordFileEditController.treeRecordFile.documentNumber}" label="#{messages['treerecordfile.filesnumber']}" required="true"/>
+                                    <p:message for="filesnumber" />
                                 </div>
                             </div>
                         </div>
@@ -43,7 +45,8 @@
                                     <h:outputText value="#{messages['treerecordfile.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:fileUpload value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true"/>
+                                    <p:fileUpload id="filename" value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true" label="#{messages['treerecordfile.filename']}" required="true"/>
+                                    <p:message for="filename" />
                                 </div>
                             </div>
                         </div>

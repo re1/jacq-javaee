@@ -11,103 +11,101 @@
             <f:metadata>
                 <f:viewParam name="organisationId" value="#{organisationEditController.organisationId}"/>
             </f:metadata>
-
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
-                    </div>
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.description']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{organisationEditController.organisation.description}" />
-                                </div>
+            <h:panelGroup layout="block" id="edit_Organisation" styleClass="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.description']}" />
                             </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.department']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{organisationEditController.organisation.department}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.ipencode']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{organisationEditController.organisation.ipenCode}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['organisation.parentOrganisation']}" />
-                                </div>
-                                <div class="ui-g-9">
-                                    <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
-                                        <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
-                                    </p:selectOneMenu>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.gardener']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectOneMenu id="gardener" value="#{organisationEditController.organisation.gardenerId}">
-                                        <f:selectItems value="#{organisationEditController.users}" var="user" itemLabel="#{user.username}" itemValue="#{user.id}" />
-                                    </p:selectOneMenu>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.glasshouse']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="#{organisationEditController.organisation.greenhouse}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.index_seminum_start']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="#{organisationEditController.organisation.indexSeminumStart}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['organisation.accession_start']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="#{organisationEditController.organisation.accessionStart}" />
-                                </div>
+                            <div class="ui-g-6">
+                                <p:inputText id="description" value="#{organisationEditController.organisation.description}" label="#{messages['organisation.description']}" required="true" />
+                                <p:message for="description" />
                             </div>
                         </div>
                     </div>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="#{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}" actionListener="#{organisationEditController.saveMessage}" update="jacq_form:messages" action="#{organisationEditController.edit}" />
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.department']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.department}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.ipencode']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.ipenCode}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['organisation.parentOrganisation']}" />
+                            </div>
+                            <div class="ui-g-9">
+                                <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
+                                    <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.gardener']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectOneMenu id="gardener" value="#{organisationEditController.organisation.gardenerId}">
+                                    <f:selectItems value="#{organisationEditController.users}" var="user" itemLabel="#{user.username}" itemValue="#{user.id}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.glasshouse']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectBooleanCheckbox value="#{organisationEditController.organisation.greenhouse}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.index_seminum_start']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectBooleanCheckbox value="#{organisationEditController.organisation.indexSeminumStart}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.accession_start']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectBooleanCheckbox value="#{organisationEditController.organisation.accessionStart}" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </h:form>
+                <div class="jacq-buttons">
+                    <p:commandButton value="#{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}" actionListener="#{organisationEditController.saveMessage}" update="jacq_form:messages jacq_form:edit_Organisation" action="#{organisationEditController.edit}" />
+                </div>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </html>

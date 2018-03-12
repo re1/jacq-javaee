@@ -11,32 +11,30 @@
             <f:metadata>
                 <f:viewParam name="indexSeminumId" value="#{indexSeminumEditController.indexSeminumId}"/>
             </f:metadata>
-
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['livingplant.revisioncreate']}</h1>
-                    </div>
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.indexseminumcreate']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{indexSeminumEditController.indexSeminum.name}" />
-                                </div>
+            <h:panelGroup layout="block" id="revision_create" styleClass="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['livingplant.revisioncreate']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.indexseminumcreate']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText id="indexseminumcreate" value="#{indexSeminumEditController.indexSeminum.name}" label="#{messages['livingplant.indexseminumcreate']}" required="true" />
+                                <p:message for="indexseminumcreate" />
                             </div>
                         </div>
                     </div>
-                    <p:blockUI block="jacq_form" trigger="createRevisionButton">
-                        <h:outputText value="#{messages.processing}" />
-                    </p:blockUI>
-                    <div class="jacq-buttons">
-                        <p:commandButton id="createRevisionButton" value="#{messages['create']}" actionListener="#{indexSeminumEditController.saveMessage}" update="jacq_form:messages" action="#{indexSeminumEditController.edit}" />
-                    </div>
                 </div>
-            </h:form>
+                <p:blockUI block="jacq_form" trigger="createRevisionButton">
+                    <h:outputText value="#{messages.processing}" />
+                </p:blockUI>
+                <div class="jacq-buttons">
+                    <p:commandButton id="createRevisionButton" value="#{messages['create']}" actionListener="#{indexSeminumEditController.saveMessage}" update="jacq_form:messages jacq_form:revision_create" action="#{indexSeminumEditController.edit}" />
+                </div>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </html>
