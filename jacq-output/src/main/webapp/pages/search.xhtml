@@ -12,7 +12,12 @@
             <h:form id="jacq_searchform" styleClass="jacq-searchform">
                 <div class="row jacq-search-row">
                     <div class="col-md-6">
-                        <p:inputText id="scientific_name" styleClass="jacq-search-full" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}"/>
+                        <p:autoComplete id="scientific_name" placeholder="Wissenschaftlicher Name" styleClass="jacq-search-full" value="#{searchController.scientificName}" completeMethod="#{searchController.completeScientificName}"
+                                        var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
+                            <p:column>
+                                <h:outputText value="#{scientificName.scientificName}" />
+                            </p:column>
+                        </p:autoComplete>
                         <p:message for="scientific_name" />
                     </div>
                     <div class="col-md-6">
