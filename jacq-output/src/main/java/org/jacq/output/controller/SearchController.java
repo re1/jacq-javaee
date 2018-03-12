@@ -21,8 +21,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
+import org.jacq.common.rest.output.SearchService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.output.SessionManager;
 import org.jacq.output.view.LazyBotanicalObjectDataModel;
@@ -43,13 +46,17 @@ public class SearchController implements Serializable {
      */
     protected ScientificNameService scientificNameService;
 
+    protected SearchService searchService;
+
     @Inject
     protected SessionManager sessionManager;
 
     @PostConstruct
     public void init() {
-        this.dataModel = new LazyBotanicalObjectDataModel(ServicesUtil.getSearchService());
         this.scientificNameService = ServicesUtil.getScientificNameService();
+        this.searchService = ServicesUtil.getSearchService();
+
+        this.dataModel = new LazyBotanicalObjectDataModel(this.searchService);
     }
 
     public ScientificNameResult getScientificName() {
@@ -60,11 +67,11 @@ public class SearchController implements Serializable {
         this.dataModel.setScientificName(scientificName);
     }
 
-    public String getOrganization() {
+    public OrganisationResult getOrganization() {
         return this.dataModel.getOrganization();
     }
 
-    public void setOrganization(String organization) {
+    public void setOrganization(OrganisationResult organization) {
         this.dataModel.setOrganization(organization);
     }
 
@@ -107,4 +114,15 @@ public class SearchController implements Serializable {
     public List<ScientificNameResult> completeScientificName(String query) {
         return this.scientificNameService.find(query, Boolean.TRUE);
     }
+
+    /**
+     * Provides JSF compliant auto-completer function callback for organisation entries
+     *
+     * @param query
+     * @return
+     */
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return this.searchService.organisationSearch(null, query, null, null, null, null, null, 0, 10);
+    }
+
 }

@@ -9,7 +9,6 @@ import org.jacq.input.view.LazyOrganisationDataModel;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.jacq.common.util.ServicesUtil;
@@ -41,8 +40,7 @@ public class OrganisationController implements Serializable {
     }
 
     /**
-     * Noop action listener for refreshing the row count after loading the
-     * data-table
+     * Noop action listener for refreshing the row count after loading the data-table
      *
      * @return
      */

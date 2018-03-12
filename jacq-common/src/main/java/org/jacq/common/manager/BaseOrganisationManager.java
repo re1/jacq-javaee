@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.manager;
+package org.jacq.common.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -27,117 +27,65 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
-import org.jacq.common.manager.BaseOrganisationManager;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.OrganisationService;
 
 /**
+ * Contains organisation manager functionality which is used across different services
  *
- * @author fhafner
+ * @author wkoller
  */
-public class OrganisationManager extends BaseOrganisationManager {
+public class BaseOrganisationManager {
 
-    @PersistenceContext(unitName = "jacq-service")
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    protected EntityManager entityManager;
 
     /**
-     * @see OrganisationService#searchCount()
+     * @see OrganisationService#search()
      */
     @Transactional
-    public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener) {
+    public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
         // prepare criteria builder & query
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        CriteriaQuery<TblOrganisation> cq = cb.createQuery(TblOrganisation.class);
         Root<TblOrganisation> bo = cq.from(TblOrganisation.class);
 
-        // count result
-        cq.select(cb.count(bo));
+        // select result list
+        cq.select(bo);
 
         // apply search criteria
         applySearchCriteria(cb, cq, bo, organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener);
 
-        // run query and return count
-        return entityManager.createQuery(cq).getSingleResult().intValue();
-    }
-
-    /**
-     * @see OrganisationService#load(java.lang.Long)
-     */
-    @Transactional
-    public OrganisationResult load(Long organisationId) {
-        TblOrganisation tblOrganisation = entityManager.find(TblOrganisation.class, organisationId);
-        if (tblOrganisation != null) {
-            return new OrganisationResult(tblOrganisation);
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblOrganisation> organisationSearchQuery = entityManager.createQuery(cq);
+        if (offset != null) {
+            organisationSearchQuery.setFirstResult(offset);
+        }
+        if (limit != null) {
+            organisationSearchQuery.setMaxResults(limit);
         }
 
-        return null;
-    }
+        // finally fetch the results
+        ArrayList<OrganisationResult> results = new ArrayList<>();
+        List<TblOrganisation> organisationResults = organisationSearchQuery.getResultList();
+        for (TblOrganisation organisation : organisationResults) {
+            OrganisationResult organisationResult = new OrganisationResult(organisation);
 
-    /**
-     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
-     */
-    @Transactional
-    public OrganisationResult save(OrganisationResult organisationResult) {
-        TblOrganisation tblOrganisation = null;
-        if (organisationResult.getOrganisationId() != null) {
-            tblOrganisation = entityManager.find(TblOrganisation.class, organisationResult.getOrganisationId());
-        }
-        else {
-            tblOrganisation = new TblOrganisation();
-        }
-        if (tblOrganisation != null) {
-            tblOrganisation.setDescription(organisationResult.getDescription());
-            tblOrganisation.setDepartment(organisationResult.getDepartment());
-            tblOrganisation.setGreenhouse(organisationResult.getGreenhouse());
-            tblOrganisation.setIpenCode(organisationResult.getIpenCode());
-            tblOrganisation.setParentOrganisationId(entityManager.find(TblOrganisation.class, organisationResult.getParentOrganisationId()));
-            tblOrganisation.setGardenerId(entityManager.find(FrmwrkUser.class, organisationResult.getGardenerId()));
-            tblOrganisation.setIndexSeminumStart(organisationResult.isIndexSeminumStart());
-            tblOrganisation.setAccessionStart(organisationResult.isAccessionStart());
-
-            if (tblOrganisation.getId() != null) {
-                entityManager.merge(tblOrganisation);
-            }
-            else {
-                entityManager.persist(tblOrganisation);
-            }
-
-            return new OrganisationResult(tblOrganisation);
-        }
-        return null;
-    }
-
-    /**
-     * @see OrganisationService#getIpenCode(java.lang.Long)
-     */
-    @Transactional
-    public String getIpenCode(Long organisationId) {
-        TblOrganisation tblOrganisation = entityManager.find(TblOrganisation.class, organisationId);
-        // go up the hierarchy until we hit the top or we find a valid ipen-code
-        while (tblOrganisation != null && StringUtils.isEmpty(tblOrganisation.getIpenCode())) {
-            tblOrganisation = tblOrganisation.getParentOrganisationId();
+            // add botanical object to result list
+            results.add(organisationResult);
         }
 
-        // found a matching organisation? if yes return the ipen code
-        if (tblOrganisation != null) {
-            return tblOrganisation.getIpenCode();
-        }
-
-        return null;
+        return results;
     }
 
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * @see BaseOrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
      * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * @see BaseOrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
      * java.lang.String)
      *
      * @param cb

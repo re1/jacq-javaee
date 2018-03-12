@@ -19,8 +19,10 @@ import java.util.List;
 import javax.inject.Inject;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.output.SearchService;
+import org.jacq.service.output.manager.OrganisationManager;
 import org.jacq.service.output.manager.SearchManager;
 
 /**
@@ -32,6 +34,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Inject
     protected SearchManager searchManager;
+
+    @Inject
+    protected OrganisationManager organisationManager;
 
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
@@ -50,6 +55,15 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId) {
         return searchManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null);
+    }
+
+    /**
+     * @see SearchService#organisationSearch(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+     */
+    @Override
+    public List<OrganisationResult> organisationSearch(Long id, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
+        return organisationManager.search(id, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener, offset, limit);
     }
 
 }

@@ -44,6 +44,10 @@ public class OrganisationResult {
     protected boolean indexSeminumStart;
     protected boolean accessionStart;
 
+    public OrganisationResult(Long organisationId) {
+        this.organisationId = organisationId;
+    }
+
     public Long getOrganisationId() {
         return organisationId;
     }
