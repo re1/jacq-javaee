@@ -39,7 +39,7 @@
                                         forceSelection="true"
                                         minQueryLength="3"
                                         queryDelay="300"
-                                        converter="organisationConverter"
+                                        converter="outputOrganisationConverter"
                                         id="organization"
                                         styleClass="jacq-search-full"
                                         placeholder="Standort im Garten">
@@ -47,7 +47,6 @@
                                 <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                             </p:column>
                         </p:autoComplete>
-                        <p:inputText value="#{searchController.organization}" />
                         <p:message for="organization" />
                     </div>
                 </div>

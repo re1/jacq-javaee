@@ -80,6 +80,19 @@ public class BaseOrganisationManager {
     }
 
     /**
+     * @see OrganisationService#load(java.lang.Long)
+     */
+    @Transactional
+    public OrganisationResult load(Long organisationId) {
+        TblOrganisation tblOrganisation = entityManager.find(TblOrganisation.class, organisationId);
+        if (tblOrganisation != null) {
+            return new OrganisationResult(tblOrganisation);
+        }
+
+        return null;
+    }
+
+    /**
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription

@@ -84,12 +84,12 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
         //int rowCount = this.derivativeService.count(getScientificName(), getOrganization(), hasImage);
-        int rowCount = this.searchService.count(null, null, null, null, null, (scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null);
+        int rowCount = this.searchService.count((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.searchService.find(null, null, null, null, null, (scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.searchService.find((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

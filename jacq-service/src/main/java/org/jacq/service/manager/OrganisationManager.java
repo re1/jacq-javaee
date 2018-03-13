@@ -66,19 +66,6 @@ public class OrganisationManager extends BaseOrganisationManager {
     }
 
     /**
-     * @see OrganisationService#load(java.lang.Long)
-     */
-    @Transactional
-    public OrganisationResult load(Long organisationId) {
-        TblOrganisation tblOrganisation = entityManager.find(TblOrganisation.class, organisationId);
-        if (tblOrganisation != null) {
-            return new OrganisationResult(tblOrganisation);
-        }
-
-        return null;
-    }
-
-    /**
      * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
      */
     @Transactional

@@ -39,22 +39,20 @@ public class SearchServiceImpl implements SearchService {
     protected OrganisationManager organisationManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
-     * java.lang.Integer, java.lang.Integer)
+     * @see SearchService#find(java.lang.Long, java.lang.Long, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
      */
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return searchManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDerivative> find(Long scientificNameId, Long organisationId, Boolean hasImage, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, orderColumn, orderDirection, offset, count);
     }
 
     /**
-     * @see DerivativeService#count(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.Long)
+     * @see SearchService#count(java.lang.Long, java.lang.Long)
      */
     @Override
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId) {
-        return searchManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, null);
+    public int count(Long scientificNameId, Long organisationId, Boolean hasImage) {
+        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null);
     }
 
     /**
@@ -66,4 +64,11 @@ public class SearchServiceImpl implements SearchService {
         return organisationManager.search(id, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener, offset, limit);
     }
 
+    /**
+     * @see SearchService#organisationLoad(java.lang.Long)
+     */
+    @Override
+    public OrganisationResult organisationLoad(Long id) {
+        return organisationManager.load(id);
+    }
 }
