@@ -29,7 +29,7 @@ import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.UserTypeResult;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.UserService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  *

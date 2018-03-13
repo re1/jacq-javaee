@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input;
+package org.jacq.service.output.manager;
 
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import org.jacq.common.manager.JacqConfig;
-import org.jacq.common.rest.PortalService;
-import org.jacq.common.util.ServicesUtil;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.jacq.common.manager.BaseOrganisationManager;
 
 /**
  *
  * @author wkoller
  */
 @ManagedBean
-@Singleton
-public class JacqPortalConfig extends JacqConfig {
+public class OrganisationManager extends BaseOrganisationManager {
 
-    protected PortalService portalService;
-
-    @PostConstruct
-    public void init() {
-        this.portalService = ServicesUtil.getPortalService();
-
-        this.config = this.portalService.getConfig();
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
+
 }

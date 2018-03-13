@@ -46,9 +46,8 @@ import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
-import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  * Controller for handling creating / editing of a living plant entry

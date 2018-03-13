@@ -24,6 +24,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.OrganisationResult;
 
 /**
  * Main service for searching derivatives
@@ -36,12 +37,8 @@ public interface SearchService {
     /**
      * Search for a specific derivative and return it
      *
-     * @param type
-     * @param derivativeId
-     * @param placeNumber
-     * @param accessionNumber
-     * @param separated
      * @param orderColumn
+     * @param organisationId
      * @param scientificNameId
      * @param orderDirection
      * @param offset
@@ -52,16 +49,12 @@ public interface SearchService {
     @Path("/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+    public List<BotanicalObjectDerivative> find(@QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hasImage") Boolean hasImage, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
      * Return total count of results for the given search parameters
      *
-     * @param type
-     * @param derivativeId
-     * @param placeNumber
-     * @param accessionNumber
-     * @param separated
+     * @param organisationId
      * @param scientificNameId
      * @return
      */
@@ -69,5 +62,38 @@ public interface SearchService {
     @Path("/count")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId);
+    public int count(@QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hasImage") Boolean hasImage);
+
+    /**
+     * Search the database using the given filter
+     *
+     * @param id
+     * @param description
+     * @param department
+     * @param ipenCode
+     * @param greenhouse
+     * @param parentOrganisationDescription
+     * @param gardener
+     * @param offset Return result with an offset
+     * @param limit Limit total count of results
+     * @return
+     */
+    @GET
+    @Path("/organisation/search")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrganisationResult> organisationSearch(@QueryParam("organisationId") Long id, @QueryParam("description") String description, @QueryParam("department") String department, @QueryParam("greenhouse") Boolean greenhouse, @QueryParam("ipenCode") String ipenCode, @QueryParam("parentOrganisationDescription") String parentOrganisationDescription, @QueryParam("gardener") String gardener, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     * Retrieve a single organisation entry by id
+     *
+     * @param id
+     * @return
+     */
+    @GET
+    @Path("/organisation/load")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public OrganisationResult organisationLoad(@QueryParam("organisationId") Long id);
+
 }
