@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.output.SearchService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -44,12 +46,12 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     /**
      * Scientific name to search for
      */
-    protected String scientificName;
+    protected ScientificNameResult scientificName;
 
     /**
      * Organization to search for
      */
-    protected String organization;
+    protected OrganisationResult organization;
 
     /**
      * Filter for records with images only
@@ -82,30 +84,30 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectD
     public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
         //int rowCount = this.derivativeService.count(getScientificName(), getOrganization(), hasImage);
-        int rowCount = this.searchService.count(null, null, null, null, null, null, null);
+        int rowCount = this.searchService.count((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage);
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.searchService.find(null, null, null, null, null, null, null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.searchService.find((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
     }
 
-    public String getScientificName() {
+    public ScientificNameResult getScientificName() {
         return scientificName;
     }
 
-    public void setScientificName(String scientificName) {
+    public void setScientificName(ScientificNameResult scientificName) {
         this.scientificName = scientificName;
     }
 
-    public String getOrganization() {
+    public OrganisationResult getOrganization() {
         return organization;
     }
 
-    public void setOrganization(String organization) {
+    public void setOrganization(OrganisationResult organization) {
         this.organization = organization;
     }
 

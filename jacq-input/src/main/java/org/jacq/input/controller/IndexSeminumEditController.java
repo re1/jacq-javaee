@@ -21,7 +21,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.rest.IndexSeminumService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  *

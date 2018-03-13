@@ -34,12 +34,6 @@
             <version>1.0.10</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>3.0.19.Final</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish.soteria</groupId>
             <artifactId>javax.security.enterprise</artifactId>
             <version>1.0</version>

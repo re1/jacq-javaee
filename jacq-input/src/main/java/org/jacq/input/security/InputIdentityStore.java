@@ -28,7 +28,7 @@ import javax.security.enterprise.identitystore.IdentityStore;
 import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  *

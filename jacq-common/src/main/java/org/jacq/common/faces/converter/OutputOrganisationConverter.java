@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input.faces.converter;
+package org.jacq.common.faces.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.jacq.common.model.rest.ScientificNameResult;
-import org.jacq.input.util.ServicesUtil;
+import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.util.ServicesUtil;
 
 /**
  *
  * @author wkoller
  */
-@FacesConverter("scientificNameConverter")
-public class ScientificNameConverter implements Converter {
+@FacesConverter("outputOrganisationConverter")
+public class OutputOrganisationConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && !value.equalsIgnoreCase("null")) {
-            return ServicesUtil.getScientificNameService().load(Long.valueOf(value));
+            return ServicesUtil.getSearchService().organisationLoad(Long.valueOf(value));
         }
 
         return null;
@@ -41,7 +41,7 @@ public class ScientificNameConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         if (value != null) {
-            return String.valueOf(((ScientificNameResult) value).getScientificNameId());
+            return String.valueOf(((OrganisationResult) value).getOrganisationId());
         }
         else {
             return null;
