@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblTreeRecordFile;
 
 /**
- * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
- * the relevant information
+ * Wrapper model which represents a single result after a search Used to
+ * minimize the transfered data and only return the relevant information
  *
  * @author fhafner
  */
@@ -34,7 +34,7 @@ import org.jacq.common.model.jpa.TblTreeRecordFile;
 public class TreeRecordFileResult {
 
     protected Long treeRecordFileId;
-    protected Date year;
+    protected Long year;
     protected String name;
     protected String documentNumber;
     protected String fileContent;
@@ -47,11 +47,11 @@ public class TreeRecordFileResult {
         this.treeRecordFileId = treeRecordFileId;
     }
 
-    public Date getYear() {
+    public Long getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Long year) {
         this.year = year;
     }
 
@@ -90,7 +90,8 @@ public class TreeRecordFileResult {
     }
 
     /**
-     * Helper function for converting a list of TreeRecordFile entries to treeRecordFileResult
+     * Helper function for converting a list of TreeRecordFile entries to
+     * treeRecordFileResult
      *
      * @param treeRecordFileList
      * @return

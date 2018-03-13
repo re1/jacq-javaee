@@ -69,7 +69,8 @@ public class LivingPlantManager {
     protected EntityManager em;
 
     /**
-     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     * @see
+     * DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Transactional(rollbackOn = Exception.class)
     public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
@@ -78,8 +79,7 @@ public class LivingPlantManager {
         // check if we edit an existing entry or create a new one
         if (livingPlantResult.getDerivativeId() != null) {
             tblLivingPlant = em.find(TblLivingPlant.class, livingPlantResult.getDerivativeId());
-        }
-        else {
+        } else {
             tblLivingPlant = new TblLivingPlant();
         }
 
@@ -97,7 +97,10 @@ public class LivingPlantManager {
         tblLivingPlant.setPlaceNumber(livingPlantResult.getPlaceNumber());
         tblLivingPlant.setCultivarId((livingPlantResult.getCultivar() != null && livingPlantResult.getCultivar().getCultivarId() != null) ? em.find(TblCultivar.class, livingPlantResult.getCultivar().getCultivarId()) : null);
         tblLivingPlant.setIndexSeminumTypeId((livingPlantResult.getIndexSeminumType() != null && livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId() != null) ? em.find(TblIndexSeminumType.class, livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId()) : null);
-        tblLivingPlant.setLabelSynonymScientificNameId(livingPlantResult.getLabelSynonymScientificName().getScientificNameId());
+
+        if (livingPlantResult.getLabelSynonymScientificName() != null) {
+            tblLivingPlant.setLabelSynonymScientificNameId((livingPlantResult.getLabelSynonymScientificName().getScientificNameId() != null) ? livingPlantResult.getLabelSynonymScientificName().getScientificNameId() : null);
+        }
 
         // assign relevancy
         if (tblLivingPlant.getTblRelevancyTypeList() == null) {
@@ -168,8 +171,7 @@ public class LivingPlantManager {
             TblPerson determinedBy = null;
             if (personList != null && personList.size() > 0) {
                 determinedBy = personList.get(0);
-            }
-            else {
+            } else {
                 determinedBy = new TblPerson();
                 determinedBy.setName(livingPlantResult.getDeterminedBy().getName());
                 em.persist(determinedBy);
@@ -184,8 +186,7 @@ public class LivingPlantManager {
         TblLocation tblGatheringLocation = null;
         if (locationList != null & locationList.size() > 0) {
             tblGatheringLocation = locationList.get(0);
-        }
-        else {
+        } else {
             tblGatheringLocation = new TblLocation();
             tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation());
             em.persist(tblGatheringLocation);
@@ -215,8 +216,7 @@ public class LivingPlantManager {
             TblPerson tblGatherer = null;
             if (gatherers != null & gatherers.size() > 0) {
                 tblGatherer = gatherers.get(0);
-            }
-            else {
+            } else {
                 tblGatherer = new TblPerson();
                 tblGatherer.setName(gatherer.getName());
                 em.persist(tblGatherer);
@@ -273,8 +273,7 @@ public class LivingPlantManager {
             TblAlternativeAccessionNumber tblAlternativeAccessionNumber = null;
             if (alternativeAccessionNumber.getAlternativeAccessionNumberId() != null) {
                 tblAlternativeAccessionNumber = em.find(TblAlternativeAccessionNumber.class, alternativeAccessionNumber.getAlternativeAccessionNumberId());
-            }
-            else {
+            } else {
                 tblAlternativeAccessionNumber = new TblAlternativeAccessionNumber();
             }
 
@@ -291,8 +290,7 @@ public class LivingPlantManager {
             TblCertificate tblCertificate = null;
             if (certificate.getCertificateId() != null) {
                 tblCertificate = em.find(TblCertificate.class, certificate.getCertificateId());
-            }
-            else {
+            } else {
                 tblCertificate = new TblCertificate();
             }
 
@@ -311,8 +309,7 @@ public class LivingPlantManager {
             TblSeparation tblSeparation = null;
             if (separation.getSeparationId() != null) {
                 tblSeparation = em.find(TblSeparation.class, separation.getSeparationId());
-            }
-            else {
+            } else {
                 tblSeparation = new TblSeparation();
             }
 
@@ -331,16 +328,14 @@ public class LivingPlantManager {
             TblAcquisitionEventSource tblAcquisitionEventSource = null;
             if (acquistionEventSource.getAcquisitionEventSourceId() != null) {
                 tblAcquisitionEventSource = em.find(TblAcquisitionEventSource.class, acquistionEventSource.getAcquisitionEventSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionEventSource = new TblAcquisitionEventSource();
             }
 
             TblAcquisitionSource tblAcquisitionSource = null;
             if (acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId() != null) {
                 tblAcquisitionSource = em.find(TblAcquisitionSource.class, acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionSource = new TblAcquisitionSource();
             }
 

@@ -64,6 +64,12 @@ public abstract class DerivativeSearchManager {
         this.entityManager = entityManager;
     }
 
+    protected BaseApplicationManager baseApplicationManager;
+
+    public void setBaseApplicationManager(BaseApplicationManager baseApplicationManager) {
+        this.baseApplicationManager = baseApplicationManager;
+    }
+
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long,
      * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
@@ -78,7 +84,11 @@ public abstract class DerivativeSearchManager {
         // organisation List for hierarchic
         if (organisationId != null) {
             if (hierarchic != null && hierarchic == true) {
-                organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                organisationIdList = baseApplicationManager.findOrganisationHierachyCache(organisationId);
+                if (organisationIdList == null) {
+                    organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                    baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
+                }
             }
             organisationIdList.add(organisationId);
         }

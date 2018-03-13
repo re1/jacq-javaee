@@ -7,38 +7,38 @@
 
     <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
         <ui:define name="content">
-            <h:form>
-                <div class="jacq-content">
-                    <div class="jacq-content-header">
-                        <h1>#{messages['user.userupdate']}</h1>
-                    </div>
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['user.newpassword']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:password id="newPassword" value="#{userUpdateController.newPassword}" required="true" label="password" />
-                                </div>
+            <h:panelGroup layout="block" id="update_profile" styleClass="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['user.userupdate']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.newpassword']}" />
                             </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['user.newpasswordvalidate']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:password id="newPasswordCheck" value="#{userUpdateController.newPasswordValidate}" required="true" label="password" />
-                                </div>
+                            <div class="ui-g-6">
+                                <p:password id="newPassword" value="#{userUpdateController.newPassword}" required="true" label="#{messages['user.newpassword']}" />
+                                <p:message for="newPassword" />
                             </div>
                         </div>
                     </div>
-                    <div class="jacq-buttons">
-                        <p:commandButton value="#{messages['update']}" actionListener="#{userUpdateController.saveMessage}" update="jacq_form:messages"  action="#{userUpdateController.update}"/>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.newpasswordvalidate']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:password id="newPasswordCheck" value="#{userUpdateController.newPasswordValidate}" required="true" label="#{messages['user.newpasswordvalidate']}" />
+                                <p:message for="newPasswordCheck" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </h:form>
+                <div class="jacq-buttons">
+                    <p:commandButton value="#{messages['update']}" actionListener="#{userUpdateController.saveMessage}" update="jacq_form:messages jacq_form:update_profile"  action="#{userUpdateController.update}"/>
+                </div>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </html>

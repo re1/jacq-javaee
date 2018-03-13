@@ -73,24 +73,13 @@ public class LazyTreeRecordFileDataModel extends LazyDataModel<TreeRecordFileRes
     @Override
     public List<TreeRecordFileResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-        //Year Parser
-        Calendar cal = Calendar.getInstance();
-        Date year = new Date();
-        if (filters.get("year") != null) {
-            int parseYear = (int) filters.get("year");
-            cal.set(parseYear, 0, 1, 0, 0, 0);
-            year = cal.getTime();
-        } else {
-            year = null;
-        }
-
         // get count first
-        int rowCount = this.treeRecordFileService.searchCount(filters.get("treeRecordFileId") != null ? Long.parseLong(filters.get("treeRecordFileId").toString()) : null, year, filters.get("name") != null ? filters.get("name").toString() : null, filters.get("documentNumber") != null ? filters.get("documentNumber").toString() : null);
+        int rowCount = this.treeRecordFileService.searchCount(filters.get("treeRecordFileId") != null ? Long.parseLong(filters.get("treeRecordFileId").toString()) : null, filters.get("year") != null ? Long.parseLong(filters.get("year").toString()) : null, filters.get("name") != null ? filters.get("name").toString() : null, filters.get("documentNumber") != null ? filters.get("documentNumber").toString() : null);
         this.setRowCount(rowCount);
 
         List<TreeRecordFileResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.treeRecordFileService.search(filters.get("treeRecordFileId") != null ? Long.parseLong(filters.get("treeRecordFileId").toString()) : null, year, filters.get("name") != null ? filters.get("name").toString() : null, filters.get("documentNumber") != null ? filters.get("documentNumber").toString() : null, first, pageSize);
+            results = this.treeRecordFileService.search(filters.get("treeRecordFileId") != null ? Long.parseLong(filters.get("treeRecordFileId").toString()) : null, filters.get("year") != null ? Long.parseLong(filters.get("year").toString()) : null, filters.get("name") != null ? filters.get("name").toString() : null, filters.get("documentNumber") != null ? filters.get("documentNumber").toString() : null, first, pageSize);
         }
 
         return results;

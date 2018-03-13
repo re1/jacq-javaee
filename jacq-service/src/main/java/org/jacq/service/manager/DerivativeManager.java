@@ -47,12 +47,14 @@ import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -68,12 +70,16 @@ public class DerivativeManager extends DerivativeSearchManager {
     @PersistenceContext
     protected EntityManager em;
 
+    @Inject
+    protected ApplicationManager applicationManager;
+
     /**
      * Initialize bean and make sure abstract base class has entity manager
      */
     @PostConstruct
     public void init() {
         this.setEntityManager(em);
+        this.setBaseApplicationManager(applicationManager);
     }
 
     /**
@@ -115,7 +121,10 @@ public class DerivativeManager extends DerivativeSearchManager {
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
             TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
-            ViewProtolog protolog = em.find(ViewProtolog.class, classification.getSourceId());
+            ViewProtolog protolog = new ViewProtolog();
+            if (classification != null && classification.getSourceId() != null) {
+                protolog = em.find(ViewProtolog.class, classification.getSourceId());
+            }
             BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, classification, protolog);
             botanicalObjectDownloadResultList.add(botanicalObjectDownloadResult);
         }
@@ -185,7 +194,8 @@ public class DerivativeManager extends DerivativeSearchManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important parameter
+     * Small helper function for fetching relevancy type based on important
+     * parameter
      *
      * @param important
      * @return

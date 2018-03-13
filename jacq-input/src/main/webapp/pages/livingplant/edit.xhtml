@@ -23,16 +23,17 @@
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.scientificNameResult}" completeMethod="#{livingPlantEditController.completeScientificName}"
-                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" required="true">
+                                <p:autoComplete id="scientificName" value="#{livingPlantEditController.livingPlantResult.scientificNameResult}" completeMethod="#{livingPlantEditController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" label="#{messages['livingplant.scientificname']}" required="true">
                                     <p:column>
                                         <h:outputText value="#{scientificName.scientificName}" />
                                     </p:column>
                                 </p:autoComplete>
 
+
                                 <h:inputHidden value="#{livingPlantEditController.livingPlantResult.scientificNameId}" />
                                 <p:commandButton action="#{livingPlantEditController.showScientificNameInformation}" update="scientificNameInformationPanelContent" oncomplete="PF('scientificNameInformationPanel').show()" icon="ui-icon-disk" />
-
+                                <p:message for="scientificName" />
                                 <p:dialog header="#{livingPlantEditController.livingPlantResult.scientificName}" widgetVar="scientificNameInformationPanel" modal="true" width="80%" dynamic="true">
                                     <h:panelGroup id="scientificNameInformationPanelContent" layout="block" styleClass="ui-g" rendered="#{livingPlantEditController.scientificNameInformationResult != null}">
                                         <div class="ui-g-6 ui-g-nopad">
@@ -89,12 +90,13 @@
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
-                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter" required="true">
+                                <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
+                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                                     </p:column>
                                 </p:autoComplete>
+                                <p:message for="organisation" />
                             </div>
                         </div>
                     </div>
@@ -249,7 +251,7 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:autoComplete value="#{livingPlantEditController.livingPlantResult.labelSynonymScientificName}" completeMethod="#{livingPlantEditController.completeScientificName}"
-                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" required="true">
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
                                     <p:column>
                                         <h:outputText value="#{scientificName.scientificName}" />
                                     </p:column>
@@ -821,7 +823,8 @@
                     </div>
                 </h:panelGroup>
                 <div class="jacq-buttons">
-                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form" />
+                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
+                    <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
                 </div>
             </h:panelGroup>
         </ui:define>
