@@ -92,6 +92,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected ImportPropertiesResult importPropertiesResult;
 
+    protected List<ImageServerResource> imageServerResources;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -613,6 +615,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setImportPropertiesResult(ImportPropertiesResult importPropertiesResult) {
         this.importPropertiesResult = importPropertiesResult;
+    }
+
+    public List<ImageServerResource> getImageServerResources() {
+        return imageServerResources;
+    }
+
+    public void setImageServerResources(List<ImageServerResource> imageServerResources) {
+        this.imageServerResources = imageServerResources;
     }
 
 }

@@ -18,6 +18,7 @@ package org.jacq.common.util;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.client.ClientRequestFilter;
+import org.jacq.common.external.rest.ImageServer;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
@@ -91,6 +92,10 @@ public class ServicesUtil {
         return getProxy(SearchService.class, JACQ_SERVICE_OUTPUT_URL);
     }
 
+    public static ImageServer getImageServer(String baseUrl) {
+        return getProxy(ImageServer.class, baseUrl, true);
+    }
+
     /**
      * Register a client request filter for use in all requests (used for all future requests automatically)
      *
@@ -101,6 +106,13 @@ public class ServicesUtil {
     }
 
     /**
+     * @see ServicesUtil#getProxy(java.lang.Class, java.lang.String, boolean)
+     */
+    protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
+        return ServicesUtil.getProxy(serviceInterfaceClass, serviceURI, false);
+    }
+
+    /**
      * Get a proxy for a given service endpoint class
      *
      * @param <T>
@@ -108,14 +120,16 @@ public class ServicesUtil {
      * @param serviceURI
      * @return
      */
-    protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
+    protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI, boolean noClientRequestFilters) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
         resteasyClient.register(new CustomDateParamConverterProvider());
-        for (ClientRequestFilter clientRequestFilter : clientRequestFilters) {
-            resteasyClient.register(clientRequestFilter);
+
+        if (!noClientRequestFilters) {
+            for (ClientRequestFilter clientRequestFilter : clientRequestFilters) {
+                resteasyClient.register(clientRequestFilter);
+            }
         }
-        //resteasyClient.register(new BasicClientRequestFilter());
-        //resteasyClient.register(new ContentTypeResponseFilter());
+
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }

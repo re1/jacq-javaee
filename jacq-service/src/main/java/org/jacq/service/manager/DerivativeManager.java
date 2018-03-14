@@ -24,6 +24,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import org.jacq.common.manager.BaseImageServerManager;
 import org.jacq.common.manager.DerivativeSearchManager;
 import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
@@ -40,6 +41,7 @@ import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.ImageServerResource;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -51,10 +53,9 @@ import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs
  *
  * @author wkoller
  */
@@ -73,6 +74,9 @@ public class DerivativeManager extends DerivativeSearchManager {
     @Inject
     protected ApplicationManager applicationManager;
 
+    @Inject
+    protected ImageServerManager imageServerManager;
+
     /**
      * Initialize bean and make sure abstract base class has entity manager
      */
@@ -90,7 +94,11 @@ public class DerivativeManager extends DerivativeSearchManager {
         if (LivingPlantResult.LIVING.equalsIgnoreCase(type)) {
             TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, derivativeId);
             if (tblLivingPlant != null) {
-                return new LivingPlantResult(tblLivingPlant);
+                LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
+                livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative()));
+
+                return livingPlantResult;
+
             }
         }
 
@@ -194,8 +202,7 @@ public class DerivativeManager extends DerivativeSearchManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important
-     * parameter
+     * Small helper function for fetching relevancy type based on important parameter
      *
      * @param important
      * @return
