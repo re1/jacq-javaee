@@ -1,0 +1,86 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:po="http://primefaces.org/omega">
+
+    <div class="sidebar">
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <div class="logo">
+                    <h:graphicImage library="jacq" name="jacq_logo.png" />
+                </div>
+
+                <div class="profile">
+                </div>
+
+                <div class="menu">
+                    <h:form id="jacq_form-menu">
+                        <po:menu>
+                            <p:submenu label="#{messages['livingplant']}"  rendered="#{loginController.securityContext.isCallerInRole('createLivingplant') || loginController.securityContext.isCallerInRole('readLivingplant') || loginController.securityContext.isCallerInRole('inventory') || loginController.securityContext.isCallerInRole('indexSeminum') ? true : false}">
+                                <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/edit.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createLivingplant') ? true : false}"/>
+                                <p:menuitem value="#{messages['manage']}"  url="/faces/pages/livingplant/manage.xhtml" rendered="#{loginController.securityContext.isCallerInRole('readLivingplant') ? true : false}"/>
+                                <p:submenu label="#{messages['inventory']}" rendered="#{loginController.securityContext.isCallerInRole('inventory') ? true : false}">
+                                    <p:menuitem value="#{messages['create']}"  url="/faces/pages/livingplant/inventoryedit.xhtml"/>
+                                    <p:menuitem value="#{messages['manage']}" url="/faces/pages/livingplant/inventories.xhtml"/>
+                                </p:submenu>
+                                <p:submenu label="#{messages['seminum']}" rendered="#{loginController.securityContext.isCallerInRole('indexSeminum') ? true : false}">
+                                    <p:menuitem value="#{messages['livingplant.indexseminum']}" url="/faces/pages/livingplant/indexseminum.xhtml"/>
+                                    <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/faces/pages/livingplant/revisioncreate.xhtml"/>
+                                </p:submenu>
+                            </p:submenu>
+                            <p:submenu label="#{messages['location']}" rendered="#{loginController.securityContext.isCallerInRole('createOrganisation') ? true : false}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/organisation/edit.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/organisation/manage.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['treerecordfile']}" rendered="#{loginController.securityContext.isCallerInRole('createTreeRecordFile') ? true : false}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/treerecordfile/edit.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/treerecordfile/manage.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['databrowser']}" rendered="false">
+                                <p:menuitem value="#{messages['databrowser.classificationbrowser']}" url="/faces/pages/databrowser/classificationbrowser.xhtml"/>
+                                <p:menuitem value="#{messages['databrowser.statistic']}" url="/faces/pages/databrowser/statistic.xhtml"/>
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label="#{messages['user']}">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/user/edit.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createUser') ? true : false}"/>
+                                <p:menuitem value="#{messages['update']}" url="/faces/pages/user/update.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/user/manage.xhtml" rendered="#{loginController.securityContext.isCallerInRole('createUser') ? true : false}"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['literature']}" rendered="false">
+                                <p:menuitem value="#{messages['create']}" url="/faces/pages/literature/literaturecreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/literature/literaturemanage.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['nomenclature']}" rendered="false">
+                                <p:menuitem value="#{messages['edit']}" url="/faces/pages/nomenclature/nomenclaturecheck.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['chorology']}" rendered="false">
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/chrology/chorologyedit.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['observations']}" rendered="false">
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/observations/observationsmanage.xhtml"/>
+                            </p:submenu>
+                            <p:submenu label="#{messages['taxonomy']}" rendered="false">
+                                <p:menuitem value="#{messages['taxonomy.genera']}" url="/faces/pages/taxonomy/generacreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.species']}" url="/faces/pages/taxonomy/speciescreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.family']}" url="/faces/pages/taxonomy/familycreate.xhtml"/>
+                                <p:menuitem value="#{messages['taxonomy.author']}" url="/faces/pages/taxonomy/authorcreate.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/faces/pages/taxonomy/taxonomymanage.xhtml"/>
+                            </p:submenu>
+                        </po:menu>
+
+                        <po:menu styleClass="jacq-menu-item" id="quickActions">
+                            <p:menuitem value="#{messages['save']}" onclick="PF('saveLivingPLantResultButton').jq.click();" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
+                            <p:menuitem value="#{messages['copyandnew']}" onclick="PF('copyLivingPLantResultButton').jq.click();" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
+                            <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" value="#{livingPlantEditController.livingPlantResult.scientificNameResult.scientificName}" />
+                            <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" value="#{livingPlantEditController.livingPlantResult.accessionNumber}" />
+                        </po:menu>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>
