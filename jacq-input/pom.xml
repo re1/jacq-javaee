@@ -110,14 +110,15 @@
                 <version>3.5.2</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <!-- we only build the stylesheets on demand, to do so change the phase to 'packaging' -->
+                        <phase>update-stylesheets</phase>
                         <goals>
                             <goal>
                                 update-stylesheets
                             </goal>
                         </goals>
                         <configuration>
-                            <destination>${project.build.directory}/${project.build.finalName}/resources/omega-layout/css</destination>
+                            <destination>src/main/webapp/resources/omega-layout/css</destination>
                         </configuration>
                     </execution>
                 </executions>

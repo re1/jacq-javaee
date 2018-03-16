@@ -15,11 +15,14 @@
  */
 package org.jacq.input.controller;
 
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.ClassificationResult;
 import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
 
@@ -41,12 +44,17 @@ public class UserUpdateController {
 
     protected UserService userService;
 
+    protected ClassificationService classificationService;
+
+    protected List<ClassificationResult> classificationList;
+
     @PostConstruct
     public void init() {
         this.userService = ServicesUtil.getUserService();
+        this.classificationService = ServicesUtil.getClassificationService();
 
         this.user = new UserResult();
-
+        this.classificationList = this.classificationService.findAll();
     }
 
     public String update() {

@@ -32,6 +32,7 @@ import org.jacq.common.model.jpa.SrvcUuidMinter;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblNomName;
 import org.jacq.common.model.jpa.ViewClassificationResult;
+import org.jacq.common.model.rest.ClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 
 /**
@@ -173,5 +174,14 @@ public class ClassificationManager {
         }
 
         return tblClassification;
+    }
+
+    /**
+     * @see ClassificationService#findAll()
+     */
+    @Transactional
+    public List<ClassificationResult> findAll() {
+        TypedQuery<TblClassification> availableClassificationsQuery = em.createNamedQuery("TblClassification.findAllAvailable", TblClassification.class);
+        return ClassificationResult.fromList(availableClassificationsQuery.getResultList());
     }
 }
