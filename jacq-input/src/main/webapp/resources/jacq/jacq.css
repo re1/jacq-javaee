@@ -44,3 +44,32 @@
 .jacq-menu-item {
     width: auto !important;
 }
+
+.menu {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default {
+    border: 1px solid rgb(157,160,72);
+    color: #fff;
+    background: rgb(157,160,72);
+}
+
+.ui-chkbox-box.ui-state-active, .ui-chkbox-box.ui-state-focus.ui-state-active, .ui-radiobutton-box.ui-state-active, .ui-radiobutton-box.ui-state-focus.ui-state-active {
+    border: 1px solid rgb(105,109,49);
+    background: rgb(120,124,54);
+    color: #fff;
+}
+
+.ui-selectbooleanbutton.ui-button.ui-state-active, .ui-selectonebutton .ui-button.ui-state-active, .ui-selectmanybutton .ui-button.ui-state-active {
+    border: 1px solid rgb(105,109,49);
+    background: rgb(120,124,54);
+    color: #fff;
+}
+
+.ui-paginator .ui-paginator-page.ui-state-active {
+    background: rgb(120,124,54);
+    color: #fff;
+    border-color: rgb(105,109,49);
+}
