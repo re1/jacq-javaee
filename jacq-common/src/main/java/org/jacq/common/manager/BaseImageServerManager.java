@@ -53,7 +53,7 @@ public class BaseImageServerManager {
      * @param botanicalObject
      * @return
      */
-    public List<ImageServerResource> getResources(TblDerivative derivative) {
+    public List<ImageServerResource> getResources(TblDerivative derivative, boolean onlyPublic) {
         // search for matching image server first
         TblImageServer tblImageServer = findImageServer(derivative.getOrganisationId());
         ArrayList<ImageServerResource> imageServerResources = new ArrayList<>();
@@ -95,13 +95,22 @@ public class BaseImageServerManager {
                 if (responseObject != null) {
                     JsonArray foundResources = responseObject.getJsonArray("result");
                     if (foundResources != null) {
+                        List<String> identifiersList = new ArrayList<>();
+
                         for (int i = 0; i < foundResources.size(); i++) {
                             JsonObject resourceInfo = foundResources.getJsonObject(i);
-                            if (resourceInfo.getString("public").equals("1")) {
+                            if (!onlyPublic || resourceInfo.getString("public").equals("1")) {
+                                identifiersList.add(resourceInfo.getString("identifier"));
+                            }
+                        }
+
+                        for (int i = 0; i < foundResources.size(); i++) {
+                            JsonObject resourceInfo = foundResources.getJsonObject(i);
+                            if (!onlyPublic || resourceInfo.getString("public").equals("1")) {
                                 ImageServerResource imageServerResource = new ImageServerResource();
                                 imageServerResource.setIdentifier(resourceInfo.getString("identifier"));
                                 imageServerResource.setThumbnailUrl(tblImageServer.getBaseUrl() + "/adore-djatoka/resolver?url_ver=Z39.88-2004&rft_id=" + imageServerResource.getIdentifier() + "&svc_id=info:lanl-repo/svc/getRegion&svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&svc.format=image/jpeg&svc.scale=160,0");
-                                imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + imageServerResource.getIdentifier());
+                                imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + String.join(",", identifiersList));
 
                                 imageServerResources.add(imageServerResource);
                             }
@@ -120,7 +129,8 @@ public class BaseImageServerManager {
     }
 
     /**
-     * Helper function for synchronizing image server content with has-image flags in botanical object list
+     * Helper function for synchronizing image server content with has-image
+     * flags in botanical object list
      */
     @Transactional
     public void synchronizeImageFlags() {
@@ -189,7 +199,8 @@ public class BaseImageServerManager {
     }
 
     /**
-     * Traverses the organisation hierarchy in order to find a suitable image server
+     * Traverses the organisation hierarchy in order to find a suitable image
+     * server
      *
      * @param organisation
      * @return ImageServer or null if none is found
@@ -202,8 +213,7 @@ public class BaseImageServerManager {
 
         if (organisation.getTblImageServer() != null) {
             return organisation.getTblImageServer();
-        }
-        else {
+        } else {
             return findImageServer(organisation.getParentOrganisationId());
         }
     }
@@ -227,7 +237,8 @@ public class BaseImageServerManager {
     }
 
     /**
-     * Find all organisations belonging to a partial organisations tree, taking into account image-server assignments
+     * Find all organisations belonging to a partial organisations tree, taking
+     * into account image-server assignments
      *
      * @param parentOrganisation
      * @return

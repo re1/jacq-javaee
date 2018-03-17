@@ -763,6 +763,19 @@
                         </div>
                     </p:tab>
                     <p:tab title="#{messages['livingplant.derivatives']}">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h3><h:outputText value="#{messages['derivative.images']}" /></h3>
+                            </div>
+
+                            <ui:repeat value="#{livingPlantEditController.livingPlantResult.imageServerResources}" var="imageServerResource">
+                                <div class="ui-g-2">
+                                    <a href="#{imageServerResource.imageUrl}" target="_blank" >
+                                        <h:graphicImage value="#{imageServerResource.thumbnailUrl}" width="160" />
+                                    </a>
+                                </div>
+                            </ui:repeat>
+                        </div>
                     </p:tab>
                     <p:tab title="#{messages['livingplant.inventories']}">
                     </p:tab>
