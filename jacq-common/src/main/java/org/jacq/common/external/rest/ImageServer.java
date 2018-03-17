@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.rest;
+package org.jacq.common.external.rest;
 
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;

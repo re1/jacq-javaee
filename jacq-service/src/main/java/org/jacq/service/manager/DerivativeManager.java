@@ -73,6 +73,9 @@ public class DerivativeManager extends DerivativeSearchManager {
     @Inject
     protected ApplicationManager applicationManager;
 
+    @Inject
+    protected ImageServerManager imageServerManager;
+
     /**
      * Initialize bean and make sure abstract base class has entity manager
      */
@@ -90,7 +93,11 @@ public class DerivativeManager extends DerivativeSearchManager {
         if (LivingPlantResult.LIVING.equalsIgnoreCase(type)) {
             TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, derivativeId);
             if (tblLivingPlant != null) {
-                return new LivingPlantResult(tblLivingPlant);
+                LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
+                livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative(), false));
+
+                return livingPlantResult;
+
             }
         }
 

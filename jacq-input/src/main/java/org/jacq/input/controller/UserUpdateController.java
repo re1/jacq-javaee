@@ -46,7 +46,6 @@ public class UserUpdateController {
         this.userService = ServicesUtil.getUserService();
 
         this.user = new UserResult();
-
     }
 
     public String update() {

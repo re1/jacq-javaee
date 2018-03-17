@@ -232,4 +232,11 @@ public class TblClassification implements Serializable {
         return viewScientificName;
     }
 
+    @JoinColumn(name = "source_id", referencedColumnName = "citation_id", insertable = false, updatable = false)
+    @ManyToOne
+    private ViewProtolog viewProtolog;
+
+    public ViewProtolog getViewProtolog() {
+        return viewProtolog;
+    }
 }

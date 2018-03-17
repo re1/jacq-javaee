@@ -20,12 +20,12 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
+import org.jacq.common.model.rest.ClassificationResult;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.service.manager.ClassificationManager;
 
@@ -41,7 +41,9 @@ public class ClassificationServiceImpl implements ClassificationService {
     protected ClassificationManager classificationManager;
 
     /**
-     * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
+     * @see
+     * ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType,
+     * long, java.lang.Long)
      */
     @Override
     public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
@@ -66,7 +68,9 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     /**
-     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
+     * @see
+     * ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType,
+     * long)
      */
     @Override
     public UUID addRevision(ClassificationSourceType source, long sourceId) {
@@ -80,7 +84,8 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long,
+     * java.lang.Integer)
      * @return
      */
     @Override
@@ -92,5 +97,13 @@ public class ClassificationServiceImpl implements ClassificationService {
 
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
+    }
+
+    /**
+     * @see ClassificationService#findAll()
+     */
+    @Override
+    public List<ClassificationResult> findAll() {
+        return classificationManager.findAll();
     }
 }

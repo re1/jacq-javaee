@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.jpa.RevClassification;
 import org.jacq.common.model.jpa.ViewClassificationResult;
+import org.jacq.common.model.rest.ClassificationResult;
 
 /**
  * Service interface for accessing classification based information
@@ -41,7 +42,8 @@ public interface ClassificationService {
      *
      * @param source Source of classification (Citation, Person, etc.)
      * @param sourceId Reference to use for looking up
-     * @param parentId Parent to look for. Can be NULL to provide top-level entries
+     * @param parentId Parent to look for. Can be NULL to provide top-level
+     * entries
      * @return
      */
     @GET
@@ -80,7 +82,8 @@ public interface ClassificationService {
      * Receive a list of entires for the given revision
      *
      * @param revision
-     * @param parentId Parent to look for. Can be NULL to provide top-level entries
+     * @param parentId Parent to look for. Can be NULL to provide top-level
+     * entries
      * @return
      */
     @GET
@@ -88,4 +91,15 @@ public interface ClassificationService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<RevClassification> getRevision(@QueryParam("uuid") UUID revision, @QueryParam("parentId") Long parentId, @QueryParam("provinceId") Integer provinceId);
+
+    /**
+     * Receive a list of all available classifications
+     *
+     * @return
+     */
+    @GET
+    @Path("/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ClassificationResult> findAll();
 }
