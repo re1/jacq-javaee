@@ -86,7 +86,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             // ScientificNameNoAuthor
             this.setScientificNameNoAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameNoAuthor() : null);
             // ScientificNameAuthor
-            this.setScientificNameNoAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() : null);
+            this.setScientificNameAuthor(derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificNameAuthor() : null);
         }
         if (derivative.getBotanicalObjectId().getAcquisitionEventId() != null) {
             // acquisition_Location
