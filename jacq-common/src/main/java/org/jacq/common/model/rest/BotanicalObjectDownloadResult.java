@@ -79,7 +79,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         }
 
         if (protolog != null) {
-            this.setFamilyReference(protolog.getProtolog());
+            this.setFamilyReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
         }
 
         if (derivative.getBotanicalObjectId().getViewScientificName() != null) {
