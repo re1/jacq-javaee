@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BotanicalObjectDerivative implements Serializable {
 
     public static final String LIVING = "living";
+    public static final String VEGETATIVE = "vegetative";
 
     private static final long serialVersionUID = 1L;
     @Id

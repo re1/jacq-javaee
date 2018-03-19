@@ -4,8 +4,8 @@
     <Scope Scope="Project">
         <Node id="pages/livingplant/revisioncreate.xhtml" x="1650" y="150" zoom="true"/>
         <Node id="pages/organisation/manage.xhtml" x="900" y="150" zoom="true"/>
-        <Node id="pages/user/update.xhtml" x="400" y="450" zoom="true"/>
         <Node id="pages/livingplant/inventoryedit.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="pages/user/update.xhtml" x="400" y="450" zoom="true"/>
         <Node id="pages/chrology/chorologyedit.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="pages/taxonomy/taxonomymanage.xhtml" x="400" y="600" zoom="true"/>
         <Node id="pages/login.xhtml" x="650" y="450" zoom="true"/>
@@ -22,8 +22,8 @@
         <Node id="pages/taxonomy/generacreate.xhtml" x="150" y="600" zoom="true"/>
         <Node id="pages/user/manage.xhtml" x="900" y="300" zoom="true"/>
         <Node id="pages/nomenclature/nomenclaturecheck.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="pages/livingplant/edit.xhtml" x="900" y="600" zoom="true"/>
         <Node id="pages/organisation/edit.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="pages/livingplant/edit.xhtml" x="900" y="600" zoom="true"/>
         <Node id="pages/taxonomy/familycreate.xhtml" x="400" y="750" zoom="true"/>
         <Node id="pages/databrowser/classificationbrowser.xhtml" x="1150" y="450" zoom="true"/>
         <Node id="pages/treerecordfile/manage.xhtml" x="650" y="150" zoom="true"/>

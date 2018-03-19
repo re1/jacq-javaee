@@ -79,3 +79,13 @@
     background: rgb(120,124,54);
     color: #fff;
 }
+
+/* using all available space for input boxes */
+input.ui-widget {
+    width: 90%;
+}
+
+/* using all available space for auto-completer */
+.ui-autocomplete {
+    width: 100% !important;
+}
