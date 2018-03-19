@@ -35,6 +35,7 @@ import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.TblSex;
+import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
@@ -46,15 +47,15 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs
  *
  * @author wkoller
  */
@@ -112,6 +113,16 @@ public class DerivativeManager extends DerivativeSearchManager {
         }
 
         return null;
+    }
+
+    /**
+     * @see DerivativeService#vegetativeFind(java.lang.Long)
+     */
+    public List<VegetativeResult> vegetativeFind(Long parentDerivativeId) {
+        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByParentDerivative", TblVegetative.class);
+        vegetativeQuery.setParameter("parentDerivativeId", em.find(TblDerivative.class, parentDerivativeId));
+
+        return VegetativeResult.fromList(vegetativeQuery.getResultList());
     }
 
     /**
@@ -208,8 +219,7 @@ public class DerivativeManager extends DerivativeSearchManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important
-     * parameter
+     * Small helper function for fetching relevancy type based on important parameter
      *
      * @param important
      * @return

@@ -35,6 +35,7 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.VegetativeResult;
 
 /**
  * Main service for searching derivatives
@@ -106,6 +107,18 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult);
+
+    /**
+     * Find all vegetative derivatives for a given parent derivative
+     *
+     * @param parentDerivativeId
+     * @return
+     */
+    @GET
+    @Path("/vegetative/find")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<VegetativeResult> vegetativeFind(@QueryParam("parentDerivativeId") Long parentDerivativeId);
 
     /**
      * Search for a specific derivative and return it

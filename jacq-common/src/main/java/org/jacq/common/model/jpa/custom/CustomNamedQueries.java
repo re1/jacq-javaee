@@ -47,6 +47,7 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "TblCultivar.findByScientificNameId", query = "SELECT t FROM TblCultivar t INNER JOIN t.scientificNameId s WHERE s.scientificNameId = :scientificNameId")
     , @NamedQuery(name = "TblLocation.findByLocation", query = "SELECT t FROM TblLocation t WHERE t.location = :location")
     , @NamedQuery(name = "TblClassification.findAllAvailable", query = "SELECT t FROM TblClassification t WHERE t.parentScientificNameId IS NULL GROUP BY t.source, t.sourceId")
+    , @NamedQuery(name = "TblVegetative.findByParentDerivative", query = "SELECT v FROM TblVegetative v INNER JOIN v.tblDerivative d WHERE d.parentDerivativeId = :parentDerivativeId")
 })
 public class CustomNamedQueries {
 
