@@ -15,6 +15,7 @@
  */
 package org.jacq.common.model.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.jacq.common.model.jpa.TblScientificNameInformation;
 
@@ -31,6 +32,8 @@ public class ScientificNameInformationResult {
     protected List<CultivarResult> cultivarList;
 
     public ScientificNameInformationResult() {
+        this.habitusTypeId = new HabitusTypeResult();
+        this.cultivarList = new ArrayList<>();
     }
 
     public ScientificNameInformationResult(TblScientificNameInformation scientificNameInformation) {
@@ -40,6 +43,10 @@ public class ScientificNameInformationResult {
             this.commonNames = scientificNameInformation.getCommonNames();
             this.habitusTypeId = new HabitusTypeResult(scientificNameInformation.getHabitusTypeId());
             this.cultivarList = CultivarResult.fromList(scientificNameInformation.getTblCultivarList());
+        }
+        else {
+            this.habitusTypeId = new HabitusTypeResult();
+            this.cultivarList = new ArrayList<>();
         }
     }
 

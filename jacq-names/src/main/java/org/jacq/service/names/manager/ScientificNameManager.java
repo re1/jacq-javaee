@@ -92,14 +92,12 @@ public class ScientificNameManager {
                     nameQuery.setParameter("substantiveIds", substantiveList);
                     nameQuery.setParameter("firstEpithetIds", firstEpithetList);
                     nameQuery.setParameter("secondEpithetIds", secondEpithetList);
-                }
-                // binomial
+                } // binomial
                 else if (firstEpithetList != null && firstEpithetList.size() > 0) {
                     nameQuery = em.createNamedQuery("TblNomName.findBySubstantiveAndFirstEpithet", TblNomName.class);
                     nameQuery.setParameter("substantiveIds", substantiveList);
                     nameQuery.setParameter("firstEpithetIds", firstEpithetList);
-                }
-                // uninomial
+                } // uninomial
                 else {
                     nameQuery = em.createNamedQuery("TblNomName.findBySubstantive", TblNomName.class);
                     nameQuery.setParameter("substantiveIds", substantiveList);
@@ -169,8 +167,62 @@ public class ScientificNameManager {
     public ScientificNameInformationResult scientificNameInformationLoad(Long scientificNameId) {
         TblScientificNameInformation scientificNameInformation = em.find(TblScientificNameInformation.class, scientificNameId);
 
-        if (scientificNameInformation != null) {
-            return new ScientificNameInformationResult(scientificNameInformation);
+        return new ScientificNameInformationResult(scientificNameInformation);
+    }
+
+    /**
+     * @see
+     * ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
+     */
+    @Transactional
+    public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult) {
+        if (scientificNameInformationResult == null) {
+            return null;
+        }
+
+        // load entity for scientific name information storing
+        TblScientificNameInformation scientificNameInformation = null;
+        if (scientificNameInformationResult.getScientificNameId() != null) {
+            // find existing scientific name information
+            scientificNameInformation = em.find(TblScientificNameInformation.class, scientificNameInformationResult.getScientificNameId());
+        }
+        if (scientificNameInformation == null) {
+            scientificNameInformation = new TblScientificNameInformation();
+        }
+
+        // update properties of scientific name information
+        scientificNameInformation.setScientificNameId(scientificNameInformationResult.getScientificNameId());
+        scientificNameInformation.setSpatialDistribution(scientificNameInformationResult.getSpatialDistribution());
+        scientificNameInformation.setCommonNames(scientificNameInformationResult.getCommonNames());
+        scientificNameInformation.setHabitusTypeId(em.find(TblHabitusType.class, scientificNameInformationResult.getHabitusTypeId().getHabitusTypeId()));
+
+        // save scientific name information
+        em.persist(scientificNameInformation);
+
+        // update cultivar list
+        if (scientificNameInformation.getTblCultivarList() == null) {
+            scientificNameInformation.setTblCultivarList(new ArrayList<>());
+        }
+        scientificNameInformation.getTblCultivarList().clear();
+        for (CultivarResult cultivarResult : scientificNameInformationResult.getCultivarList()) {
+            // load entity for cultivar editing
+            TblCultivar cultivar = null;
+            if (cultivarResult.getCultivarId() != null) {
+                cultivar = em.find(TblCultivar.class, cultivarResult.getCultivarId());
+            }
+            if (cultivar == null) {
+                cultivar = new TblCultivar();
+            }
+
+            // set properties of cultivar entry
+            cultivar.setScientificNameId(scientificNameInformation);
+            cultivar.setCultivar(cultivarResult.getCultivar());
+
+            // save cultivar entry
+            em.persist(cultivar);
+
+            // add reference to scientific name information
+            scientificNameInformation.getTblCultivarList().add(cultivar);
         }
 
         return null;

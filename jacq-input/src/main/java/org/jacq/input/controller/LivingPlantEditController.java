@@ -72,8 +72,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -141,8 +140,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -208,8 +207,7 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
      *
      * @param derivativeId
      */
@@ -239,6 +237,21 @@ public class LivingPlantEditController {
         // save the living plant entry
         this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
 
+        this.syncInfo();
+        this.saveMessage();
+    }
+
+    /**
+     * called when user saves the scientific name information
+     */
+    public void saveScientificNameInformation() {
+        // make sure the scientific name id is set
+        this.scientificNameInformationResult.setScientificNameId(this.livingPlantResult.getScientificNameId());
+
+        // save the scientific name information
+        this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationSave(this.scientificNameInformationResult);
+
+        // re-sync all info
         this.syncInfo();
         this.saveMessage();
     }
