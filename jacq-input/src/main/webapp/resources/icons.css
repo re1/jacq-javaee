@@ -19,13 +19,13 @@ limitations under the License.
 */
 
 .flag-de {
-    background: url(images/german.png) no-repeat !important;
+    background: url(german.png.xhtml?ln=images) no-repeat !important;
     height:21px !important;
     width:30px !important;
 }
 
 .flag-en {
-    background: url(images/english.png) no-repeat !important;
+    background: url(english.png.xhtml?ln=images) no-repeat !important;
     height:21px !important;
     width:30px !important;
 }
