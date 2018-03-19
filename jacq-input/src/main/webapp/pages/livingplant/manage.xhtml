@@ -116,6 +116,7 @@
                     <p:commandButton id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
 
+
                 <div class="ui-g">
                     <div class="ui-g-12">
                         <p:remoteCommand update="derivativeTable:rowCount" name="update_derivativeFooter" />
@@ -132,12 +133,16 @@
 
                             <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
 
+
                             <f:facet name="{Exporters}">
-                                <p:commandButton icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                <div style="float: right; height: 24px;" >
+                                    <p:commandButton id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                    <p:commandButton id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
+                                </div>
                             </f:facet>
-                            <f:facet name="{Exporters}">
-                                <p:commandButton icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
-                            </f:facet>
+
+                            <p:tooltip for="downloadDerivativeCsvButtonCaller" value="CSV Download" position="top"/>
+                            <p:tooltip for="downloadDerivativeXlsxButtonCaller" value="Xlsx Download" position="top"/>
 
                             <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
                                 <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
@@ -192,12 +197,13 @@
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
-                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
+                        <p:commandButton id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
                             <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
-                        <p:commandButton value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                        <p:commandButton style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
                             <p:dataExporter type="xlsx"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
+                        <p:tooltip for="downloadDerivativeXlsxButton" value="Xslx Download" />
                         <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
                             <p:column headerText="#{messages['livingplant.derivative_id']}">
                                 <h:outputText value="#{botanicalObjectDownloadResult.derivativeId}" />
