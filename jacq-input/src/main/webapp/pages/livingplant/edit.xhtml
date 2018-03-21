@@ -686,6 +686,7 @@
                                     </div>
                                     <div class="ui-g-6">
                                         <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.identStatus.identStatusId}">
+                                            <f:selectItem itemLabel="#{messages['noselection']}" itemValue="" />
                                             <f:selectItems value="#{livingPlantEditController.identStatus}" var="identStatus" itemLabel="#{identStatus.status}" itemValue="#{identStatus.identStatusId}" />
                                         </p:selectOneMenu>
                                     </div>
