@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.OrganisationResult;
-import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.output.SearchService;
 import org.jacq.service.output.manager.OrganisationManager;
 import org.jacq.service.output.manager.SearchManager;
@@ -44,7 +43,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public List<BotanicalObjectDerivative> find(Long scientificNameId, Long organisationId, Boolean hasImage, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, orderColumn, orderDirection, offset, count);
+        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, null, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -52,7 +51,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public int count(Long scientificNameId, Long organisationId, Boolean hasImage) {
-        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null);
+        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null, null);
     }
 
     /**
