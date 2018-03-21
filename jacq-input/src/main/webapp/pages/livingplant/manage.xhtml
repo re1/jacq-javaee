@@ -101,7 +101,11 @@
                                 <h:outputText value="#{messages['livingplant.indexseminum']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectBooleanCheckbox value="indexseminum" />
+                                <p:selectOneButton value="#{livingPlantController.derivativeSearchModel.indexSeminum}">
+                                    <f:selectItem itemLabel="Alle" itemValue="0" />
+                                    <f:selectItem itemLabel="Ja" itemValue="1"/>
+                                    <f:selectItem itemLabel="Nein" itemValue="2"/>
+                                </p:selectOneButton>
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.exhibition']}" />

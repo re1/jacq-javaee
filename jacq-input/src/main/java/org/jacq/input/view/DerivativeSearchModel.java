@@ -31,12 +31,14 @@ public class DerivativeSearchModel implements Serializable {
     protected String placeNumber;
     protected String accessionNumber;
     protected int separated = 0;
+    protected int indexSeminum = 0;
     protected Long scientificNameId = null;
     protected Long organisationId = null;
     protected Long id = null;
     protected String type;
     protected Boolean separatedFilter;
     protected Boolean hierarchic;
+    protected Boolean indexSeminumFilter;
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
     protected int callFlag; // Flag 0 User Organisation gets added in Search and 1 not
@@ -144,6 +146,22 @@ public class DerivativeSearchModel implements Serializable {
 
     public int getCallFlag() {
         return callFlag;
+    }
+
+    public int getIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(int indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
+
+    public Boolean getIndexSeminumFilter() {
+        return indexSeminumFilter;
+    }
+
+    public void setIndexSeminumFilter(Boolean indexSeminumFilter) {
+        this.indexSeminumFilter = indexSeminumFilter;
     }
 
 }
