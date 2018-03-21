@@ -24,6 +24,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.rest.AcquisitionSourceResult;
 import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
@@ -43,6 +44,7 @@ import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.VegetativeResult;
+import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
@@ -74,8 +76,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -88,6 +89,11 @@ public class LivingPlantEditController {
      * Reference to person service
      */
     protected PersonService personService;
+
+    /**
+     * Reference to acquisition service
+     */
+    protected AcquisitionService acquisitionService;
 
     /**
      * Index seminum service which is used for displaying the available types
@@ -121,6 +127,7 @@ public class LivingPlantEditController {
         this.indexSeminumService = ServicesUtil.getIndexSeminumService();
         this.organisationService = ServicesUtil.getOrganisationService();
         this.personService = ServicesUtil.getPersonService();
+        this.acquisitionService = ServicesUtil.getAcquisitionService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -145,8 +152,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -212,8 +219,7 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
      *
      * @param derivativeId
      */
@@ -241,7 +247,7 @@ public class LivingPlantEditController {
         }
 
         // save the living plant entry
-        this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
+        this.livingPlantResult = this.derivativeService.livingPlantSave(this.livingPlantResult);
 
         this.syncInfo();
         this.saveMessage();
@@ -300,6 +306,10 @@ public class LivingPlantEditController {
 
     public List<PersonResult> completePerson(String query) {
         return this.personService.search(query, 0, 10);
+    }
+
+    public List<AcquisitionSourceResult> completeAcquisitionSource(String query) {
+        return this.acquisitionService.sourceSearch(query, 0, 10);
     }
 
     /**

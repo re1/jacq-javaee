@@ -73,7 +73,7 @@ public class LivingPlantManager {
      * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Transactional(rollbackOn = Exception.class)
-    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
+    public LivingPlantResult save(LivingPlantResult livingPlantResult) {
         TblLivingPlant tblLivingPlant = null;
 
         // check if we edit an existing entry or create a new one
@@ -346,10 +346,10 @@ public class LivingPlantManager {
             }
             else {
                 tblAcquisitionSource = new TblAcquisitionSource();
+                tblAcquisitionSource.setName(acquistionEventSource.getAcquisitionEventSource().getName());
             }
 
             // set properties
-            tblAcquisitionSource.setName(acquistionEventSource.getAcquisitionEventSource().getName());
             em.persist(tblAcquisitionSource);
 
             // set properties
@@ -362,8 +362,7 @@ public class LivingPlantManager {
         }
 
         // make sure changes are flushed to the database
-        em.flush();
-
+        //em.flush();
         // refresh botanical object in order to resolve manual relations
         em.refresh(tblBotanicalObject);
         em.refresh(tblLivingPlant);

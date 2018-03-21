@@ -598,7 +598,12 @@
                                             <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="yyyy-MM-dd" mask="true" />
                                         </div>
                                         <div class="ui-g-4">
-                                            <p:inputText value="#{acquistionEventSource.acquisitionEventSource.name}" />
+                                            <p:autoComplete value="#{acquistionEventSource.acquisitionEventSource}" completeMethod="#{livingPlantEditController.completeAcquisitionSource}"
+                                                            var="acquisitionSource" itemLabel="#{acquisitionSource.name}" itemValue="#{acquisitionSource}" minQueryLength="3" queryDelay="300" converter="acquisitionSourceConverter">
+                                                <p:column>
+                                                    <h:outputText value="#{acquisitionSource.name}" /> (<h:outputText value="#{acquisitionSource.acquisitionSourceId}" />)
+                                                </p:column>
+                                            </p:autoComplete>
                                         </div>
                                         <div class="ui-g-4">
                                             <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />

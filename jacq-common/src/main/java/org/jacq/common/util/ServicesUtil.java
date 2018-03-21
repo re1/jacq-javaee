@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.client.ClientRequestFilter;
 import org.jacq.common.external.rest.ImageServer;
+import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
@@ -94,6 +95,10 @@ public class ServicesUtil {
 
     public static ImageServer getImageServer(String baseUrl) {
         return getProxy(ImageServer.class, baseUrl, true);
+    }
+
+    public static AcquisitionService getAcquisitionService() {
+        return getProxy(AcquisitionService.class, JACQ_SERVICE_URL);
     }
 
     /**

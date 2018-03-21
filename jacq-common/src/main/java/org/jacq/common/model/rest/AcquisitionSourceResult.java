@@ -15,6 +15,8 @@
  */
 package org.jacq.common.model.rest;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jacq.common.model.jpa.TblAcquisitionSource;
 
 /**
@@ -27,6 +29,14 @@ public class AcquisitionSourceResult {
     private String name;
 
     public AcquisitionSourceResult() {
+    }
+
+    public AcquisitionSourceResult(Long acquisitionSourceId) {
+        this.acquisitionSourceId = acquisitionSourceId;
+    }
+
+    public AcquisitionSourceResult(String name) {
+        this.name = name;
     }
 
     public AcquisitionSourceResult(TblAcquisitionSource tblAcquisitionSource) {
@@ -52,4 +62,21 @@ public class AcquisitionSourceResult {
         this.name = name;
     }
 
+    /**
+     * Helper function for converting a list of TblAcquisitionSource entries to AcquistionSourceResult
+     *
+     * @param tblAcquisitionSourceList
+     * @return
+     */
+    public static List<AcquisitionSourceResult> fromList(List<TblAcquisitionSource> tblAcquisitionSourceList) {
+        List<AcquisitionSourceResult> acquistionSourceResults = new ArrayList<>();
+
+        if (tblAcquisitionSourceList != null) {
+            for (TblAcquisitionSource tblAcquisitionSource : tblAcquisitionSourceList) {
+                acquistionSourceResults.add(new AcquisitionSourceResult(tblAcquisitionSource));
+            }
+        }
+
+        return acquistionSourceResults;
+    }
 }

@@ -50,9 +50,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected LivingPlantManager livingPlantManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
-     * java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
      */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -129,12 +128,11 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see
-     * DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     * @see DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Override
-    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
-        return livingPlantManager.saveLivingPlant(livingPlantResult);
+    public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult) {
+        return livingPlantManager.save(livingPlantResult);
     }
 
     /**

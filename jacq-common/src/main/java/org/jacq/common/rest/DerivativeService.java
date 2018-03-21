@@ -106,7 +106,7 @@ public interface DerivativeService {
     @Path("/livingPlant/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult);
+    public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult);
 
     /**
      * Find all vegetative derivatives for a given parent derivative
