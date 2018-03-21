@@ -36,7 +36,7 @@ import org.jacq.common.util.ServicesUtil;
  */
 @CustomFormAuthenticationMechanismDefinition(
         loginToContinue = @LoginToContinue(
-                loginPage = "/faces/pages/login.xhtml",
+                loginPage = "/pages/login.xhtml",
                 errorPage = "", // DRAFT API - must be set to empty for now
                 useForwardToLogin = false
         )

@@ -61,6 +61,9 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
 
+    protected String family;
+    protected String familyReference;
+
     protected Date recordingDate;
     protected Date incomingDate;
     protected Date cultivationDate;
@@ -623,6 +626,22 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setImageServerResources(List<ImageServerResource> imageServerResources) {
         this.imageServerResources = imageServerResources;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public String getFamilyReference() {
+        return familyReference;
+    }
+
+    public void setFamilyReference(String familyReference) {
+        this.familyReference = familyReference;
     }
 
 }

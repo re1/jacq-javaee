@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
@@ -26,7 +30,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -34,26 +38,26 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/pages/login.xhtml</welcome-file>
+        <welcome-file>/pages/login.xhtml</welcome-file>
     </welcome-file-list>
 
     <!-- by default only resources and login is allowed -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Resources</web-resource-name>
-            <url-pattern>/faces/javax.faces.resource/*</url-pattern>
+            <url-pattern>/javax.faces.resource/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Login</web-resource-name>
-            <url-pattern>/faces/pages/login.xhtml</url-pattern>
+            <url-pattern>/pages/login.xhtml</url-pattern>
         </web-resource-collection>
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>ReadLivingPlant</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/manage.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/manage.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>readLivingplant</role-name>
@@ -62,7 +66,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>CreateLivingplant</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/edit.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/edit.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>createLivingplant</role-name>
@@ -71,7 +75,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Inventories</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/inventories.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/inventories.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>inventory</role-name>
@@ -80,7 +84,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Inventoryedit</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/inventoryedit.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/inventoryedit.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>inventory</role-name>
@@ -89,7 +93,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>RevisionCreate</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/revisioncreate.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/revisioncreate.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>indexSeminum</role-name>
@@ -98,7 +102,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>IndexSeminum</web-resource-name>
-            <url-pattern>/faces/pages/livingplant/indexseminum.xhtml</url-pattern>
+            <url-pattern>/pages/livingplant/indexseminum.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>indexSeminum</role-name>
@@ -107,7 +111,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Organisation</web-resource-name>
-            <url-pattern>/faces/pages/organisation/*</url-pattern>
+            <url-pattern>/pages/organisation/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>createOrganisation</role-name>
@@ -116,7 +120,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>TreeRecordFile</web-resource-name>
-            <url-pattern>/faces/pages/treerecordfile/*</url-pattern>
+            <url-pattern>/pages/treerecordfile/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>createTreeRecordFile</role-name>
@@ -125,7 +129,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>UserEdit</web-resource-name>
-            <url-pattern>/faces/pages/user/edit.xhtml</url-pattern>
+            <url-pattern>/pages/user/edit.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>createUser</role-name>
@@ -134,7 +138,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>UserManager</web-resource-name>
-            <url-pattern>/faces/pages/user/manage.xhtml</url-pattern>
+            <url-pattern>/pages/user/manage.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>createUser</role-name>

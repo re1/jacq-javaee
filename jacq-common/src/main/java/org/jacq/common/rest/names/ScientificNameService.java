@@ -18,6 +18,7 @@ package org.jacq.common.rest.names;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -36,10 +37,12 @@ import org.jacq.common.model.rest.ScientificNameResult;
 public interface ScientificNameService {
 
     /**
-     * Search for a scientific name, search string will be split and quoted for autocompleting
+     * Search for a scientific name, search string will be split and quoted for
+     * autocompleting
      *
      * @param search String to search for - no wildcards are allowed
-     * @param autocomplete If set to true, search will return matches with wildcards (i.e. autocomplete) as well
+     * @param autocomplete If set to true, search will return matches with
+     * wildcards (i.e. autocomplete) as well
      * @return
      */
     @GET
@@ -95,6 +98,18 @@ public interface ScientificNameService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ScientificNameInformationResult scientificNameInformationLoad(@QueryParam("scientificNameId") Long scientificNameId);
+
+    /**
+     * Save (create or update) a given scientific name information
+     *
+     * @param scientificNameInformationResult
+     * @return
+     */
+    @POST
+    @Path("/scientificNameInformation/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult);
 
     /**
      * Fetch a list of all habitus types

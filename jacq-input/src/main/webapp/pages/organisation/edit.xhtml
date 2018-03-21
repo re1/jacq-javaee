@@ -6,12 +6,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
         <ui:define name="content">
             <f:metadata>
                 <f:viewParam name="organisationId" value="#{organisationEditController.organisationId}"/>
             </f:metadata>
-            <h:panelGroup layout="block" id="edit_Organisation" styleClass="jacq-content">
+            <h:panelGroup layout="block" id="edit_Organisation" styleClass="card">
                 <div class="jacq-content-header">
                     <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
                 </div>

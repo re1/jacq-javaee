@@ -41,7 +41,7 @@ public abstract class DerivativeSearchManager {
 
     protected static final Logger LOGGER = Logger.getLogger(DerivativeSearchManager.class.getName());
 
-    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`";
+    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`";
 
     protected static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 

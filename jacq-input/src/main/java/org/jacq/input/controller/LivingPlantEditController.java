@@ -42,12 +42,14 @@ import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.util.ServicesUtil;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  * Controller for handling creating / editing of a living plant entry
@@ -72,8 +74,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -99,6 +100,8 @@ public class LivingPlantEditController {
     protected List<IndexSeminumTypeResult> indexSeminumTypes;
 
     protected ScientificNameInformationResult scientificNameInformationResult;
+
+    protected List<VegetativeResult> vegetativeList;
 
     protected List<HabitusTypeResult> habitusTypes;
     protected List<PhenologyResult> phenologies;
@@ -141,8 +144,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -208,8 +211,7 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
      *
      * @param derivativeId
      */
@@ -239,6 +241,21 @@ public class LivingPlantEditController {
         // save the living plant entry
         this.livingPlantResult = this.derivativeService.saveLivingPlant(this.livingPlantResult);
 
+        this.syncInfo();
+        this.saveMessage();
+    }
+
+    /**
+     * called when user saves the scientific name information
+     */
+    public void saveScientificNameInformation() {
+        // make sure the scientific name id is set
+        this.scientificNameInformationResult.setScientificNameId(this.livingPlantResult.getScientificNameId());
+
+        // save the scientific name information
+        this.scientificNameInformationResult = this.scientificNameService.scientificNameInformationSave(this.scientificNameInformationResult);
+
+        // re-sync all info
         this.syncInfo();
         this.saveMessage();
     }
@@ -280,6 +297,15 @@ public class LivingPlantEditController {
 
     public List<PersonResult> completePerson(String query) {
         return this.personService.search(query, 0, 10);
+    }
+
+    /**
+     * Called when user changes the tab, used to dynamically load content
+     */
+    public void onTabChange(TabChangeEvent event) {
+        if (event.getTab() != null && event.getTab().getId().equals("derivatives") && this.vegetativeList == null) {
+            this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+        }
     }
 
     /*

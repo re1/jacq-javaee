@@ -17,60 +17,67 @@
                     <h1>#{messages['livingplant']} #{(livingPlantEditController.derivativeId == null) ? messages['create'] : messages['edit']}</h1>
                 </div>
                 <div class="ui-g">
-                    <div class="ui-g-6 ui-g-nopad">
+                    <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
-                            <div class="ui-g-6">
+                            <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
-                            <div class="ui-g-6">
-                                <p:autoComplete id="scientificName" value="#{livingPlantEditController.livingPlantResult.scientificNameResult}" completeMethod="#{livingPlantEditController.completeScientificName}"
-                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" label="#{messages['livingplant.scientificname']}" required="true">
-                                    <p:column>
-                                        <h:outputText value="#{scientificName.scientificName}" />
-                                    </p:column>
-                                </p:autoComplete>
-
-
-                                <h:inputHidden value="#{livingPlantEditController.livingPlantResult.scientificNameId}" />
-                                <p:commandButton action="#{livingPlantEditController.showScientificNameInformation}" update="scientificNameInformationPanelContent" oncomplete="PF('scientificNameInformationPanel').show()" icon="ui-icon-disk" />
-                                <p:message for="scientificName" />
-                                <p:dialog header="#{livingPlantEditController.livingPlantResult.scientificName}" widgetVar="scientificNameInformationPanel" modal="true" width="80%" dynamic="true">
-                                    <h:panelGroup id="scientificNameInformationPanelContent" layout="block" styleClass="ui-g" rendered="#{livingPlantEditController.scientificNameInformationResult != null}">
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <h:outputText value="#{messages['livingplant.habitus']}" />
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <p:selectOneMenu value="#{livingPlantEditController.scientificNameInformationResult.habitusTypeId.habitusTypeId}">
-                                                <f:selectItems value="#{livingPlantEditController.habitusTypes}" var="habitusType" itemLabel="#{habitusType.habitus}" itemValue="#{habitusType.habitusTypeId}" />
-                                            </p:selectOneMenu>
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <h:outputText value="#{messages['livingplant.spatial_distribution']}" />
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <p:inputTextarea value="#{livingPlantEditController.scientificNameInformationResult.spatialDistribution}" />
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <h:outputText value="#{messages['livingplant.commonnames']}" />
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <p:inputTextarea value="#{livingPlantEditController.scientificNameInformationResult.commonNames}" />
-                                        </div>
-                                        <div class="ui-g-6 ui-g-nopad">
-                                            <h:outputText value="#{messages['livingplant.cultivar']}" />
-                                        </div>
-                                        <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="cultivar">
-                                            <ui:repeat value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}" var="cultivar">
-                                                <div class="ui-g-12 ui-g-nopad">
-                                                    <p:inputText id="cultivar" value="#{cultivar.cultivar}" />
-                                                    <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCultivar(cultivar)}" />
-                                                </div>
-                                            </ui:repeat>
-                                            <p:commandButton icon="ui-icon-plus" update="@parent" action="#{livingPlantEditController.addCultivar}" />
+                            <div class="ui-g-9">
+                                <div class="ui-g-11 ui-g-nopad">
+                                    <p:autoComplete id="scientificName" value="#{livingPlantEditController.livingPlantResult.scientificNameResult}" completeMethod="#{livingPlantEditController.completeScientificName}"
+                                                    var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter" label="#{messages['livingplant.scientificname']}" required="true">
+                                        <p:column>
+                                            <h:outputText value="#{scientificName.scientificName}" />
+                                        </p:column>
+                                    </p:autoComplete>
+                                    <h:inputHidden  value="#{livingPlantEditController.livingPlantResult.scientificNameId}" />
+                                    <p:message for="scientificName" />
+                                    <p:dialog header="#{livingPlantEditController.livingPlantResult.scientificName}" widgetVar="scientificNameInformationPanel" modal="true" width="80%" dynamic="true">
+                                        <h:panelGroup id="scientificNameInformationPanelContent" layout="block" styleClass="ui-g" rendered="#{livingPlantEditController.scientificNameInformationResult != null}">
+                                            <div class="ui-g-6">
+                                                <h:outputText value="#{messages['livingplant.habitus']}" />
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <p:selectOneMenu value="#{livingPlantEditController.scientificNameInformationResult.habitusTypeId.habitusTypeId}">
+                                                    <f:selectItems value="#{livingPlantEditController.habitusTypes}" var="habitusType" itemLabel="#{habitusType.habitus}" itemValue="#{habitusType.habitusTypeId}" />
+                                                </p:selectOneMenu>
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <h:outputText value="#{messages['livingplant.spatial_distribution']}" />
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <p:inputTextarea value="#{livingPlantEditController.scientificNameInformationResult.spatialDistribution}" />
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <h:outputText value="#{messages['livingplant.commonnames']}" />
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <p:inputTextarea value="#{livingPlantEditController.scientificNameInformationResult.commonNames}" />
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <h:outputText value="#{messages['livingplant.cultivar']}" />
+                                            </div>
+                                            <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="cultivar">
+                                                <ui:repeat value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}" var="cultivar">
+                                                    <div class="ui-g-12">
+                                                        <p:inputText id="cultivar" value="#{cultivar.cultivar}" />
+                                                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCultivar(cultivar)}" />
+                                                    </div>
+                                                </ui:repeat>
+                                                <p:commandButton icon="ui-icon-plus" update="@parent" action="#{livingPlantEditController.addCultivar}" />
+                                            </h:panelGroup>
                                         </h:panelGroup>
-                                    </h:panelGroup>
-                                </p:dialog>
 
+                                        <f:facet name="footer">
+                                            <div style="float: right">
+                                                <p:commandButton value="#{messages['edit']}" update="jacq_form:cultivarSelect" actionListener="#{livingPlantEditController.saveScientificNameInformation}" oncomplete="PF('scientificNameInformationPanel').hide();" />
+                                            </div>
+                                        </f:facet>
+                                    </p:dialog>
+                                </div>
+                                <div class="ui-g-1 ui-g-nopad">
+                                    <p:commandButton action="#{livingPlantEditController.showScientificNameInformation}" update="scientificNameInformationPanelContent" oncomplete="PF('scientificNameInformationPanel').show()" icon="ui-icon-disk" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,7 +87,17 @@
                                 <h:outputText value="#{messages['livingplant.family']}" />
                             </div>
                             <div class="ui-g-6">
-                                <h:outputText value="Unbekannt" />
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.family}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.familyreference']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.familyReference}" />
                             </div>
                         </div>
                     </div>
@@ -343,6 +360,8 @@
                 </div>
                 <br />
                 <p:tabView dynamic="true" cache="true">
+                    <p:ajax event="tabChange" listener="#{livingPlantEditController.onTabChange}" update="derivatives" />
+
                     <p:tab title="#{messages['livingplant.collectingdata']}">
                         <div class="ui-g">
                             <div class="ui-g-6 ui-g-nopad">
@@ -763,19 +782,7 @@
                         </div>
                     </p:tab>
                     <p:tab title="#{messages['livingplant.derivatives']}">
-                        <div class="ui-g">
-                            <div class="ui-g-12">
-                                <h3><h:outputText value="#{messages['derivative.images']}" /></h3>
-                            </div>
-
-                            <ui:repeat value="#{livingPlantEditController.livingPlantResult.imageServerResources}" var="imageServerResource">
-                                <div class="ui-g-2">
-                                    <a href="#{imageServerResource.imageUrl}" target="_blank" >
-                                        <h:graphicImage value="#{imageServerResource.thumbnailUrl}" width="160" />
-                                    </a>
-                                </div>
-                            </ui:repeat>
-                        </div>
+                        <ui:include src="edit/derivatives.xhtml" />
                     </p:tab>
                     <p:tab title="#{messages['livingplant.inventories']}">
                     </p:tab>

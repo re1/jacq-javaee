@@ -68,6 +68,15 @@ public class ScientificNameServiceImpl implements ScientificNameService {
     }
 
     /**
+     * @see
+     * ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
+     */
+    @Override
+    public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult) {
+        return scientificNameManager.scientificNameInformationSave(scientificNameInformationResult);
+    }
+
+    /**
      * @see ScientificNameService#findAllHabitusType()
      */
     @Override

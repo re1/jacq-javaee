@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BotanicalObjectDerivative implements Serializable {
 
     public static final String LIVING = "living";
+    public static final String VEGETATIVE = "vegetative";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,6 +82,8 @@ public class BotanicalObjectDerivative implements Serializable {
     private String cultivarName;
     @Column(name = "imported_species_name")
     private String importedSpeciesName;
+    @Column(name = "index_seminum")
+    private Boolean indexSeminum;
 
     public BotanicalObjectDerivative() {
     }
@@ -197,4 +200,11 @@ public class BotanicalObjectDerivative implements Serializable {
         this.importedSpeciesName = importedSpeciesName;
     }
 
+    public Boolean getIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(Boolean indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
 }
