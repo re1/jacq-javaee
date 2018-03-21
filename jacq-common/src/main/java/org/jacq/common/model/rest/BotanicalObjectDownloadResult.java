@@ -119,7 +119,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             // accession_number
             this.setAccessionNumber(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()));
             // ipen_number
-            this.setIpenNumber(derivative.getTblLivingPlant().getIpenNumber() != null ? derivative.getTblLivingPlant().getIpenNumber() : null);
+            this.setIpenNumber((derivative.getTblLivingPlant().getIpenNumber() != null ? derivative.getTblLivingPlant().getIpenNumber().toString() : "") + "-" + ("0000000" + String.valueOf(derivative.getTblLivingPlant().getAccessionNumber())).substring(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()).length()));
             if (derivative.getTblLivingPlant().getCultivarId() != null && derivative.getTblLivingPlant().getCultivarId().getScientificNameId() != null) {
                 // spatialDistribution;
                 this.setSpatialDistribution(derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() != null ? derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() : null);

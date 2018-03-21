@@ -48,6 +48,7 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "TblLocation.findByLocation", query = "SELECT t FROM TblLocation t WHERE t.location = :location")
     , @NamedQuery(name = "TblClassification.findAllAvailable", query = "SELECT t FROM TblClassification t WHERE t.parentScientificNameId IS NULL GROUP BY t.source, t.sourceId")
     , @NamedQuery(name = "TblVegetative.findByParentDerivative", query = "SELECT v FROM TblVegetative v INNER JOIN v.tblDerivative d WHERE d.parentDerivativeId = :parentDerivativeId")
+    , @NamedQuery(name = "TblAcquisitionSource.findLikeName", query = "SELECT t FROM TblAcquisitionSource t WHERE t.name LIKE :name")
 })
 public class CustomNamedQueries {
 

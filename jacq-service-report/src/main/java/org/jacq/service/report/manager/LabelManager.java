@@ -21,6 +21,7 @@ import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.report.WorkLabel;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.report.LabelService;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;
 import org.jacq.service.report.util.ServicesUtil;
@@ -64,7 +65,7 @@ public class LabelManager {
      * @see LabelService#getWork(java.lang.String, long)
      */
     public Response getWork(String type, Long derivativeId) throws EngineException {
-        List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null, null, null, null, null, null, null);
+        List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null, null, null, null, null, null, null, null);
 
         // if no result is found, return an error
         if (results == null || results.size() <= 0) {

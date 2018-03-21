@@ -108,7 +108,7 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
-                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
+                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                                     </p:column>
@@ -343,7 +343,7 @@
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-3">
-                                    <p:calendar value="#{separation.date}" pattern="dd-MM-yyyy" mask="true" />
+                                    <p:calendar value="#{separation.date}" pattern="yyyy-MM-dd" mask="true" />
                                 </div>
                                 <div class="ui-g-5">
                                     <p:inputText value="#{separation.annotation}" />
@@ -370,7 +370,7 @@
                                         <h:outputText value="#{messages['livingplant.collectiondate']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.gatheringDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.gatheringDate}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -426,7 +426,7 @@
                             <div class="ui-g-6 ui-g-nopad">
                                 <div class="ui-g">
                                     <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.location']}" />
+                                        <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
                                     </div>
                                     <div class="ui-g-6">
                                         <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" />
@@ -545,7 +545,7 @@
                                         <h:outputText value="#{messages['livingplant.recording_date']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.recordingDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.recordingDate}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -555,7 +555,7 @@
                                         <h:outputText value="#{messages['livingplant.incoming_date']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.incomingDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.incomingDate}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -565,7 +565,7 @@
                                         <h:outputText value="#{messages['livingplant.cultivation_date']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.cultivationDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -595,10 +595,15 @@
                                 <h:panelGroup id="acquistionEventSources" layout="block" styleClass="ui-g">
                                     <ui:repeat value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}" var="acquistionEventSource">
                                         <div class="ui-g-4">
-                                            <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="dd-MM-yyyy" mask="true" />
+                                            <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="yyyy-MM-dd" mask="true" />
                                         </div>
                                         <div class="ui-g-4">
-                                            <p:inputText value="#{acquistionEventSource.acquisitionEventSource.name}" />
+                                            <p:autoComplete value="#{acquistionEventSource.acquisitionEventSource}" completeMethod="#{livingPlantEditController.completeAcquisitionSource}"
+                                                            var="acquisitionSource" itemLabel="#{acquisitionSource.name}" itemValue="#{acquisitionSource}" minQueryLength="3" queryDelay="300" converter="acquisitionSourceConverter">
+                                                <p:column>
+                                                    <h:outputText value="#{acquisitionSource.name}" /> (<h:outputText value="#{acquisitionSource.acquisitionSourceId}" />)
+                                                </p:column>
+                                            </p:autoComplete>
                                         </div>
                                         <div class="ui-g-4">
                                             <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />
@@ -675,7 +680,7 @@
                                         <h:outputText value="#{messages['livingplant.determinedate']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.determinationDate}" pattern="dd-MM-yyyy" mask="true" />
+                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.determinationDate}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
                                 </div>
                             </div>
@@ -686,6 +691,7 @@
                                     </div>
                                     <div class="ui-g-6">
                                         <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.identStatus.identStatusId}">
+                                            <f:selectItem itemLabel="#{messages['noselection']}" itemValue="" />
                                             <f:selectItems value="#{livingPlantEditController.identStatus}" var="identStatus" itemLabel="#{identStatus.status}" itemValue="#{identStatus.identStatusId}" />
                                         </p:selectOneMenu>
                                     </div>

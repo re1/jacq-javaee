@@ -54,16 +54,16 @@ public class DerivativeServiceImpl implements DerivativeService {
      * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
      */
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, orderColumn, orderDirection, offset, count);
     }
 
     /**
      * @see DerivativeService#count(java.lang.String, java.lang.Long)
      */
     @Override
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic) {
-        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic);
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum) {
+        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum);
     }
 
     /**
@@ -75,8 +75,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     @Override
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -128,11 +128,11 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     * @see DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Override
-    public LivingPlantResult saveLivingPlant(LivingPlantResult livingPlantResult) {
-        return livingPlantManager.saveLivingPlant(livingPlantResult);
+    public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult) {
+        return livingPlantManager.save(livingPlantResult);
     }
 
     /**
