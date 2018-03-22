@@ -140,13 +140,10 @@
 
                             <f:facet name="{Exporters}">
                                 <div style="float: right; height: 24px;" >
-                                    <p:commandButton id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
-                                    <p:commandButton id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
+                                    <p:commandButton title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                    <p:commandButton title="Xlsx Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
                                 </div>
                             </f:facet>
-
-                            <p:tooltip for="downloadDerivativeCsvButtonCaller" value="CSV Download" position="top"/>
-                            <p:tooltip for="downloadDerivativeXlsxButtonCaller" value="Xlsx Download" position="top"/>
 
                             <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
                                 <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
