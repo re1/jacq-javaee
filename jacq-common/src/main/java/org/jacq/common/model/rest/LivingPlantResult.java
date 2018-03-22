@@ -42,7 +42,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected List<AlternativeAccessionNumberResult> alternativeAccessionNumbers;
     protected Date gatheringDate;
     protected String customGatheringDate;
-    protected String gatheringLocation;
+    protected LocationResult gatheringLocation;
 
     protected Long altitudeMin;
     protected Long altitudeMax;
@@ -106,6 +106,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.scientificNameResult = new ScientificNameResult();
         this.organisation = new OrganisationResult();
         this.labelSynonymScientificName = new ScientificNameResult();
+        this.gatheringLocation = new LocationResult();
 
         this.alternativeAccessionNumbers = new ArrayList<>();
         this.relevancyTypes = new ArrayList<>();
@@ -205,7 +206,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
                 this.customGatheringDate = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom();
             }
             if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId() != null) {
-                this.gatheringLocation = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId().getLocation();
+                this.gatheringLocation = new LocationResult(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationId());
             }
             if (tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
                 this.altitudeMin = tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId().getAltitudeMin();
@@ -316,11 +317,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.customGatheringDate = customGatheringDate;
     }
 
-    public String getGatheringLocation() {
+    public LocationResult getGatheringLocation() {
         return gatheringLocation;
     }
 
-    public void setGatheringLocation(String gatheringLocation) {
+    public void setGatheringLocation(LocationResult gatheringLocation) {
         this.gatheringLocation = gatheringLocation;
     }
 

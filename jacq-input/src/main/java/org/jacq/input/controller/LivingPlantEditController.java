@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -46,11 +47,13 @@ import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.util.ServicesUtil;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 
 /**
@@ -96,6 +99,11 @@ public class LivingPlantEditController {
     protected AcquisitionService acquisitionService;
 
     /**
+     * Reference to gathering service
+     */
+    protected GatheringService gatheringService;
+
+    /**
      * Index seminum service which is used for displaying the available types
      */
     protected IndexSeminumService indexSeminumService;
@@ -128,6 +136,7 @@ public class LivingPlantEditController {
         this.organisationService = ServicesUtil.getOrganisationService();
         this.personService = ServicesUtil.getPersonService();
         this.acquisitionService = ServicesUtil.getAcquisitionService();
+        this.gatheringService = ServicesUtil.getGatheringService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -312,12 +321,30 @@ public class LivingPlantEditController {
         return this.acquisitionService.sourceSearch(query, 0, 10);
     }
 
+    public List<LocationResult> completeLocation(String query) {
+        return this.gatheringService.locationFind(query, 0, 10);
+    }
+
     /**
      * Called when user changes the tab, used to dynamically load content
      */
     public void onTabChange(TabChangeEvent event) {
         if (event.getTab() != null && event.getTab().getId().equals("derivatives") && this.vegetativeList == null) {
             this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+        }
+    }
+
+    /**
+     * Called when the user selects an item in the location auto-completer
+     *
+     * @param event
+     */
+    public void onLocationItemSelect(SelectEvent event) {
+        if (event.getObject() != null) {
+            LocationResult locationResult = (LocationResult) event.getObject();
+            if (locationResult.getCountryCode() != null) {
+                this.setIpenNumberCountry(locationResult.getCountryCode());;
+            }
         }
     }
 

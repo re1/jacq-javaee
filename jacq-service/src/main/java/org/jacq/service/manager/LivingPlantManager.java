@@ -182,17 +182,19 @@ public class LivingPlantManager {
         }
 
         // lookup or add gathering location
-        TypedQuery<TblLocation> locationQuery = em.createNamedQuery("TblLocation.findByLocation", TblLocation.class);
-        locationQuery.setParameter("location", livingPlantResult.getGatheringLocation());
-        List<TblLocation> locationList = locationQuery.getResultList();
         TblLocation tblGatheringLocation = null;
-        if (locationList != null & locationList.size() > 0) {
-            tblGatheringLocation = locationList.get(0);
-        }
-        else {
-            tblGatheringLocation = new TblLocation();
-            tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation());
-            em.persist(tblGatheringLocation);
+        if (livingPlantResult.getGatheringLocation() != null && !StringUtils.isEmpty(livingPlantResult.getGatheringLocation().getLocation())) {
+            TypedQuery<TblLocation> locationQuery = em.createNamedQuery("TblLocation.findByLocation", TblLocation.class);
+            locationQuery.setParameter("location", livingPlantResult.getGatheringLocation().getLocation());
+            List<TblLocation> locationList = locationQuery.getResultList();
+            if (locationList != null & locationList.size() > 0) {
+                tblGatheringLocation = locationList.get(0);
+            }
+            else {
+                tblGatheringLocation = new TblLocation();
+                tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation().getLocation());
+                em.persist(tblGatheringLocation);
+            }
         }
 
         // save gathering event
@@ -362,7 +364,7 @@ public class LivingPlantManager {
         }
 
         // make sure changes are flushed to the database
-        //em.flush();
+        em.flush();
         // refresh botanical object in order to resolve manual relations
         em.refresh(tblBotanicalObject);
         em.refresh(tblLivingPlant);

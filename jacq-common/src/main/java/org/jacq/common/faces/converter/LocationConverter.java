@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input.faces.converter;
+package org.jacq.common.faces.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.jacq.common.model.rest.PersonResult;
+import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.util.ServicesUtil;
 
 /**
  *
  * @author wkoller
  */
-@FacesConverter("personConverter")
-public class PersonConverter implements Converter {
+@FacesConverter("locationConverter")
+public class LocationConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && !value.equalsIgnoreCase("null")) {
-            return ServicesUtil.getPersonService().load(Long.valueOf(value));
+            return ServicesUtil.getGatheringService().locationLoad(Long.valueOf(value));
         }
 
         return null;
@@ -41,7 +41,7 @@ public class PersonConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         if (value != null) {
-            return String.valueOf(((PersonResult) value).getPersonId());
+            return String.valueOf(((LocationResult) value).getLocationId());
         }
         else {
             return null;

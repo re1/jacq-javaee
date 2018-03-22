@@ -429,7 +429,14 @@
                                         <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" />
+                                        <p:autoComplete value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" completeMethod="#{livingPlantEditController.completeLocation}"
+                                                        var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
+                                            <p:ajax event="itemSelect" listener="#{livingPlantEditController.onLocationItemSelect}" update="jacq_form:ipennumber" />
+
+                                            <p:column>
+                                                <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
+                                            </p:column>
+                                        </p:autoComplete>
                                     </div>
                                 </div>
                             </div>
