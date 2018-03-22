@@ -28,4 +28,12 @@ public class GatheringServiceImpl implements GatheringService {
         return gatheringManager.locationFind(location, offset, count);
     }
 
+    /**
+     * @see GatheringService#locationLoad(java.lang.Long)
+     */
+    @Override
+    public LocationResult locationLoad(Long locationId) {
+        return gatheringManager.locationLoad(locationId);
+    }
+
 }

@@ -5,15 +5,20 @@
  */
 package org.jacq.service.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import org.jacq.common.external.model.rest.GeoNamesEntryResult;
 import org.jacq.common.external.model.rest.GeoNamesSearchResult;
 import org.jacq.common.external.rest.GeoNamesService;
+import org.jacq.common.model.jpa.TblLocation;
+import org.jacq.common.model.jpa.TblLocationGeonames;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.rest.GatheringService;
 import org.jacq.common.util.ServicesUtil;
@@ -47,7 +52,41 @@ public class GatheringManager {
     @Transactional
     public List<LocationResult> locationFind(String location, Integer offset, Integer count) {
         GeoNamesSearchResult geoNamesSearchResult = this.geoNamesService.searchJSON(location, count, this.geoNamesUsername);
+        List<LocationResult> locationResults = new ArrayList<>();
 
-        return null;
+        for (GeoNamesEntryResult geoNamesEntryResult : geoNamesSearchResult.getGeonames()) {
+            TypedQuery<TblLocationGeonames> locationGeonamesQuery = em.createNamedQuery("TblLocationGeonames.findByGeonameId", TblLocationGeonames.class);
+            locationGeonamesQuery.setParameter("geonameId", geoNamesEntryResult.getGeonameId());
+            List<TblLocationGeonames> locationGeonamesList = locationGeonamesQuery.getResultList();
+            if (locationGeonamesList != null && locationGeonamesList.size() > 0) {
+                locationResults.add(new LocationResult(locationGeonamesList.get(0).getTblLocation()));
+            }
+            else {
+                TblLocation tblLocation = new TblLocation();
+                tblLocation.setLocation(geoNamesEntryResult.getName());
+                em.persist(tblLocation);
+
+                TblLocationGeonames tblLocationGeonames = new TblLocationGeonames();
+                tblLocationGeonames.setId(tblLocation.getId());
+                tblLocationGeonames.setTblLocation(tblLocation);
+                tblLocationGeonames.setCountryCode(geoNamesEntryResult.getCountryCode());
+                tblLocationGeonames.setGeonameId(geoNamesEntryResult.getGeonameId());
+                tblLocationGeonames.setServiceData(geoNamesEntryResult.toString());
+                em.persist(tblLocationGeonames);
+
+                tblLocation.setTblLocationGeonames(tblLocationGeonames);
+
+                locationResults.add(new LocationResult(tblLocation));
+            }
+        }
+
+        return locationResults;
+    }
+
+    /**
+     * @see GatheringService#locationLoad(java.lang.Long)
+     */
+    public LocationResult locationLoad(Long locationId) {
+        return new LocationResult(em.find(TblLocation.class, locationId));
     }
 }

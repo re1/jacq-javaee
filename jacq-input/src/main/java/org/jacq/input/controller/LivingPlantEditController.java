@@ -53,6 +53,7 @@ import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.util.ServicesUtil;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 
 /**
@@ -330,6 +331,20 @@ public class LivingPlantEditController {
     public void onTabChange(TabChangeEvent event) {
         if (event.getTab() != null && event.getTab().getId().equals("derivatives") && this.vegetativeList == null) {
             this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+        }
+    }
+
+    /**
+     * Called when the user selects an item in the location auto-completer
+     *
+     * @param event
+     */
+    public void onLocationItemSelect(SelectEvent event) {
+        if (event.getObject() != null) {
+            LocationResult locationResult = (LocationResult) event.getObject();
+            if (locationResult.getCountryCode() != null) {
+                this.setIpenNumberCountry(locationResult.getCountryCode());;
+            }
         }
     }
 

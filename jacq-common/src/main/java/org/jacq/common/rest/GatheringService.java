@@ -34,6 +34,9 @@ public interface GatheringService {
     /**
      * Search location entries, taking into account geonames services
      *
+     * @param location
+     * @param offset
+     * @param count
      * @return
      */
     @Path("/location/find")
@@ -41,4 +44,16 @@ public interface GatheringService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<LocationResult> locationFind(@QueryParam("location") String location, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+
+    /**
+     * Load a single location entry
+     *
+     * @param locationId
+     * @return
+     */
+    @Path("/location/load")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public LocationResult locationLoad(@QueryParam("locationId") Long locationId);
 }

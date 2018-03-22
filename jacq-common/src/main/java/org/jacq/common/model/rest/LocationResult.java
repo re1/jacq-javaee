@@ -30,6 +30,9 @@ public class LocationResult {
     protected Long geonameId;
     protected String countryCode;
 
+    public LocationResult() {
+    }
+
     public LocationResult(TblLocation tblLocation) {
         if (tblLocation != null) {
             this.locationId = tblLocation.getId();

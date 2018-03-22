@@ -23,11 +23,11 @@ public class GeoNamesEntryResult {
 
     protected String adminCode1;
     protected Float lng;
-    protected Integer geonameId;
+    protected Long geonameId;
     protected String toponymName;
-    protected Integer countryId;
+    protected Long countryId;
     protected String fcl;
-    protected Integer population;
+    protected Long population;
     protected String countryCode;
     protected String name;
     protected String fclName;
@@ -54,11 +54,11 @@ public class GeoNamesEntryResult {
         this.lng = lng;
     }
 
-    public Integer getGeonameId() {
+    public Long getGeonameId() {
         return geonameId;
     }
 
-    public void setGeonameId(Integer geonameId) {
+    public void setGeonameId(Long geonameId) {
         this.geonameId = geonameId;
     }
 
@@ -70,11 +70,11 @@ public class GeoNamesEntryResult {
         this.toponymName = toponymName;
     }
 
-    public Integer getCountryId() {
+    public Long getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Integer countryId) {
+    public void setCountryId(Long countryId) {
         this.countryId = countryId;
     }
 
@@ -86,11 +86,11 @@ public class GeoNamesEntryResult {
         this.fcl = fcl;
     }
 
-    public Integer getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(Integer population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
 
