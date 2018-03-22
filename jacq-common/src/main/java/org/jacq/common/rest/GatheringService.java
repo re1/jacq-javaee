@@ -15,10 +15,30 @@
  */
 package org.jacq.common.rest;
 
+import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.LocationResult;
+
 /**
  *
  * @author wkoller
  */
+@Path("/gathering")
 public interface GatheringService {
 
+    /**
+     * Search location entries, taking into account geonames services
+     *
+     * @return
+     */
+    @Path("/location/find")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<LocationResult> locationFind(@QueryParam("location") String location, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 }

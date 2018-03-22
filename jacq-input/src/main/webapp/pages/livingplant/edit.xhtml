@@ -429,7 +429,12 @@
                                         <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" />
+                                        <p:autoComplete completeMethod="#{livingPlantEditController.completeLocation}"
+                                                        var="location" itemLabel="#{location.location}" itemValue="#{location.locationId}" minQueryLength="3" queryDelay="300">
+                                            <p:column>
+                                                <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
+                                            </p:column>
+                                        </p:autoComplete>
                                     </div>
                                 </div>
                             </div>

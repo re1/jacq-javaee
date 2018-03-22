@@ -24,6 +24,10 @@ public abstract class JacqConfig {
     public static final String CLASSIFICATION_FAMILY_REFERENCE_ID = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceId";
     protected static final String GENERAL = "general";
     public static final String GENERAL_INDET_ID = GENERAL + CONFIG_SEPARATOR + "indet_id";
+    protected static final String SERVICE = "service";
+    protected static final String SERVICE_GEONAMES = SERVICE + CONFIG_SEPARATOR + "geonames";
+    public static final String SERVICE_GEONAMES_URL = SERVICE_GEONAMES + CONFIG_SEPARATOR + "url";
+    public static final String SERVICE_GEONAMES_USERNAME = SERVICE_GEONAMES + CONFIG_SEPARATOR + "username";
 
     protected HashMap<String, String> config;
 

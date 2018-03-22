@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
+import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -46,6 +47,7 @@ import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
@@ -96,6 +98,11 @@ public class LivingPlantEditController {
     protected AcquisitionService acquisitionService;
 
     /**
+     * Reference to gathering service
+     */
+    protected GatheringService gatheringService;
+
+    /**
      * Index seminum service which is used for displaying the available types
      */
     protected IndexSeminumService indexSeminumService;
@@ -128,6 +135,7 @@ public class LivingPlantEditController {
         this.organisationService = ServicesUtil.getOrganisationService();
         this.personService = ServicesUtil.getPersonService();
         this.acquisitionService = ServicesUtil.getAcquisitionService();
+        this.gatheringService = ServicesUtil.getGatheringService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -310,6 +318,10 @@ public class LivingPlantEditController {
 
     public List<AcquisitionSourceResult> completeAcquisitionSource(String query) {
         return this.acquisitionService.sourceSearch(query, 0, 10);
+    }
+
+    public List<LocationResult> completeLocation(String query) {
+        return this.gatheringService.locationFind(query, 0, 10);
     }
 
     /**

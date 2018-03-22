@@ -15,12 +15,18 @@
  */
 package org.jacq.common.external.model.rest;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  *
  * @author wkoller
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GeoNamesAdminCodes {
 
+    @XmlElement(name = "ISO3166_2")
     protected String ISO3166_2;
 
     public String getISO3166_2() {

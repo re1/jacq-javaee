@@ -24,6 +24,7 @@ import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.PersonService;
@@ -102,8 +103,12 @@ public class ServicesUtil {
         return getProxy(AcquisitionService.class, JACQ_SERVICE_URL);
     }
 
-    public static GeoNamesService getGeoNamesService() {
-        return getProxy(GeoNamesService.class, JACQ_SERVICE_URL);
+    public static GeoNamesService getGeoNamesService(String baseUrl) {
+        return getProxy(GeoNamesService.class, baseUrl, true);
+    }
+
+    public static GatheringService getGatheringService() {
+        return getProxy(GatheringService.class, JACQ_SERVICE_URL);
     }
 
     /**
