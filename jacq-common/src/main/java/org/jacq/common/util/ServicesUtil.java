@@ -18,6 +18,7 @@ package org.jacq.common.util;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.client.ClientRequestFilter;
+import org.jacq.common.external.rest.GeoNamesService;
 import org.jacq.common.external.rest.ImageServer;
 import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.OrganisationService;
@@ -99,6 +100,10 @@ public class ServicesUtil {
 
     public static AcquisitionService getAcquisitionService() {
         return getProxy(AcquisitionService.class, JACQ_SERVICE_URL);
+    }
+
+    public static GeoNamesService getGeoNamesService() {
+        return getProxy(GeoNamesService.class, JACQ_SERVICE_URL);
     }
 
     /**
