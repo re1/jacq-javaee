@@ -22,9 +22,9 @@ import org.jacq.common.model.report.WorkLabel;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.report.LabelService;
+import org.jacq.common.util.ServicesUtil;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;
-import org.jacq.service.report.util.ServicesUtil;
 
 /**
  * Business logic for label printing process

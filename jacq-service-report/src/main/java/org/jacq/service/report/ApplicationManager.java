@@ -16,6 +16,8 @@ import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
+import org.jacq.common.util.ServicesUtil;
+import org.jacq.service.report.security.PassthroughClientRequestFilter;
 
 /**
  * Application Bean for holding all application wide data / objects
@@ -54,6 +56,9 @@ public class ApplicationManager {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+
+        // register passthrough client request filter
+        ServicesUtil.registerClientRequestFilter(new PassthroughClientRequestFilter());
     }
 
     /**

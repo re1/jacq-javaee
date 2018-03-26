@@ -15,6 +15,7 @@
  */
 package org.jacq.input.controller;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -22,6 +23,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AcquisitionSourceResult;
@@ -52,9 +54,13 @@ import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
+import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.ByteArrayContent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  * Controller for handling creating / editing of a living plant entry
@@ -108,6 +114,11 @@ public class LivingPlantEditController {
      */
     protected IndexSeminumService indexSeminumService;
 
+    /**
+     * Reference to service for label printing
+     */
+    protected LabelService labelService;
+
     protected LivingPlantResult livingPlantResult;
 
     protected List<CultivarResult> cultivarResults;
@@ -137,6 +148,7 @@ public class LivingPlantEditController {
         this.personService = ServicesUtil.getPersonService();
         this.acquisitionService = ServicesUtil.getAcquisitionService();
         this.gatheringService = ServicesUtil.getGatheringService();
+        this.labelService = ServicesUtil.getLabelService();
 
         this.livingPlantResult = new LivingPlantResult();
 
@@ -348,6 +360,18 @@ public class LivingPlantEditController {
         }
     }
 
+    /**
+     * Called to download the work label
+     *
+     * @return
+     */
+    public StreamedContent getWorkLabel() {
+        Response response = this.labelService.getWork(this.livingPlantResult.getType(), this.livingPlantResult.getDerivativeId());
+        byte[] binaryStream = response.readEntity(byte[].class);
+
+        return new DefaultStreamedContent(this.labelService.getWork(this.livingPlantResult.getType(), this.livingPlantResult.getDerivativeId()).readEntity(InputStream.class), LabelService.APPLICATION_PDF, "work_label.pdf");
+    }
+
     /*
     * Getter & Setter
      */
@@ -436,5 +460,13 @@ public class LivingPlantEditController {
 
     public void setSelectedSexes(List<String> selectedSexes) {
         this.selectedSexes = selectedSexes;
+    }
+
+    public String getWorkLabelUrl() {
+        if (this.livingPlantResult != null && this.livingPlantResult.getDerivativeId() != null) {
+            return ServicesUtil.getWorkLabelURL(LivingPlantResult.LIVING, this.livingPlantResult.getDerivativeId());
+        }
+
+        return null;
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.jacq.service.security;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import javax.annotation.security.DeclareRoles;
 import javax.enterprise.context.ApplicationScoped;

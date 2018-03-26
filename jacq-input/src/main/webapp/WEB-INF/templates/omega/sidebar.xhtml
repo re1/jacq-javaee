@@ -71,11 +71,14 @@
                             </p:submenu>
                         </po:menu>
 
-                        <po:menu styleClass="jacq-menu-item" id="quickActions">
-                            <p:menuitem value="#{messages['save']}" onclick="PF('saveLivingPLantResultButton').jq.click();" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
-                            <p:menuitem value="#{messages['copyandnew']}" onclick="PF('copyLivingPLantResultButton').jq.click();" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" />
-                            <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" value="#{livingPlantEditController.livingPlantResult.scientificNameResult.scientificName}" />
-                            <p:menuitem disabled="true" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}" value="#{livingPlantEditController.livingPlantResult.accessionNumber}" />
+                        <po:menu styleClass="jacq-menu-item" id="quickActions" rendered="#{(livingPlantEditController.livingPlantResult.derivativeId != null) ? true : false}">
+                            <p:menuitem value="#{messages['save']}" onclick="PF('saveLivingPLantResultButton').jq.click();" />
+                            <p:menuitem value="#{messages['copyandnew']}" onclick="PF('copyLivingPLantResultButton').jq.click();" />
+                            <p:menuitem disabled="true" value="#{livingPlantEditController.livingPlantResult.scientificNameResult.scientificName}" />
+                            <p:menuitem disabled="true" value="#{livingPlantEditController.livingPlantResult.accessionNumber}" />
+                            <p:menuitem value="#{messages['worklabel']}" ajax="false">
+                                <p:fileDownload value="#{livingPlantEditController.workLabel}" />
+                            </p:menuitem>
                         </po:menu>
                     </h:form>
                 </div>
