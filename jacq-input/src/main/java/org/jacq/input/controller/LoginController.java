@@ -31,7 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
-import org.jacq.input.security.InputCallerPrincipal;
+import org.jacq.common.security.JacqCallerPrincipal;
 
 /**
  * Controller for handling logins of users
@@ -66,7 +66,7 @@ public class LoginController {
             // remember authorization header in session controller
             sessionController.setAuthorizationHeader("Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
             // remember user object in session controller
-            sessionController.setUser(((InputCallerPrincipal) securityContext.getCallerPrincipal()).getUser());
+            sessionController.setUser(((JacqCallerPrincipal) securityContext.getCallerPrincipal()).getUser());
 
             // redirect to manage page
             return "livingplant/manage.xhtml?faces-redirect=true";

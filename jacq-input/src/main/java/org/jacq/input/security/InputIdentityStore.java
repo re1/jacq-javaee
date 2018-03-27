@@ -15,6 +15,7 @@
  */
 package org.jacq.input.security;
 
+import org.jacq.common.security.JacqCallerPrincipal;
 import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
@@ -63,7 +64,7 @@ public class InputIdentityStore implements IdentityStore {
             }
             userRoleHashSet.add("authenticated");
 
-            return new CredentialValidationResult(new InputCallerPrincipal(user.getUsername(), user), userRoleHashSet);
+            return new CredentialValidationResult(new JacqCallerPrincipal(user.getUsername(), user, usernamePasswordCredential.getPasswordAsString()), userRoleHashSet);
         }
 
         return CredentialValidationResult.INVALID_RESULT;

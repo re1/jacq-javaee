@@ -25,6 +25,7 @@ import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.service.report.ApplicationManager;
 import org.jacq.service.report.JacqConfig;
+import org.jacq.service.report.security.PassthroughClientRequestFilter;
 
 /**
  * Business logic for label printing process
@@ -34,9 +35,6 @@ import org.jacq.service.report.JacqConfig;
 @ManagedBean
 public class LabelManager {
 
-    /**
-     * TODO: load report design configuration from database
-     */
     public static String REPORT_PATH = null;
 
     private static final Logger LOGGER = Logger.getLogger(LabelManager.class.getName());
@@ -65,6 +63,8 @@ public class LabelManager {
      * @see LabelService#getWork(java.lang.String, long)
      */
     public Response getWork(String type, Long derivativeId) throws EngineException {
+        ServicesUtil.registerClientRequestFilter(new PassthroughClientRequestFilter());
+
         List<BotanicalObjectDerivative> results = this.derivativeSerive.find(type, derivativeId, null, null, null, null, null, null, null, null, null, null, null);
 
         // if no result is found, return an error

@@ -13,6 +13,8 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import org.apache.commons.codec.binary.Base64;
+import org.jacq.common.security.JacqCallerPrincipal;
 
 /**
  *
@@ -26,9 +28,10 @@ public class PassthroughClientRequestFilter implements ClientRequestFilter {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
+
         List<Object> authorization = new ArrayList<Object>() {
             {
-                add(securityContext.getUserPrincipal().getName());
+                add(((JacqCallerPrincipal) securityContext.getUserPrincipal()).getAuthorizationHeader());
             }
         };
 

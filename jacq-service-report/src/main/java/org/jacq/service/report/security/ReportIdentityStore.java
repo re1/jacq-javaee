@@ -26,6 +26,7 @@ import javax.security.enterprise.identitystore.IdentityStore;
 import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
+import org.jacq.common.security.JacqCallerPrincipal;
 import org.jacq.common.util.ServicesUtil;
 
 /**
@@ -57,7 +58,7 @@ public class ReportIdentityStore implements IdentityStore {
             }
             userRoleHashSet.add("authenticated");
 
-            return new CredentialValidationResult(user.getUsername(), userRoleHashSet);
+            return new CredentialValidationResult(new JacqCallerPrincipal(user.getUsername(), user, usernamePasswordCredential.getPasswordAsString()), userRoleHashSet);
         }
 
         return CredentialValidationResult.INVALID_RESULT;
