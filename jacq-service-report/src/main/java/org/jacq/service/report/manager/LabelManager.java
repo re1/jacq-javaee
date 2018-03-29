@@ -52,9 +52,12 @@ public class LabelManager {
 
     // Context key for birt reporting
     public static final String APP_CONTEXT_KEY_WORKLABELDATASET = "APP_CONTEXT_KEY_WORKLABELDATASET";
+    protected IReportEngine reportEngine;
 
     @PostConstruct
     public void init() {
+        this.reportEngine = applicationManager.getReportEngine();
+
         LabelManager.REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_WORK_LABEL);
         this.derivativeSerive = ServicesUtil.getDerivativeService();
     }
@@ -84,8 +87,6 @@ public class LabelManager {
             workLabels.add(workLabel);
         }
 
-        // get a reference to the report engine
-        IReportEngine reportEngine = applicationManager.getReportEngine();
         // create report instance
         IReportRunnable report = reportEngine.openReportDesign(REPORT_PATH);
 
