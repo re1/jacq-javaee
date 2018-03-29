@@ -76,7 +76,7 @@ public abstract class BaseDerivativeManager {
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -96,8 +96,8 @@ public abstract class BaseDerivativeManager {
         orderColumn = getColumnName(orderColumn);
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, orderColumn, orderDirection, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, orderColumn, orderDirection, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
 
         String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
@@ -137,7 +137,7 @@ public abstract class BaseDerivativeManager {
      * @return
      */
     @Transactional
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum) {
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -150,8 +150,8 @@ public abstract class BaseDerivativeManager {
         }
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, null, null, null, null);
-        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, null, null, null, null);
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, null, null, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, null, null, null, null);
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
@@ -174,7 +174,7 @@ public abstract class BaseDerivativeManager {
      * @param count
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -217,9 +217,16 @@ public abstract class BaseDerivativeManager {
             queryString += " AND " + FILTER_ORGANISATION_ID + "(" + organisationIds + ")";
         }
 
+        // check for index seminum filtering
         if (indexSeminum != null) {
             queryString += " AND " + FILTER_INDEX_SEMINUM;
             params.add(indexSeminum);
+        }
+
+        // check for gathering location filter
+        if (gatheringLocation != null) {
+            queryString += " AND " + FILTER_GATHERING_LOCATION;
+            params.add(gatheringLocation);
         }
 
         // apply order

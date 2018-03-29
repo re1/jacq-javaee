@@ -43,8 +43,7 @@ public class LazyDerivativeDownloadDataModel extends LazyDataModel<BotanicalObje
     protected LazyDerivativeDataModel lazyDerivativeDataModel;
 
     /**
-     * Default constructor, needs a reference to the derivative service for
-     * later querying
+     * Default constructor, needs a reference to the derivative service for later querying
      *
      * @param derivativeService
      * @param lazyDerivativeDataModel
@@ -76,12 +75,12 @@ public class LazyDerivativeDownloadDataModel extends LazyDataModel<BotanicalObje
     public List<BotanicalObjectDownloadResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
         // get count first
-        int rowCount = this.derivativeService.count(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getHierarchic(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getIndexSeminumFilter());
+        int rowCount = this.derivativeService.count(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getHierarchic(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getIndexSeminumFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getGatheringLocationName());
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDownloadResult> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.downloadFind(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getHierarchic(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getIndexSeminumFilter(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.downloadFind(this.lazyDerivativeDataModel.getDerivativeSearchModel().getType(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getPlaceNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getAccessionNumber(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getSeparatedFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getScientificNameId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getOrganisationId(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getHierarchic(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getIndexSeminumFilter(), this.lazyDerivativeDataModel.getDerivativeSearchModel().getGatheringLocationName(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
