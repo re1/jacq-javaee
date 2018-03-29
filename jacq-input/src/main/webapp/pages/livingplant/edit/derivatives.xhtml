@@ -61,6 +61,14 @@
             </div>
         </ui:repeat>
 
+        <p:dialog widgetVar="vegetativeDialog">
+            <ui:include src="../../derivative/vegetative/edit.xhtml" />
+        </p:dialog>
+
+        <div class="ui-g-12 ui-g-nopad">
+            <p:commandButton icon="ui-icon-plus" type="button" onclick="PF('vegetativeDialog').show();" />
+        </div>
+
         <div class="ui-g-12">
             <h3><h:outputText value="#{messages['derivative.images']}" /></h3>
         </div>
