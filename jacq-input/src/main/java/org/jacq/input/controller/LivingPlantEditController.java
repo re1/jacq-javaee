@@ -467,4 +467,13 @@ public class LivingPlantEditController {
 
         return null;
     }
+
+    public List<VegetativeResult> getVegetativeList() {
+        return vegetativeList;
+    }
+
+    public void setVegetativeList(List<VegetativeResult> vegetativeList) {
+        this.vegetativeList = vegetativeList;
+    }
+
 }
