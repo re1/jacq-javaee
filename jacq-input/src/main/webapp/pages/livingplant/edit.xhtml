@@ -359,7 +359,7 @@
                     </div>
                 </div>
                 <br />
-                <p:tabView dynamic="true" cache="true">
+                <p:tabView dynamic="true" cache="true" id="tabView">
                     <p:ajax event="tabChange" listener="#{livingPlantEditController.onTabChange}" update="derivatives" />
 
                     <p:tab title="#{messages['livingplant.collectingdata']}">
@@ -734,8 +734,8 @@
                     </div>
                 </h:panelGroup>
                 <div class="jacq-buttons">
-                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
-                    <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions" />
+                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                    <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
                 </div>
             </h:panelGroup>
         </ui:define>

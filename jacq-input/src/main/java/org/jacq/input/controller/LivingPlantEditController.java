@@ -45,6 +45,7 @@ import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.SpecimenResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.AcquisitionService;
 import org.jacq.common.rest.DerivativeService;
@@ -83,7 +84,8 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and scientific name editing
+     * Reference to scientific name service which is used for cultivar and
+     * scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -126,6 +128,7 @@ public class LivingPlantEditController {
     protected ScientificNameInformationResult scientificNameInformationResult;
 
     protected List<VegetativeResult> vegetativeList;
+    protected List<SpecimenResult> specimenList;
 
     protected List<HabitusTypeResult> habitusTypes;
     protected List<PhenologyResult> phenologies;
@@ -171,8 +174,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
-     * loaded
+     * Called when the user clicks on the button for reviewing the scientific
+     * name information, only then this info is loaded
      *
      * @return
      */
@@ -199,6 +202,14 @@ public class LivingPlantEditController {
 
     public void removeAlternativeAccessionNumber(AlternativeAccessionNumberResult alternativeAccessionNumberResult) {
         this.livingPlantResult.getAlternativeAccessionNumbers().remove(alternativeAccessionNumberResult);
+    }
+
+    public void addSpecimen() {
+        this.getSpecimenList().add(new SpecimenResult());
+    }
+
+    public void removeSpecimen(SpecimenResult specimenResult) {
+        this.getSpecimenList().remove(specimenResult);
     }
 
     public void addAcquisitionEventSource() {
@@ -238,7 +249,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according
+     * entry will be loaded
      *
      * @param derivativeId
      */
@@ -264,12 +276,15 @@ public class LivingPlantEditController {
         for (String sexId : this.selectedSexes) {
             this.livingPlantResult.getSexes().add(new SexResult(Long.parseLong(sexId)));
         }
+        this.livingPlantResult.setSpecimensList(this.getSpecimenList());
 
         // save the living plant entry
         this.livingPlantResult = this.derivativeService.livingPlantSave(this.livingPlantResult);
 
         this.syncInfo();
         this.saveMessage();
+        this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+        this.specimenList = this.derivativeService.specimenFind(this.livingPlantResult.getBotanicalObjectId());
     }
 
     /**
@@ -339,8 +354,9 @@ public class LivingPlantEditController {
      * Called when user changes the tab, used to dynamically load content
      */
     public void onTabChange(TabChangeEvent event) {
-        if (event.getTab() != null && event.getTab().getId().equals("derivatives") && this.vegetativeList == null) {
+        if (event.getTab() != null && this.vegetativeList == null) {
             this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+            this.specimenList = this.derivativeService.specimenFind(this.livingPlantResult.getBotanicalObjectId());
         }
     }
 
@@ -474,6 +490,14 @@ public class LivingPlantEditController {
 
     public void setVegetativeList(List<VegetativeResult> vegetativeList) {
         this.vegetativeList = vegetativeList;
+    }
+
+    public List<SpecimenResult> getSpecimenList() {
+        return specimenList;
+    }
+
+    public void setSpecimenList(List<SpecimenResult> specimenList) {
+        this.specimenList = specimenList;
     }
 
 }

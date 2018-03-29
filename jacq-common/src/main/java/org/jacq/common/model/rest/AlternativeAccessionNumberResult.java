@@ -54,10 +54,11 @@ public class AlternativeAccessionNumberResult {
     }
 
     /**
-     * Helper function for converting a list of TblAlternativeAccessionNumber entries to
-     * AlternativeAccessionNumberResults
+     * Helper function for converting a list of TblAlternativeAccessionNumber
+     * entries to AlternativeAccessionNumberResults
      *
-     * @param cultivarList
+     *
+     * @param tblAlternativeAccessionNumbers
      * @return
      */
     public static List<AlternativeAccessionNumberResult> fromList(List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumbers) {

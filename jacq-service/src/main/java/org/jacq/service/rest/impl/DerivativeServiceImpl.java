@@ -30,6 +30,7 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.SpecimenResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.manager.LivingPlantManager;
@@ -50,8 +51,9 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected LivingPlantManager livingPlantManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
-     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * java.lang.Integer, java.lang.Integer)
      */
     @Override
     public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
@@ -128,7 +130,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
+     * @see
+     * DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Override
     public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult) {
@@ -149,5 +152,10 @@ public class DerivativeServiceImpl implements DerivativeService {
     @Override
     public List<VegetativeResult> vegetativeFind(Long parentDerivativeId) {
         return derivativeManager.vegetativeFind(parentDerivativeId);
+    }
+
+    @Override
+    public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
+        return derivativeManager.specimenFind(botanicalObjectId);
     }
 }

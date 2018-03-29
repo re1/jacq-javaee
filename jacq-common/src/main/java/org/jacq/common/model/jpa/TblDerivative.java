@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2018 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "tbl_derivative")
@@ -59,7 +59,7 @@ public class TblDerivative implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "count")
-    private long count;
+    private Long count;
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
@@ -68,6 +68,8 @@ public class TblDerivative implements Serializable {
     private List<TblSeparation> tblSeparationList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblVegetative tblVegetative;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
+    private TblSpecimen tblSpecimen;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
@@ -94,7 +96,7 @@ public class TblDerivative implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public TblDerivative(Long derivativeId, long count, float price) {
+    public TblDerivative(Long derivativeId, Long count, float price) {
         this.derivativeId = derivativeId;
         this.count = count;
         this.price = price;
@@ -108,11 +110,11 @@ public class TblDerivative implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public long getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(long count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
@@ -139,6 +141,14 @@ public class TblDerivative implements Serializable {
 
     public void setTblVegetative(TblVegetative tblVegetative) {
         this.tblVegetative = tblVegetative;
+    }
+
+    public TblSpecimen getTblSpecimen() {
+        return tblSpecimen;
+    }
+
+    public void setTblSpecimen(TblSpecimen tblSpecimen) {
+        this.tblSpecimen = tblSpecimen;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

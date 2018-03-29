@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2018 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "tbl_botanical_object")
@@ -72,7 +72,7 @@ public class TblBotanicalObject implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private long scientificNameId;
+    private Long scientificNameId;
     @Column(name = "determination_date")
     @Temporal(TemporalType.DATE)
     private Date determinationDate;
@@ -127,8 +127,6 @@ public class TblBotanicalObject implements Serializable {
     private TblPhenology phenologyId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblBotanicalObject", fetch = FetchType.LAZY)
     private TblDiaspora tblDiaspora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
-    private List<TblSpecimen> tblSpecimenList;
     @OneToMany(mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<TblInventoryObject> tblInventoryObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
@@ -288,15 +286,6 @@ public class TblBotanicalObject implements Serializable {
 
     public void setTblDiaspora(TblDiaspora tblDiaspora) {
         this.tblDiaspora = tblDiaspora;
-    }
-
-    @XmlTransient
-    public List<TblSpecimen> getTblSpecimenList() {
-        return tblSpecimenList;
-    }
-
-    public void setTblSpecimenList(List<TblSpecimen> tblSpecimenList) {
-        this.tblSpecimenList = tblSpecimenList;
     }
 
     @XmlTransient
