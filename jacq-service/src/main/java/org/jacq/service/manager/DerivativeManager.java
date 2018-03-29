@@ -24,7 +24,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import org.jacq.common.manager.DerivativeSearchManager;
+import org.jacq.common.manager.BaseDerivativeManager;
 import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
@@ -61,7 +61,7 @@ import org.jacq.service.JacqServiceConfig;
  * @author wkoller
  */
 @ManagedBean
-public class DerivativeManager extends DerivativeSearchManager {
+public class DerivativeManager extends BaseDerivativeManager {
 
     @Inject
     protected ClassificationManager classificationManager;

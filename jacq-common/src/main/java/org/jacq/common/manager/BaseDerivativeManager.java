@@ -31,19 +31,17 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs Note: Make sure the entity manager is set prior calling any
- * functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs Note: Make sure the entity manager is set prior calling any functions
  *
  * @author wkoller
  */
-public abstract class DerivativeSearchManager {
+public abstract class BaseDerivativeManager {
 
-    protected static final Logger LOGGER = Logger.getLogger(DerivativeSearchManager.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(BaseDerivativeManager.class.getName());
 
-    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`";
+    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`, `gathering_location`";
 
     protected static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 
@@ -57,7 +55,8 @@ public abstract class DerivativeSearchManager {
     protected static final String FILTER_SEPARATED = "`separated` = ?";
     protected static final String FILTER_SCIENTIFIC_NAME_ID = "`scientific_name_id` = ?";
     protected static final String FILTER_ORGANISATION_ID = "`organisation_id` in ";
-    protected static final String FILTER_INDEXSEMINUM = "`index_seminum` = ?";
+    protected static final String FILTER_INDEX_SEMINUM = "`index_seminum` = ?";
+    protected static final String FILTER_GATHERING_LOCATION = "`gathering_location` = ?";
 
     protected EntityManager entityManager;
 
@@ -72,9 +71,8 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
@@ -210,7 +208,8 @@ public abstract class DerivativeSearchManager {
             while (i < organisationIdList.size()) {
                 if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
-                } else {
+                }
+                else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
@@ -219,7 +218,7 @@ public abstract class DerivativeSearchManager {
         }
 
         if (indexSeminum != null) {
-            queryString += " AND " + FILTER_INDEXSEMINUM;
+            queryString += " AND " + FILTER_INDEX_SEMINUM;
             params.add(indexSeminum);
         }
 
@@ -236,9 +235,11 @@ public abstract class DerivativeSearchManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        } else if (offset != null) {
+        }
+        else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        } else if (count != null) {
+        }
+        else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -246,8 +247,7 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a
-     * given column attribute name
+     * Helper function for retrieving the actual database column name for a given column attribute name
      *
      * @param attributeName
      * @return
