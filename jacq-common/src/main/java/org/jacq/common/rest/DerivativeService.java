@@ -117,16 +117,16 @@ public interface DerivativeService {
     public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult);
 
     /**
-     * Find all vegetative derivatives for a given parent derivative
+     * Find all vegetative derivatives for a given derivative
      *
-     * @param parentDerivativeId
+     * @param derivativeId
      * @return
      */
     @GET
     @Path("/vegetative/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<VegetativeResult> vegetativeFind(@QueryParam("parentDerivativeId") Long parentDerivativeId);
+    public List<VegetativeResult> vegetativeFind(@QueryParam("derivativeId") Long derivativeId);
 
     /**
      * Find all specimenId derivatives for a given botanicalobject

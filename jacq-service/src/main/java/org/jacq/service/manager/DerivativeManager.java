@@ -56,10 +56,9 @@ import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs
  *
  * @author wkoller
  */
@@ -122,9 +121,10 @@ public class DerivativeManager extends BaseDerivativeManager {
     /**
      * @see DerivativeService#vegetativeFind(java.lang.Long)
      */
-    public List<VegetativeResult> vegetativeFind(Long parentDerivativeId) {
-        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByParentDerivative", TblVegetative.class);
-        vegetativeQuery.setParameter("parentDerivativeId", em.find(TblDerivative.class, parentDerivativeId));
+    @Transactional
+    public List<VegetativeResult> vegetativeFind(Long derivativeId) {
+        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
+        vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
 
         return VegetativeResult.fromList(vegetativeQuery.getResultList());
     }
@@ -134,6 +134,7 @@ public class DerivativeManager extends BaseDerivativeManager {
      * @param botanicalObjectId
      * @return
      */
+    @Transactional
     public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
         TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
         specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
@@ -235,8 +236,7 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important
-     * parameter
+     * Small helper function for fetching relevancy type based on important parameter
      *
      * @param important
      * @return
