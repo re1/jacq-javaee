@@ -114,6 +114,12 @@ public class DerivativeManager extends BaseDerivativeManager {
 
             }
         }
+        else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
+            TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
+            if (tblVegetative != null) {
+                return new VegetativeResult(tblVegetative);
+            }
+        }
 
         return null;
     }

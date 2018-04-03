@@ -57,6 +57,7 @@
                     <h:outputText value="#{vegetative.organisationDescription}" />
                 </div>
                 <div class="ui-g-3">
+                    <p:commandButton icon="ui-icon-edit" type="button" action="#{vegetativeEditController.setVegetative(vegetative)}" oncomplete="PF('vegetativeDialog').show();" />
                 </div>
             </div>
         </ui:repeat>
