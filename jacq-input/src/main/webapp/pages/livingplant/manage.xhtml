@@ -62,10 +62,15 @@
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.place']}" />
+                                <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
                             </div>
                             <div class="ui-g-6">
-                                <p:inputText />
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.gatheringLocation}" completeMethod="#{livingPlantController.completeLocation}"
+                                                var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
+                                    <p:column>
+                                        <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -165,18 +170,15 @@
                                 <h:outputText value="#{botanicalObjectDerivative.placeNumber}" />
                             </p:column>
 
+                            <p:column filterBy="" headerText="#{messages['livingplant.gatheringlocation']}">
+                                <h:outputText value="#{botanicalObjectDerivative.gatheringLocationName}" />
+                            </p:column>
+
                             <p:column filterBy="" headerText="#{messages['livingplant.derivative_count']}">
                                 <h:outputText value="#{(botanicalObjectDerivative.derivativeCount == null) ? 0 : botanicalObjectDerivative.derivativeCount}" />
                             </p:column>
 
-                            <p:column filterBy="#{botanicalObjectDerivative.type}" headerText="#{messages['livingplant.type']}">
-                                <f:facet name="filter">
-                                    <p:selectOneMenu onchange="PF('derivativeTable').filter()">
-                                        <f:selectItem itemLabel="All" itemValue="#{livingPlantController.typeAll}" />
-                                        <f:selectItem itemLabel="Living" itemValue="#{livingPlantController.typeLiving}" />
-                                        <f:selectItem itemLabel="Vegetative" itemValue="#{livingPlantController.typeVegetative}" />
-                                    </p:selectOneMenu>
-                                </f:facet>
+                            <p:column filterBy="" headerText="#{messages['livingplant.type']}">
                                 <h:outputText value="#{botanicalObjectDerivative.type}" />
                             </p:column>
 

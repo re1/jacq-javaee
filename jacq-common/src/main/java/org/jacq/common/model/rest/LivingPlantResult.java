@@ -97,6 +97,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<ImageServerResource> imageServerResources;
 
+    protected List<SpecimenResult> specimensList;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -115,6 +117,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.acquistionEventSources = new ArrayList<>();
         this.sexes = new ArrayList<>();
         this.gatherers = new ArrayList<>();
+        this.specimensList = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -643,6 +646,14 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setFamilyReference(String familyReference) {
         this.familyReference = familyReference;
+    }
+
+    public List<SpecimenResult> getSpecimensList() {
+        return specimensList;
+    }
+
+    public void setSpecimensList(List<SpecimenResult> specimensList) {
+        this.specimensList = specimensList;
     }
 
 }

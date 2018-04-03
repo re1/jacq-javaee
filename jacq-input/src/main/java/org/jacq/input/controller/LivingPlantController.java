@@ -12,8 +12,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.util.ServicesUtil;
@@ -40,6 +42,10 @@ public class LivingPlantController implements Serializable {
     protected LazyDerivativeDownloadDataModel downloadDataModel;
     protected ScientificNameService scientificNameService;
     protected OrganisationService organisationService;
+    /**
+     * Reference to gathering service
+     */
+    protected GatheringService gatheringService;
 
     protected Boolean downloadRender;
 
@@ -49,6 +55,8 @@ public class LivingPlantController implements Serializable {
         this.downloadDataModel = new LazyDerivativeDownloadDataModel(ServicesUtil.getDerivativeService(), this.dataModel);
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.organisationService = ServicesUtil.getOrganisationService();
+        this.gatheringService = ServicesUtil.getGatheringService();
+
         this.downloadRender = false;
         if (sessionController.getUser() != null && this.dataModel.getDerivativeSearchModel().getCallFlag() == 0) {
             this.dataModel.getDerivativeSearchModel().setOrganisationId(sessionController.getUser().getOrganisationId() != null ? sessionController.getUser().getOrganisationId() : null);
@@ -83,6 +91,10 @@ public class LivingPlantController implements Serializable {
 
     public List<ScientificNameResult> completeScientificName(String query) {
         return this.scientificNameService.find(query, Boolean.TRUE);
+    }
+
+    public List<LocationResult> completeLocation(String query) {
+        return this.gatheringService.locationFind(query, 0, 10);
     }
 
     public Boolean getDownloadRender() {

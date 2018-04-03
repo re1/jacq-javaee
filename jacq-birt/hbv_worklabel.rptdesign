@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506190710 Build &lt;@BUILD@></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706222054</property>
     <list-property name="propertyBindings">
         <structure>
             <property name="name">pojoDataSetClassPath</property>
@@ -28,10 +28,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common-0.4.1.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service-report/target/jacq-service-report-0.4.1.jar;</value>
+                    <value>D:\wkoller\Documents\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.4.1.jar;D:\wkoller\Documents\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common-0.4.1.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service-report/target/jacq-service-report-0.4.1.jar;</property>
+            <property name="pojoDataSetClassPath">D:\wkoller\Documents\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.4.1.jar;D:\wkoller\Documents\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>

@@ -7,10 +7,31 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:panelGroup id="derivatives" layout="block" styleClass="ui-g">
+
+        <div class="ui-g-12">
+            <h3><h:outputText value="#{messages['derivative.specimen']}" /></h3>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.herbarnumbers']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <h:panelGroup layout="block" styleClass="ui-g-6" id="specimens">
+                            <ui:repeat value="#{livingPlantEditController.specimenList}" var="specimen">
+                                <p:inputText id="specimen" value="#{specimen.herbarNumber}" />
+                                <p:commandButton icon="ui-icon-minus" update="jacq_form:tabView:specimens" action="#{livingPlantEditController.removeSpecimen(specimen)}" />
+                            </ui:repeat>
+                            <p:commandButton icon="ui-icon-plus" update="specimens" action="#{livingPlantEditController.addSpecimen}" />
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui-g-12">
             <h3><h:outputText value="#{messages['derivative.vegetative']}" /></h3>
         </div>
-
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-3">
                 <h:outputText value="#{messages['derivative.propagation_date']}" />
@@ -23,6 +44,30 @@
             </div>
             <div class="ui-g-3">
             </div>
+        </div>
+        <ui:repeat value="#{livingPlantEditController.vegetativeList}" var="vegetative">
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-3">
+                    <h:outputText value="#{vegetative.cultivationDate}" />
+                </div>
+                <div class="ui-g-3">
+                    <h:outputText value="#{vegetative.accessionNumber}" />
+                </div>
+                <div class="ui-g-3">
+                    <h:outputText value="#{vegetative.organisationDescription}" />
+                </div>
+                <div class="ui-g-3">
+                    <p:commandButton icon="ui-icon-edit" type="button" action="#{vegetativeEditController.setVegetative(vegetative)}" oncomplete="PF('vegetativeDialog').show();" />
+                </div>
+            </div>
+        </ui:repeat>
+
+        <p:dialog widgetVar="vegetativeDialog">
+            <ui:include src="../../derivative/vegetative/edit.xhtml" />
+        </p:dialog>
+
+        <div class="ui-g-12 ui-g-nopad">
+            <p:commandButton icon="ui-icon-plus" type="button" onclick="PF('vegetativeDialog').show();" />
         </div>
 
         <div class="ui-g-12">

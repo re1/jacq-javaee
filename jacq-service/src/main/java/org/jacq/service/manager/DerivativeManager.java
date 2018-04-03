@@ -24,7 +24,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import org.jacq.common.manager.DerivativeSearchManager;
+import org.jacq.common.manager.BaseDerivativeManager;
+import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
@@ -35,6 +36,7 @@ import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.TblSex;
+import org.jacq.common.model.jpa.TblSpecimen;
 import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
@@ -47,21 +49,21 @@ import org.jacq.common.model.rest.PhenologyResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
+import org.jacq.common.model.rest.SpecimenResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs
  *
  * @author wkoller
  */
 @ManagedBean
-public class DerivativeManager extends DerivativeSearchManager {
+public class DerivativeManager extends BaseDerivativeManager {
 
     @Inject
     protected ClassificationManager classificationManager;
@@ -112,6 +114,12 @@ public class DerivativeManager extends DerivativeSearchManager {
 
             }
         }
+        else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
+            TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
+            if (tblVegetative != null) {
+                return new VegetativeResult(tblVegetative);
+            }
+        }
 
         return null;
     }
@@ -119,11 +127,25 @@ public class DerivativeManager extends DerivativeSearchManager {
     /**
      * @see DerivativeService#vegetativeFind(java.lang.Long)
      */
-    public List<VegetativeResult> vegetativeFind(Long parentDerivativeId) {
-        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByParentDerivative", TblVegetative.class);
-        vegetativeQuery.setParameter("parentDerivativeId", em.find(TblDerivative.class, parentDerivativeId));
+    @Transactional
+    public List<VegetativeResult> vegetativeFind(Long derivativeId) {
+        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
+        vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
 
         return VegetativeResult.fromList(vegetativeQuery.getResultList());
+    }
+
+    /**
+     *
+     * @param botanicalObjectId
+     * @return
+     */
+    @Transactional
+    public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
+        TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
+        specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
+
+        return SpecimenResult.fromList(specimenQuery.getResultList());
     }
 
     /**
@@ -142,10 +164,10 @@ public class DerivativeManager extends DerivativeSearchManager {
      * @return
      */
     @Transactional
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<BotanicalObjectDownloadResult> botanicalObjectDownloadResultList = new ArrayList<>();
 
-        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, orderColumn, orderDirection, offset, count);
+        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
@@ -220,8 +242,7 @@ public class DerivativeManager extends DerivativeSearchManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important
-     * parameter
+     * Small helper function for fetching relevancy type based on important parameter
      *
      * @param important
      * @return

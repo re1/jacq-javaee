@@ -31,19 +31,17 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs Note: Make sure the entity manager is set prior calling any
- * functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs Note: Make sure the entity manager is set prior calling any functions
  *
  * @author wkoller
  */
-public abstract class DerivativeSearchManager {
+public abstract class BaseDerivativeManager {
 
-    protected static final Logger LOGGER = Logger.getLogger(DerivativeSearchManager.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(BaseDerivativeManager.class.getName());
 
-    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`";
+    protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`, `gathering_location`";
 
     protected static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 
@@ -57,7 +55,8 @@ public abstract class DerivativeSearchManager {
     protected static final String FILTER_SEPARATED = "`separated` = ?";
     protected static final String FILTER_SCIENTIFIC_NAME_ID = "`scientific_name_id` = ?";
     protected static final String FILTER_ORGANISATION_ID = "`organisation_id` in ";
-    protected static final String FILTER_INDEXSEMINUM = "`index_seminum` = ?";
+    protected static final String FILTER_INDEX_SEMINUM = "`index_seminum` = ?";
+    protected static final String FILTER_GATHERING_LOCATION = "`gathering_location` = ?";
 
     protected EntityManager entityManager;
 
@@ -72,13 +71,12 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -98,8 +96,8 @@ public abstract class DerivativeSearchManager {
         orderColumn = getColumnName(orderColumn);
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, orderColumn, orderDirection, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, orderColumn, orderDirection, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
 
         String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
@@ -139,7 +137,7 @@ public abstract class DerivativeSearchManager {
      * @return
      */
     @Transactional
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum) {
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -152,8 +150,8 @@ public abstract class DerivativeSearchManager {
         }
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, null, null, null, null);
-        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, null, null, null, null);
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, null, null, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, null, null, null, null);
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
@@ -176,7 +174,7 @@ public abstract class DerivativeSearchManager {
      * @param count
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -210,7 +208,8 @@ public abstract class DerivativeSearchManager {
             while (i < organisationIdList.size()) {
                 if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
-                } else {
+                }
+                else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
@@ -218,9 +217,16 @@ public abstract class DerivativeSearchManager {
             queryString += " AND " + FILTER_ORGANISATION_ID + "(" + organisationIds + ")";
         }
 
+        // check for index seminum filtering
         if (indexSeminum != null) {
-            queryString += " AND " + FILTER_INDEXSEMINUM;
+            queryString += " AND " + FILTER_INDEX_SEMINUM;
             params.add(indexSeminum);
+        }
+
+        // check for gathering location filter
+        if (gatheringLocation != null) {
+            queryString += " AND " + FILTER_GATHERING_LOCATION;
+            params.add(gatheringLocation);
         }
 
         // apply order
@@ -236,9 +242,11 @@ public abstract class DerivativeSearchManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        } else if (offset != null) {
+        }
+        else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        } else if (count != null) {
+        }
+        else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -246,8 +254,7 @@ public abstract class DerivativeSearchManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a
-     * given column attribute name
+     * Helper function for retrieving the actual database column name for a given column attribute name
      *
      * @param attributeName
      * @return

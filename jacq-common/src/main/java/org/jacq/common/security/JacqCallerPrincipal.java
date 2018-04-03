@@ -13,27 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input.security;
+package org.jacq.common.security;
 
 import javax.security.enterprise.CallerPrincipal;
+import org.apache.commons.codec.binary.Base64;
 import org.jacq.common.model.rest.UserResult;
 
 /**
  *
  * @author wkoller
  */
-public class InputCallerPrincipal extends CallerPrincipal {
+public class JacqCallerPrincipal extends CallerPrincipal {
 
     protected UserResult user;
+    protected String authorizationHeader;
 
-    public InputCallerPrincipal(String name, UserResult user) {
+    public JacqCallerPrincipal(String name, UserResult user, String password) {
         super(name);
 
         this.user = user;
+        this.authorizationHeader = "Basic " + Base64.encodeBase64String((name + ":" + password).getBytes());
     }
 
     public UserResult getUser() {
         return user;
+    }
+
+    public String getAuthorizationHeader() {
+        return authorizationHeader;
     }
 
 }

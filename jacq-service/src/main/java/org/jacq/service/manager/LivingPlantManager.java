@@ -18,6 +18,7 @@ package org.jacq.service.manager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,11 +49,13 @@ import org.jacq.common.model.jpa.TblRelevancyType;
 import org.jacq.common.model.jpa.TblSeparation;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.TblSex;
+import org.jacq.common.model.jpa.TblSpecimen;
 import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PersonResult;
+import org.jacq.common.model.rest.SpecimenResult;
 import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.SexResult;
@@ -70,7 +73,8 @@ public class LivingPlantManager {
     protected EntityManager em;
 
     /**
-     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     * @see
+     * DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Transactional(rollbackOn = Exception.class)
     public LivingPlantResult save(LivingPlantResult livingPlantResult) {
@@ -79,8 +83,7 @@ public class LivingPlantManager {
         // check if we edit an existing entry or create a new one
         if (livingPlantResult.getDerivativeId() != null) {
             tblLivingPlant = em.find(TblLivingPlant.class, livingPlantResult.getDerivativeId());
-        }
-        else {
+        } else {
             tblLivingPlant = new TblLivingPlant();
         }
 
@@ -172,8 +175,7 @@ public class LivingPlantManager {
             TblPerson determinedBy = null;
             if (personList != null && personList.size() > 0) {
                 determinedBy = personList.get(0);
-            }
-            else {
+            } else {
                 determinedBy = new TblPerson();
                 determinedBy.setName(livingPlantResult.getDeterminedBy().getName());
                 em.persist(determinedBy);
@@ -189,8 +191,7 @@ public class LivingPlantManager {
             List<TblLocation> locationList = locationQuery.getResultList();
             if (locationList != null & locationList.size() > 0) {
                 tblGatheringLocation = locationList.get(0);
-            }
-            else {
+            } else {
                 tblGatheringLocation = new TblLocation();
                 tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation().getLocation());
                 em.persist(tblGatheringLocation);
@@ -221,8 +222,7 @@ public class LivingPlantManager {
             TblPerson tblGatherer = null;
             if (gatherers != null & gatherers.size() > 0) {
                 tblGatherer = gatherers.get(0);
-            }
-            else {
+            } else {
                 tblGatherer = new TblPerson();
                 tblGatherer.setName(gatherer.getName());
                 em.persist(tblGatherer);
@@ -279,8 +279,7 @@ public class LivingPlantManager {
             TblAlternativeAccessionNumber tblAlternativeAccessionNumber = null;
             if (alternativeAccessionNumber.getAlternativeAccessionNumberId() != null) {
                 tblAlternativeAccessionNumber = em.find(TblAlternativeAccessionNumber.class, alternativeAccessionNumber.getAlternativeAccessionNumberId());
-            }
-            else {
+            } else {
                 tblAlternativeAccessionNumber = new TblAlternativeAccessionNumber();
             }
 
@@ -297,8 +296,7 @@ public class LivingPlantManager {
             TblCertificate tblCertificate = null;
             if (certificate.getCertificateId() != null) {
                 tblCertificate = em.find(TblCertificate.class, certificate.getCertificateId());
-            }
-            else {
+            } else {
                 tblCertificate = new TblCertificate();
             }
 
@@ -317,8 +315,7 @@ public class LivingPlantManager {
             TblSeparation tblSeparation = null;
             if (separation.getSeparationId() != null) {
                 tblSeparation = em.find(TblSeparation.class, separation.getSeparationId());
-            }
-            else {
+            } else {
                 tblSeparation = new TblSeparation();
             }
 
@@ -337,16 +334,14 @@ public class LivingPlantManager {
             TblAcquisitionEventSource tblAcquisitionEventSource = null;
             if (acquistionEventSource.getAcquisitionEventSourceId() != null) {
                 tblAcquisitionEventSource = em.find(TblAcquisitionEventSource.class, acquistionEventSource.getAcquisitionEventSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionEventSource = new TblAcquisitionEventSource();
             }
 
             TblAcquisitionSource tblAcquisitionSource = null;
             if (acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId() != null) {
                 tblAcquisitionSource = em.find(TblAcquisitionSource.class, acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionSource = new TblAcquisitionSource();
                 tblAcquisitionSource.setName(acquistionEventSource.getAcquisitionEventSource().getName());
             }
@@ -361,6 +356,49 @@ public class LivingPlantManager {
 
             // save acquisition
             em.persist(tblAcquisitionEventSource);
+        }
+
+        TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
+        specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, tblBotanicalObject.getId()));
+
+        // Deleted Entries remove from DB
+        List<SpecimenResult> specimenResults = SpecimenResult.fromList(specimenQuery.getResultList());
+        for (SpecimenResult specimenResult : specimenResults) {
+            Boolean contains = false;
+            for (SpecimenResult specimen : livingPlantResult.getSpecimensList()) {
+                if (specimen.getSpecimenId() != null && Objects.equals(specimen.getSpecimenId(), specimenResult.getSpecimenId())) {
+                    contains = true;
+                }
+            }
+            if (!contains) {
+                TblSpecimen tblSpecimen = em.find(TblSpecimen.class, specimenResult.getSpecimenId());
+                tblDerivative = tblSpecimen.getTblDerivative();
+                em.remove(tblSpecimen);
+                em.remove(tblDerivative);
+            }
+        }
+
+        // save specimen
+        for (SpecimenResult specimenResult : livingPlantResult.getSpecimensList()) {
+            if (specimenResult.getSpecimenId() == null) {
+                tblDerivative = new TblDerivative();
+                tblLivingPlant.setTblDerivative(tblDerivative);
+                tblDerivative.setCount(livingPlantResult.getCount());
+                tblDerivative.setPrice(livingPlantResult.getPrice());
+                tblDerivative.setOrganisationId(em.find(TblOrganisation.class, livingPlantResult.getOrganisation().getOrganisationId()));
+                tblDerivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 3L));
+                tblDerivative.setBotanicalObjectId(tblBotanicalObject);
+                em.persist(tblDerivative);
+                TblSpecimen tblSpecimen = new TblSpecimen();
+                tblSpecimen.setSpecimenId(tblDerivative.getDerivativeId());
+                tblSpecimen.setHerbarNumber(specimenResult.getHerbarNumber());
+                tblSpecimen.setTblDerivative(tblDerivative);
+                em.persist(tblSpecimen);
+            } else {
+                TblSpecimen tblSpecimen = em.find(TblSpecimen.class, specimenResult.getSpecimenId());
+                tblSpecimen.setHerbarNumber(specimenResult.getHerbarNumber());
+                em.merge(tblSpecimen);
+            }
         }
 
         // make sure changes are flushed to the database

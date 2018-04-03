@@ -20,14 +20,14 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.jacq.common.manager.DerivativeSearchManager;
+import org.jacq.common.manager.BaseDerivativeManager;
 
 /**
  *
  * @author wkoller
  */
 @ManagedBean
-public class SearchManager extends DerivativeSearchManager {
+public class SearchManager extends BaseDerivativeManager {
 
     @PersistenceContext
     protected EntityManager em;

@@ -68,4 +68,45 @@ public class VegetativeResult extends BotanicalObjectDerivative {
 
         return vegetativeList;
     }
+
+    public Long getVegetativeId() {
+        return vegetativeId;
+    }
+
+    public void setVegetativeId(Long vegetativeId) {
+        this.vegetativeId = vegetativeId;
+    }
+
+    public Date getCultivationDate() {
+        return cultivationDate;
+    }
+
+    public void setCultivationDate(Date cultivationDate) {
+        this.cultivationDate = cultivationDate;
+    }
+
+    public boolean isIndexSeminum() {
+        return indexSeminum;
+    }
+
+    public void setIndexSeminum(boolean indexSeminum) {
+        this.indexSeminum = indexSeminum;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public PhenologyResult getPhenology() {
+        return phenology;
+    }
+
+    public void setPhenology(PhenologyResult phenology) {
+        this.phenology = phenology;
+    }
+
 }

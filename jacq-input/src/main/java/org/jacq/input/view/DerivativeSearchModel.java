@@ -16,6 +16,7 @@
 package org.jacq.input.view;
 
 import java.io.Serializable;
+import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 
@@ -42,6 +43,7 @@ public class DerivativeSearchModel implements Serializable {
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
     protected int callFlag; // Flag 0 User Organisation gets added in Search and 1 not
+    protected LocationResult gatheringLocation;
 
     public String getPlaceNumber() {
         return placeNumber;
@@ -117,7 +119,8 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedOrganisation != null) {
             this.organisationId = selectedOrganisation.getOrganisationId();
-        } else {
+        }
+        else {
             this.organisationId = null;
         }
     }
@@ -131,7 +134,8 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedScientificName != null) {
             this.scientificNameId = selectedScientificName.getScientificNameId();
-        } else {
+        }
+        else {
             this.scientificNameId = null;
         }
     }
@@ -164,4 +168,19 @@ public class DerivativeSearchModel implements Serializable {
         this.indexSeminumFilter = indexSeminumFilter;
     }
 
+    public LocationResult getGatheringLocation() {
+        return gatheringLocation;
+    }
+
+    public void setGatheringLocation(LocationResult gatheringLocation) {
+        this.gatheringLocation = gatheringLocation;
+    }
+
+    public String getGatheringLocationName() {
+        if (this.gatheringLocation != null) {
+            return this.gatheringLocation.getLocation();
+        }
+
+        return null;
+    }
 }

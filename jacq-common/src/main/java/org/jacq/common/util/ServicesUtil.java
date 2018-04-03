@@ -15,8 +15,13 @@
  */
 package org.jacq.common.util;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.client.ClientRequestFilter;
 import org.jacq.common.external.rest.GeoNamesService;
 import org.jacq.common.external.rest.ImageServer;
@@ -34,6 +39,7 @@ import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.output.SearchService;
 import org.jacq.common.rest.provider.CustomDateParamConverterProvider;
+import org.jacq.common.rest.report.LabelService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -48,6 +54,7 @@ public class ServicesUtil {
     private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
     private static final String JACQ_SERVICE_NAMES_URL = System.getProperty("jacq.serviceNamesUrl");
     private static final String JACQ_SERVICE_OUTPUT_URL = System.getProperty("jacq.serviceOutputUrl");
+    private static final String JACQ_SERVICE_REPORT_URL = System.getProperty("jacq.serviceReportUrl");
 
     protected static List<ClientRequestFilter> clientRequestFilters = new ArrayList<>();
 
@@ -109,6 +116,28 @@ public class ServicesUtil {
 
     public static GatheringService getGatheringService() {
         return getProxy(GatheringService.class, JACQ_SERVICE_URL);
+    }
+
+    public static LabelService getLabelService() {
+        return getProxy(LabelService.class, JACQ_SERVICE_REPORT_URL);
+    }
+
+    public static String getWorkLabelURL(String type, Long derivativeId) {
+        try {
+            Map<String, Object> templateParams = new HashMap<>();
+            templateParams.put("type", type);
+            templateParams.put("derivative_id", derivativeId);
+
+            Method workLabelMethod = LabelService.class.getMethod("getWork", String.class, Long.class);
+            ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
+            ResteasyWebTarget resteasyWebTarget = resteasyClient.target(JACQ_SERVICE_REPORT_URL).path(LabelService.class).path(workLabelMethod).resolveTemplates(templateParams);
+
+            return resteasyWebTarget.getUri().toString();
+        } catch (Exception ex) {
+            Logger.getLogger(ServicesUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 
     /**

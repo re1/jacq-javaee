@@ -13,45 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.input.security;
+package org.jacq.service.report.security;
 
-import org.jacq.common.security.JacqCallerPrincipal;
 import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
 import javax.enterprise.context.ApplicationScoped;
-import javax.security.enterprise.authentication.mechanism.http.CustomFormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
+import org.jacq.common.security.JacqCallerPrincipal;
 import org.jacq.common.util.ServicesUtil;
 
 /**
  *
  * @author wkoller
  */
-@CustomFormAuthenticationMechanismDefinition(
-        loginToContinue = @LoginToContinue(
-                loginPage = "/pages/login.xhtml",
-                errorPage = "", // DRAFT API - must be set to empty for now
-                useForwardToLogin = false
-        )
-)
+@BasicAuthenticationMechanismDefinition(realmName = "JACQ Report Service")
 @ApplicationScoped
 @DeclareRoles({"authenticated", "aclBotanicalObject", "aclClassification", "aclOrganisation", "assignLabelType", "clearLabelType", "createLivingplant", "createOrganisation",
     "createScientificNameInformation", "createTreeRecordFile", "createUser", "deleteLivingplant", "deleteOrganisation", "deleteTreeRecordFile", "deleteUser", "indexSeminum", "inventory",
     "readLivingplant", "showClassificationBrowser", "showStatistics"})
-public class InputIdentityStore implements IdentityStore {
+public class ReportIdentityStore implements IdentityStore {
 
     protected UserService userService;
 
     @PostConstruct
     public void init() {
         this.userService = ServicesUtil.getUserService();
+
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential usernamePasswordCredential) {
