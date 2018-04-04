@@ -15,14 +15,18 @@
  */
 package org.jacq.input.controller;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.ws.rs.core.Response;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.PhenologyResult;
+import org.jacq.common.model.rest.SeparationResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.util.ServicesUtil;
 
 /**
@@ -31,11 +35,12 @@ import org.jacq.common.util.ServicesUtil;
  */
 @ManagedBean
 @ViewScoped
-public class VegetativeEditController {
+public class VegetativeEditController implements Serializable {
 
     protected Long vegetativeId;
 
     protected DerivativeService derivativeService;
+    protected OrganisationService organisationService;
 
     protected VegetativeResult vegetative;
 
@@ -44,10 +49,46 @@ public class VegetativeEditController {
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
+        this.organisationService = ServicesUtil.getOrganisationService();
         this.vegetative = new VegetativeResult();
 
         // load all lookup tables
         this.phenologies = this.derivativeService.findAllPhenology();
+    }
+
+    /**
+     * Save the vegetative derivative
+     */
+    public void save() {
+        this.vegetative = this.derivativeService.vegetativeSave(this.vegetative);
+    }
+
+    /**
+     * Called when the users wants to add a new vegetative derivative
+     *
+     * @param derivativeId
+     */
+    public void setDerivativeId(Long derivativeId) {
+        this.vegetative = new VegetativeResult();
+        this.vegetative.setParentDerivativeId(derivativeId);
+    }
+
+    /**
+     * Auto-Completer for organisation entries
+     *
+     * @param query
+     * @return
+     */
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return this.organisationService.search(null, query, null, null, null, null, null, 0, 10);
+    }
+
+    public void addSeparation() {
+        this.vegetative.getSeparations().add(new SeparationResult());
+    }
+
+    public void removeSeparation(SeparationResult separationResult) {
+        this.vegetative.getSeparations().remove(separationResult);
     }
 
     /*

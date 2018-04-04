@@ -54,20 +54,16 @@
                     <h:outputText value="#{vegetative.accessionNumber}" />
                 </div>
                 <div class="ui-g-3">
-                    <h:outputText value="#{vegetative.organisationDescription}" />
+                    <h:outputText value="#{vegetative.organisation.description}" />
                 </div>
                 <div class="ui-g-3">
-                    <p:commandButton icon="ui-icon-edit" type="button" action="#{vegetativeEditController.setVegetative(vegetative)}" oncomplete="PF('vegetativeDialog').show();" />
+                    <p:commandButton icon="ui-icon-pencil" action="#{vegetativeEditController.setVegetative(vegetative)}" process="@this" update="jacq_form-vegetative jacq_form:messages" oncomplete="PF('vegetativeDialog').show();" />
                 </div>
             </div>
         </ui:repeat>
 
-        <p:dialog widgetVar="vegetativeDialog">
-            <ui:include src="../../derivative/vegetative/edit.xhtml" />
-        </p:dialog>
-
         <div class="ui-g-12 ui-g-nopad">
-            <p:commandButton icon="ui-icon-plus" type="button" onclick="PF('vegetativeDialog').show();" />
+            <p:commandButton icon="ui-icon-plus" action="#{vegetativeEditController.setDerivativeId(livingPlantEditController.livingPlantResult.derivativeId)}" process="@this" update="jacq_form-vegetative jacq_form:messages" oncomplete="PF('vegetativeDialog').show();" />
         </div>
 
         <div class="ui-g-12">

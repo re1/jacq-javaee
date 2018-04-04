@@ -129,6 +129,18 @@ public interface DerivativeService {
     public List<VegetativeResult> vegetativeFind(@QueryParam("derivativeId") Long derivativeId);
 
     /**
+     * Save a livingplant entry
+     *
+     * @param vegetativeResult
+     * @return
+     */
+    @POST
+    @Path("/vegetative/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VegetativeResult vegetativeSave(VegetativeResult vegetativeResult);
+
+    /**
      * Find all specimenId derivatives for a given botanicalobject
      *
      * @param specimenId

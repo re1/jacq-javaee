@@ -734,10 +734,15 @@
                     </div>
                 </h:panelGroup>
                 <div class="jacq-buttons">
-                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['edit']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
                     <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
                 </div>
             </h:panelGroup>
+        </ui:define>
+        <ui:define name="content_noform">
+            <p:dialog widgetVar="vegetativeDialog" width="80%" modal="true">
+                <ui:include src="../derivative/vegetative/edit.xhtml" />
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

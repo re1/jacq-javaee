@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.SpecimenResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.manager.LivingPlantManager;
+import org.jacq.service.manager.VegetativeManager;
 
 /**
  * Implementation of derivative service
@@ -49,6 +50,9 @@ public class DerivativeServiceImpl implements DerivativeService {
 
     @Inject
     protected LivingPlantManager livingPlantManager;
+
+    @Inject
+    protected VegetativeManager vegetativeManager;
 
     /**
      * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
@@ -152,8 +156,19 @@ public class DerivativeServiceImpl implements DerivativeService {
         return derivativeManager.vegetativeFind(derivativeId);
     }
 
+    /**
+     * @see DerivativeService#specimenFind(java.lang.Long)
+     */
     @Override
     public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
         return derivativeManager.specimenFind(botanicalObjectId);
+    }
+
+    /**
+     * @see DerivativeService#vegetativeSave(org.jacq.common.model.rest.VegetativeResult)
+     */
+    @Override
+    public VegetativeResult vegetativeSave(VegetativeResult vegetativeResult) {
+        return vegetativeManager.vegetativeSave(vegetativeResult);
     }
 }
