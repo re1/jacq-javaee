@@ -84,8 +84,7 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -174,8 +173,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -249,8 +248,7 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
      *
      * @param derivativeId
      */
@@ -354,9 +352,8 @@ public class LivingPlantEditController {
      * Called when user changes the tab, used to dynamically load content
      */
     public void onTabChange(TabChangeEvent event) {
-        if (event.getTab() != null && this.vegetativeList == null) {
-            this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
-            this.specimenList = this.derivativeService.specimenFind(this.livingPlantResult.getBotanicalObjectId());
+        if (event.getTab() != null && event.getTab().getId().equals("tabDerivative") && this.vegetativeList == null) {
+            this.refreshDerivatives();
         }
     }
 
@@ -384,6 +381,14 @@ public class LivingPlantEditController {
         byte[] binaryStream = response.readEntity(byte[].class);
 
         return new DefaultStreamedContent(this.labelService.getWork(this.livingPlantResult.getType(), this.livingPlantResult.getDerivativeId()).readEntity(InputStream.class), LabelService.APPLICATION_PDF, "work_label.pdf");
+    }
+
+    /**
+     * Refresh derivatives information
+     */
+    public void refreshDerivatives() {
+        this.vegetativeList = this.derivativeService.vegetativeFind(this.livingPlantResult.getDerivativeId());
+        this.specimenList = this.derivativeService.specimenFind(this.livingPlantResult.getBotanicalObjectId());
     }
 
     /*

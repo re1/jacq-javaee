@@ -6,83 +6,117 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:panelGroup styleClass="ui-g" id="derivative">
-        <div class="ui-g-3">
-            <h:outputText value="#{messages['livingplant.accessionnumber']}" />
-        </div>
-        <div class="ui-g-3">
-            <h:inputText value="#{vegetativeEditController.vegetative.accessionNumber}" />
-        </div>
-        <div class="ui-g-3">
-            <h:outputText value="#{messages['livingplant.location']}" />
-        </div>
-        <div class="ui-g-3">
-            <h:inputText value="#{vegetativeEditController.vegetative.organisationDescription}" />
-        </div>
+    <h:form id="jacq_form-vegetative">
+        <h:panelGroup styleClass="ui-g" id="vegetative">
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+            </div>
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['auto']}" rendered="#{vegetativeEditController.vegetative.accessionNumber == null}" />
+                <h:outputText value="#{vegetativeEditController.vegetative.accessionNumber}" rendered="#{vegetativeEditController.vegetative.accessionNumber != null}" />
+            </div>
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['livingplant.location']}" />
+            </div>
+            <div class="ui-g-3">
+                <p:autoComplete id="organisation" value="#{vegetativeEditController.vegetative.organisation}" completeMethod="#{vegetativeEditController.completeOrganisation}"
+                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
+                    <p:column>
+                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                    </p:column>
+                </p:autoComplete>
+                <p:message for="organisation" />
+            </div>
 
-        <div class="ui-g-3">
-            <h:outputText value="#{messages['livingplant.phenology']}" />
-        </div>
-        <div class="ui-g-3">
-            <p:selectOneMenu value="#{vegetativeEditController.vegetative.phenology.phenologyId}">
-                <f:selectItems value="#{vegetativeEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
-            </p:selectOneMenu>
-        </div>
-        <div class="ui-g-3">
-            <h:outputText value="#{messages['derivative.propagation_date']}" />
-        </div>
-        <div class="ui-g-3">
-            <p:calendar value="#{vegetativeEditController.vegetative.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
-        </div>
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['livingplant.phenology']}" />
+            </div>
+            <div class="ui-g-3">
+                <p:selectOneMenu value="#{vegetativeEditController.vegetative.phenology.phenologyId}">
+                    <f:selectItems value="#{vegetativeEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['derivative.propagation_date']}" />
+            </div>
+            <div class="ui-g-3">
+                <p:calendar value="#{vegetativeEditController.vegetative.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
+            </div>
 
-        <div class="ui-g-3">
-            <h:outputText value="#{messages['livingplant.indexseminum']}" />
-        </div>
-        <div cass="ui-g-3">
-            <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.indexSeminum}" />
-        </div>
+            <div class="ui-g-3">
+                <h:outputText value="#{messages['livingplant.indexseminum']}" />
+            </div>
+            <div cass="ui-g-3">
+                <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.indexSeminum}" />
+            </div>
 
-        <div class="ui-g-12 ui-g-nopad">
-            <h3>#{messages['livingplant.separation']}</h3>
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <div class="ui-g">
-                <div class="ui-g-6">
-                    <h:outputText value="#{messages['livingplant.separated']}" />
-                </div>
-                <div class="ui-g-6">
-                    <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.separated}" />
+            <div class="ui-g-12 ui-g-nopad">
+                <h3>#{messages['livingplant.separation']}</h3>
+            </div>
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.separated']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.separated}" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <div class="ui-g">
-                <div class="ui-g-3">
-                    <h:outputText value="#{messages['livingplant.separation.type']}" />
-                </div>
-                <div class="ui-g-3">
-                    <h:outputText value="#{messages['livingplant.separation.date']}" />
-                </div>
-                <div class="ui-g-5">
-                    <h:outputText value="#{messages['livingplant.separation.annotation']}" />
-                </div>
-                <div class="ui-g-1">
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-3">
+                        <h:outputText value="#{messages['livingplant.separation.type']}" />
+                    </div>
+                    <div class="ui-g-3">
+                        <h:outputText value="#{messages['livingplant.separation.date']}" />
+                    </div>
+                    <div class="ui-g-5">
+                        <h:outputText value="#{messages['livingplant.separation.annotation']}" />
+                    </div>
+                    <div class="ui-g-1">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <h:panelGroup layout="block" styleClass="ui-g">
-            </h:panelGroup>
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <p:commandButton icon="ui-icon-plus" />
-        </div>
+            <div class="ui-g-12 ui-g-nopad">
+                <h:panelGroup id="vegetative_separations" layout="block" styleClass="ui-g">
+                    <ui:repeat value="#{vegetativeEditController.vegetative.separations}" var="separation">
+                        <div class="ui-g-3">
+                            <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
+                                <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{separationType.type}" itemValue="#{separationType.separationTypeId}" />
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-3">
+                            <p:calendar value="#{separation.date}" pattern="yyyy-MM-dd" mask="true" />
+                        </div>
+                        <div class="ui-g-5">
+                            <p:inputText value="#{separation.annotation}" />
+                        </div>
+                        <div class="ui-g-1">
+                            <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{vegetativeEditController.removeSeparation(separation)}" />
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+            </div>
+            <div class="ui-g-12 ui-g-nopad">
+                <p:commandButton icon="ui-icon-plus" update="vegetative_separations" action="#{vegetativeEditController.addSeparation}" />
+            </div>
 
-        <div class="ui-g-12 ui-g-nopad">
-            <h3>#{messages['livingplant.annotation']}</h3>
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <h:inputTextarea value="#{vegetativeEditController.vegetative.annotation}" />
-        </div>
-    </h:panelGroup>
+            <div class="ui-g-12 ui-g-nopad">
+                <h3>#{messages['livingplant.annotation']}</h3>
+            </div>
+            <div class="ui-g-12 ui-g-nopad">
+                <h:inputTextarea value="#{vegetativeEditController.vegetative.annotation}" />
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-12" style="text-align: right;">
+                    <p:remoteCommand name="refreshDerivatives" action="#{livingPlantEditController.refreshDerivatives()}" update="jacq_form:tabView:derivatives" process="vegetative" oncomplete="PF('vegetativeDialog').hide();" />
+                    <p:commandButton id="saveVegetative" icon="ui-icon-disk" value="#{messages['save']}" action="#{vegetativeEditController.save}" oncomplete="refreshDerivatives();" process="vegetative" />
+                </div>
+            </div>
+        </h:panelGroup>
+
+        <p:blockUI block="vegetative" trigger="saveVegetative" />
+    </h:form>
 </ui:composition>

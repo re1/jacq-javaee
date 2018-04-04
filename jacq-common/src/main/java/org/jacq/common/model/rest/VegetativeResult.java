@@ -30,12 +30,17 @@ public class VegetativeResult extends BotanicalObjectDerivative {
 
     protected Long vegetativeId;
     protected Date cultivationDate;
-    protected boolean indexSeminum;
     protected String annotation;
     protected PhenologyResult phenology;
+    protected OrganisationResult organisation;
+    protected Long parentDerivativeId;
+
+    protected List<SeparationResult> separations;
 
     public VegetativeResult() {
         this.phenology = new PhenologyResult();
+        this.organisation = new OrganisationResult();
+        this.separations = new ArrayList<>();
     }
 
     public VegetativeResult(TblVegetative tblVegetative) {
@@ -43,11 +48,15 @@ public class VegetativeResult extends BotanicalObjectDerivative {
             this.vegetativeId = tblVegetative.getVegetativeId();
             super.setAccessionNumber(String.format("%07d-%03d", tblVegetative.getTblDerivative().getParentDerivativeId().getTblLivingPlant().getAccessionNumber(), tblVegetative.getAccessionNumber()));
             this.cultivationDate = tblVegetative.getCultivationDate();
-            this.indexSeminum = tblVegetative.getIndexSeminum();
+            super.setIndexSeminum(tblVegetative.getIndexSeminum());
             this.annotation = tblVegetative.getAnnotation();
             super.setPlaceNumber(tblVegetative.getPlaceNumber());
             super.setSeparated(tblVegetative.getSeparated());
-            this.phenology = new PhenologyResult(tblVegetative.getTblDerivative().getBotanicalObjectId().getPhenologyId());
+            this.phenology = new PhenologyResult(tblVegetative.getPhenologyId());
+            this.organisation = new OrganisationResult(tblVegetative.getTblDerivative().getOrganisationId());
+            this.parentDerivativeId = tblVegetative.getTblDerivative().getParentDerivativeId().getDerivativeId();
+
+            this.separations = SeparationResult.fromList(tblVegetative.getTblDerivative().getTblSeparationList());
         }
     }
 
@@ -85,14 +94,6 @@ public class VegetativeResult extends BotanicalObjectDerivative {
         this.cultivationDate = cultivationDate;
     }
 
-    public boolean isIndexSeminum() {
-        return indexSeminum;
-    }
-
-    public void setIndexSeminum(boolean indexSeminum) {
-        this.indexSeminum = indexSeminum;
-    }
-
     public String getAnnotation() {
         return annotation;
     }
@@ -109,4 +110,27 @@ public class VegetativeResult extends BotanicalObjectDerivative {
         this.phenology = phenology;
     }
 
+    public OrganisationResult getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(OrganisationResult organisation) {
+        this.organisation = organisation;
+    }
+
+    public List<SeparationResult> getSeparations() {
+        return separations;
+    }
+
+    public void setSeparations(List<SeparationResult> separations) {
+        this.separations = separations;
+    }
+
+    public Long getParentDerivativeId() {
+        return parentDerivativeId;
+    }
+
+    public void setParentDerivativeId(Long parentDerivativeId) {
+        this.parentDerivativeId = parentDerivativeId;
+    }
 }
