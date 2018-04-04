@@ -63,7 +63,11 @@ public class VegetativeManager {
         tblDerivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 2L));
         tblDerivative.setOrganisationId(em.find(TblOrganisation.class, vegetativeResult.getOrganisation().getOrganisationId()));
 
+        // persist derivative
         em.persist(tblDerivative);
+
+        // we need to manually assign the correct derivative id
+        tblVegetative.setVegetativeId(tblDerivative.getDerivativeId());
         em.persist(tblVegetative);
 
         // save separations
@@ -85,6 +89,13 @@ public class VegetativeManager {
             // save separation
             em.persist(tblSeparation);
         }
+
+        // make sure all changes are written
+        em.flush();
+
+        // refresh botanical object in order to resolve manual relations
+        em.refresh(tblDerivative.getBotanicalObjectId());
+        em.refresh(tblVegetative);
 
         return new VegetativeResult(tblVegetative);
     }

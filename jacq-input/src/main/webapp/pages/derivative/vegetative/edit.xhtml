@@ -111,9 +111,12 @@
 
             <div class="ui-g-12 ui-g-nopad">
                 <div class="ui-g-12" style="text-align: right;">
-                    <p:commandButton icon="ui-icon-disk" value="#{messages['save']}" action="#{vegetativeEditController.save}" oncomplete="PF('vegetativeDialog').hide();" process="vegetative" update="jacq_form:tabView:derivatives" />
+                    <p:remoteCommand name="refreshDerivatives" action="#{livingPlantEditController.refreshDerivatives()}" update="jacq_form:tabView:derivatives" process="vegetative" oncomplete="PF('vegetativeDialog').hide();" />
+                    <p:commandButton id="saveVegetative" icon="ui-icon-disk" value="#{messages['save']}" action="#{vegetativeEditController.save}" oncomplete="refreshDerivatives();" process="vegetative" />
                 </div>
             </div>
         </h:panelGroup>
+
+        <p:blockUI block="vegetative" trigger="saveVegetative" />
     </h:form>
 </ui:composition>
