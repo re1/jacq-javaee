@@ -56,9 +56,10 @@ import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -113,8 +114,7 @@ public class DerivativeManager extends BaseDerivativeManager {
                 return livingPlantResult;
 
             }
-        }
-        else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
+        } else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
             TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
             if (tblVegetative != null) {
                 return new VegetativeResult(tblVegetative);
@@ -164,10 +164,10 @@ public class DerivativeManager extends BaseDerivativeManager {
      * @return
      */
     @Transactional
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<BotanicalObjectDownloadResult> botanicalObjectDownloadResultList = new ArrayList<>();
 
-        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, orderColumn, orderDirection, offset, count);
+        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, orderColumn, orderDirection, offset, count);
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
@@ -242,7 +242,8 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important parameter
+     * Small helper function for fetching relevancy type based on important
+     * parameter
      *
      * @param important
      * @return
