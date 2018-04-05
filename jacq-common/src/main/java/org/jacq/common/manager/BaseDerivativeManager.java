@@ -25,17 +25,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
+import org.jacq.common.model.jpa.TblNomName;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs Note: Make sure the entity manager is set prior calling any
- * functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs Note: Make sure the entity manager is set prior calling any functions
  *
  * @author wkoller
  */
@@ -61,6 +60,7 @@ public abstract class BaseDerivativeManager {
     protected static final String FILTER_GATHERING_LOCATION = "`gathering_location` = ?";
     protected static final String FILTER_EXHIBITION = "`exhibition` is not null";
     protected static final String FILTER_WORKING = "`working` is not null";
+    protected static final String FILTER_SCIENTIFIC_NAME_ID_LIST = "`scientific_name_id` IN (SELECT `name_id` FROM `mig_nom_name` WHERE `substantive_id` = ?)";
 
     protected EntityManager entityManager;
 
@@ -75,13 +75,12 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -97,12 +96,18 @@ public abstract class BaseDerivativeManager {
             organisationIdList.add(organisationId);
         }
 
+        // find substantive id if using classification search
+        Long substantiveId = null;
+        if (classification != null && classification) {
+            substantiveId = this.getSubstantiveId(scientificNameId);
+        }
+
         // translate order column into database column
         orderColumn = getColumnName(orderColumn);
 
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, orderColumn, orderDirection, offset, count);
-        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, orderColumn, orderDirection, offset, count);
+        String livingQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, substantiveId, orderColumn, orderDirection, offset, count);
+        String vegetativeQueryString = applySearchCriteria(SELECT_FIELDS + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, substantiveId, orderColumn, orderDirection, offset, count);
 
         String botanicalObjectSearchQueryString = "SELECT * FROM (SELECT * FROM (" + livingQueryString + ") AS tmp_list_living UNION ALL SELECT * FROM (" + vegetativeQueryString + ") AS tmp_list_vegetative) AS tmp_list_tbl";
 
@@ -142,7 +147,7 @@ public abstract class BaseDerivativeManager {
      * @return
      */
     @Transactional
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working) {
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification) {
         List<Object> params = new ArrayList<>();
 
         List<Long> organisationIdList = new ArrayList<>();
@@ -154,9 +159,15 @@ public abstract class BaseDerivativeManager {
             organisationIdList.add(organisationId);
         }
 
+        // find substantive id if using classification search
+        Long substantiveId = null;
+        if (classification != null && classification) {
+            substantiveId = this.getSubstantiveId(scientificNameId);
+        }
+
         // apply search criteria to all derivative views
-        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, null, null, null, null);
-        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, null, null, null, null);
+        String livingQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_LIVING, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, substantiveId, null, null, null, null);
+        String vegetativeQueryString = applySearchCriteria(SELECT_COUNT + " " + FROM_VEGETATIVE, params, type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationIdList, indexSeminum, gatheringLocation, exhibition, working, substantiveId, null, null, null, null);
 
         String botanicalObjectSearchQueryString = "SELECT SUM(`row_count`) FROM (" + livingQueryString + " UNION ALL " + vegetativeQueryString + ") AS tmp_count_tbl";
 
@@ -179,7 +190,7 @@ public abstract class BaseDerivativeManager {
      * @param count
      * @return
      */
-    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    protected String applySearchCriteria(String baseSql, List<Object> params, String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, List<Long> organisationIdList, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Long classificationSubstantiveId, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         String queryString = baseSql;
         queryString += " WHERE 1 ";
 
@@ -204,8 +215,15 @@ public abstract class BaseDerivativeManager {
             params.add(separated);
         }
         if (scientificNameId != null) {
-            queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID;
-            params.add(scientificNameId);
+            // check for substantive (= classification) search
+            if (classificationSubstantiveId != null) {
+                queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID_LIST;
+                params.add(classificationSubstantiveId);
+            }
+            else {
+                queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID;
+                params.add(scientificNameId);
+            }
         }
         if (organisationIdList != null && organisationIdList.size() > 0) {
             int i = 0;
@@ -213,7 +231,8 @@ public abstract class BaseDerivativeManager {
             while (i < organisationIdList.size()) {
                 if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
-                } else {
+                }
+                else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
@@ -256,9 +275,11 @@ public abstract class BaseDerivativeManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        } else if (offset != null) {
+        }
+        else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        } else if (count != null) {
+        }
+        else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -266,8 +287,7 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a
-     * given column attribute name
+     * Helper function for retrieving the actual database column name for a given column attribute name
      *
      * @param attributeName
      * @return
@@ -306,4 +326,21 @@ public abstract class BaseDerivativeManager {
 
     }
 
+    /**
+     * Small helper for finding the substantive id of a given name entry
+     *
+     * @param nameId
+     * @return
+     */
+    @Transactional
+    protected Long getSubstantiveId(Long nameId) {
+        if (nameId != null) {
+            TblNomName tblNomName = entityManager.find(TblNomName.class, nameId);
+            if (tblNomName != null) {
+                return tblNomName.getSubstantiveId().getSubstantiveId();
+            }
+        }
+
+        return null;
+    }
 }

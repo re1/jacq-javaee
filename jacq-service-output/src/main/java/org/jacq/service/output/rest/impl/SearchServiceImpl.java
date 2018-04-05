@@ -43,7 +43,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public List<BotanicalObjectDerivative> find(Long scientificNameId, Long organisationId, Boolean hasImage, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, orderColumn, orderDirection, offset, count);
+        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -51,7 +51,7 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public int count(Long scientificNameId, Long organisationId, Boolean hasImage) {
-        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null);
+        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null);
     }
 
     /**

@@ -53,8 +53,7 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
     protected DerivativeSearchModel derivativeSearchModel;
 
     /**
-     * Default constructor, needs a reference to the derivative service for
-     * later querying
+     * Default constructor, needs a reference to the derivative service for later querying
      *
      * @param derivativeService
      */
@@ -89,32 +88,38 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         if (this.derivativeSearchModel.getSeparated()
                 == 1) {
             this.derivativeSearchModel.setSeparatedFilter(true);
-        } else if (this.derivativeSearchModel.getSeparated()
+        }
+        else if (this.derivativeSearchModel.getSeparated()
                 == 2) {
             this.derivativeSearchModel.setSeparatedFilter(false);
-        } else {
+        }
+        else {
             this.derivativeSearchModel.setSeparatedFilter(null);
         }
 
         if (this.derivativeSearchModel.getIndexSeminum()
                 == 1) {
             this.derivativeSearchModel.setIndexSeminumFilter(true);
-        } else if (this.derivativeSearchModel.getIndexSeminum()
+        }
+        else if (this.derivativeSearchModel.getIndexSeminum()
                 == 2) {
             this.derivativeSearchModel.setIndexSeminumFilter(false);
-        } else {
+        }
+        else {
             this.derivativeSearchModel.setIndexSeminumFilter(null);
         }
 
         if (this.derivativeSearchModel.getExhibitionFilter() != null && this.derivativeSearchModel.getExhibitionFilter()) {
             this.derivativeSearchModel.setExhibition(1L);
-        } else {
+        }
+        else {
             this.derivativeSearchModel.setExhibition(null);
         }
 
         if (this.derivativeSearchModel.getWorkingFilter() != null && this.derivativeSearchModel.getWorkingFilter()) {
             this.derivativeSearchModel.setWorking(2L);
-        } else {
+        }
+        else {
             this.derivativeSearchModel.setWorking(null);
         }
 
@@ -127,13 +132,13 @@ public class LazyDerivativeDataModel extends LazyDataModel<BotanicalObjectDeriva
         }
 
         // get count first
-        int rowCount = this.derivativeService.count(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId(), this.derivativeSearchModel.getHierarchic(), this.derivativeSearchModel.getIndexSeminumFilter(), this.derivativeSearchModel.getGatheringLocationName(), (this.derivativeSearchModel.getExhibition() != null) ? this.derivativeSearchModel.getExhibition() : null, (this.derivativeSearchModel.getWorking() != null) ? this.derivativeSearchModel.getWorking() : null);
+        int rowCount = this.derivativeService.count(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId(), this.derivativeSearchModel.getHierarchic(), this.derivativeSearchModel.getIndexSeminumFilter(), this.derivativeSearchModel.getGatheringLocationName(), (this.derivativeSearchModel.getExhibition() != null) ? this.derivativeSearchModel.getExhibition() : null, (this.derivativeSearchModel.getWorking() != null) ? this.derivativeSearchModel.getWorking() : null, this.derivativeSearchModel.getClassification());
 
         this.setRowCount(rowCount);
 
         List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.derivativeService.find(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId(), this.derivativeSearchModel.getHierarchic(), this.derivativeSearchModel.getIndexSeminumFilter(), this.derivativeSearchModel.getGatheringLocationName(), (this.derivativeSearchModel.getExhibition() != null) ? this.derivativeSearchModel.getExhibition() : null, (this.derivativeSearchModel.getWorking() != null) ? this.derivativeSearchModel.getWorking() : null, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
+            results = this.derivativeService.find(this.derivativeSearchModel.getType(), this.derivativeSearchModel.getId(), this.derivativeSearchModel.getPlaceNumber(), this.derivativeSearchModel.getAccessionNumber(), this.derivativeSearchModel.getSeparatedFilter(), this.derivativeSearchModel.getScientificNameId(), this.derivativeSearchModel.getOrganisationId(), this.derivativeSearchModel.getHierarchic(), this.derivativeSearchModel.getIndexSeminumFilter(), this.derivativeSearchModel.getGatheringLocationName(), (this.derivativeSearchModel.getExhibition() != null) ? this.derivativeSearchModel.getExhibition() : null, (this.derivativeSearchModel.getWorking() != null) ? this.derivativeSearchModel.getWorking() : null, this.derivativeSearchModel.getClassification(), sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;

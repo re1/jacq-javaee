@@ -48,6 +48,7 @@ public class DerivativeSearchModel implements Serializable {
     protected LocationResult gatheringLocation;
     protected Long exhibition;
     protected Long working;
+    protected Boolean classification;
 
     public String getPlaceNumber() {
         return placeNumber;
@@ -123,7 +124,8 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedOrganisation != null) {
             this.organisationId = selectedOrganisation.getOrganisationId();
-        } else {
+        }
+        else {
             this.organisationId = null;
         }
     }
@@ -137,7 +139,8 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedScientificName != null) {
             this.scientificNameId = selectedScientificName.getScientificNameId();
-        } else {
+        }
+        else {
             this.scientificNameId = null;
         }
     }
@@ -218,4 +221,11 @@ public class DerivativeSearchModel implements Serializable {
         this.working = working;
     }
 
+    public Boolean getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Boolean classification) {
+        this.classification = classification;
+    }
 }
