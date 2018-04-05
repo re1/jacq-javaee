@@ -22,7 +22,11 @@
 .jacq-menu {
     position: fixed;
 }
-
+/*
+.active-menuitem > a {
+    font-style: italic;
+}
+*/
 .jacq-menu-gap {
     margin-left: 25%;
 }
