@@ -13,6 +13,7 @@
         <module>../jacq-output</module>
         <module>../jacq-service</module>
         <module>../jacq-service-report</module>
+        <module>../jacq-service-output</module>
     </modules>
 
     <build>

@@ -14,13 +14,5 @@
  * limitations under the License.
  */
 
-$(document).ready(function () {
 
-    $('.ui-menuitem-link').each(function () {
-        if (window.location.pathname.indexOf($(this).attr('href')) !== -1) {
-            $(this).css('background', '#67b021');//or add class
-        }
-    });
-
-});
 

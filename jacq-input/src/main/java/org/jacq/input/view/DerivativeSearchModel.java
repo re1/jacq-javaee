@@ -40,10 +40,15 @@ public class DerivativeSearchModel implements Serializable {
     protected Boolean separatedFilter;
     protected Boolean hierarchic;
     protected Boolean indexSeminumFilter;
+    protected Boolean exhibitionFilter;
+    protected Boolean workingFilter;
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
     protected int callFlag; // Flag 0 User Organisation gets added in Search and 1 not
     protected LocationResult gatheringLocation;
+    protected Long exhibition;
+    protected Long working;
+    protected Boolean classification;
 
     public String getPlaceNumber() {
         return placeNumber;
@@ -182,5 +187,45 @@ public class DerivativeSearchModel implements Serializable {
         }
 
         return null;
+    }
+
+    public Boolean getExhibitionFilter() {
+        return exhibitionFilter;
+    }
+
+    public void setExhibitionFilter(Boolean exhibitionFilter) {
+        this.exhibitionFilter = exhibitionFilter;
+    }
+
+    public Boolean getWorkingFilter() {
+        return workingFilter;
+    }
+
+    public void setWorkingFilter(Boolean workingFilter) {
+        this.workingFilter = workingFilter;
+    }
+
+    public Long getExhibition() {
+        return exhibition;
+    }
+
+    public void setExhibition(Long exhibition) {
+        this.exhibition = exhibition;
+    }
+
+    public Long getWorking() {
+        return working;
+    }
+
+    public void setWorking(Long working) {
+        this.working = working;
+    }
+
+    public Boolean getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Boolean classification) {
+        this.classification = classification;
     }
 }

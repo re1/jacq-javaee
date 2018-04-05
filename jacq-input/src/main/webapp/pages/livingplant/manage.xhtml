@@ -13,18 +13,24 @@
                     <h1>#{messages['livingplant.livingplantmanage']}</h1>
                 </div>
                 <div class="ui-g">
-                    <div class="ui-g-6 ui-g-nopad">
+                    <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
-                            <div class="ui-g-6">
+                            <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.scientificname']}" />
                             </div>
-                            <div class="ui-g-6">
+                            <div class="ui-g-3">
                                 <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
                                                 var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
                                     <p:column>
                                         <h:outputText value="#{scientificName.scientificName}" />
                                     </p:column>
                                 </p:autoComplete>
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.classification']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.classification}" />
                             </div>
                         </div>
                     </div>
@@ -100,7 +106,7 @@
                                 <h:outputText value="#{messages['livingplant.label']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectBooleanCheckbox value="label" />
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.workingFilter}" />
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.indexseminum']}" />
@@ -116,7 +122,7 @@
                                 <h:outputText value="#{messages['livingplant.exhibition']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:selectBooleanCheckbox value="exhibition" />
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.exhibitionFilter}" />
                             </div>
                         </div>
                     </div>

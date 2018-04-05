@@ -86,6 +86,10 @@ public class BotanicalObjectDerivative implements Serializable {
     private Boolean indexSeminum;
     @Column(name = "gathering_location")
     private String gatheringLocationName;
+    @Column(name = "exhibition")
+    private Long exhibition;
+    @Column(name = "working")
+    private Long working;
 
     public BotanicalObjectDerivative() {
     }
@@ -216,6 +220,22 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setGatheringLocationName(String gatheringLocationName) {
         this.gatheringLocationName = gatheringLocationName;
+    }
+
+    public Long getExhibition() {
+        return exhibition;
+    }
+
+    public void setExhibition(Long exhibition) {
+        this.exhibition = exhibition;
+    }
+
+    public Long getWorking() {
+        return working;
+    }
+
+    public void setWorking(Long working) {
+        this.working = working;
     }
 
 }
