@@ -20,15 +20,18 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.security.enterprise.authentication.mechanism.http.CustomFormAuthenticationMechanismDefinition;
 import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
+import org.apache.commons.codec.binary.Base64;
 import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.SessionManager;
 
 /**
  *
@@ -47,6 +50,9 @@ import org.jacq.common.util.ServicesUtil;
     "readLivingplant", "showClassificationBrowser", "showStatistics"})
 public class InputIdentityStore implements IdentityStore {
 
+    @Inject
+    protected SessionManager sessionController;
+
     protected UserService userService;
 
     @PostConstruct
@@ -64,7 +70,14 @@ public class InputIdentityStore implements IdentityStore {
             }
             userRoleHashSet.add("authenticated");
 
-            return new CredentialValidationResult(new JacqCallerPrincipal(user.getUsername(), user, usernamePasswordCredential.getPasswordAsString()), userRoleHashSet);
+            JacqCallerPrincipal jacqCallerPrincipal = new JacqCallerPrincipal(user.getUsername(), user, usernamePasswordCredential.getPasswordAsString());
+
+            // remember authorization header in session controller
+            sessionController.setAuthorizationHeader("Basic " + Base64.encodeBase64String((usernamePasswordCredential.getCaller() + ":" + usernamePasswordCredential.getPasswordAsString()).getBytes()));
+            // remember user object in session controller
+            sessionController.setUser(jacqCallerPrincipal.getUser());
+
+            return new CredentialValidationResult(jacqCallerPrincipal, userRoleHashSet);
         }
 
         return CredentialValidationResult.INVALID_RESULT;

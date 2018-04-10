@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.jacq.common.model.rest.UserResult;
 import org.jacq.input.view.DerivativeSearchModel;
 
@@ -38,10 +39,12 @@ public class SessionManager implements Serializable {
     protected DerivativeSearchModel derivativeSearchModel;
     protected String authorizationHeader;
     protected UserResult user;
+    protected HttpSession httpSession;
 
     @PostConstruct
     public void init() {
         this.language = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        this.httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         this.derivativeSearchModel = new DerivativeSearchModel();
     }
 
@@ -79,6 +82,14 @@ public class SessionManager implements Serializable {
 
     public void setUser(UserResult user) {
         this.user = user;
+    }
+
+    public HttpSession getHttpSession() {
+        return httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    }
+
+    public void setHttpSession(HttpSession httpSession) {
+        this.httpSession = httpSession;
     }
 
 }

@@ -3,7 +3,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
 
     <div class="topbar clearfix">
         <a id="omega-menu-button" href="#">
@@ -17,8 +18,10 @@
         </a>
 
         <div id="topbar-icons" class="animated">
-            <h:form>
+            <h:form id="topbar">
                 <span class="topbar-search">
+                    <h:outputText value="#{messages['logoutin']} " />
+                    <pe:timer id="timer" timeout="#{sessionController.timer}" ontimercomplete="window.location.reload();" format="mm:ss"/>
                     <p:splitButton styleClass="topbar-icon" icon="flag-de">
                         <p:menuitem value="Deutsch" icon="flag-de" action="#{sessionController.setLanguageTag('de')}" update="@all" />
                         <p:menuitem value="English" icon="flag-en" action="#{sessionController.setLanguageTag('en')}" update="@all" />

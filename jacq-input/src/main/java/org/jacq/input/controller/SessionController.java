@@ -16,6 +16,7 @@
 package org.jacq.input.controller;
 
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import org.jacq.input.SessionManager;
 import javax.faces.bean.ManagedBean;
@@ -40,6 +41,13 @@ public class SessionController {
     @Inject
     protected ApplicationManager applicationManager;
 
+    protected int timer;
+
+    @PostConstruct
+    public void init() {
+        this.timer = sessionManager.getHttpSession().getMaxInactiveInterval();
+    }
+
     public String getLanguageTag() {
         return sessionManager.getLanguageTag();
     }
@@ -58,4 +66,13 @@ public class SessionController {
 
         context.addMessage(null, new FacesMessage(messages.getString(title), messages.getString(message)));
     }
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public void setTimer(int timer) {
+        this.timer = timer;
+    }
+
 }
