@@ -85,7 +85,7 @@
 }
 
 /* using all available space for input boxes */
-input.ui-widget {
+input.ui-widget, textarea.ui-widget {
     width: 90%;
 }
 
