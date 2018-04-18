@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.ManagedBean;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -53,6 +54,7 @@ import org.jacq.common.model.jpa.TblSpecimen;
 import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
+import org.jacq.common.model.rest.ImageServerResource;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.SpecimenResult;
@@ -71,6 +73,12 @@ public class LivingPlantManager {
 
     @PersistenceContext
     protected EntityManager em;
+
+    @Inject
+    protected ImageServerManager imageServerManager;
+
+    @Inject
+    protected DerivativeManager derivativeManager;
 
     /**
      * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
@@ -412,6 +420,13 @@ public class LivingPlantManager {
             }
         }
 
+        // save image resources
+        if (livingPlantResult.getImageServerResources() != null) {
+            for (ImageServerResource imageServerResource : livingPlantResult.getImageServerResources()) {
+                imageServerManager.setPublic(tblDerivative, imageServerResource.getIdentifier(), imageServerResource.isPublicImage());
+            }
+        }
+
         // make sure changes are flushed to the database
         em.flush();
         // refresh botanical object in order to resolve manual relations
@@ -419,7 +434,7 @@ public class LivingPlantManager {
         em.refresh(tblLivingPlant);
 
         // convert back to result and return it to caller
-        return new LivingPlantResult(tblLivingPlant);
+        return (LivingPlantResult) derivativeManager.load(tblDerivative.getDerivativeId(), LivingPlantResult.LIVING);
     }
 
 }

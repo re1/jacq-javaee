@@ -25,6 +25,7 @@ public class ImageServerResource {
     protected String imageUrl;
     protected String thumbnailUrl;
     protected String identifier;
+    protected boolean publicImage;
 
     public String getImageUrl() {
         return imageUrl;
@@ -48,6 +49,14 @@ public class ImageServerResource {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public boolean isPublicImage() {
+        return publicImage;
+    }
+
+    public void setPublicImage(boolean publicImage) {
+        this.publicImage = publicImage;
     }
 
 }

@@ -111,6 +111,7 @@ public class BaseImageServerManager {
                                 imageServerResource.setIdentifier(resourceInfo.getString("identifier"));
                                 imageServerResource.setThumbnailUrl(tblImageServer.getBaseUrl() + "/adore-djatoka/resolver?url_ver=Z39.88-2004&rft_id=" + imageServerResource.getIdentifier() + "&svc_id=info:lanl-repo/svc/getRegion&svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&svc.format=image/jpeg&svc.scale=160,0");
                                 imageServerResource.setImageUrl(tblImageServer.getBaseUrl() + "/jacq-viewer/viewer.html?rft_id=" + imageServerResource.getIdentifier() + "&identifiers=" + String.join(",", identifiersList));
+                                imageServerResource.setPublicImage((resourceInfo.getString("public").equals("1")) ? true : false);
 
                                 imageServerResources.add(imageServerResource);
                             }
@@ -122,15 +123,53 @@ public class BaseImageServerManager {
             catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error during communication with image server - ignoring & continuing", e);
             }
-
         }
 
         return imageServerResources;
     }
 
     /**
-     * Helper function for synchronizing image server content with has-image
-     * flags in botanical object list
+     * Set a resource for a given derivative to public / hidden
+     *
+     * @param tblDerivative
+     * @param identifier
+     * @param bPublic
+     */
+    public void setPublic(TblDerivative tblDerivative, String identifier, boolean bPublic) {
+        // search for matching image server first
+        TblImageServer tblImageServer = findImageServer(tblDerivative.getOrganisationId());
+
+        // check if the derivative has an image server assigned
+        if (tblImageServer != null) {
+            // wrap image server communication in order to gracefully fall back on error
+            try {
+                // create image server proxy object
+                ImageServer imageServer = ServicesUtil.getImageServer(tblImageServer.getBaseUrl());
+
+                // prepare request to image server
+                JsonObject request = Json.createObjectBuilder()
+                        .add("id", "1")
+                        .add("method", "setPublic")
+                        .add("params", Json.createArrayBuilder()
+                                .add(tblImageServer.getKey())
+                                .add(identifier)
+                                .add(bPublic)
+                                .build()
+                        )
+                        .build();
+
+                // parse the response
+                Response response = imageServer.request(request);
+                String responseString = response.readEntity(String.class);
+            } // in case of an error, log it but continue serving content
+            catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error during communication with image server - ignoring & continuing", e);
+            }
+        }
+    }
+
+    /**
+     * Helper function for synchronizing image server content with has-image flags in botanical object list
      */
     @Transactional
     public void synchronizeImageFlags() {
@@ -199,8 +238,7 @@ public class BaseImageServerManager {
     }
 
     /**
-     * Traverses the organisation hierarchy in order to find a suitable image
-     * server
+     * Traverses the organisation hierarchy in order to find a suitable image server
      *
      * @param organisation
      * @return ImageServer or null if none is found
@@ -213,7 +251,8 @@ public class BaseImageServerManager {
 
         if (organisation.getTblImageServer() != null) {
             return organisation.getTblImageServer();
-        } else {
+        }
+        else {
             return findImageServer(organisation.getParentOrganisationId());
         }
     }
@@ -237,8 +276,7 @@ public class BaseImageServerManager {
     }
 
     /**
-     * Find all organisations belonging to a partial organisations tree, taking
-     * into account image-server assignments
+     * Find all organisations belonging to a partial organisations tree, taking into account image-server assignments
      *
      * @param parentOrganisation
      * @return
