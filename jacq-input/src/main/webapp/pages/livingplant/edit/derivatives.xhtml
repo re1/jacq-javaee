@@ -74,9 +74,15 @@
 
         <ui:repeat value="#{livingPlantEditController.livingPlantResult.imageServerResources}" var="imageServerResource">
             <div class="ui-g-2">
-                <a href="#{imageServerResource.imageUrl}" target="_blank" >
-                    <h:graphicImage value="#{imageServerResource.thumbnailUrl}" width="160" />
-                </a>
+                <div class="ui-g-12 ui-g-nopad">
+                    <a href="#{imageServerResource.imageUrl}" target="_blank" >
+                        <h:graphicImage value="#{imageServerResource.thumbnailUrl}" width="160" />
+                    </a>
+                </div>
+                <div class="ui-g-12 ui-g-nopad">
+                    <p:selectBooleanCheckbox value="#{imageServerResource.publicImage}" />
+                    <h:outputText value="#{messages['livingplant.public']}" />
+                </div>
             </div>
         </ui:repeat>
     </h:panelGroup>

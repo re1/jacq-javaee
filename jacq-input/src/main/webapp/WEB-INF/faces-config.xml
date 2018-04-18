@@ -15,6 +15,10 @@
         </resource-bundle>
     </application>
 
+    <lifecycle>
+        <phase-listener>org.jacq.input.faces.UpdatePhaseListener</phase-listener>
+    </lifecycle>
+
     <navigation-rule>
         <navigation-case>
             <from-outcome>login</from-outcome>
@@ -34,4 +38,8 @@
             <renderer-class>org.primefaces.omega.component.menu.OmegaMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
+    
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
 </faces-config>

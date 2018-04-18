@@ -63,11 +63,6 @@ public class LoginController {
 
             return null;
         } else if (as.equals(AuthenticationStatus.SUCCESS)) {
-            // remember authorization header in session controller
-            sessionController.setAuthorizationHeader("Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
-            // remember user object in session controller
-            sessionController.setUser(((JacqCallerPrincipal) securityContext.getCallerPrincipal()).getUser());
-
             // redirect to manage page
             return "livingplant/manage.xhtml?faces-redirect=true";
         }
