@@ -45,7 +45,7 @@
                                     <h:outputText value="#{messages['treerecordfile.filename']}" />
                                 </div>
                                 <div class="ui-g-6">
-                                    <p:fileUpload id="filename" value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true" label="#{messages['treerecordfile.filename']}" required="true"/>
+                                    <p:fileUpload id="filename" auto="true" value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true" label="#{messages['treerecordfile.filename']}" required="true"/>
                                     <p:message for="filename" />
                                 </div>
                             </div>

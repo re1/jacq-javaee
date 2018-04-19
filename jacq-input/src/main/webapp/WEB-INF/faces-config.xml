@@ -24,6 +24,10 @@
             <from-outcome>login</from-outcome>
             <to-view-id>pages/login.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>default</from-outcome>
+            <to-view-id>pages/livingplant/manage.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 
     <component>
@@ -38,7 +42,7 @@
             <renderer-class>org.primefaces.omega.component.menu.OmegaMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
-    
+
     <factory>
         <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
     </factory>

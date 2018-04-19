@@ -71,6 +71,10 @@ $navyButtonBorder: #21374f;
 $navyButtonHover: #3C6592;
 $navyButtonActive: #21374f;
 
+/* Exception */
+$exceptionBackground: #8f9341;
+
+
 // === MIXINS === //
 @mixin border-radius($val) {
     -moz-border-radius: $val;
