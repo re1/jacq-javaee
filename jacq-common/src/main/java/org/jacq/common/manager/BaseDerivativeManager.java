@@ -32,9 +32,11 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs Note: Make sure the entity manager is set prior calling any functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs Note: Make sure the entity manager is set prior calling any
+ * functions
  *
  * @author wkoller
  */
@@ -75,8 +77,9 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
-     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
@@ -154,7 +157,11 @@ public abstract class BaseDerivativeManager {
         // organisation List for hierarchic
         if (organisationId != null) {
             if (hierarchic != null && hierarchic == true) {
-                organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                organisationIdList = baseApplicationManager.findOrganisationHierachyCache(organisationId);
+                if (organisationIdList == null) {
+                    organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                    baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
+                }
             }
             organisationIdList.add(organisationId);
         }
@@ -219,8 +226,7 @@ public abstract class BaseDerivativeManager {
             if (classificationSubstantiveId != null) {
                 queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID_LIST;
                 params.add(classificationSubstantiveId);
-            }
-            else {
+            } else {
                 queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID;
                 params.add(scientificNameId);
             }
@@ -231,8 +237,7 @@ public abstract class BaseDerivativeManager {
             while (i < organisationIdList.size()) {
                 if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
-                }
-                else {
+                } else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
@@ -275,11 +280,9 @@ public abstract class BaseDerivativeManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        }
-        else if (offset != null) {
+        } else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        }
-        else if (count != null) {
+        } else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -287,7 +290,8 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a given column attribute name
+     * Helper function for retrieving the actual database column name for a
+     * given column attribute name
      *
      * @param attributeName
      * @return
