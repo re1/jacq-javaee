@@ -115,7 +115,7 @@
                 <version>3.5.2</version>
                 <executions>
                     <execution>
-                        <!-- we only build the stylesheets on demand, to do so change the phase to 'packaging' -->
+                        <!-- we only build the stylesheets on demand, to do so change the phase to 'package' -->
                         <phase>update-stylesheets</phase>
                         <goals>
                             <goal>

@@ -372,6 +372,20 @@ public class LivingPlantEditController {
     }
 
     /**
+     * Called when the user selects an organisation entry
+     *
+     * @param event
+     */
+    public void onOrganisationSelect(SelectEvent event) {
+        if (event.getObject() != null) {
+            OrganisationResult organisationResult = (OrganisationResult) event.getObject();
+            if (this.livingPlantResult.getDerivativeId() == null) {
+                this.setIpenNumberGardenCode(this.organisationService.getIpenCode(organisationResult.getOrganisationId()));
+            }
+        }
+    }
+
+    /**
      * Called to download the work label
      *
      * @return
