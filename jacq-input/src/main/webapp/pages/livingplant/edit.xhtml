@@ -109,6 +109,8 @@
                             <div class="ui-g-6">
                                 <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
                                                 var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
+                                    <p:ajax event="itemSelect" listener="#{livingPlantEditController.onOrganisationSelect}" update="ipennumber" />
+
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                                     </p:column>
