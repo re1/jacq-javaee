@@ -15,11 +15,16 @@
  */
 package org.jacq.input;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.input.security.BasicClientRequestFilter;
 
@@ -35,12 +40,33 @@ public class ApplicationManager {
     @Inject
     protected JacqPortalConfig jacqPortalConfig;
 
+    protected OrganisationService organisationService;
+
+    protected HashMap<Long, List<OrganisationResult>> organisationHierachy;
+
+    protected List<OrganisationResult> organisationResult;
+
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
         ServicesUtil.registerClientRequestFilter(new BasicClientRequestFilter());
     }
 
     public JacqPortalConfig getJacqPortalConfig() {
         return jacqPortalConfig;
+    }
+
+    public HashMap getOrganisationHierarchicHasMap() {
+        this.organisationService = ServicesUtil.getOrganisationService();
+        this.organisationResult = ServicesUtil.getOrganisationService().findAll();
+        organisationHierachy = new HashMap<>();
+        for (OrganisationResult organisation : organisationResult) {
+            List<OrganisationResult> organisationResultList = new ArrayList<>();
+            if (organisationHierachy.get((organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId() : 0L) != null) {
+                organisationResultList = organisationHierachy.get((organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId() : 0L);
+            }
+            organisationResultList.add(organisation);
+            organisationHierachy.put((organisation.getParentOrganisationId() != null) ? organisation.getParentOrganisationId() : 0L, organisationResultList);
+        }
+        return organisationHierachy;
     }
 
 }

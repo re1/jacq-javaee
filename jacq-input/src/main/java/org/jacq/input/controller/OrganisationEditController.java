@@ -26,6 +26,7 @@ import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.listener.OrganisationSelectListener;
 
 /**
  *

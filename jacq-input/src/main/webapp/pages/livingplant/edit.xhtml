@@ -116,9 +116,13 @@
                                     </p:column>
                                 </p:autoComplete>
                                 <p:message for="organisation" />
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" action="#{organisationHierarchicSelectController.show(livingPlantEditController.livingPlantResult.organisation, livingPlantEditController)}" />
                             </div>
                         </div>
                     </div>
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="true" style="width:600px">
+                        <ui:include src="../organisation/hierarchicselect.xhtml" />
+                    </p:overlayPanel>
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
