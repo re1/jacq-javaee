@@ -345,7 +345,7 @@
                             <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
                                 <div class="ui-g-3">
                                     <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
-                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{separationType.type}" itemValue="#{separationType.separationTypeId}" />
+                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-3">
