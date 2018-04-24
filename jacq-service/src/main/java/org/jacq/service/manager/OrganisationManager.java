@@ -17,6 +17,7 @@ package org.jacq.service.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -33,12 +34,16 @@ import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.OrganisationService;
+import org.jacq.service.ApplicationManager;
 
 /**
  *
  * @author fhafner
  */
 public class OrganisationManager extends BaseOrganisationManager {
+
+    @Inject
+    protected ApplicationManager applicationManager;
 
     @PersistenceContext(unitName = "jacq-service")
     public void setEntityManager(EntityManager entityManager) {
@@ -73,8 +78,7 @@ public class OrganisationManager extends BaseOrganisationManager {
         TblOrganisation tblOrganisation = null;
         if (organisationResult.getOrganisationId() != null) {
             tblOrganisation = entityManager.find(TblOrganisation.class, organisationResult.getOrganisationId());
-        }
-        else {
+        } else {
             tblOrganisation = new TblOrganisation();
         }
         if (tblOrganisation != null) {
@@ -89,11 +93,11 @@ public class OrganisationManager extends BaseOrganisationManager {
 
             if (tblOrganisation.getId() != null) {
                 entityManager.merge(tblOrganisation);
-            }
-            else {
+            } else {
                 entityManager.persist(tblOrganisation);
             }
-
+            // New Organisation is added so the cache has to be cleared
+            this.applicationManager.clearOrganisationHierachyCache();
             return new OrganisationResult(tblOrganisation);
         }
         return null;
@@ -122,10 +126,11 @@ public class OrganisationManager extends BaseOrganisationManager {
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq

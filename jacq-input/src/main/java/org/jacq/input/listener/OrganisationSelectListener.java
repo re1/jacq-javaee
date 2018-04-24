@@ -23,6 +23,10 @@ import org.jacq.common.model.rest.OrganisationResult;
  */
 public interface OrganisationSelectListener {
 
+    /**
+     *
+     * @param organisationResult
+     */
     public void setSelectedOrganisation(OrganisationResult organisationResult);
 
 }

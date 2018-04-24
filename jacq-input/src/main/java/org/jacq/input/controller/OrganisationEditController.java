@@ -19,6 +19,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.RoleResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -26,6 +27,7 @@ import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.ApplicationManager;
 import org.jacq.input.listener.OrganisationSelectListener;
 
 /**
@@ -34,10 +36,13 @@ import org.jacq.input.listener.OrganisationSelectListener;
  */
 @ManagedBean
 @ViewScoped
-public class OrganisationEditController {
+public class OrganisationEditController implements OrganisationSelectListener {
 
     @Inject
     protected SessionController sessionController;
+
+    @Inject
+    protected ApplicationManager applicationManager;
 
     protected Long organisationId;
 
@@ -86,7 +91,7 @@ public class OrganisationEditController {
 
     public String edit() {
         this.organisation = this.organisationService.save(this.organisation);
-
+        this.applicationManager.clearOrganisationHierachy();
         return null;
     }
 
@@ -104,5 +109,17 @@ public class OrganisationEditController {
 
     public void saveMessage() {
         sessionController.setGrowlMessage("successful", "entrysaved");
+    }
+
+    /**
+     * Listener to get the selceted Organisation from
+     * OrganisationHierarchicSelect
+     *
+     * @param organisationResult
+     */
+    @Override
+    public void setSelectedOrganisation(OrganisationResult organisationResult) {
+        this.organisation.setParentOrganisationId(organisationResult.getOrganisationId());
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 }

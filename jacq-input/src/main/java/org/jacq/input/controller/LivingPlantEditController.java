@@ -523,6 +523,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.specimenList = specimenList;
     }
 
+    /**
+     * Listener to get the selceted Organisation from
+     * OrganisationHierarchicSelect
+     *
+     * @param organisationResult
+     */
     @Override
     public void setSelectedOrganisation(OrganisationResult organisationResult) {
         this.livingPlantResult.setOrganisation(organisationResult);
