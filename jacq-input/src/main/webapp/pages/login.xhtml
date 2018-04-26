@@ -25,6 +25,9 @@
                     <p:password id="password" value="#{loginController.password}" required="true" label="password" />
                 </h:panelGrid>
                 <p:commandButton value="#{messages['login']}" action="#{loginController.login}" ajax="false" />
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
             </h:form>
         </div>
     </h:body>

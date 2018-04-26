@@ -17,7 +17,6 @@ package org.jacq.common.rest;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -107,7 +106,8 @@ public interface OrganisationService {
     public List<OrganisationResult> findAll();
 
     /**
-     * Returns the valid IPEN-Code (prefix) which should be used for this organisation - takes into account hierarchy
+     * Returns the valid IPEN-Code (prefix) which should be used for this
+     * organisation - takes into account hierarchy
      *
      * @param organisationId
      * @return

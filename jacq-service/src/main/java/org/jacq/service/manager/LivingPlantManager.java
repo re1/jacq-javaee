@@ -81,7 +81,8 @@ public class LivingPlantManager {
     protected DerivativeManager derivativeManager;
 
     /**
-     * @see DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
+     * @see
+     * DerivativeService#saveLivingPlant(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Transactional(rollbackOn = Exception.class)
     public LivingPlantResult save(LivingPlantResult livingPlantResult) {
@@ -90,8 +91,7 @@ public class LivingPlantManager {
         // check if we edit an existing entry or create a new one
         if (livingPlantResult.getDerivativeId() != null) {
             tblLivingPlant = em.find(TblLivingPlant.class, livingPlantResult.getDerivativeId());
-        }
-        else {
+        } else {
             tblLivingPlant = new TblLivingPlant();
         }
 
@@ -183,8 +183,7 @@ public class LivingPlantManager {
             TblPerson determinedBy = null;
             if (personList != null && personList.size() > 0) {
                 determinedBy = personList.get(0);
-            }
-            else {
+            } else {
                 determinedBy = new TblPerson();
                 determinedBy.setName(livingPlantResult.getDeterminedBy().getName());
                 em.persist(determinedBy);
@@ -200,8 +199,7 @@ public class LivingPlantManager {
             List<TblLocation> locationList = locationQuery.getResultList();
             if (locationList != null & locationList.size() > 0) {
                 tblGatheringLocation = locationList.get(0);
-            }
-            else {
+            } else {
                 tblGatheringLocation = new TblLocation();
                 tblGatheringLocation.setLocation(livingPlantResult.getGatheringLocation().getLocation());
                 em.persist(tblGatheringLocation);
@@ -232,8 +230,7 @@ public class LivingPlantManager {
             TblPerson tblGatherer = null;
             if (gatherers != null & gatherers.size() > 0) {
                 tblGatherer = gatherers.get(0);
-            }
-            else {
+            } else {
                 tblGatherer = new TblPerson();
                 tblGatherer.setName(gatherer.getName());
                 em.persist(tblGatherer);
@@ -290,8 +287,7 @@ public class LivingPlantManager {
             TblAlternativeAccessionNumber tblAlternativeAccessionNumber = null;
             if (alternativeAccessionNumber.getAlternativeAccessionNumberId() != null) {
                 tblAlternativeAccessionNumber = em.find(TblAlternativeAccessionNumber.class, alternativeAccessionNumber.getAlternativeAccessionNumberId());
-            }
-            else {
+            } else {
                 tblAlternativeAccessionNumber = new TblAlternativeAccessionNumber();
             }
 
@@ -308,8 +304,7 @@ public class LivingPlantManager {
             TblCertificate tblCertificate = null;
             if (certificate.getCertificateId() != null) {
                 tblCertificate = em.find(TblCertificate.class, certificate.getCertificateId());
-            }
-            else {
+            } else {
                 tblCertificate = new TblCertificate();
             }
 
@@ -328,8 +323,7 @@ public class LivingPlantManager {
             TblSeparation tblSeparation = null;
             if (separation.getSeparationId() != null) {
                 tblSeparation = em.find(TblSeparation.class, separation.getSeparationId());
-            }
-            else {
+            } else {
                 tblSeparation = new TblSeparation();
             }
 
@@ -348,16 +342,14 @@ public class LivingPlantManager {
             TblAcquisitionEventSource tblAcquisitionEventSource = null;
             if (acquistionEventSource.getAcquisitionEventSourceId() != null) {
                 tblAcquisitionEventSource = em.find(TblAcquisitionEventSource.class, acquistionEventSource.getAcquisitionEventSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionEventSource = new TblAcquisitionEventSource();
             }
 
             TblAcquisitionSource tblAcquisitionSource = null;
             if (acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId() != null) {
                 tblAcquisitionSource = em.find(TblAcquisitionSource.class, acquistionEventSource.getAcquisitionEventSource().getAcquisitionSourceId());
-            }
-            else {
+            } else {
                 tblAcquisitionSource = new TblAcquisitionSource();
                 tblAcquisitionSource.setName(acquistionEventSource.getAcquisitionEventSource().getName());
             }
@@ -378,19 +370,21 @@ public class LivingPlantManager {
         specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, tblBotanicalObject.getId()));
 
         // Deleted Entries remove from DB
-        List<SpecimenResult> specimenResults = SpecimenResult.fromList(specimenQuery.getResultList());
-        for (SpecimenResult specimenResult : specimenResults) {
-            Boolean contains = false;
-            for (SpecimenResult specimen : livingPlantResult.getSpecimensList()) {
-                if (specimen.getSpecimenId() != null && Objects.equals(specimen.getSpecimenId(), specimenResult.getSpecimenId())) {
-                    contains = true;
+        if (livingPlantResult.getSpecimensList() != null) {
+            List<SpecimenResult> specimenResults = SpecimenResult.fromList(specimenQuery.getResultList());
+            for (SpecimenResult specimenResult : specimenResults) {
+                Boolean contains = false;
+                for (SpecimenResult specimen : livingPlantResult.getSpecimensList()) {
+                    if (specimen.getSpecimenId() != null && Objects.equals(specimen.getSpecimenId(), specimenResult.getSpecimenId())) {
+                        contains = true;
+                    }
                 }
-            }
-            if (!contains) {
-                TblSpecimen tblSpecimen = em.find(TblSpecimen.class, specimenResult.getSpecimenId());
-                tblDerivative = tblSpecimen.getTblDerivative();
-                em.remove(tblSpecimen);
-                em.remove(tblDerivative);
+                if (!contains) {
+                    TblSpecimen tblSpecimen = em.find(TblSpecimen.class, specimenResult.getSpecimenId());
+                    tblDerivative = tblSpecimen.getTblDerivative();
+                    em.remove(tblSpecimen);
+                    em.remove(tblDerivative);
+                }
             }
         }
 
@@ -411,8 +405,7 @@ public class LivingPlantManager {
                     tblSpecimen.setHerbarNumber(specimenResult.getHerbarNumber());
                     tblSpecimen.setTblDerivative(tblDerivative);
                     em.persist(tblSpecimen);
-                }
-                else {
+                } else {
                     TblSpecimen tblSpecimen = em.find(TblSpecimen.class, specimenResult.getSpecimenId());
                     tblSpecimen.setHerbarNumber(specimenResult.getHerbarNumber());
                     em.merge(tblSpecimen);

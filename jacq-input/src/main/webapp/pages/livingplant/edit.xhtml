@@ -116,9 +116,13 @@
                                     </p:column>
                                 </p:autoComplete>
                                 <p:message for="organisation" />
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" action="#{organisationHierarchicSelectController.show(livingPlantEditController.livingPlantResult.organisation, livingPlantEditController)}" />
                             </div>
                         </div>
                     </div>
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="true" style="width:600px">
+                        <ui:include src="../organisation/hierarchicselect.xhtml" />
+                    </p:overlayPanel>
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
@@ -341,7 +345,7 @@
                             <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
                                 <div class="ui-g-3">
                                     <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
-                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{separationType.type}" itemValue="#{separationType.separationTypeId}" />
+                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-3">

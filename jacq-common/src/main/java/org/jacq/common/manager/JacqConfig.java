@@ -28,10 +28,12 @@ public abstract class JacqConfig {
     protected static final String SERVICE_GEONAMES = SERVICE + CONFIG_SEPARATOR + "geonames";
     public static final String SERVICE_GEONAMES_URL = SERVICE_GEONAMES + CONFIG_SEPARATOR + "url";
     public static final String SERVICE_GEONAMES_USERNAME = SERVICE_GEONAMES + CONFIG_SEPARATOR + "username";
+    protected static final String DATABASE = "database";
+    public static final String DATABASE_PRODUCTIVSYSTEM = DATABASE + CONFIG_SEPARATOR + "productivsystem";
 
     protected HashMap<String, String> config;
 
-    protected String[] portalConfigKeys = {GENERAL_INDET_ID};
+    protected String[] portalConfigKeys = {GENERAL_INDET_ID, DATABASE_PRODUCTIVSYSTEM};
 
     /**
      * Returns all settings which should be exposed to the portal

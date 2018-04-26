@@ -40,12 +40,13 @@
                                 <h:outputText value="#{messages['livingplant.location']}" />
                             </div>
                             <div class="ui-g-3">
-                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
+                                <p:autoComplete id="organisation" value="#{livingPlantController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
                                                 var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter">
                                     <p:column>
                                         <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
                                     </p:column>
                                 </p:autoComplete>
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" action="#{organisationHierarchicSelectController.show(livingPlantController.derivativeSearchModel.selectedOrganisation, livingPlantController)}" />
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.hierarchic']}" />
@@ -55,6 +56,9 @@
                             </div>
                         </div>
                     </div>
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="true" style="width:600px">
+                        <ui:include src="../organisation/hierarchicselect.xhtml" />
+                    </p:overlayPanel>
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">

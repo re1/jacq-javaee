@@ -15,6 +15,8 @@
  */
 package org.jacq.input.controller;
 
+import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import org.jacq.input.SessionManager;
 import javax.faces.application.FacesMessage;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
@@ -30,8 +32,8 @@ import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.codec.binary.Base64;
-import org.jacq.common.security.JacqCallerPrincipal;
+import org.jacq.common.manager.JacqConfig;
+import org.jacq.input.ApplicationManager;
 
 /**
  * Controller for handling logins of users
@@ -48,8 +50,19 @@ public class LoginController {
     @Inject
     protected SessionManager sessionController;
 
+    @Inject
+    protected ApplicationManager applicationManager;
+
     protected String username;
     protected String password;
+
+    @PostConstruct
+    public void init() {
+        ResourceBundle messages = ResourceBundle.getBundle("org.jacq.messages", sessionController.getLanguage());
+        if (applicationManager.getJacqPortalConfig().getLong(JacqConfig.DATABASE_PRODUCTIVSYSTEM) != 1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, messages.getString("warning"), messages.getString("testsystem")));
+        }
+    }
 
     public String login() {
         Credential credential = new UsernamePasswordCredential(username, password);

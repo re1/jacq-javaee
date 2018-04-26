@@ -21,6 +21,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -56,6 +57,7 @@ import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.listener.OrganisationSelectListener;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -68,7 +70,7 @@ import org.primefaces.model.StreamedContent;
  */
 @ManagedBean
 @ViewScoped
-public class LivingPlantEditController {
+public class LivingPlantEditController implements OrganisationSelectListener {
 
     @Inject
     protected SessionController sessionController;
@@ -84,7 +86,8 @@ public class LivingPlantEditController {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and scientific name editing
+     * Reference to scientific name service which is used for cultivar and
+     * scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -173,8 +176,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
-     * loaded
+     * Called when the user clicks on the button for reviewing the scientific
+     * name information, only then this info is loaded
      *
      * @return
      */
@@ -248,7 +251,8 @@ public class LivingPlantEditController {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according
+     * entry will be loaded
      *
      * @param derivativeId
      */
@@ -517,6 +521,18 @@ public class LivingPlantEditController {
 
     public void setSpecimenList(List<SpecimenResult> specimenList) {
         this.specimenList = specimenList;
+    }
+
+    /**
+     * Listener to get the selceted Organisation from
+     * OrganisationHierarchicSelect
+     *
+     * @param organisationResult
+     */
+    @Override
+    public void setSelectedOrganisation(OrganisationResult organisationResult) {
+        this.livingPlantResult.setOrganisation(organisationResult);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 
 }
