@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -19,6 +20,7 @@ import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.listener.OrganisationSelectListener;
 import org.jacq.input.view.DerivativeSearchModel;
 import org.jacq.input.view.LazyDerivativeDataModel;
 import org.jacq.input.view.LazyDerivativeDownloadDataModel;
@@ -29,7 +31,7 @@ import org.jacq.input.view.LazyDerivativeDownloadDataModel;
  */
 @ManagedBean
 @ViewScoped
-public class LivingPlantController implements Serializable {
+public class LivingPlantController implements Serializable, OrganisationSelectListener {
 
     @Inject
     protected SessionManager sessionController;
@@ -111,5 +113,11 @@ public class LivingPlantController implements Serializable {
 
     public void setRenderedTrue() {
         this.setDownloadRender(true);
+    }
+
+    @Override
+    public void setSelectedOrganisation(OrganisationResult organisationResult) {
+        this.dataModel.getDerivativeSearchModel().setSelectedOrganisation(organisationResult);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 }
