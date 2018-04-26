@@ -9,9 +9,18 @@
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Portal Config</web-resource-name>
+            <url-pattern>/rest/portal/config/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
             <web-resource-name>Everything Else</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
+        <auth-constraint>
+            <role-name>authenticated</role-name>
+        </auth-constraint>
         <auth-constraint>
             <role-name>authenticated</role-name>
         </auth-constraint>
