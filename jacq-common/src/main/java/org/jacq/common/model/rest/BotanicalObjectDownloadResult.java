@@ -23,6 +23,7 @@ import org.jacq.common.model.jpa.TblDerivative;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.jpa.TblScientificNameInformation;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 
@@ -57,7 +58,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
     public BotanicalObjectDownloadResult() {
     }
 
-    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative, TblDerivative derivative, TblClassification classificationFamily, ViewProtolog protolog) {
+    public BotanicalObjectDownloadResult(BotanicalObjectDerivative botanicalObjectDerivative, TblDerivative derivative, TblClassification classificationFamily, ViewProtolog protolog, TblScientificNameInformation tblScientificNameInformation) {
         // BotanicalObjectDerivative properties
         this.setType(botanicalObjectDerivative.getType());
         this.setDerivativeId(botanicalObjectDerivative.getDerivativeId());
@@ -120,16 +121,16 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             this.setAccessionNumber(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()));
             // ipen_number
             this.setIpenNumber((derivative.getTblLivingPlant().getIpenNumber() != null ? derivative.getTblLivingPlant().getIpenNumber().toString() : "") + "-" + ("0000000" + String.valueOf(derivative.getTblLivingPlant().getAccessionNumber())).substring(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()).length()));
-            if (derivative.getTblLivingPlant().getCultivarId() != null && derivative.getTblLivingPlant().getCultivarId().getScientificNameId() != null) {
-                // spatialDistribution;
-                this.setSpatialDistribution(derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() != null ? derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getSpatialDistribution() : null);
-                // commonNames;
-                this.setCommonNames(derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getCommonNames() != null ? derivative.getTblLivingPlant().getCultivarId().getScientificNameId().getCommonNames() : null);
-            }
             //label synonym scientific name
             if (derivative.getTblLivingPlant().getViewLabelSynonymScientificName() != null) {
                 this.setLabelSynonymScientificName(derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() != null ? derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() : null);
             }
+        }
+        if (tblScientificNameInformation != null) {
+            // spatialDistribution;
+            this.setSpatialDistribution(tblScientificNameInformation.getSpatialDistribution() != null ? tblScientificNameInformation.getSpatialDistribution() : null);
+            // commonNames;
+            this.setCommonNames(tblScientificNameInformation.getCommonNames() != null ? tblScientificNameInformation.getCommonNames() : null);
         }
         // habitat
         this.setHabitat(derivative.getBotanicalObjectId().getHabitat() != null ? derivative.getBotanicalObjectId().getHabitat() : null);
