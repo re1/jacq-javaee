@@ -24,6 +24,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AcquisitionSourceResult;
@@ -86,8 +87,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and
-     * scientific name editing
+     * Reference to scientific name service which is used for cultivar and scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -176,8 +176,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific
-     * name information, only then this info is loaded
+     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
+     * loaded
      *
      * @return
      */
@@ -251,8 +251,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
      *
      * @param derivativeId
      */
@@ -262,7 +261,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         if (this.derivativeId != null) {
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
-            this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
+            if (botanicalObjectDerivative.getStatus() == 200) {
+                this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
+            }
+            else {
+                sessionController.setGrowlMessage("error", "not_allowed");
+            }
             botanicalObjectDerivative.close();
 
             this.syncInfo();
@@ -524,8 +528,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Listener to get the selceted Organisation from
-     * OrganisationHierarchicSelect
+     * Listener to get the selceted Organisation from OrganisationHierarchicSelect
      *
      * @param organisationResult
      */
