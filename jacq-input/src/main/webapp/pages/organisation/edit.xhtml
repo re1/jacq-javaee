@@ -110,7 +110,8 @@
             </h:panelGroup>
 
             <h:panelGroup layout="block" id="edit_OrganisationAuthorization" styleClass="card">
-                <p:fieldset legend="#{messages['authorization']}" toggleable="true" toggleSpeed="500" collapsed="true">
+                <p:fieldset legend="#{messages['organisation.authorization']}" toggleable="true" toggleSpeed="500" collapsed="true">
+                    <ui:include src="accessorganisation.xhtml" />
                 </p:fieldset>
             </h:panelGroup>
         </ui:define>

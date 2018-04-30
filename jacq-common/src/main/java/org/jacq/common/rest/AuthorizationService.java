@@ -15,7 +15,15 @@
  */
 package org.jacq.common.rest;
 
+import java.util.Date;
+import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import org.jacq.common.model.rest.UserResult;
 
 /**
  *
@@ -23,5 +31,36 @@ import javax.ws.rs.Path;
  */
 @Path("/authorization")
 public interface AuthorizationService {
+
+    /**
+     *
+     * @param id
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET
+    @Path("/search")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserResult> search(@QueryParam("id") Long id, @QueryParam("allowDeny") boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     *
+     *
+     * @param id
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @return
+     */
+    @GET
+    @Path("/searchCount")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int searchCount(@QueryParam("id") Long id, @QueryParam("allowDeny") boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId);
 
 }
