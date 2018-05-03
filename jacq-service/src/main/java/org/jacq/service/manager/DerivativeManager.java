@@ -24,7 +24,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import javax.ws.rs.ForbiddenException;
 import org.jacq.common.manager.BaseDerivativeManager;
+import org.jacq.common.model.jpa.FrmwrkUser;
+import org.jacq.common.model.jpa.FrmwrkaccessOrganisation;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
@@ -32,8 +35,10 @@ import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
+import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblPhenology;
 import org.jacq.common.model.jpa.TblRelevancyType;
+import org.jacq.common.model.jpa.TblScientificNameInformation;
 import org.jacq.common.model.jpa.TblSeparationType;
 import org.jacq.common.model.jpa.TblSex;
 import org.jacq.common.model.jpa.TblSpecimen;
@@ -50,6 +55,7 @@ import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.SpecimenResult;
+import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.ApplicationManager;
@@ -80,6 +86,9 @@ public class DerivativeManager extends BaseDerivativeManager {
     @Inject
     protected ImageServerManager imageServerManager;
 
+    @Inject
+    protected SecurityManager securityManager;
+
     /**
      * Initialize bean and make sure abstract base class has entity manager
      */
@@ -97,6 +106,12 @@ public class DerivativeManager extends BaseDerivativeManager {
         if (LivingPlantResult.LIVING.equalsIgnoreCase(type)) {
             TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, derivativeId);
             if (tblLivingPlant != null) {
+                // check if user has access to this entry
+                if (!this.checkAccess(tblLivingPlant.getTblDerivative())) {
+                    throw new ForbiddenException();
+                }
+
+                // convert database entry to rest result
                 LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
                 livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative(), false));
                 if (tblLivingPlant.getTblDerivative().getBotanicalObjectId() != null) {
@@ -111,12 +126,16 @@ public class DerivativeManager extends BaseDerivativeManager {
                 }
 
                 return livingPlantResult;
-
             }
         }
         else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
             TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
             if (tblVegetative != null) {
+                // check if user has access to this entry
+                if (!this.checkAccess(tblVegetative.getTblDerivative())) {
+                    throw new ForbiddenException();
+                }
+
                 return new VegetativeResult(tblVegetative);
             }
         }
@@ -173,7 +192,8 @@ public class DerivativeManager extends BaseDerivativeManager {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
             TblClassification tblClassification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
             ViewProtolog protolog = getProtolog(tblClassification);
-            BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, tblClassification, protolog);
+            TblScientificNameInformation scientificNameInformation = getScientificNameInformation(botanicalObjectDerivative.getScientificNameId());
+            BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, tblClassification, protolog, scientificNameInformation);
             botanicalObjectDownloadResultList.add(botanicalObjectDownloadResult);
         }
 
@@ -256,6 +276,7 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
+     * Helper Function to get Protolog out of Database
      *
      * @param classification
      * @return
@@ -267,5 +288,61 @@ public class DerivativeManager extends BaseDerivativeManager {
             protolog = em.find(ViewProtolog.class, classification.getSourceId());
         }
         return protolog;
+    }
+
+    /**
+     * Helper Function to get ScientificNameInformation
+     *
+     * @param scientificNameInformationId
+     * @return
+     */
+    @Transactional
+    protected TblScientificNameInformation getScientificNameInformation(Long scientificNameInformationId) {
+        TblScientificNameInformation scientificNameInformation = null;
+        if (scientificNameInformationId != null) {
+            scientificNameInformation = em.find(TblScientificNameInformation.class, scientificNameInformationId);
+        }
+        return scientificNameInformation;
+    }
+
+    /**
+     * Determines if the currently active user has access to the given derivative
+     *
+     * @param tblDerivative
+     * @return
+     */
+    protected boolean checkAccess(TblDerivative tblDerivative) {
+        // no access by default
+        Boolean hasAccess = false;
+
+        // load user details
+        if (securityManager.getUser() == null) {
+            return false;
+        }
+        FrmwrkUser user = em.find(FrmwrkUser.class, securityManager.getUser().getId());
+        if (user == null) {
+            return false;
+        }
+
+        // check access on organisation level
+        TblOrganisation tblOrganisation = tblDerivative.getOrganisationId();
+
+        // iterate up the organisation structure until we reach the top or hit an authorization entry
+        while (tblOrganisation != null) {
+            // check for authorization entry on this level
+            TypedQuery<FrmwrkaccessOrganisation> accessOrganisationQuery = em.createNamedQuery("FrmwrkaccessOrganisation.findByUserAndOrganisation", FrmwrkaccessOrganisation.class);
+            accessOrganisationQuery.setParameter("userId", user);
+            accessOrganisationQuery.setParameter("organisationId", tblOrganisation);
+            List<FrmwrkaccessOrganisation> accessOrganisationList = accessOrganisationQuery.getResultList();
+
+            // check if found an entry, if yes set access to it and stop iterating
+            if (accessOrganisationList != null && accessOrganisationList.size() > 0) {
+                hasAccess = accessOrganisationList.get(0).getAllowDeny();
+                break;
+            }
+            tblOrganisation = tblOrganisation.getParentOrganisationId();
+        }
+
+        return hasAccess;
     }
 }

@@ -12,9 +12,7 @@
                 <f:viewParam name="organisationId" value="#{organisationEditController.organisationId}"/>
             </f:metadata>
             <h:panelGroup layout="block" id="edit_Organisation" styleClass="card">
-                <div class="jacq-content-header">
-                    <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
-                </div>
+                <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
                 <div class="ui-g">
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
@@ -109,6 +107,12 @@
                 <div class="jacq-buttons">
                     <p:commandButton value="#{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}" actionListener="#{organisationEditController.saveMessage}" update="jacq_form:messages jacq_form:edit_Organisation" action="#{organisationEditController.edit}" />
                 </div>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" id="edit_OrganisationAuthorization" styleClass="card">
+                <p:fieldset legend="#{messages['organisation.authorization']}" toggleable="true" toggleSpeed="500" collapsed="true">
+                    <ui:include src="accessorganisation.xhtml" />
+                </p:fieldset>
             </h:panelGroup>
         </ui:define>
     </ui:composition>
