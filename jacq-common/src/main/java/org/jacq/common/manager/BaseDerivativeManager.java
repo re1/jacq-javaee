@@ -32,11 +32,9 @@ import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.rest.DerivativeService;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not
- * performing well on views with UNION ALL we simulate a view by writing the
- * queries directly in this class Normally native queries should not be used at
- * all costs Note: Make sure the entity manager is set prior calling any
- * functions
+ * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
+ * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
+ * costs Note: Make sure the entity manager is set prior calling any functions
  *
  * @author wkoller
  */
@@ -44,13 +42,21 @@ public abstract class BaseDerivativeManager {
 
     protected static final Logger LOGGER = Logger.getLogger(BaseDerivativeManager.class.getName());
 
+    // select list for fields
     protected static final String SELECT_FIELDS = "SELECT `derivative_id`, `botanical_object_id`, `scientific_name`, `scientific_name_id`, `accession_number`, `label_annotation`, `organisation_description`, `organisation_id`, `place_number`, `derivative_count`, `type`, `separated`, `cultivar_name`, `imported_species_name`, `index_seminum`, `gathering_location`, `exhibition`, `working`";
 
+    // select for counting
     protected static final String SELECT_COUNT = "SELECT count(*) AS `row_count`";
 
+    /**
+     * Definition of from clauses for different views
+     */
     protected static final String FROM_LIVING = "FROM `view_botanical_object_living`";
     protected static final String FROM_VEGETATIVE = "FROM `view_botanical_object_vegetative`";
 
+    /**
+     * Definition of filters for all search criteria
+     */
     protected static final String FILTER_TYPE = "`type` = ?";
     protected static final String FILTER_DERIVATIVEID = "`derivative_id` = ?";
     protected static final String FILTER_PLACENUMBER = "`place_number` = ?";
@@ -63,7 +69,11 @@ public abstract class BaseDerivativeManager {
     protected static final String FILTER_EXHIBITION = "`exhibition` is not null";
     protected static final String FILTER_WORKING = "`working` is not null";
     protected static final String FILTER_SCIENTIFIC_NAME_ID_LIST = "`scientific_name_id` IN (SELECT `name_id` FROM `mig_nom_name` WHERE `substantive_id` = ?)";
+    protected static final String FILTER_ALTERNATIVE_ACCESSIONNUMBER = "`derivative_id` IN (SELECT `living_plant_id` FROM `tbl_alternative_accession_number` WHERE `number` LIKE ?)";
 
+    /**
+     * Definition of join list
+     */
     protected EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
@@ -77,9 +87,8 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long,
-     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Long,
-     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String, java.lang.String,
+     * java.lang.Boolean, java.lang.Long, java.lang.String, org.jacq.common.model.rest.OrderDirection,
      * java.lang.Integer, java.lang.Integer)
      */
     @Transactional
@@ -214,7 +223,9 @@ public abstract class BaseDerivativeManager {
             params.add(placeNumber);
         }
         if (!StringUtils.isEmpty(accessionNumber)) {
-            queryString += " AND " + FILTER_ACCESSIONNUMBER;
+            queryString += " AND (" + FILTER_ACCESSIONNUMBER;
+            queryString += " OR " + FILTER_ALTERNATIVE_ACCESSIONNUMBER + ")";
+            params.add(accessionNumber);
             params.add(accessionNumber);
         }
         if (separated != null) {
@@ -226,7 +237,8 @@ public abstract class BaseDerivativeManager {
             if (classificationSubstantiveId != null) {
                 queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID_LIST;
                 params.add(classificationSubstantiveId);
-            } else {
+            }
+            else {
                 queryString += " AND " + FILTER_SCIENTIFIC_NAME_ID;
                 params.add(scientificNameId);
             }
@@ -237,7 +249,8 @@ public abstract class BaseDerivativeManager {
             while (i < organisationIdList.size()) {
                 if (i < organisationIdList.size() - 1) {
                     organisationIds = organisationIds + organisationIdList.get(i).toString() + ",";
-                } else {
+                }
+                else {
                     organisationIds = organisationIds + organisationIdList.get(i).toString();
                 }
                 i++;
@@ -280,9 +293,11 @@ public abstract class BaseDerivativeManager {
         // NOTE: This must stay the last query modification
         if (offset != null && count != null) {
             queryString += " LIMIT 0, " + (offset + count);
-        } else if (offset != null) {
+        }
+        else if (offset != null) {
             queryString += " LIMIT 0, " + offset;
-        } else if (count != null) {
+        }
+        else if (count != null) {
             queryString += " LIMIT 0, " + count;
         }
 
@@ -290,8 +305,7 @@ public abstract class BaseDerivativeManager {
     }
 
     /**
-     * Helper function for retrieving the actual database column name for a
-     * given column attribute name
+     * Helper function for retrieving the actual database column name for a given column attribute name
      *
      * @param attributeName
      * @return
