@@ -26,17 +26,24 @@ limitations under the License.
             <h3><h:outputText value="#{messages['organisation.permission']}" /></h3>
         </div>
         <div class="ui-g-12 ui-g-nopad">
-            <p:dataTable var="accessOrganisation" lazy="true" value="#{livingPlantController.dataModel}" widgetVar="derivativeTable" id="derivativeTable">
+            <p:dataTable var="accessOrganisation"
+                         lazy="true"
+                         value="#{organisationAccessController.dataModel}"
+                         widgetVar="accessOrganisationTable"
+                         id="accessOrganisationTable"
+                         paginator="true"
+                         rows="10">
 
                 <p:column headerText="#{messages['user.username']}">
-                    <h:outputText value="" />
+                    <h:outputText value="#{accessOrganisation.username}" />
                 </p:column>
 
                 <p:column headerText="#{messages['organisation.access']}">
-                    <p:selectOneButton value="">
-                        <f:selectItem itemLabel="#{messages['auto']}" itemValue="0" />
-                        <f:selectItem itemLabel="#{messages['yes']}" itemValue="1"/>
-                        <f:selectItem itemLabel="#{messages['no']}" itemValue="2"/>
+                    <p:selectOneButton value="#{accessOrganisation.allowDeny}">
+                        <f:selectItem itemLabel="#{messages['auto']}" itemValue="#{null}" />
+                        <f:selectItem itemLabel="#{messages['yes']}" itemValue="true"/>
+                        <f:selectItem itemLabel="#{messages['no']}" itemValue="false"/>
+                        <p:ajax event="change" listener="#{organisationAccessController.save(accessOrganisation)}" />
                     </p:selectOneButton>
                 </p:column>
             </p:dataTable>

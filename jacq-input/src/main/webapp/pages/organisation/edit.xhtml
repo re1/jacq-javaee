@@ -10,6 +10,7 @@
         <ui:define name="content">
             <f:metadata>
                 <f:viewParam name="organisationId" value="#{organisationEditController.organisationId}"/>
+                <f:viewParam name="organisationId" value="#{organisationAccessController.organisationId}"/>
             </f:metadata>
             <h:panelGroup layout="block" id="edit_Organisation" styleClass="card">
                 <h1>#{messages['location']} #{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}</h1>
@@ -109,7 +110,7 @@
                 </div>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" id="edit_OrganisationAuthorization" styleClass="card">
+            <h:panelGroup layout="block" id="edit_OrganisationAuthorization" styleClass="card" rendered="#{(organisationEditController.organisation.organisationId == null) ? false : true}">
                 <p:fieldset legend="#{messages['organisation.authorization']}" toggleable="true" toggleSpeed="500" collapsed="true">
                     <ui:include src="accessorganisation.xhtml" />
                 </p:fieldset>

@@ -15,8 +15,6 @@
  */
 package org.jacq.common.model.rest;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.jacq.common.model.jpa.FrmwrkaccessOrganisation;
 
 /**
@@ -26,9 +24,10 @@ import org.jacq.common.model.jpa.FrmwrkaccessOrganisation;
 public class AccessOrganisationResult {
 
     private Long id;
-    private boolean allowDeny;
+    private Boolean allowDeny;
     private Long userId;
     private Long organisationId;
+    private String username;
 
     public Long getId() {
         return id;
@@ -38,11 +37,11 @@ public class AccessOrganisationResult {
         this.id = id;
     }
 
-    public boolean isAllowDeny() {
+    public Boolean getAllowDeny() {
         return allowDeny;
     }
 
-    public void setAllowDeny(boolean allowDeny) {
+    public void setAllowDeny(Boolean allowDeny) {
         this.allowDeny = allowDeny;
     }
 
@@ -62,32 +61,30 @@ public class AccessOrganisationResult {
         this.organisationId = organisationId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public AccessOrganisationResult() {
     }
 
-    public AccessOrganisationResult(FrmwrkaccessOrganisation frmwrkaccessOrganisation) {
-        this.id = frmwrkaccessOrganisation.getId();
+    public AccessOrganisationResult(FrmwrkaccessOrganisation frmwrkaccessOrganisation, String username) {
+        this.id = frmwrkaccessOrganisation.getId() != null ? frmwrkaccessOrganisation.getId() : null;
         this.allowDeny = frmwrkaccessOrganisation.getAllowDeny();
-        this.organisationId = frmwrkaccessOrganisation.getOrganisationId().getId();
-        this.userId = frmwrkaccessOrganisation.getUserId().getId();
+        this.organisationId = frmwrkaccessOrganisation.getOrganisationId().getId() != null ? frmwrkaccessOrganisation.getOrganisationId().getId() : null;
+        this.userId = frmwrkaccessOrganisation.getUserId().getId() != null ? frmwrkaccessOrganisation.getUserId().getId() : null;
+        this.username = username != null ? username : null;
     }
 
-    /**
-     * Helper function for converting a list of frmwrkaccessOrganisation entries
-     * to AccessOrganisationResult
-     *
-     * @param frmwrkaccessOrganisationList
-     * @return
-     */
-    public static List<AccessOrganisationResult> fromList(List<FrmwrkaccessOrganisation> frmwrkaccessOrganisationList) {
-        List<AccessOrganisationResult> accessOrganisationResult = new ArrayList<>();
-
-        if (frmwrkaccessOrganisationList != null) {
-            for (FrmwrkaccessOrganisation accessOrganisation : frmwrkaccessOrganisationList) {
-                accessOrganisationResult.add(new AccessOrganisationResult(accessOrganisation));
-            }
-        }
-
-        return accessOrganisationResult;
+    public AccessOrganisationResult(Long userId, Long organisationId, String username) {
+        this.organisationId = userId != null ? userId : null;
+        this.userId = organisationId != null ? organisationId : null;
+        this.username = username != null ? username : null;
+        this.allowDeny = null;
     }
+
 }

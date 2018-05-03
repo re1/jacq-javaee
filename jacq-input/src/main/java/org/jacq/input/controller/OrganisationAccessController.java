@@ -16,15 +16,57 @@
 package org.jacq.input.controller;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import org.jacq.common.model.rest.AccessOrganisationResult;
+import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.view.LazyOrganisationAccessDataModel;
 
 /**
  *
  * @author fhafner
  */
+@ManagedBean
+@ViewScoped
 public class OrganisationAccessController {
+
+    protected LazyOrganisationAccessDataModel dataModel;
+
+    protected Long organisationId;
 
     @PostConstruct
     public void init() {
+        this.dataModel = new LazyOrganisationAccessDataModel(ServicesUtil.getAuthorizationService());
+    }
+
+    public LazyOrganisationAccessDataModel getDataModel() {
+        return dataModel;
+    }
+
+    public Long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
+
+        if (this.organisationId != null) {
+            this.dataModel.setOrganisationId(this.organisationId);
+        }
+    }
+
+    public void save(AccessOrganisationResult accessOrganisation) {
+        this.dataModel.setOrganisationId(accessOrganisation.getOrganisationId());
+    }
+
+    /**
+     * Noop action listener for refreshing the row count after loading the
+     * data-table
+     *
+     * @return
+     */
+    public String updateRowCount() {
+        return null;
     }
 
 }

@@ -15,9 +15,10 @@
  */
 package org.jacq.service.rest.impl;
 
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.model.rest.AccessOrganisationResult;
 import org.jacq.common.rest.AuthorizationService;
 import org.jacq.service.manager.AuthorizationManager;
 
@@ -31,13 +32,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     protected AuthorizationManager authorizationManager;
 
     @Override
-    public List<UserResult> search(Long id, boolean allowDeny, Long userId, Long organisationId, Integer offset, Integer limit) {
-        return authorizationManager.search(id, allowDeny, userId, organisationId, offset, limit);
+    public List<AccessOrganisationResult> search(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId, Integer offset, Integer limit) {
+        return authorizationManager.search(id, username, birthdate, userType, employmentType, organisationDescription, accessOrganisationId, allowDeny, userId, organisationId, offset, limit);
     }
 
     @Override
-    public int searchCount(Long id, boolean allowDeny, Long userId, Long organisationId) {
-        return authorizationManager.searchCount(id, allowDeny, userId, organisationId);
+    public int searchCount(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId) {
+        return authorizationManager.searchCount(id, username, birthdate, userType, employmentType, organisationDescription, accessOrganisationId, allowDeny, userId, organisationId);
     }
 
 }
