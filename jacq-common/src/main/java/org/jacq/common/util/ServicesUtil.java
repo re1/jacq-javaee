@@ -26,6 +26,7 @@ import javax.ws.rs.client.ClientRequestFilter;
 import org.jacq.common.external.rest.GeoNamesService;
 import org.jacq.common.external.rest.ImageServer;
 import org.jacq.common.rest.AcquisitionService;
+import org.jacq.common.rest.AuthorizationService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.ClassificationService;
 import org.jacq.common.rest.DerivativeService;
@@ -122,6 +123,10 @@ public class ServicesUtil {
         return getProxy(LabelService.class, JACQ_SERVICE_REPORT_URL);
     }
 
+    public static AuthorizationService getAuthorizationService() {
+        return getProxy(AuthorizationService.class, JACQ_SERVICE_URL);
+    }
+
     public static String getWorkLabelURL(String type, Long derivativeId) {
         try {
             Map<String, Object> templateParams = new HashMap<>();
@@ -141,7 +146,8 @@ public class ServicesUtil {
     }
 
     /**
-     * Register a client request filter for use in all requests (used for all future requests automatically)
+     * Register a client request filter for use in all requests (used for all
+     * future requests automatically)
      *
      * @param clientRequestFilter
      */

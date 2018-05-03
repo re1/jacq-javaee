@@ -23,7 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.jacq.common.model.rest.UserResult;
+import org.jacq.common.model.rest.AccessOrganisationResult;
 
 /**
  *
@@ -35,8 +35,14 @@ public interface AuthorizationService {
     /**
      *
      * @param id
+     * @param username
+     * @param birthdate
+     * @param userType
+     * @param employmentType
      * @param allowDeny
      * @param userId
+     * @param accessOrganisationId
+     * @param organisationDescription
      * @param organisationId
      * @param offset
      * @param limit
@@ -46,14 +52,20 @@ public interface AuthorizationService {
     @Path("/search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserResult> search(@QueryParam("id") Long id, @QueryParam("allowDeny") boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+    public List<AccessOrganisationResult> search(@QueryParam("id") Long id, @QueryParam("username") String username, @QueryParam("birthdate") Date birthdate, @QueryParam("userType") String userType, @QueryParam("employmentType") String employmentType, @QueryParam("organisationDescription") String organisationDescription, @QueryParam("accessOrganisationId") Long accessOrganisationId, @QueryParam("allowDeny") Boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
      *
      *
      * @param id
+     * @param username
+     * @param birthdate
      * @param allowDeny
+     * @param employmentType
+     * @param userType
+     * @param accessOrganisationId
      * @param userId
+     * @param organisationDescription
      * @param organisationId
      * @return
      */
@@ -61,6 +73,6 @@ public interface AuthorizationService {
     @Path("/searchCount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int searchCount(@QueryParam("id") Long id, @QueryParam("allowDeny") boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId);
+    public int searchCount(@QueryParam("id") Long id, @QueryParam("username") String username, @QueryParam("birthdate") Date birthdate, @QueryParam("userType") String userType, @QueryParam("employmentType") String employmentType, @QueryParam("organisationDescription") String organisationDescription, @QueryParam("accessOrganisationId") Long accessOrganisationId, @QueryParam("allowDeny") Boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId);
 
 }

@@ -85,7 +85,7 @@ public class UserManager {
         for (FrmwrkUser user : userResults) {
             UserResult userResult = new UserResult(user);
 
-            // add botanical object to result list
+            // add user object to result list
             results.add(userResult);
         }
 
