@@ -19,12 +19,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.rest.AcquisitionSourceResult;
@@ -265,7 +265,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
                 this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
             }
             else {
-                sessionController.setGrowlMessage("error", "not_allowed");
+                // if access is not allowed, rediect to overview
+                sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
+                FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "default");
+
+                return;
             }
             botanicalObjectDerivative.close();
 

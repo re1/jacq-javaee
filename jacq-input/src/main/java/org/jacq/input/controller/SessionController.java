@@ -61,10 +61,14 @@ public class SessionController {
     }
 
     public void setGrowlMessage(String title, String message) {
+        setGrowlMessage(FacesMessage.SEVERITY_INFO, title, message);
+    }
+
+    public void setGrowlMessage(FacesMessage.Severity severity, String title, String message) {
         FacesContext context = FacesContext.getCurrentInstance();
         ResourceBundle messages = ResourceBundle.getBundle("org.jacq.messages", sessionManager.getLanguage());
 
-        context.addMessage(null, new FacesMessage(messages.getString(title), messages.getString(message)));
+        context.addMessage(null, new FacesMessage(severity, messages.getString(title), messages.getString(message)));
     }
 
     public int getTimer() {
