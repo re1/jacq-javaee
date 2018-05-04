@@ -41,4 +41,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return authorizationManager.searchCount(id, username, birthdate, userType, employmentType, organisationDescription, accessOrganisationId, allowDeny, userId, organisationId);
     }
 
+    @Override
+    public AccessOrganisationResult save(AccessOrganisationResult accessOrganisationResult) {
+        return authorizationManager.save(accessOrganisationResult);
+    }
+
 }

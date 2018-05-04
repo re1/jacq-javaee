@@ -28,7 +28,9 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.FrmwrkaccessOrganisation;
+import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.rest.AccessOrganisationResult;
 import org.jacq.common.model.rest.UserResult;
 
@@ -126,6 +128,26 @@ public class AuthorizationManager {
 
         // add all predicates as where clause
         cq.where(predicates.toArray(new Predicate[0]));
+    }
+
+    @Transactional
+    public AccessOrganisationResult save(AccessOrganisationResult accessOrganisationResult) {
+
+        if (accessOrganisationResult.getId() != null && accessOrganisationResult.getAllowDeny() == null) {
+            FrmwrkaccessOrganisation frmwrkaccessOrganisation = em.find(FrmwrkaccessOrganisation.class, accessOrganisationResult.getId());
+            em.remove(frmwrkaccessOrganisation);
+        } else if (accessOrganisationResult.getId() != null) {
+            FrmwrkaccessOrganisation frmwrkaccessOrganisation = em.find(FrmwrkaccessOrganisation.class, accessOrganisationResult.getId());
+            frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
+            em.merge(frmwrkaccessOrganisation);
+        } else if (accessOrganisationResult.getAllowDeny() != null) {
+            FrmwrkaccessOrganisation frmwrkaccessOrganisation = new FrmwrkaccessOrganisation();
+            frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
+            frmwrkaccessOrganisation.setOrganisationId(em.find(TblOrganisation.class, accessOrganisationResult.getOrganisationId()));
+            frmwrkaccessOrganisation.setUserId(em.find(FrmwrkUser.class, accessOrganisationResult.getUserId()));
+            em.persist(frmwrkaccessOrganisation);
+        }
+        return null;
     }
 
 }
