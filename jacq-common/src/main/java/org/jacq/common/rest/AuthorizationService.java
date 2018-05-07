@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -75,4 +76,14 @@ public interface AuthorizationService {
     @Produces(MediaType.APPLICATION_JSON)
     public int searchCount(@QueryParam("id") Long id, @QueryParam("username") String username, @QueryParam("birthdate") Date birthdate, @QueryParam("userType") String userType, @QueryParam("employmentType") String employmentType, @QueryParam("organisationDescription") String organisationDescription, @QueryParam("accessOrganisationId") Long accessOrganisationId, @QueryParam("allowDeny") Boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId);
 
+    /**
+     *      *
+     * @param accessOrganisationResult
+     * @return
+     */
+    @POST
+    @Path("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public AccessOrganisationResult save(AccessOrganisationResult accessOrganisationResult);
 }

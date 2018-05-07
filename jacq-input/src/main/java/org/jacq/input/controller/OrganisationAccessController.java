@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.jacq.common.model.rest.AccessOrganisationResult;
+import org.jacq.common.rest.AuthorizationService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.input.view.LazyOrganisationAccessDataModel;
 
@@ -34,9 +35,12 @@ public class OrganisationAccessController {
 
     protected Long organisationId;
 
+    protected AuthorizationService authorizationService;
+
     @PostConstruct
     public void init() {
         this.dataModel = new LazyOrganisationAccessDataModel(ServicesUtil.getAuthorizationService());
+        this.authorizationService = ServicesUtil.getAuthorizationService();
     }
 
     public LazyOrganisationAccessDataModel getDataModel() {
@@ -56,7 +60,7 @@ public class OrganisationAccessController {
     }
 
     public void save(AccessOrganisationResult accessOrganisation) {
-        this.dataModel.setOrganisationId(accessOrganisation.getOrganisationId());
+        this.authorizationService.save(accessOrganisation);
     }
 
     /**

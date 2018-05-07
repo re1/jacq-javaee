@@ -81,8 +81,8 @@ public class AccessOrganisationResult {
     }
 
     public AccessOrganisationResult(Long userId, Long organisationId, String username) {
-        this.organisationId = userId != null ? userId : null;
-        this.userId = organisationId != null ? organisationId : null;
+        this.organisationId = organisationId != null ? organisationId : null;
+        this.userId = userId != null ? userId : null;
         this.username = username != null ? username : null;
         this.allowDeny = null;
     }
