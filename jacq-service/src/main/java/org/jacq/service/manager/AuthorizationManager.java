@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -138,14 +139,28 @@ public class AuthorizationManager {
             em.remove(frmwrkaccessOrganisation);
         } else if (accessOrganisationResult.getId() != null) {
             FrmwrkaccessOrganisation frmwrkaccessOrganisation = em.find(FrmwrkaccessOrganisation.class, accessOrganisationResult.getId());
-            frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
-            em.merge(frmwrkaccessOrganisation);
+            if (frmwrkaccessOrganisation != null) {
+                frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
+                em.merge(frmwrkaccessOrganisation);
+            } else {
+                frmwrkaccessOrganisation = new FrmwrkaccessOrganisation();
+                frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
+                frmwrkaccessOrganisation.setOrganisationId(em.find(TblOrganisation.class, accessOrganisationResult.getOrganisationId()));
+                frmwrkaccessOrganisation.setUserId(em.find(FrmwrkUser.class, accessOrganisationResult.getUserId()));
+                em.persist(frmwrkaccessOrganisation);
+            }
         } else if (accessOrganisationResult.getAllowDeny() != null) {
             FrmwrkaccessOrganisation frmwrkaccessOrganisation = new FrmwrkaccessOrganisation();
             frmwrkaccessOrganisation.setAllowDeny(accessOrganisationResult.getAllowDeny());
             frmwrkaccessOrganisation.setOrganisationId(em.find(TblOrganisation.class, accessOrganisationResult.getOrganisationId()));
             frmwrkaccessOrganisation.setUserId(em.find(FrmwrkUser.class, accessOrganisationResult.getUserId()));
             em.persist(frmwrkaccessOrganisation);
+        } else {
+            Query query = em.createNamedQuery("FrmwrkaccessOrganisation.findByOrganisationIdandUserId").setParameter("organisationId", em.find(TblOrganisation.class, accessOrganisationResult.getOrganisationId())).setParameter("userId", em.find(FrmwrkUser.class, accessOrganisationResult.getUserId()));
+            FrmwrkaccessOrganisation frmwrkaccessOrganisation = (FrmwrkaccessOrganisation) query.getSingleResult();
+            if (frmwrkaccessOrganisation != null) {
+                em.remove(frmwrkaccessOrganisation);
+            }
         }
         return null;
     }
