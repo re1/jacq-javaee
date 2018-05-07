@@ -61,7 +61,7 @@ public class TblInventoryObject implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "message")
     private String message;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")

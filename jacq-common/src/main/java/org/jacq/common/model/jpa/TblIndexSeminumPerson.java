@@ -60,7 +60,7 @@ public class TblIndexSeminumPerson implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "index_seminum_content_id", referencedColumnName = "index_seminum_content_id")

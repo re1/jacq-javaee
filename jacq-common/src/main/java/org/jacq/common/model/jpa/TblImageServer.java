@@ -65,7 +65,7 @@ public class TblImageServer implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "key")
     private String key;
-    @Column(name = "last_synchronized")
+    @Column(name = "last_synchronized", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSynchronized;
     @JoinColumn(name = "organisation_id", referencedColumnName = "id", insertable = false, updatable = false)

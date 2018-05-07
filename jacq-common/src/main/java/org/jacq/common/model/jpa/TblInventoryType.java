@@ -62,7 +62,7 @@ public class TblInventoryType implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)

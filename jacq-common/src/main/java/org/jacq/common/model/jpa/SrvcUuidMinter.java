@@ -71,7 +71,7 @@ public class SrvcUuidMinter implements Serializable {
     private String uuid;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")

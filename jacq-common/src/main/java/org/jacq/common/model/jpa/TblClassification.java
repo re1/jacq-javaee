@@ -95,7 +95,7 @@ public class TblClassification implements Serializable {
     private long userId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @Column(name = "parent_scientific_name_id")
