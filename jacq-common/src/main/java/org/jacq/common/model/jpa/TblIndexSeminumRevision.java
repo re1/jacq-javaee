@@ -64,7 +64,7 @@ public class TblIndexSeminumRevision implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "name")
     private String name;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)

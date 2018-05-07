@@ -119,7 +119,7 @@ public class TblIndexSeminumContent implements Serializable {
     @Size(max = 20)
     @Column(name = "acquisition_date")
     private String acquisitionDate;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)

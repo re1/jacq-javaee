@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /*
 * Custom imports
-*/
+ */
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -92,7 +92,7 @@ public class TblClassificationChorolStatus implements Serializable {
     private short provinceDebatable;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date_last_edited")
+    @Column(name = "date_last_edited", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateLastEdited;
     @Basic(optional = false)
