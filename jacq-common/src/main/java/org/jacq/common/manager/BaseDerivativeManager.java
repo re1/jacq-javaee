@@ -102,10 +102,10 @@ public abstract class BaseDerivativeManager {
                 organisationIdList = baseApplicationManager.findOrganisationHierachyCache(organisationId);
                 if (organisationIdList == null) {
                     organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                    organisationIdList.add(organisationId);
                     baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
                 }
             }
-            organisationIdList.add(organisationId);
         }
 
         // find substantive id if using classification search
@@ -169,10 +169,10 @@ public abstract class BaseDerivativeManager {
                 organisationIdList = baseApplicationManager.findOrganisationHierachyCache(organisationId);
                 if (organisationIdList == null) {
                     organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
+                    organisationIdList.add(organisationId);
                     baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
                 }
             }
-            organisationIdList.add(organisationId);
         }
 
         // find substantive id if using classification search
