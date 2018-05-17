@@ -63,9 +63,8 @@ public class IndexSeminumManager {
     protected JacqServiceConfig jacqConfig;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
-     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
-     * List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
+     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -115,7 +114,7 @@ public class IndexSeminumManager {
                 tblIndexSeminumContent.setScientificName(derivative.getBotanicalObjectId().getViewScientificName().getScientificName() != null ? derivative.getBotanicalObjectId().getViewScientificName().getScientificName() : null);
 
                 // family
-                TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), derivative.getBotanicalObjectId().getScientificNameId());
+                TblClassification classification = classificationManager.getFamily(derivative.getBotanicalObjectId().getScientificNameId());
                 if (classification != null && classification.getViewScientificName() != null) {
                     tblIndexSeminumContent.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
                 }
@@ -140,7 +139,8 @@ public class IndexSeminumManager {
                 // acquisition_date
                 if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-                } else {
+                }
+                else {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
                 if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -322,11 +322,10 @@ public class IndexSeminumManager {
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
-     * java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
-     * java.lang.String, java.lang.Boolean, java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String)
      *
      * @param cb
      * @param cq

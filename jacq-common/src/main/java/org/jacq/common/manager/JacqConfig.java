@@ -21,7 +21,8 @@ public abstract class JacqConfig {
     protected static final String TREERECORD = "treerecord";
     public static final String TREERECORD_PDF_PATH = TREERECORD + CONFIG_SEPARATOR + "pdf_path";
     protected static final String CLASSIFICATION = "classification";
-    public static final String CLASSIFICATION_FAMILY_REFERENCE_ID = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceId";
+    // public static final String CLASSIFICATION_FAMILY_REFERENCE_ID = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceId";
+    public static final String CLASSIFICATION_FAMILY_REFERENCE_IDS = CLASSIFICATION + CONFIG_SEPARATOR + "familyReferenceIds";
     protected static final String GENERAL = "general";
     public static final String GENERAL_INDET_ID = GENERAL + CONFIG_SEPARATOR + "indet_id";
     protected static final String SERVICE = "service";

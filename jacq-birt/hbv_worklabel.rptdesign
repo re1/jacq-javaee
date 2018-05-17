@@ -28,10 +28,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>D:\wkoller\Documents\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.4.1.jar;D:\wkoller\Documents\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;</value>
+                    <value>/opt/jacq-javaee/jacq-birt/jacq-common-0.5.0.jar;/opt/jacq-javaee/jacq-birt/jacq-service-report.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">D:\wkoller\Documents\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.4.1.jar;D:\wkoller\Documents\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;</property>
+            <property name="pojoDataSetClassPath">/opt/jacq-javaee/jacq-birt/jacq-common-0.5.0.jar;/opt/jacq-javaee/jacq-birt/jacq-service-report.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>

@@ -115,7 +115,7 @@ public class DerivativeManager extends BaseDerivativeManager {
                 LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
                 livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative(), false));
                 if (tblLivingPlant.getTblDerivative().getBotanicalObjectId() != null) {
-                    TblClassification classification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+                    TblClassification classification = classificationManager.getFamily(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
                     ViewProtolog protolog = getProtolog(classification);
                     if (classification != null && classification.getViewScientificName() != null) {
                         livingPlantResult.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
@@ -190,7 +190,7 @@ public class DerivativeManager extends BaseDerivativeManager {
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
-            TblClassification tblClassification = classificationManager.getFamily(ClassificationSourceType.CITATION, jacqConfig.getLong(JacqServiceConfig.CLASSIFICATION_FAMILY_REFERENCE_ID), botanicalObjectDerivative.getScientificNameId());
+            TblClassification tblClassification = classificationManager.getFamily(botanicalObjectDerivative.getScientificNameId());
             ViewProtolog protolog = getProtolog(tblClassification);
             TblScientificNameInformation scientificNameInformation = getScientificNameInformation(botanicalObjectDerivative.getScientificNameId());
             BotanicalObjectDownloadResult botanicalObjectDownloadResult = new BotanicalObjectDownloadResult(botanicalObjectDerivative, dervivative, tblClassification, protolog, scientificNameInformation);
