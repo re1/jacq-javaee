@@ -21,6 +21,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -87,7 +88,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected DerivativeService derivativeService;
 
     /**
-     * Reference to scientific name service which is used for cultivar and scientific name editing
+     * Reference to scientific name service which is used for cultivar and
+     * scientific name editing
      */
     protected ScientificNameService scientificNameService;
 
@@ -142,6 +144,9 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     protected List<String> selectedSexes;
 
+    @ManagedProperty(value = "#{organisationHierarchicSelectController}")
+    protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
+
     @PostConstruct
     public void init() {
         this.derivativeService = ServicesUtil.getDerivativeService();
@@ -173,11 +178,13 @@ public class LivingPlantEditController implements OrganisationSelectListener {
             this.sexes.add(new SelectItem(sex.getSexId(), sex.getSex()));
         }
         this.selectedSexes = new ArrayList<>();
+
+        this.showorganisationHierarchicSelectController();
     }
 
     /**
-     * Called when the user clicks on the button for reviewing the scientific name information, only then this info is
-     * loaded
+     * Called when the user clicks on the button for reviewing the scientific
+     * name information, only then this info is loaded
      *
      * @return
      */
@@ -250,8 +257,26 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         return derivativeId;
     }
 
+    public OrganisationHierarchicSelectController getOrganisationHierarchicSelectController() {
+        return organisationHierarchicSelectController;
+    }
+
+    public void setOrganisationHierarchicSelectController(OrganisationHierarchicSelectController organisationHierarchicSelectController) {
+        this.organisationHierarchicSelectController = organisationHierarchicSelectController;
+    }
+
+    public void organisationHierachicSelectEvent(SelectEvent event) {
+        this.showorganisationHierarchicSelectController();
+    }
+
+    public void showorganisationHierarchicSelectController() {
+        this.organisationHierarchicSelectController.show(this.getLivingPlantResult().getOrganisation(), this);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:hierachicSearch");
+    }
+
     /**
-     * Called by the JSF container, when a derivative id is passed the according entry will be loaded
+     * Called by the JSF container, when a derivative id is passed the according
+     * entry will be loaded
      *
      * @param derivativeId
      */
@@ -263,8 +288,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             if (botanicalObjectDerivative.getStatus() == 200) {
                 this.livingPlantResult = botanicalObjectDerivative.readEntity(LivingPlantResult.class);
-            }
-            else {
+            } else {
                 // if access is not allowed, rediect to overview
                 sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
                 FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "default");
@@ -532,7 +556,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Listener to get the selceted Organisation from OrganisationHierarchicSelect
+     * Listener to get the selceted Organisation from
+     * OrganisationHierarchicSelect
      *
      * @param organisationResult
      */

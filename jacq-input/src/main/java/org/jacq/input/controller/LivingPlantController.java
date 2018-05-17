@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import org.jacq.input.listener.OrganisationSelectListener;
 import org.jacq.input.view.DerivativeSearchModel;
 import org.jacq.input.view.LazyDerivativeDataModel;
 import org.jacq.input.view.LazyDerivativeDownloadDataModel;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -51,6 +53,9 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
 
     protected Boolean downloadRender;
 
+    @ManagedProperty(value = "#{organisationHierarchicSelectController}")
+    protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
+
     @PostConstruct
     public void init() {
         this.dataModel = new LazyDerivativeDataModel(ServicesUtil.getDerivativeService(), this.getDerivativeSearchModel());
@@ -65,6 +70,7 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
             this.dataModel.getDerivativeSearchModel().setSelectedOrganisation(this.organisationService.load(this.dataModel.getDerivativeSearchModel().getOrganisationId()));
             this.dataModel.getDerivativeSearchModel().setHierarchic(true);
         }
+        this.showorganisationHierarchicSelectController();
     }
 
     public DerivativeSearchModel getDerivativeSearchModel() {
@@ -115,9 +121,27 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
         this.setDownloadRender(true);
     }
 
+    public void organisationHierachicSelectEvent(SelectEvent event) {
+        this.showorganisationHierarchicSelectController();
+    }
+
+    public void showorganisationHierarchicSelectController() {
+        this.organisationHierarchicSelectController.show(this.getDerivativeSearchModel().getSelectedOrganisation(), this);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:hierachicSearch");
+    }
+
     @Override
     public void setSelectedOrganisation(OrganisationResult organisationResult) {
         this.dataModel.getDerivativeSearchModel().setSelectedOrganisation(organisationResult);
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
+
+    public OrganisationHierarchicSelectController getOrganisationHierarchicSelectController() {
+        return organisationHierarchicSelectController;
+    }
+
+    public void setOrganisationHierarchicSelectController(OrganisationHierarchicSelectController organisationHierarchicSelectController) {
+        this.organisationHierarchicSelectController = organisationHierarchicSelectController;
+    }
+
 }

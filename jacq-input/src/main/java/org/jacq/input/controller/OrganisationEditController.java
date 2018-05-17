@@ -18,6 +18,7 @@ package org.jacq.input.controller;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.input.ApplicationManager;
 import org.jacq.input.listener.OrganisationSelectListener;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -58,6 +60,9 @@ public class OrganisationEditController implements OrganisationSelectListener {
 
     protected List<RoleResult> roles;
 
+    @ManagedProperty(value = "#{organisationHierarchicSelectController}")
+    protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
+
     @PostConstruct
     public void init() {
         this.organisationService = ServicesUtil.getOrganisationService();
@@ -71,6 +76,8 @@ public class OrganisationEditController implements OrganisationSelectListener {
         this.users = this.userService.findAll();
 
         this.roles = this.userService.findAllRole();
+
+        this.showorganisationHierarchicSelectController();
     }
 
     public Long getOrganisationId() {
@@ -109,6 +116,23 @@ public class OrganisationEditController implements OrganisationSelectListener {
 
     public void saveMessage() {
         sessionController.setGrowlMessage("successful", "entrysaved");
+    }
+
+    public void organisationHierachicSelectEvent(SelectEvent event) {
+        this.showorganisationHierarchicSelectController();
+    }
+
+    public void showorganisationHierarchicSelectController() {
+        this.organisationHierarchicSelectController.show(null, this);
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:hierachicSearch");
+    }
+
+    public OrganisationHierarchicSelectController getOrganisationHierarchicSelectController() {
+        return organisationHierarchicSelectController;
+    }
+
+    public void setOrganisationHierarchicSelectController(OrganisationHierarchicSelectController organisationHierarchicSelectController) {
+        this.organisationHierarchicSelectController = organisationHierarchicSelectController;
     }
 
     /**
