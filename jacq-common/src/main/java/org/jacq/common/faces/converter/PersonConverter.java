@@ -16,6 +16,7 @@
 package org.jacq.common.faces.converter;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -31,8 +32,16 @@ public class PersonConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+
         if (value != null && !value.equalsIgnoreCase("null")) {
-            return ServicesUtil.getPersonService().load(Long.valueOf(value));
+            try {
+                return ServicesUtil.getPersonService().load(Long.valueOf(value));
+            } catch (NumberFormatException nfe) {
+                PersonResult personResult = (PersonResult) ((UIInput) component).getValue();
+                personResult.setName(value);
+
+                return personResult;
+            }
         }
 
         return null;

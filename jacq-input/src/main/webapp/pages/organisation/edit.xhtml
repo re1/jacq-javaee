@@ -54,12 +54,13 @@
                             <div class="ui-g-9">
                                 <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
                                     <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
+                                    <p:ajax event="itemSelect" listener="#{organisationEditController.organisationHierachicSelectEvent}" />
                                 </p:selectOneMenu>
-                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" action="#{organisationHierarchicSelectController.show(null, organisationEditController)}" />
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
                             </div>
                         </div>
                     </div>
-                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="true" style="width:600px">
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px">
                         <ui:include src="hierarchicselect.xhtml" />
                     </p:overlayPanel>
                     <div class="ui-g-6 ui-g-nopad">
