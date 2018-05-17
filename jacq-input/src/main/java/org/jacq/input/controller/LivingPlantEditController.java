@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -418,6 +419,21 @@ public class LivingPlantEditController implements OrganisationSelectListener {
             if (this.livingPlantResult.getDerivativeId() == null) {
                 this.setIpenNumberGardenCode(this.organisationService.getIpenCode(organisationResult.getOrganisationId()));
             }
+        }
+    }
+
+    /**
+     * Called when user selects a gatherer from the auto-complete form
+     *
+     * @param event
+     */
+    public void onGathererSelect(SelectEvent event) {
+        if (event.getObject() != null) {
+            PersonResult selectedPersonResult = (PersonResult) event.getObject();
+            PersonResult inputValue = (PersonResult) ((UIInput) event.getSource()).getValue();
+
+            inputValue.setName(selectedPersonResult.getName());
+            inputValue.setPersonId(selectedPersonResult.getPersonId());
         }
     }
 

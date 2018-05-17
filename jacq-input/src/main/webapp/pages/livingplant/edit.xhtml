@@ -414,6 +414,8 @@
                                                             <p:column>
                                                                 <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
                                                             </p:column>
+
+                                                            <p:ajax event="itemSelect" listener="#{livingPlantEditController.onGathererSelect}" update="@parent" />
                                                         </p:autoComplete>
                                                     </div>
                                                     <div class="ui-g-1">
@@ -670,10 +672,14 @@
                     </p:tab>
                 </p:tabView>
                 <div class="jacq-buttons">
-                    <p:commandButton widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
-                    <p:commandButton widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                    <p:commandButton id="saveButton" widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                    <p:commandButton id="copyButton" widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
                 </div>
+
+                <p:blockUI block="@parent" trigger="saveButton copyButton" />
             </h:panelGroup>
+
+
             <h:panelGroup rendered="#{(livingPlantEditController.livingPlantResult.importPropertiesResult == null) ? false : true}" id="importProperties" layout="block" styleClass="card">
                 <h1>#{messages['livingplant.importproperties']}</h1>
                 <div class="ui-g">

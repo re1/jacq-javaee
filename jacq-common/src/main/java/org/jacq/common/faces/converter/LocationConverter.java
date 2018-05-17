@@ -32,7 +32,14 @@ public class LocationConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && !value.equalsIgnoreCase("null")) {
-            return ServicesUtil.getGatheringService().locationLoad(Long.valueOf(value));
+            try {
+                return ServicesUtil.getGatheringService().locationLoad(Long.valueOf(value));
+            } catch (NumberFormatException nfe) {
+                LocationResult locationResult = new LocationResult();
+                locationResult.setLocation(value);
+
+                return locationResult;
+            }
         }
 
         return null;
