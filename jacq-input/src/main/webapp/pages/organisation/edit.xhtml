@@ -56,7 +56,7 @@
                                     <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
                                     <p:ajax event="itemSelect" listener="#{organisationEditController.organisationHierachicSelectEvent}" />
                                 </p:selectOneMenu>
-                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" rendered="false" />
                             </div>
                         </div>
                     </div>
