@@ -47,7 +47,7 @@
                                     </p:column>
                                     <p:ajax event="itemSelect" listener="#{livingPlantController.organisationHierachicSelectEvent}" />
                                 </p:autoComplete>
-                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
+                                <p:commandButton type="button" icon="ui-icon-search" id="hierachicSearchButton" />
                             </div>
                             <div class="ui-g-3">
                                 <h:outputText value="#{messages['livingplant.hierarchic']}" />
@@ -57,7 +57,9 @@
                             </div>
                         </div>
                     </div>
-                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px">
+                    <p:remoteCommand name="updateOrganisation" update="organisation" />
+
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px" onHide="updateOrganisation();">
                         <ui:include src="../organisation/hierarchicselect.xhtml" />
                     </p:overlayPanel>
                     <div class="ui-g-6 ui-g-nopad">
@@ -156,8 +158,8 @@
 
                             <f:facet name="{Exporters}">
                                 <div style="float: right; height: 24px;" >
-                                    <p:commandButton title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
-                                    <p:commandButton title="Xlsx Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
+                                    <p:commandButton type="button" title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                    <p:commandButton type="button" title="XLSX Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
                                 </div>
                             </f:facet>
 
@@ -194,7 +196,7 @@
                             </p:column>
 
                             <p:column headerText="#{messages['action']}">
-                                <p:button  outcome="edit.xhtml" icon="ui-icon-pencil">
+                                <p:button outcome="edit.xhtml" icon="ui-icon-pencil">
                                     <f:param name="derivativeId" value="#{botanicalObjectDerivative.derivativeId}" />
                                 </p:button>
                             </p:column>
@@ -211,10 +213,10 @@
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
-                        <p:commandButton id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
+                        <p:commandButton type="button" id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
                             <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
-                        <p:commandButton style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                        <p:commandButton type="button" style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
                             <p:dataExporter type="xlsx"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
                         <p:tooltip for="downloadDerivativeXlsxButton" value="Xslx Download" />
