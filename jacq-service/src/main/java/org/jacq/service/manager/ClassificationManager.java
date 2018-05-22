@@ -164,6 +164,29 @@ public class ClassificationManager {
             // Find TblClassification where nomName Rank = 9
             TblClassification tblClassification = getAcceptedName(source, sourceId, scientificNameId);
             if (tblClassification == null) {
+                // load name info for extracting genus / substantive id
+                TypedQuery<TblNomName> scientificNameQuery = em.createNamedQuery("TblNomName.findByNameId", TblNomName.class);
+                scientificNameQuery.setParameter("nameId", scientificNameId);
+                List<TblNomName> scientificNameList = scientificNameQuery.getResultList();
+                if (scientificNameList != null && scientificNameList.size() > 0) {
+                    TblNomName scientificName = scientificNameList.get(0);
+
+                    // try to find matching classification entry for genus
+                    TypedQuery<TblNomName> genusQuery = em.createNamedQuery("TblNomName.findBySubstantiveAndRank", TblNomName.class);
+                    genusQuery.setParameter("substantiveId", scientificName.getSubstantiveId().getSubstantiveId());
+                    genusQuery.setParameter("rankId", 7L);
+                    List<TblNomName> genusNameList = genusQuery.getResultList();
+                    if (genusNameList != null && genusNameList.size() > 0) {
+                        TblNomName genusName = genusNameList.get(0);
+
+                        TblClassification genusFamily = getFamily(genusName.getNameId());
+                        if (genusFamily != null) {
+                            return genusFamily;
+                        }
+                    }
+                }
+
+                // if we did not find any entry using the genus, continue with next reference
                 continue;
             }
 
