@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <p:remoteCommand name="updateOrganisation" update="organisation" />
-
+                    <p:blockUI block="hierachicSearchButton" trigger="organisation" />
                     <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px" onHide="updateOrganisation();">
                         <ui:include src="../organisation/hierarchicselect.xhtml" />
                     </p:overlayPanel>

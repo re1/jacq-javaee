@@ -123,7 +123,7 @@ public class OrganisationEditController implements OrganisationSelectListener {
     }
 
     public void showorganisationHierarchicSelectController() {
-        this.organisationHierarchicSelectController.show(null, this);
+        this.organisationHierarchicSelectController.show(this.organisation.getParentOrganisationResult(), this);
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:hierachicSearch");
     }
 
@@ -135,6 +135,10 @@ public class OrganisationEditController implements OrganisationSelectListener {
         this.organisationHierarchicSelectController = organisationHierarchicSelectController;
     }
 
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return this.organisationService.search(null, query, null, null, null, null, null, 0, 10);
+    }
+
     /**
      * Listener to get the selceted Organisation from
      * OrganisationHierarchicSelect
@@ -143,7 +147,9 @@ public class OrganisationEditController implements OrganisationSelectListener {
      */
     @Override
     public void setSelectedOrganisation(OrganisationResult organisationResult) {
+        this.organisation.setParentOrganisationResult(organisationResult);
         this.organisation.setParentOrganisationId(organisationResult.getOrganisationId());
+        this.organisation.setParentOrganisationDescription(organisationResult.getDescription());
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 }
