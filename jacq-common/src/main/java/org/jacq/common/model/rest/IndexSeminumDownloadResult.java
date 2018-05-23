@@ -52,7 +52,7 @@ public class IndexSeminumDownloadResult {
         this.indexSeminumContentId = tblIndexSeminumContent.getIndexSeminumContentId();
         this.indexSeminumRevisionId = tblIndexSeminumContent.getIndexSeminumRevisionId().getIndexSeminumRevisionId();
         this.botanicalObjectId = tblIndexSeminumContent.getBotanicalObjectId().getId();
-        this.accessionNumber = tblIndexSeminumContent.getAccessionNumber() != null ? tblIndexSeminumContent.getAccessionNumber() : null;
+        this.accessionNumber = tblIndexSeminumContent.getAccessionNumber() != null ? String.format("%07d", String.valueOf(tblIndexSeminumContent.getAccessionNumber())) : null;
         this.family = tblIndexSeminumContent.getFamily() != null ? tblIndexSeminumContent.getFamily() : null;
         this.scientificName = tblIndexSeminumContent.getScientificName() != null ? tblIndexSeminumContent.getScientificName() : null;
         this.indexSeminumType = tblIndexSeminumContent.getIndexSeminumType() != null ? tblIndexSeminumContent.getIndexSeminumType() : null;
