@@ -20,6 +20,7 @@
         <div id="topbar-icons" class="animated">
             <h:form id="jacq_form-topbar">
                 <span class="topbar-search">
+                    <h:outputText value="#{messages['loggedinas']} #{sessionManager.user.username} " />
                     <h:outputText value="#{messages['logoutin']} " />
                     <pe:timer id="timer" timeout="#{sessionController.timer}" ontimercomplete="window.location.reload();" format="mm:ss"/>
                     <p:splitButton styleClass="topbar-icon" icon="flag-de">
