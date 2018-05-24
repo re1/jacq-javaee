@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="jacq-buttons">
-                    <p:commandButton id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
+                    <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
                 </div>
 
 
@@ -158,8 +158,8 @@
 
                             <f:facet name="{Exporters}">
                                 <div style="float: right; height: 24px;" >
-                                    <p:commandButton type="button" title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
-                                    <p:commandButton type="button" title="XLSX Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
+                                    <p:commandButton title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                    <p:commandButton title="XLSX Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
                                 </div>
                             </f:facet>
 
@@ -213,10 +213,10 @@
                 </div>
                 <div class="ui-g">
                     <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
-                        <p:commandButton type="button" id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
+                        <p:commandButton  id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
                             <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
-                        <p:commandButton type="button" style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                        <p:commandButton  style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
                             <p:dataExporter type="xlsx"  target="downloadDerivativeTable" fileName="derivativeTable"/>
                         </p:commandButton>
                         <p:tooltip for="downloadDerivativeXlsxButton" value="Xslx Download" />
