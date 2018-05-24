@@ -340,9 +340,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui-g-12 ui-g-nopad">
-                        <h:panelGroup id="separations" layout="block" styleClass="ui-g">
-                            <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
+
+                    <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+                        <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
+                            <div class="ui-g-12 ui-g-nopad">
                                 <div class="ui-g-3">
                                     <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
                                         <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
@@ -357,9 +358,10 @@
                                 <div class="ui-g-1">
                                     <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeSeparation(separation)}" />
                                 </div>
-                            </ui:repeat>
-                        </h:panelGroup>
-                    </div>
+                            </div>
+                        </ui:repeat>
+                    </h:panelGroup>
+
                     <div class="ui-g-12 ui-g-nopad">
                         <p:commandButton icon="ui-icon-plus" update="separations" action="#{livingPlantEditController.addSeparation}" />
                     </div>
