@@ -118,7 +118,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
         }
         if (derivative.getTblLivingPlant() != null) {
             // accession_number
-            this.setAccessionNumber(String.format("%07d", String.valueOf(derivative.getTblLivingPlant().getAccessionNumber())));
+            this.setAccessionNumber(String.format("%07d", derivative.getTblLivingPlant().getAccessionNumber()));
             // ipen_number
             this.setIpenNumber((derivative.getTblLivingPlant().getIpenNumber() != null ? derivative.getTblLivingPlant().getIpenNumber().toString() : "") + "-" + ("0000000" + String.valueOf(derivative.getTblLivingPlant().getAccessionNumber())).substring(String.valueOf(derivative.getTblLivingPlant().getAccessionNumber()).length()));
             //label synonym scientific name
