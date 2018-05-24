@@ -250,6 +250,10 @@ public class LivingPlantManager {
             tblGatheringDate.setYear(String.valueOf(livingPlantResult.getGatheringDate().getYear() + 1900));
             tblGatheringDate.setMonth(String.valueOf(livingPlantResult.getGatheringDate().getMonth() + 1));
             tblGatheringDate.setDay(String.valueOf(livingPlantResult.getGatheringDate().getDate()));
+        } else {
+            tblGatheringDate.setYear(null);
+            tblGatheringDate.setMonth(null);
+            tblGatheringDate.setDay(null);
         }
 
         // save gathering coordinates
