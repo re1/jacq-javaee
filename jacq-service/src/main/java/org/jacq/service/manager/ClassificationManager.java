@@ -171,6 +171,11 @@ public class ClassificationManager {
                 if (scientificNameList != null && scientificNameList.size() > 0) {
                     TblNomName scientificName = scientificNameList.get(0);
 
+                    // check if this is already a genus entry
+                    if (scientificName.getRankId() == null || scientificName.getRankId().getRankId().equals(7L)) {
+                        continue;
+                    }
+
                     // try to find matching classification entry for genus
                     TypedQuery<TblNomName> genusQuery = em.createNamedQuery("TblNomName.findBySubstantiveAndRank", TblNomName.class);
                     genusQuery.setParameter("substantiveId", scientificName.getSubstantiveId().getSubstantiveId());
