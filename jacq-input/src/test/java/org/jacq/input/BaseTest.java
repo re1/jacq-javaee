@@ -23,6 +23,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 /**
  *
@@ -35,11 +36,15 @@ public abstract class BaseTest {
     protected static final String TEST_PASSWORD = "test";
 
     protected WebDriver driver = null;
+    protected FirefoxOptions options = null;
 
     @Before
     public void init() {
+        options = new FirefoxOptions();
+        options.addArguments("--headless");
+
         //Step 1- Driver Instantiation: Instantiate driver object as FirefoxDriver
-        driver = new FirefoxDriver();
+        driver = new FirefoxDriver(options);
         //Step 2- Navigation: Open a website
         driver.navigate().to(TEST_URL);
     }
