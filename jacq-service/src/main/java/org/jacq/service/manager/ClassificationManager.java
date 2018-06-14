@@ -51,7 +51,9 @@ public class ClassificationManager {
     protected JacqServiceConfig jacqConfig;
 
     /**
-     * @see ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType, long, java.lang.Long)
+     * @see
+     * ClassificationService#getEntries(org.jacq.common.model.ClassificationSourceType,
+     * long, java.lang.Long)
      */
     @Transactional
     public List<ViewClassificationResult> getEntries(ClassificationSourceType source, long sourceId, Long parentId) {
@@ -61,8 +63,7 @@ public class ClassificationManager {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findTopLevelBySource", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
-        }
-        else {
+        } else {
             classificationQuery = em.createNamedQuery("ViewClassificationResult.findBySourceAndParent", ViewClassificationResult.class);
             classificationQuery.setParameter("source", source.toString());
             classificationQuery.setParameter("sourceId", sourceId);
@@ -83,7 +84,9 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType, long)
+     * @see
+     * ClassificationService#addRevision(org.jacq.common.model.ClassificationSourceType,
+     * long)
      */
     @Transactional
     public UUID addRevision(ClassificationSourceType source, long sourceId) {
@@ -95,7 +98,8 @@ public class ClassificationManager {
     }
 
     /**
-     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long, java.lang.Integer)
+     * @see ClassificationService#getRevision(java.util.UUID, java.lang.Long,
+     * java.lang.Integer)
      */
     public List<RevClassification> getRevision(UUID revision, Long parentId, Integer provinceId) {
         // load uuid-minter entry first
@@ -110,8 +114,7 @@ public class ClassificationManager {
             if (provinceId == null) {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevel", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
-            }
-            else {
+            } else {
                 revClassificationQuery = em.createNamedQuery("RevClassification.findByUuidMinterIdAndTopLevelAndProvinceId", RevClassification.class);
                 revClassificationQuery.setParameter("uuidMinterId", uuidMinter.getUuidMinterId());
                 revClassificationQuery.setParameter("provinceId", "%" + provinceId + "%");
@@ -150,6 +153,21 @@ public class ClassificationManager {
         }
 
         return tblClassification;
+    }
+
+    @Transactional
+    public TblClassification getAcceptedName(long scientificNameId) {
+        ClassificationSourceType source = ClassificationSourceType.CITATION;
+        String[] sourceIds = jacqConfig.getString(JacqConfig.CLASSIFICATION_FAMILY_REFERENCE_IDS).split(",");
+
+        for (int i = 0; i < sourceIds.length; i++) {
+            Long sourceId = Long.parseLong(sourceIds[i]);
+            TblClassification tblClassification = getAcceptedName(source, sourceId, scientificNameId);
+            if (tblClassification != null) {
+                return tblClassification;
+            }
+        }
+        return null;
     }
 
     @Transactional

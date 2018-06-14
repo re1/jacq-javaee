@@ -62,9 +62,10 @@ import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -115,20 +116,34 @@ public class DerivativeManager extends BaseDerivativeManager {
                 LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
                 livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative(), false));
                 if (tblLivingPlant.getTblDerivative().getBotanicalObjectId() != null) {
-                    TblClassification classification = classificationManager.getFamily(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
-                    ViewProtolog protolog = getProtolog(classification);
-                    if (classification != null && classification.getViewScientificName() != null) {
-                        livingPlantResult.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
+                    TblClassification classification = null;
+                    ViewProtolog protolog = null;
+                    // Gets Family and Family Reference
+                    classification = classificationManager.getFamily(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+                    if (classification != null) {
+                        livingPlantResult.setFamily(classification.getViewScientificName().getScientificName());
+                        protolog = getProtolog(classification);
+                        if (protolog != null) {
+                            livingPlantResult.setFamilyReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                        }
                     }
-                    if (protolog != null) {
-                        livingPlantResult.setFamilyReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                    classification = null;
+                    protolog = null;
+                    // Gets AcceptedScrientificName and AcceptedScientificName Reference
+                    classification = classificationManager.getAcceptedName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+                    if (classification != null) {
+                        livingPlantResult.setAcceptedScientificname(classification.getViewScientificName().getScientificName());
+                        protolog = getProtolog(classification);
+                        if (protolog != null) {
+                            livingPlantResult.setAcceptedScientificnameReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                        }
+
                     }
                 }
 
                 return livingPlantResult;
             }
-        }
-        else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
+        } else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
             TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
             if (tblVegetative != null) {
                 // check if user has access to this entry
@@ -262,7 +277,8 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important parameter
+     * Small helper function for fetching relevancy type based on important
+     * parameter
      *
      * @param important
      * @return
@@ -306,7 +322,8 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Determines if the currently active user has access to the given derivative
+     * Determines if the currently active user has access to the given
+     * derivative
      *
      * @param tblDerivative
      * @return

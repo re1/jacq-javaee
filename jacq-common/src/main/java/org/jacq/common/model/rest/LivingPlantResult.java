@@ -64,6 +64,9 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String family;
     protected String familyReference;
 
+    protected String acceptedScientificname;
+    protected String acceptedScientificnameReference;
+
     protected Date recordingDate;
     protected Date incomingDate;
     protected Date cultivationDate;
@@ -654,6 +657,22 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     public void setSpecimensList(List<SpecimenResult> specimensList) {
         this.specimensList = specimensList;
+    }
+
+    public String getAcceptedScientificname() {
+        return acceptedScientificname;
+    }
+
+    public void setAcceptedScientificname(String acceptedScientificname) {
+        this.acceptedScientificname = acceptedScientificname;
+    }
+
+    public String getAcceptedScientificnameReference() {
+        return acceptedScientificnameReference;
+    }
+
+    public void setAcceptedScientificnameReference(String acceptedScientificnameReference) {
+        this.acceptedScientificnameReference = acceptedScientificnameReference;
     }
 
 }

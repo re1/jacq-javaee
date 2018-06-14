@@ -14,9 +14,11 @@
                 <f:viewAction action="#{livingPlantEditController.onLoad}" />
             </f:metadata>
 
-            <h:panelGroup layout="block" styleClass="card" id="livingplant_form">
-                <h1>#{messages['livingplant']} #{(livingPlantEditController.derivativeId == null) ? messages['create'] : messages['edit']}</h1>
-                <div class="ui-g">
+            <h:panelGroup layout="block" id="livingplant_form">
+                <div class="ui-g card">
+                    <div class="ui-g-12 ui-g-nopad">
+                        <h1>#{messages['livingplant']} #{(livingPlantEditController.derivativeId == null) ? messages['create'] : messages['edit']}</h1>
+                    </div>
                     <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-3">
@@ -84,604 +86,628 @@
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.acceptedscientificname']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.acceptedScientificname != null ? livingPlantEditController.livingPlantResult.acceptedScientificname : '-'}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.reference']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.acceptedScientificnameReference != null ? livingPlantEditController.livingPlantResult.acceptedScientificnameReference : '-'}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
                                 <h:outputText value="#{messages['livingplant.family']}" />
                             </div>
                             <div class="ui-g-6">
-                                <h:outputText value="#{livingPlantEditController.livingPlantResult.family}" />
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.family != null ? livingPlantEditController.livingPlantResult.family : '-'}" />
                             </div>
                         </div>
                     </div>
                     <div class="ui-g-6 ui-g-nopad">
                         <div class="ui-g">
                             <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.familyreference']}" />
+                                <h:outputText value="#{messages['livingplant.reference']}" />
                             </div>
                             <div class="ui-g-6">
-                                <h:outputText value="#{livingPlantEditController.livingPlantResult.familyReference}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.location']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
-                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
-                                    <p:ajax event="itemSelect" listener="#{livingPlantEditController.onOrganisationSelect}" update="ipennumber" />
-
-                                    <p:column>
-                                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
-                                    </p:column>
-                                    <p:ajax event="itemSelect" listener="#{livingPlantEditController.organisationHierachicSelectEvent}" />
-                                </p:autoComplete>
-                                <p:message for="organisation" />
-                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
-                            </div>
-                        </div>
-                    </div>
-                    <p:blockUI block="hierachicSearchButton" trigger="organisation" />
-                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px">
-                        <ui:include src="../organisation/hierarchicselect.xhtml" />
-                    </p:overlayPanel>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.placenumber']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:inputText value="#{livingPlantEditController.livingPlantResult.placeNumber}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.cultivar']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectOneMenu id="cultivarSelect" value="#{livingPlantEditController.livingPlantResult.cultivar.cultivarId}">
-                                    <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
-                                    <f:selectItems value="#{livingPlantEditController.cultivarResults}" var="cultivar" itemLabel="#{cultivar.cultivar}" itemValue="#{cultivar.cultivarId}" />
-                                </p:selectOneMenu>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.count']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:spinner value="#{livingPlantEditController.livingPlantResult.count}" min="0" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.price']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:inputNumber value="#{livingPlantEditController.livingPlantResult.price}" symbol=" €" decimalPlaces="2" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.reviewed']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.reviewed}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.accessionnumber']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <h:outputText value="#{livingPlantEditController.livingPlantResult.accessionNumber}"/>
-                                <p:selectOneMenu id="auto" rendered="false">
-                                    <f:selectItem itemLabel="auto" noSelectionOption="true" />
-                                </p:selectOneMenu>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.accessionnumbers']}" />
-                            </div>
-                            <h:panelGroup layout="block" styleClass="ui-g-6" id="alternativeAccessionNumbers">
-                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.alternativeAccessionNumbers}" var="alternativeAccessionNumber">
-                                    <p:inputText id="alternativeAccessionNumber" value="#{alternativeAccessionNumber.number}" />
-                                    <p:commandButton icon="ui-icon-minus" update="jacq_form:alternativeAccessionNumbers" action="#{livingPlantEditController.removeAlternativeAccessionNumber(alternativeAccessionNumber)}" />
-                                </ui:repeat>
-                                <p:commandButton icon="ui-icon-plus" update="alternativeAccessionNumbers" action="#{livingPlantEditController.addAlternativeAccessionNumber}" />
-                            </h:panelGroup>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.ipentype']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectOneMenu id="ipentype" value="#{livingPlantEditController.livingPlantResult.ipenType}" >
-                                    <f:selectItem itemLabel="Custom" itemValue="custom" />
-                                    <f:selectItem itemLabel="Default" itemValue="default" />
-
-                                    <p:ajax event="change" update="ipennumber" />
-                                </p:selectOneMenu>
-                            </div>
-                        </div>
-                    </div>
-                    <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="ipennumber">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.ipennumber']}" />
-                            </div>
-                            <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'default' and !livingPlantEditController.livingPlantResult.ipenLocked}">
-                                <h:panelGrid columns="3" cellpadding="2">
-                                    <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberCountry}" />
-                                    <p:selectOneMenu value="#{livingPlantEditController.ipenNumberRestriction}">
-                                        <f:selectItem itemLabel="X" itemValue="X" />
-                                        <f:selectItem itemLabel="0" itemValue="0" />
-                                        <f:selectItem itemLabel="1" itemValue="1" />
-                                    </p:selectOneMenu>
-                                    <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberGardenCode}" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'custom' and !livingPlantEditController.livingPlantResult.ipenLocked}">
-                                <p:inputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenLocked}">
-                                <h:outputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
-                            </h:panelGroup>
-                        </div>
-                    </h:panelGroup>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.ipenlocked']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.ipenLocked}" />
+                                <h:outputText value="#{livingPlantEditController.livingPlantResult.familyReference != null ? livingPlantEditController.livingPlantResult.familyReference : '-'}" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ui-g">
-                    <div class="ui-g-3">
-                        <h:outputText value="#{messages['livingplant.sex']}" />
-                    </div>
-                    <div class="ui-g-9">
-                        <p:selectManyCheckbox value="#{livingPlantEditController.selectedSexes}">
-                            <f:selectItems value="#{livingPlantEditController.sexes}" var="sex" itemLabel="#{sex.sex}" itemValue="#{sex}" />
-                        </p:selectManyCheckbox>
-                    </div>
-                </div>
-                <h3>#{messages['livingplant.label']}</h3>
-                <div class="ui-g">
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.synonymforlabel']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:autoComplete value="#{livingPlantEditController.livingPlantResult.labelSynonymScientificName}" completeMethod="#{livingPlantEditController.completeScientificName}"
-                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
-                                    <p:column>
-                                        <h:outputText value="#{scientificName.scientificName}" />
-                                    </p:column>
-                                </p:autoComplete>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.annotationforlabel']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:inputText value="#{livingPlantEditController.livingPlantResult.labelAnnotation}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.work']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="work" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-6 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.exhibition']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="exhibition" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h3>#{messages['livingplant.separation']}</h3>
-                <div class="ui-g">
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <h:outputText value="#{messages['livingplant.separated']}" />
-                            </div>
-                            <div class="ui-g-6">
-                                <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.separated}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g">
-                            <div class="ui-g-3">
-                                <h:outputText value="#{messages['livingplant.separation.type']}" />
-                            </div>
-                            <div class="ui-g-3">
-                                <h:outputText value="#{messages['livingplant.separation.date']}" />
-                            </div>
-                            <div class="ui-g-5">
-                                <h:outputText value="#{messages['livingplant.separation.annotation']}" />
-                            </div>
-                            <div class="ui-g-1">
-                            </div>
-                        </div>
-                    </div>
+                <div class="card">
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.location']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
+                                                    var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
+                                        <p:ajax event="itemSelect" listener="#{livingPlantEditController.onOrganisationSelect}" update="ipennumber" />
 
-                    <h:panelGroup id="separations" layout="block" styleClass="ui-g">
-                        <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g-3">
-                                    <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
-                                        <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
+                                        <p:column>
+                                            <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                        </p:column>
+                                        <p:ajax event="itemSelect" listener="#{livingPlantEditController.organisationHierachicSelectEvent}" />
+                                    </p:autoComplete>
+                                    <p:message for="organisation" />
+                                    <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
+                                </div>
+                            </div>
+                        </div>
+                        <p:blockUI block="hierachicSearchButton" trigger="organisation" />
+                        <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px">
+                            <ui:include src="../organisation/hierarchicselect.xhtml" />
+                        </p:overlayPanel>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.placenumber']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.placeNumber}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.cultivar']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="cultivarSelect" value="#{livingPlantEditController.livingPlantResult.cultivar.cultivarId}">
+                                        <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                        <f:selectItems value="#{livingPlantEditController.cultivarResults}" var="cultivar" itemLabel="#{cultivar.cultivar}" itemValue="#{cultivar.cultivarId}" />
                                     </p:selectOneMenu>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.count']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:spinner value="#{livingPlantEditController.livingPlantResult.count}" min="0" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.price']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputNumber value="#{livingPlantEditController.livingPlantResult.price}" symbol=" €" decimalPlaces="2" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.reviewed']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.reviewed}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.accessionNumber}"/>
+                                    <p:selectOneMenu id="auto" rendered="false">
+                                        <f:selectItem itemLabel="auto" noSelectionOption="true" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.accessionnumbers']}" />
+                                </div>
+                                <h:panelGroup layout="block" styleClass="ui-g-6" id="alternativeAccessionNumbers">
+                                    <ui:repeat value="#{livingPlantEditController.livingPlantResult.alternativeAccessionNumbers}" var="alternativeAccessionNumber">
+                                        <p:inputText id="alternativeAccessionNumber" value="#{alternativeAccessionNumber.number}" />
+                                        <p:commandButton icon="ui-icon-minus" update="jacq_form:alternativeAccessionNumbers" action="#{livingPlantEditController.removeAlternativeAccessionNumber(alternativeAccessionNumber)}" />
+                                    </ui:repeat>
+                                    <p:commandButton icon="ui-icon-plus" update="alternativeAccessionNumbers" action="#{livingPlantEditController.addAlternativeAccessionNumber}" />
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipentype']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectOneMenu id="ipentype" value="#{livingPlantEditController.livingPlantResult.ipenType}" >
+                                        <f:selectItem itemLabel="Custom" itemValue="custom" />
+                                        <f:selectItem itemLabel="Default" itemValue="default" />
+
+                                        <p:ajax event="change" update="ipennumber" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="ipennumber">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipennumber']}" />
+                                </div>
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'default' and !livingPlantEditController.livingPlantResult.ipenLocked}">
+                                    <h:panelGrid columns="3" cellpadding="2">
+                                        <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberCountry}" />
+                                        <p:selectOneMenu value="#{livingPlantEditController.ipenNumberRestriction}">
+                                            <f:selectItem itemLabel="X" itemValue="X" />
+                                            <f:selectItem itemLabel="0" itemValue="0" />
+                                            <f:selectItem itemLabel="1" itemValue="1" />
+                                        </p:selectOneMenu>
+                                        <p:inputText style="width: 50px" value="#{livingPlantEditController.ipenNumberGardenCode}" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenType == 'custom' and !livingPlantEditController.livingPlantResult.ipenLocked}">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="ui-g-6" rendered="#{livingPlantEditController.livingPlantResult.ipenLocked}">
+                                    <h:outputText value="#{livingPlantEditController.livingPlantResult.ipenNumber}" />
+                                </h:panelGroup>
+                            </div>
+                        </h:panelGroup>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.ipenlocked']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.ipenLocked}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <h:outputText value="#{messages['livingplant.sex']}" />
+                        </div>
+                        <div class="ui-g-9">
+                            <p:selectManyCheckbox value="#{livingPlantEditController.selectedSexes}">
+                                <f:selectItems value="#{livingPlantEditController.sexes}" var="sex" itemLabel="#{sex.sex}" itemValue="#{sex}" />
+                            </p:selectManyCheckbox>
+                        </div>
+                    </div>
+                    <h3>#{messages['livingplant.label']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.synonymforlabel']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:autoComplete value="#{livingPlantEditController.livingPlantResult.labelSynonymScientificName}" completeMethod="#{livingPlantEditController.completeScientificName}"
+                                                    var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
+                                        <p:column>
+                                            <h:outputText value="#{scientificName.scientificName}" />
+                                        </p:column>
+                                    </p:autoComplete>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.annotationforlabel']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.labelAnnotation}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.work']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="work" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.exhibition']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="exhibition" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>#{messages['livingplant.separation']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['livingplant.separated']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.separated}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
                                 <div class="ui-g-3">
-                                    <p:calendar value="#{separation.date}" pattern="yyyy-MM-dd" mask="true" />
+                                    <h:outputText value="#{messages['livingplant.separation.type']}" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="#{messages['livingplant.separation.date']}" />
                                 </div>
                                 <div class="ui-g-5">
-                                    <p:inputText value="#{separation.annotation}" />
+                                    <h:outputText value="#{messages['livingplant.separation.annotation']}" />
                                 </div>
                                 <div class="ui-g-1">
-                                    <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeSeparation(separation)}" />
-                                </div>
-                            </div>
-                        </ui:repeat>
-                    </h:panelGroup>
-
-                    <div class="ui-g-12 ui-g-nopad">
-                        <p:commandButton icon="ui-icon-plus" update="separations" action="#{livingPlantEditController.addSeparation}" />
-                    </div>
-                </div>
-                <br />
-                <p:tabView dynamic="true" cache="true" id="tabView">
-                    <p:ajax event="tabChange" listener="#{livingPlantEditController.onTabChange}" update="derivatives" />
-
-                    <p:tab title="#{messages['livingplant.collectingdata']}">
-                        <div class="ui-g">
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.collectiondate']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.gatheringDate}" pattern="yyyy-MM-dd" mask="true" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.collectionnumber']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringNumber}" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.freecollectiondate']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.customGatheringDate}" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.collectorname']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <div class="ui-g-12 ui-g-nopad">
-                                            <h:panelGroup id="gatherers" layout="block" styleClass="ui-g">
-                                                <ui:repeat value="#{livingPlantEditController.livingPlantResult.gatherers}" var="gatherer">
-                                                    <div class="ui-g-11">
-                                                        <p:autoComplete value="#{gatherer}" completeMethod="#{livingPlantEditController.completePerson}"
-                                                                        var="person" itemLabel="#{person.name}" itemValue="#{person}" minQueryLength="3" queryDelay="300" converter="personConverter">
-                                                            <p:column>
-                                                                <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
-                                                            </p:column>
-
-                                                            <p:ajax event="itemSelect" listener="#{livingPlantEditController.onGathererSelect}" update="@parent" />
-                                                        </p:autoComplete>
-                                                    </div>
-                                                    <div class="ui-g-1">
-                                                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeGatherer(gatherer)}" />
-                                                    </div>
-                                                </ui:repeat>
-                                            </h:panelGroup>
-                                        </div>
-                                        <div class="ui-g-12 ui-g-nopad">
-                                            <p:commandButton icon="ui-icon-plus" update="gatherers" action="#{livingPlantEditController.addGatherer}" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:autoComplete value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" completeMethod="#{livingPlantEditController.completeLocation}"
-                                                        var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
-                                            <p:ajax event="itemSelect" listener="#{livingPlantEditController.onLocationItemSelect}" update="jacq_form:ipennumber" />
-
-                                            <p:column>
-                                                <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
-                                            </p:column>
-                                        </p:autoComplete>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g- ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.altitude']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <h:panelGrid columns="3" cellpadding="2">
-                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMin}" style="width: 50px" />
-                                            -
-                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMax}" style="width: 50px" />
-                                        </h:panelGrid>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.latitude']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <h:panelGrid columns="4" cellpadding="2">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeDegrees}" style="width: 30px" />
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeMinutes}" style="width: 30px" />
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeSeconds}" style="width: 30px" />
-                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.latitudeHalf}" id="latitudeselect">
-                                            <f:selectItem itemLabel="N" noSelectionOption="true" />
-                                            <f:selectItem itemLabel="S" noSelectionOption="true" />
-                                        </p:selectOneMenu>
-                                    </h:panelGrid>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.longitude']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <h:panelGrid columns="4" cellpadding="2">
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeDegrees}" style="width: 30px" />
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeMinutes}" style="width: 30px" />
-                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeSeconds}" style="width: 30px" />
-                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.longitudeHalf}" id="longitudeselect">
-                                            <f:selectItem itemLabel="E" noSelectionOption="true" />
-                                            <f:selectItem itemLabel="W" noSelectionOption="true" />
-                                        </p:selectOneMenu>
-                                    </h:panelGrid>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.accuracy']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:inputText value="#{livingPlantEditController.livingPlantResult.exactness}" />
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.annotation']}" />
-                                </div>
-                                <div class="ui-g-9">
-                                    <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.gatheringAnnotation}" />
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.indexseminum']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.indexSeminum}" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.type']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.indexSeminumType.indexSeminumTypeId}">
-                                            <f:selectItems value="#{livingPlantEditController.indexSeminumTypes}" var="indexSeminumType" itemLabel="#{indexSeminumType.type}" itemValue="#{indexSeminumType.indexSeminumTypeId}" />
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.habitat']}" />
-                                </div>
-                                <div class="ui-g-9">
-                                    <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.habitat}" />
                                 </div>
                             </div>
                         </div>
-                    </p:tab>
-                    <p:tab title="#{messages['livingplant.horticulturaldata']}">
-                        <div class="ui-g">
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.recording_date']}" />
+
+                        <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+                            <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g-3">
+                                        <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
+                                            <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
+                                        </p:selectOneMenu>
                                     </div>
-                                    <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.recordingDate}" pattern="yyyy-MM-dd" mask="true" />
+                                    <div class="ui-g-3">
+                                        <p:calendar value="#{separation.date}" pattern="yyyy-MM-dd" mask="true" />
                                     </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.incoming_date']}" />
+                                    <div class="ui-g-5">
+                                        <p:inputText value="#{separation.annotation}" />
                                     </div>
-                                    <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.incomingDate}" pattern="yyyy-MM-dd" mask="true" />
+                                    <div class="ui-g-1">
+                                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeSeparation(separation)}" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.cultivation_date']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:calendar value="#{livingPlantEditController.livingPlantResult.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.culturenote']}" />
-                                </div>
-                                <div class="ui-g-9">
-                                    <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.cultureNotes}" />
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-4">
-                                        <h:outputText value="#{messages['livingplant.acquisition.source_date']}" />
-                                    </div>
-                                    <div class="ui-g-4">
-                                        <h:outputText value="#{messages['livingplant.acquisition.source_name']}" />
-                                    </div>
-                                    <div class="ui-g-4">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <h:panelGroup id="acquistionEventSources" layout="block" styleClass="ui-g">
-                                    <ui:repeat value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}" var="acquistionEventSource">
-                                        <div class="ui-g-4">
-                                            <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="yyyy-MM-dd" mask="true" />
+                            </ui:repeat>
+                        </h:panelGroup>
+
+                        <div class="ui-g-12 ui-g-nopad">
+                            <p:commandButton icon="ui-icon-plus" update="separations" action="#{livingPlantEditController.addSeparation}" />
+                        </div>
+                    </div>
+                    <br />
+                    <p:tabView dynamic="true" cache="true" id="tabView">
+                        <p:ajax event="tabChange" listener="#{livingPlantEditController.onTabChange}" update="derivatives" />
+
+                        <p:tab title="#{messages['livingplant.collectingdata']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectiondate']}" />
                                         </div>
-                                        <div class="ui-g-4">
-                                            <p:autoComplete value="#{acquistionEventSource.acquisitionEventSource}" completeMethod="#{livingPlantEditController.completeAcquisitionSource}"
-                                                            var="acquisitionSource" itemLabel="#{acquisitionSource.name}" itemValue="#{acquisitionSource}" minQueryLength="3" queryDelay="300" converter="acquisitionSourceConverter">
+                                        <div class="ui-g-6">
+                                            <p:calendar value="#{livingPlantEditController.livingPlantResult.gatheringDate}" pattern="yyyy-MM-dd" mask="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectionnumber']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.gatheringNumber}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.freecollectiondate']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.customGatheringDate}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.collectorname']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <div class="ui-g-12 ui-g-nopad">
+                                                <h:panelGroup id="gatherers" layout="block" styleClass="ui-g">
+                                                    <ui:repeat value="#{livingPlantEditController.livingPlantResult.gatherers}" var="gatherer">
+                                                        <div class="ui-g-11">
+                                                            <p:autoComplete value="#{gatherer}" completeMethod="#{livingPlantEditController.completePerson}"
+                                                                            var="person" itemLabel="#{person.name}" itemValue="#{person}" minQueryLength="3" queryDelay="300" converter="personConverter">
+                                                                <p:column>
+                                                                    <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
+                                                                </p:column>
+
+                                                                <p:ajax event="itemSelect" listener="#{livingPlantEditController.onGathererSelect}" update="@parent" />
+                                                            </p:autoComplete>
+                                                        </div>
+                                                        <div class="ui-g-1">
+                                                            <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeGatherer(gatherer)}" />
+                                                        </div>
+                                                    </ui:repeat>
+                                                </h:panelGroup>
+                                            </div>
+                                            <div class="ui-g-12 ui-g-nopad">
+                                                <p:commandButton icon="ui-icon-plus" update="gatherers" action="#{livingPlantEditController.addGatherer}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:autoComplete value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" completeMethod="#{livingPlantEditController.completeLocation}"
+                                                            var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
+                                                <p:ajax event="itemSelect" listener="#{livingPlantEditController.onLocationItemSelect}" update="jacq_form:ipennumber" />
+
                                                 <p:column>
-                                                    <h:outputText value="#{acquisitionSource.name}" /> (<h:outputText value="#{acquisitionSource.acquisitionSourceId}" />)
+                                                    <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
                                                 </p:column>
                                             </p:autoComplete>
                                         </div>
-                                        <div class="ui-g-4">
-                                            <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />
+                                    </div>
+                                </div>
+                                <div class="ui-g- ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.altitude']}" />
                                         </div>
-                                    </ui:repeat>
-                                </h:panelGroup>
-                            </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <p:commandButton icon="ui-icon-plus" update="acquistionEventSources" action="#{livingPlantEditController.addAcquisitionEventSource()}" />
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:panelGrid columns="3" cellpadding="2">
+                                                <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMin}" style="width: 50px" />
+                                                -
+                                                <p:inputText value="#{livingPlantEditController.livingPlantResult.altitudeMax}" style="width: 50px" />
+                                            </h:panelGrid>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
                                     <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.name']}" />
+                                        <h:outputText value="#{messages['livingplant.latitude']}" />
                                     </div>
                                     <div class="ui-g-6">
-                                        <p:selectOneMenu id="name">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
-                                        </p:selectOneMenu>
+                                        <h:panelGrid columns="4" cellpadding="2">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeDegrees}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeMinutes}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeSeconds}" style="width: 30px" />
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.latitudeHalf}" id="latitudeselect">
+                                                <f:selectItem itemLabel="N" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="S" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g-6">
+                                        <h:outputText value="#{messages['livingplant.longitude']}" />
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <h:panelGrid columns="4" cellpadding="2">
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeDegrees}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeMinutes}" style="width: 30px" />
+                                            <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeSeconds}" style="width: 30px" />
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.longitudeHalf}" id="longitudeselect">
+                                                <f:selectItem itemLabel="E" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="W" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g-6">
+                                        <h:outputText value="#{messages['livingplant.accuracy']}" />
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <p:inputText value="#{livingPlantEditController.livingPlantResult.exactness}" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g-3">
+                                        <h:outputText value="#{messages['livingplant.annotation']}" />
+                                    </div>
+                                    <div class="ui-g-9">
+                                        <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.gatheringAnnotation}" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.indexseminum']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.indexSeminum}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.type']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.indexSeminumType.indexSeminumTypeId}">
+                                                <f:selectItems value="#{livingPlantEditController.indexSeminumTypes}" var="indexSeminumType" itemLabel="#{indexSeminumType.type}" itemValue="#{indexSeminumType.indexSeminumTypeId}" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g-3">
+                                        <h:outputText value="#{messages['livingplant.habitat']}" />
+                                    </div>
+                                    <div class="ui-g-9">
+                                        <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.habitat}" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.site']}" />
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.horticulturaldata']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.recording_date']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:calendar value="#{livingPlantEditController.livingPlantResult.recordingDate}" pattern="yyyy-MM-dd" mask="true" />
+                                        </div>
                                     </div>
-                                    <div class="ui-g-6">
-                                        <p:selectOneMenu id="site">
-                                            <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
-                                        </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.incoming_date']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:calendar value="#{livingPlantEditController.livingPlantResult.incomingDate}" pattern="yyyy-MM-dd" mask="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.cultivation_date']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:calendar value="#{livingPlantEditController.livingPlantResult.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g-3">
+                                        <h:outputText value="#{messages['livingplant.culturenote']}" />
+                                    </div>
+                                    <div class="ui-g-9">
+                                        <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.cultureNotes}" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-4">
+                                            <h:outputText value="#{messages['livingplant.acquisition.source_date']}" />
+                                        </div>
+                                        <div class="ui-g-4">
+                                            <h:outputText value="#{messages['livingplant.acquisition.source_name']}" />
+                                        </div>
+                                        <div class="ui-g-4">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <h:panelGroup id="acquistionEventSources" layout="block" styleClass="ui-g">
+                                        <ui:repeat value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}" var="acquistionEventSource">
+                                            <div class="ui-g-4">
+                                                <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="yyyy-MM-dd" mask="true" />
+                                            </div>
+                                            <div class="ui-g-4">
+                                                <p:autoComplete value="#{acquistionEventSource.acquisitionEventSource}" completeMethod="#{livingPlantEditController.completeAcquisitionSource}"
+                                                                var="acquisitionSource" itemLabel="#{acquisitionSource.name}" itemValue="#{acquisitionSource}" minQueryLength="3" queryDelay="300" converter="acquisitionSourceConverter">
+                                                    <p:column>
+                                                        <h:outputText value="#{acquisitionSource.name}" /> (<h:outputText value="#{acquisitionSource.acquisitionSourceId}" />)
+                                                    </p:column>
+                                                </p:autoComplete>
+                                            </div>
+                                            <div class="ui-g-4">
+                                                <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />
+                                            </div>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <p:commandButton icon="ui-icon-plus" update="acquistionEventSources" action="#{livingPlantEditController.addAcquisitionEventSource()}" />
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.name']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="name">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.site']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="site">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-g-nopad">
+                                    <div class="ui-g-3">
+                                        <h:outputText value="#{messages['livingplant.annotation']}" />
+                                    </div>
+                                    <div class="ui-g-9">
+                                        <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.generalAnnotation}" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['livingplant.phenology']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.phenology.phenologyId}">
+                                                <f:selectItems value="#{livingPlantEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
+                                            </p:selectOneMenu>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-g-nopad">
-                                <div class="ui-g-3">
-                                    <h:outputText value="#{messages['livingplant.annotation']}" />
-                                </div>
-                                <div class="ui-g-9">
-                                    <p:inputTextarea value="#{livingPlantEditController.livingPlantResult.generalAnnotation}" />
-                                </div>
-                            </div>
-                            <div class="ui-g-6 ui-g-nopad">
-                                <div class="ui-g">
-                                    <div class="ui-g-6">
-                                        <h:outputText value="#{messages['livingplant.phenology']}" />
-                                    </div>
-                                    <div class="ui-g-6">
-                                        <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.phenology.phenologyId}">
-                                            <f:selectItems value="#{livingPlantEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </p:tab>
-                    <p:tab title="#{messages['livingplant.collectionmanagement']}">
-                        <ui:include src="edit/collectionmanagement.xhtml" />
-                    </p:tab>
-                    <p:tab id="tabDerivative" title="#{messages['livingplant.derivatives']}">
-                        <ui:include src="edit/derivatives.xhtml" />
-                    </p:tab>
-                    <p:tab title="#{messages['livingplant.inventories']}">
-                    </p:tab>
-                </p:tabView>
-                <div class="jacq-buttons">
-                    <p:commandButton id="saveButton" widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
-                    <p:commandButton id="copyButton" widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
-                </div>
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.collectionmanagement']}">
+                            <ui:include src="edit/collectionmanagement.xhtml" />
+                        </p:tab>
+                        <p:tab id="tabDerivative" title="#{messages['livingplant.derivatives']}">
+                            <ui:include src="edit/derivatives.xhtml" />
+                        </p:tab>
+                        <p:tab title="#{messages['livingplant.inventories']}">
+                        </p:tab>
+                    </p:tabView>
+                    <div class="jacq-buttons">
+                        <p:commandButton id="saveButton" widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                        <p:commandButton id="copyButton" widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                    </div>
 
-                <p:blockUI block="@parent" trigger="saveButton copyButton" />
+                    <p:blockUI block="@parent" trigger="saveButton copyButton" />
+                </div>
             </h:panelGroup>
 
 
@@ -740,6 +766,7 @@
                     </div>
                 </div>
             </h:panelGroup>
+
         </ui:define>
         <ui:define name="content_noform">
             <p:dialog widgetVar="vegetativeDialog" width="80%" modal="true">
