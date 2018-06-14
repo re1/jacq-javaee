@@ -33,6 +33,7 @@ import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIdentStatus;
+import org.jacq.common.model.jpa.TblLabelType;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -46,8 +47,8 @@ import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
-import org.jacq.common.model.rest.ClassificationSourceType;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -55,7 +56,6 @@ import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.SpecimenResult;
-import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.ApplicationManager;
@@ -274,6 +274,15 @@ public class DerivativeManager extends BaseDerivativeManager {
         TypedQuery<TblSex> sexQuery = em.createNamedQuery("TblSex.findAll", TblSex.class);
 
         return SexResult.fromList(sexQuery.getResultList());
+    }
+
+    /**
+	 * @see DerivativeService#findAllLabelType()
+     */
+    public List<LabelTypeResult> findAllLabelType() {
+        TypedQuery<TblLabelType> labelTypeQuery = em.createNamedQuery("TblLabelType.findAll", TblLabelType.class);
+
+        return LabelTypeResult.fromList(labelTypeQuery.getResultList());
     }
 
     /**

@@ -28,6 +28,7 @@ import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -262,4 +263,15 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<SexResult> findAllSex();
+
+    /**
+     * Get a list of available label types
+     *
+     * @return
+     */
+    @GET
+    @Path("/labelType/findAll")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<LabelTypeResult> findAllLabelType();
 }

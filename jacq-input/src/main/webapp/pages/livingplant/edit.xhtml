@@ -319,24 +319,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.work']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="work" />
-                                </div>
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.label']}" />
                             </div>
-                        </div>
-                        <div class="ui-g-6 ui-g-nopad">
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="#{messages['livingplant.exhibition']}" />
-                                </div>
-                                <div class="ui-g-6">
-                                    <p:selectBooleanCheckbox value="exhibition" />
-                                </div>
+                            <div class="ui-g-9">
+                                <p:selectManyCheckbox value="#{livingPlantEditController.selectedLabelTypes}">
+                                    <f:selectItems value="#{livingPlantEditController.labelTypes}" var="labelType" itemLabel="#{labelType.description}" />
+                                </p:selectManyCheckbox>
                             </div>
                         </div>
                     </div>

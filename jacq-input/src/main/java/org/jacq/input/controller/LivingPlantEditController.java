@@ -38,6 +38,7 @@ import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -146,9 +147,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
-    protected List<SelectItem> sexes;
 
+    protected List<SelectItem> sexes;
     protected List<String> selectedSexes;
+
+    protected List<SelectItem> labelTypes;
+    protected List<String> selectedLabelTypes;
 
     @ManagedProperty(value = "#{organisationHierarchicSelectController}")
     protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
@@ -184,6 +188,14 @@ public class LivingPlantEditController implements OrganisationSelectListener {
             this.sexes.add(new SelectItem(sex.getSexId(), sex.getSex()));
         }
         this.selectedSexes = new ArrayList<>();
+
+        // load list of label types and convert to select item
+        List<LabelTypeResult> labelTypeList = this.derivativeService.findAllLabelType();
+        this.labelTypes = new ArrayList<>();
+        for (LabelTypeResult labelType : labelTypeList) {
+            this.labelTypes.add(new SelectItem(labelType.getLabelTypeId(), labelType.getType()));
+        }
+        this.selectedLabelTypes = new ArrayList<>();
 
         this.showorganisationHierarchicSelectController();
     }
@@ -323,6 +335,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         for (String sexId : this.selectedSexes) {
             this.livingPlantResult.getSexes().add(new SexResult(Long.parseLong(sexId)));
         }
+        // convert selected label type entries to LabelTypeResult(s)
+        this.livingPlantResult.getLabelTypes().clear();
+        for (String labelTypeId : this.selectedLabelTypes) {
+            this.livingPlantResult.getLabelTypes().add(new LabelTypeResult(Long.parseLong(labelTypeId)));
+        }
+
         this.livingPlantResult.setSpecimensList(this.getSpecimenList());
 
         // save the living plant entry
@@ -359,6 +377,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         // convert selected sex entries
         for (SexResult sex : this.livingPlantResult.getSexes()) {
             this.selectedSexes.add(sex.getSexId().toString());
+        }
+
+        // convert selected label-type entries
+        for (LabelTypeResult labelType : this.livingPlantResult.getLabelTypes()) {
+            this.selectedLabelTypes.add(labelType.getLabelTypeId().toString());
         }
     }
 
@@ -557,6 +580,18 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     public void setSelectedSexes(List<String> selectedSexes) {
         this.selectedSexes = selectedSexes;
+    }
+
+    public List<SelectItem> getLabelTypes() {
+        return labelTypes;
+    }
+
+    public List<String> getSelectedLabelTypes() {
+        return selectedLabelTypes;
+    }
+
+    public void setSelectedLabelTypes(List<String> selectedLabelTypes) {
+        this.selectedLabelTypes = selectedLabelTypes;
     }
 
     public String getWorkLabelUrl() {

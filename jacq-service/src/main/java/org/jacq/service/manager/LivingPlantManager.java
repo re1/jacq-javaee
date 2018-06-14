@@ -40,6 +40,7 @@ import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblDerivativeType;
 import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.TblIndexSeminumType;
+import org.jacq.common.model.jpa.TblLabelType;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblLocation;
 import org.jacq.common.model.jpa.TblLocationCoordinates;
@@ -55,6 +56,7 @@ import org.jacq.common.model.rest.AcquistionEventSourceResult;
 import org.jacq.common.model.rest.AlternativeAccessionNumberResult;
 import org.jacq.common.model.rest.CertificateResult;
 import org.jacq.common.model.rest.ImageServerResource;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.PersonResult;
 import org.jacq.common.model.rest.SpecimenResult;
@@ -172,6 +174,17 @@ public class LivingPlantManager {
         for (SexResult sex : livingPlantResult.getSexes()) {
             if (sex.getSexId() != null) {
                 tblBotanicalObject.getTblSexList().add(em.find(TblSex.class, sex.getSexId()));
+            }
+        }
+
+        // assign label types
+        if (tblBotanicalObject.getTblLabelTypeList() == null) {
+            tblBotanicalObject.setTblLabelTypeList(new ArrayList<TblLabelType>());
+        }
+        tblBotanicalObject.getTblLabelTypeList().clear();
+        for (LabelTypeResult labelType : livingPlantResult.getLabelTypes()) {
+            if (labelType.getLabelTypeId() != null) {
+                tblBotanicalObject.getTblLabelTypeList().add(em.find(TblLabelType.class, labelType.getLabelTypeId()));
             }
         }
 
