@@ -9,7 +9,9 @@
     <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
         <ui:define name="content">
             <f:metadata>
-                <f:viewParam name="derivativeId" value="#{livingPlantEditController.derivativeId}"/>
+                <f:viewParam name="derivativeId" value="#{livingPlantEditController.derivativeId}" />
+                <f:viewParam name="type" value="#{livingPlantEditController.type}" />
+                <f:viewAction action="#{livingPlantEditController.onLoad}" />
             </f:metadata>
 
             <h:panelGroup layout="block" styleClass="card" id="livingplant_form">

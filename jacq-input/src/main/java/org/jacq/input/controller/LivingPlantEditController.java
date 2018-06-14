@@ -84,6 +84,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected Long derivativeId;
 
     /**
+     * Type of derivative which requested the load
+     */
+    protected String type;
+
+    /**
      * Reference to derivative service which is called during editing
      */
     protected DerivativeService derivativeService;
@@ -254,10 +259,6 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.livingPlantResult.getGatherers().remove(gatherer);
     }
 
-    public Long getDerivativeId() {
-        return derivativeId;
-    }
-
     public OrganisationHierarchicSelectController getOrganisationHierarchicSelectController() {
         return organisationHierarchicSelectController;
     }
@@ -276,15 +277,26 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
-     *
-     * @param derivativeId
+     * Called by the JSF container, when the page is loaded and post parameter
+     * setting. Derivative entry will be loaded
      */
-    public void setDerivativeId(Long derivativeId) {
-        this.derivativeId = derivativeId;
-
+    public void onLoad() {
         if (this.derivativeId != null) {
+            // for vegetative entries, we load the parent living plant entry
+            if (VegetativeResult.VEGETATIVE.equals(this.type)) {
+                Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, VegetativeResult.VEGETATIVE);
+                if (botanicalObjectDerivative.getStatus() == 200) {
+                    VegetativeResult vegetativeResult = botanicalObjectDerivative.readEntity(VegetativeResult.class);
+                    this.derivativeId = vegetativeResult.getParentDerivativeId();
+                } else {
+                    // if access is not allowed, rediect to overview
+                    sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
+                    FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "default");
+
+                    return;
+                }
+            }
+
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             if (botanicalObjectDerivative.getStatus() == 200) {
@@ -583,4 +595,19 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 
+    public Long getDerivativeId() {
+        return derivativeId;
+    }
+
+    public void setDerivativeId(Long derivativeId) {
+        this.derivativeId = derivativeId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
