@@ -5,3 +5,5 @@
 /jacq-names/target/
 rebel.xml
 nb-configuration.xml
+*/nbproject/*
+nbactions.xml
