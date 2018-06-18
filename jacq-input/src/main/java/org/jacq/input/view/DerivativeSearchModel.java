@@ -16,6 +16,7 @@
 package org.jacq.input.view;
 
 import java.io.Serializable;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
@@ -44,6 +45,7 @@ public class DerivativeSearchModel implements Serializable {
     protected Boolean workingFilter;
     protected OrganisationResult selectedOrganisation;
     protected ScientificNameResult selectedScientificName;
+    protected CultivarResult selectedCultivar;
     protected int callFlag; // Flag 0 User Organisation gets added in Search and 1 not
     protected LocationResult gatheringLocation;
     protected Long exhibition;
@@ -124,8 +126,7 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedOrganisation != null) {
             this.organisationId = selectedOrganisation.getOrganisationId();
-        }
-        else {
+        } else {
             this.organisationId = null;
         }
     }
@@ -139,8 +140,7 @@ public class DerivativeSearchModel implements Serializable {
 
         if (selectedScientificName != null) {
             this.scientificNameId = selectedScientificName.getScientificNameId();
-        }
-        else {
+        } else {
             this.scientificNameId = null;
         }
     }
@@ -228,4 +228,13 @@ public class DerivativeSearchModel implements Serializable {
     public void setClassification(Boolean classification) {
         this.classification = classification;
     }
+
+    public CultivarResult getSelectedCultivar() {
+        return selectedCultivar;
+    }
+
+    public void setSelectedCultivar(CultivarResult selectedCultivar) {
+        this.selectedCultivar = selectedCultivar;
+    }
+
 }

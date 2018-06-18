@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
@@ -61,6 +62,7 @@ public interface DerivativeService {
      * @param gatheringLocation
      * @param exhibition
      * @param working
+     * @param cultivar
      * @param classification
      * @param scientificNameId
      * @param orderDirection
@@ -72,7 +74,7 @@ public interface DerivativeService {
     @Path("/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+    public List<BotanicalObjectDerivative> find(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("cultivar") String cultivar, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
      * Return total count of results for the given search parameters
@@ -89,6 +91,7 @@ public interface DerivativeService {
      * @param gatheringLocation
      * @param exhibition
      * @param working
+     * @param cultivar
      * @param classification
      * @return
      */
@@ -96,7 +99,7 @@ public interface DerivativeService {
     @Path("/count")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("classification") Boolean classification);
+    public int count(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("cultivar") String cultivar, @QueryParam("classification") Boolean classification);
 
     /**
      * Get details for a given derivative entry
@@ -174,6 +177,7 @@ public interface DerivativeService {
      * @param gatheringLocation
      * @param exhibition
      * @param working
+     * @param cultivar
      * @param scientificNameId
      * @param classification
      * @param orderDirection
@@ -185,7 +189,7 @@ public interface DerivativeService {
     @Path("/download/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BotanicalObjectDownloadResult> downloadFind(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+    public List<BotanicalObjectDownloadResult> downloadFind(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("cultivar") String cultivar, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
      * Returns a list of available phenology types
@@ -274,4 +278,30 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<LabelTypeResult> findAllLabelType();
+
+    /**
+     * Get a list of available cultivars
+     *
+     * @param cultivar
+     * @param offset
+     * @param count
+     * @return
+     */
+    @GET
+    @Path("/cultivar/find")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CultivarResult> cultivarFind(@QueryParam("cultivar") String cultivar, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
+
+    /**
+     * Load a single location entry
+     *
+     * @param cultivarId
+     * @return
+     */
+    @Path("/cultivar/load")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
 }
