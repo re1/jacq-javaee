@@ -15,8 +15,10 @@
  */
 package org.jacq.service.dataimport.util;
 
+import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.filter.ContentTypeResponseFilter;
-import org.jacq.common.rest.names.ScientificNamesService;
+import org.jacq.common.external.rest.ScientificNamesService;
+import org.jacq.service.dataimport.security.BasicClientRequestFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -28,15 +30,21 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  */
 public class ServicesUtil {
 
-    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://131.130.131.9/";
+    private static final String SCIENTIFIC_NAMES_SERVICE_URL = "http://development.jacq.org/jacq-legacy/";
+    private static final String JACQ_SERVICE_URL = System.getProperty("jacq.serviceUrl");
 
     public static ScientificNamesService getScientificNamesService() {
         return getProxy(ScientificNamesService.class, SCIENTIFIC_NAMES_SERVICE_URL);
     }
 
+    public static OrganisationService getOrganisationService() {
+        return getProxy(OrganisationService.class, JACQ_SERVICE_URL);
+    }
+
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
         resteasyClient.register(new ContentTypeResponseFilter());
+        resteasyClient.register(new BasicClientRequestFilter("dataimport", "dataimport"));
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
     }

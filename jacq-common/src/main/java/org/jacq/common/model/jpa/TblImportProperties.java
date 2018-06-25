@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,7 +43,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblImportProperties.findAll", query = "SELECT t FROM TblImportProperties t")
     , @NamedQuery(name = "TblImportProperties.findById", query = "SELECT t FROM TblImportProperties t WHERE t.id = :id")
     , @NamedQuery(name = "TblImportProperties.findByIDPflanze", query = "SELECT t FROM TblImportProperties t WHERE t.iDPflanze = :iDPflanze")
-    , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")})
+    , @NamedQuery(name = "TblImportProperties.findBySpeciesName", query = "SELECT t FROM TblImportProperties t WHERE t.speciesName = :speciesName")
+    , @NamedQuery(name = "TblImportProperties.findBySourceName", query = "SELECT t FROM TblImportProperties t WHERE t.sourceName = :sourceName")
+    , @NamedQuery(name = "TblImportProperties.findByOriginalBotanicalObjectId", query = "SELECT t FROM TblImportProperties t WHERE t.originalBotanicalObjectId = :originalBotanicalObjectId")})
 public class TblImportProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,9 +63,14 @@ public class TblImportProperties implements Serializable {
     @Size(max = 65535)
     @Column(name = "Verbreitung")
     private String verbreitung;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TblBotanicalObject botanicalObjectId;
+    @Size(max = 45)
+    @Column(name = "source_name")
+    private String sourceName;
+    @Column(name = "original_botanical_object_id")
+    private Long originalBotanicalObjectId;
+    @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative derivativeId;
 
     public TblImportProperties() {
     }
@@ -104,12 +111,28 @@ public class TblImportProperties implements Serializable {
         this.verbreitung = verbreitung;
     }
 
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
+    public String getSourceName() {
+        return sourceName;
     }
 
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public Long getOriginalBotanicalObjectId() {
+        return originalBotanicalObjectId;
+    }
+
+    public void setOriginalBotanicalObjectId(Long originalBotanicalObjectId) {
+        this.originalBotanicalObjectId = originalBotanicalObjectId;
+    }
+
+    public TblDerivative getDerivativeId() {
+        return derivativeId;
+    }
+
+    public void setDerivativeId(TblDerivative derivativeId) {
+        this.derivativeId = derivativeId;
     }
 
     @Override

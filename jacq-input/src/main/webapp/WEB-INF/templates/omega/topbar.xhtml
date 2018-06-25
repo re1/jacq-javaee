@@ -1,0 +1,39 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <div class="topbar clearfix">
+        <a id="omega-menu-button" href="#">
+            <span class="fa fa-bars"></span>
+        </a>
+
+        <span class="topbar-title"><ui:insert name="title"></ui:insert></span>
+
+        <a id="options-menu-button" href="#">
+            <span class="fa fa-ellipsis-h"></span>
+        </a>
+
+        <div id="topbar-icons" class="animated">
+            <h:form id="jacq_form-topbar">
+                <span class="topbar-search">
+                    <h:outputText value="#{messages['loggedinas']} #{sessionManager.user.username} " />
+                    <h:outputText value="#{messages['logoutin']} " />
+                    <pe:timer id="timer" timeout="#{sessionController.timer}" ontimercomplete="window.location.reload();" format="mm:ss"/>
+                    <p:splitButton styleClass="topbar-icon" icon="flag-de">
+                        <p:menuitem value="Deutsch" icon="flag-de" action="#{sessionController.setLanguageTag('de')}" update="@all" />
+                        <p:menuitem value="English" icon="flag-en" action="#{sessionController.setLanguageTag('en')}" update="@all" />
+                    </p:splitButton>
+                </span>
+
+                <p:commandLink value="#{messages['logout']}" action="#{loginController.logout}" ajax="false" />
+            </h:form>
+
+        </div>
+
+    </div>
+
+</ui:composition>

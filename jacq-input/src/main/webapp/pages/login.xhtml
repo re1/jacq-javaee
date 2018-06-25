@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Login</title>
+        <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Poppins" rel="stylesheet"></link>
+
+        <h:outputStylesheet library="jacq" name="jacq.css" />
+    </h:head>
+    <h:body>
+        <div class="jacq-login">
+            <h:graphicImage library="jacq" name="jacq_logo.png" />
+            <h:form style="">
+                <p:messages />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="username" value="#{messages['user.username']}" />
+                    <p:inputText id="username" value="#{loginController.username}" required="true" label="username" />
+
+                    <h:outputLabel for="password" value="#{messages['user.password']}" />
+                    <p:password id="password" value="#{loginController.password}" required="true" label="password" />
+                </h:panelGrid>
+                <p:commandButton value="#{messages['login']}" action="#{loginController.login}" ajax="false" />
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

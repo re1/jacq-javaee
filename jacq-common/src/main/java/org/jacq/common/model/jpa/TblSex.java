@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,15 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -58,8 +57,8 @@ public class TblSex implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "sex")
     private String sex;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sexId", fetch = FetchType.LAZY)
-    private List<TblBotanicalObjectSex> tblBotanicalObjectSexList;
+    @ManyToMany(mappedBy = "tblSexList", fetch = FetchType.LAZY)
+    private List<TblBotanicalObject> tblBotanicalObjectList;
 
     public TblSex() {
     }
@@ -90,12 +89,12 @@ public class TblSex implements Serializable {
     }
 
     @XmlTransient
-    public List<TblBotanicalObjectSex> getTblBotanicalObjectSexList() {
-        return tblBotanicalObjectSexList;
+    public List<TblBotanicalObject> getTblBotanicalObjectList() {
+        return tblBotanicalObjectList;
     }
 
-    public void setTblBotanicalObjectSexList(List<TblBotanicalObjectSex> tblBotanicalObjectSexList) {
-        this.tblBotanicalObjectSexList = tblBotanicalObjectSexList;
+    public void setTblBotanicalObjectList(List<TblBotanicalObject> tblBotanicalObjectList) {
+        this.tblBotanicalObjectList = tblBotanicalObjectList;
     }
 
     @Override

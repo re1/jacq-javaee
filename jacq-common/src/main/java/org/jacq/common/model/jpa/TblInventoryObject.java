@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,9 +61,7 @@ public class TblInventoryObject implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "message")
     private String message;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
@@ -80,10 +78,9 @@ public class TblInventoryObject implements Serializable {
         this.inventoryObjectId = inventoryObjectId;
     }
 
-    public TblInventoryObject(Long inventoryObjectId, String message, Date timestamp) {
+    public TblInventoryObject(Long inventoryObjectId, String message) {
         this.inventoryObjectId = inventoryObjectId;
         this.message = message;
-        this.timestamp = timestamp;
     }
 
     public Long getInventoryObjectId() {

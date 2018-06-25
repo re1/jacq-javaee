@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,9 +64,7 @@ public class TblIndexSeminumRevision implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumRevisionId", fetch = FetchType.LAZY)
@@ -82,10 +80,9 @@ public class TblIndexSeminumRevision implements Serializable {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
     }
 
-    public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name, Date timestamp) {
+    public TblIndexSeminumRevision(Long indexSeminumRevisionId, String name) {
         this.indexSeminumRevisionId = indexSeminumRevisionId;
         this.name = name;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumRevisionId() {

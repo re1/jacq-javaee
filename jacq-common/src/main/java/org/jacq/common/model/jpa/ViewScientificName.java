@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class ViewScientificName implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "scientific_name_id")
-    private int scientificNameId;
+    private long scientificNameId;
     @Lob
     @Size(max = 65535)
     @Column(name = "scientific_name")
@@ -54,15 +54,19 @@ public class ViewScientificName implements Serializable {
     @Size(max = 65535)
     @Column(name = "scientific_name_no_author")
     private String scientificNameNoAuthor;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "scientific_name_author")
+    private String scientificNameAuthor;
 
     public ViewScientificName() {
     }
 
-    public int getScientificNameId() {
+    public long getScientificNameId() {
         return scientificNameId;
     }
 
-    public void setScientificNameId(int scientificNameId) {
+    public void setScientificNameId(long scientificNameId) {
         this.scientificNameId = scientificNameId;
     }
 
@@ -80,6 +84,14 @@ public class ViewScientificName implements Serializable {
 
     public void setScientificNameNoAuthor(String scientificNameNoAuthor) {
         this.scientificNameNoAuthor = scientificNameNoAuthor;
+    }
+
+    public String getScientificNameAuthor() {
+        return scientificNameAuthor;
+    }
+
+    public void setScientificNameAuthor(String scientificNameAuthor) {
+        this.scientificNameAuthor = scientificNameAuthor;
     }
 
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:panelGroup id="organisationHierachic" layout="block" styleClass="ui-g">
+
+        <div class="ui-g-12">
+            <h3><h:outputText value="#{messages['organisation.hierarchicselect']}" /></h3>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <p:tree selectionMode="single" selection="#{organisationHierarchicSelectController.selectedNode}" value="#{organisationHierarchicSelectController.root}" var="organisationResult">
+                <p:treeNode>
+                    <h:outputText value="#{organisationResult.description}" />
+                </p:treeNode>
+            </p:tree>
+        </div>
+    </h:panelGroup>
+
+</ui:composition>

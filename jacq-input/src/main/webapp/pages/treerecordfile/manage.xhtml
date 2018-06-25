@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <div class="jacq-content">
+                <div class="jacq-content-header">
+                    <h1>#{messages['treerecordfile.manage']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:dataTable
+                            var="treeRecordFileResult"
+                            widgetVar="treeRecordFileTable"
+                            id="treeRecordFileTable"
+                            lazy="true"
+                            value="#{treeRecordFileController.dataModel}"
+                            paginator="true"
+                            rows="10">
+                            <p:column filterBy="#{treeRecordFileResult.treeRecordFileId}" headerText="#{messages['treerecordfile.id']}">
+                                <h:outputText  value="#{treeRecordFileResult.treeRecordFileId}"/>
+                            </p:column>
+                            <p:column filterBy="#{treeRecordFileResult.year}" headerText="#{messages['treerecordfile.year']}">
+                                <f:facet name="filter">
+                                    <p:spinner onchange="PF('treeRecordFileTable').filter()">
+                                        <f:converter converterId="javax.faces.Integer" />
+                                    </p:spinner>
+                                </f:facet>
+                                <h:outputText value="#{treeRecordFileResult.year}" />
+                            </p:column>
+                            <p:column filterBy="#{treeRecordFileResult.name}" headerText="#{messages['treerecordfile.name']}">
+                                <h:outputText value="#{treeRecordFileResult.name}" />
+                            </p:column>
+                            <p:column filterBy="#{treeRecordFileResult.documentNumber}" headerText="#{messages['treerecordfile.filesnumber']}">
+                                <h:outputText value="#{treeRecordFileResult.documentNumber}" />
+                            </p:column>
+                            <p:column headerText="">
+                                <h:outputText />
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:blockUI block="treeRecordFileTable" trigger="treeRecordFileTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

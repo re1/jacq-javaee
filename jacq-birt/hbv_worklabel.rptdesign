@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506190710 Build &lt;@BUILD@></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706222054</property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">pojoDataSetClassPath</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">7</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -14,10 +28,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</value>
+                    <value>/opt/jacq-javaee/jacq-birt/jacq-common-0.5.0.jar;/opt/jacq-javaee/jacq-birt/jacq-service-report.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">/home/wkoller/Repositories/jacq-javaee/jacq-common/target/jacq-common.jar;/home/wkoller/Repositories/jacq-javaee/jacq-service/target/jacq-service.jar;</property>
+            <property name="pojoDataSetClassPath">/opt/jacq-javaee/jacq-birt/jacq-common-0.5.0.jar;/opt/jacq-javaee/jacq-birt/jacq-service-report.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -536,6 +550,147 @@
                 </ex-property>
             </list-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="WorkLabelDataSet" id="37">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">AccessionNumber</property>
+                    <text-property name="heading">AccessionNumber</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">LabelAnnotation</property>
+                    <text-property name="heading">LabelAnnotation</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ScientificName</property>
+                    <text-property name="heading">ScientificName</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">AccessionNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">LabelAnnotation</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">ScientificName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">LivingPlant</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">AccessionNumber</property>
+                    <property name="nativeName">AccessionNumber</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">LabelAnnotation</property>
+                    <property name="nativeName">LabelAnnotation</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">ScientificName</property>
+                    <property name="nativeName">ScientificName</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<PojoQuery appContextKey="APP_CONTEXT_KEY_WORKLABELDATASET" dataSetClass="org.jacq.service.report.birt.WorkLabelDataSet" version="1.0">
+    <ColumnMapping index="1" name="AccessionNumber" odaDataType="String">
+        <Method name="getAccessionNumber"/>
+    </ColumnMapping>
+    <ColumnMapping index="2" name="LabelAnnotation" odaDataType="String">
+        <Method name="getLabelAnnotation"/>
+    </ColumnMapping>
+    <ColumnMapping index="3" name="ScientificName" odaDataType="String">
+        <Method name="getScientificName"/>
+    </ColumnMapping>
+</PojoQuery>
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AccessionNumber</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AccessionNumber</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LabelAnnotation</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LabelAnnotation</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ScientificName</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ScientificName</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>methodNameRegx</name>
+                    <value>get*</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClass</name>
+                    <value>org.jacq.common.model.report.WorkLabel</value>
+                </ex-property>
+            </list-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
@@ -576,9 +731,9 @@
             <property name="type">custom</property>
             <property name="orientation">portrait</property>
             <property name="topMargin">0cm</property>
-            <property name="leftMargin">0.15cm</property>
+            <property name="leftMargin">0cm</property>
             <property name="bottomMargin">0in</property>
-            <property name="rightMargin">0.15cm</property>
+            <property name="rightMargin">0cm</property>
             <property name="height">25mm</property>
             <property name="width">78mm</property>
             <property name="headerHeight">0in</property>
@@ -593,54 +748,12 @@
     </page-setup>
     <body>
         <list id="9">
-            <property name="dataSet">LivingPlantDataSet</property>
+            <property name="dataSet">WorkLabelDataSet</property>
             <list-property name="boundDataColumns">
                 <structure>
                     <property name="name">AccessionNumber</property>
                     <text-property name="displayName">AccessionNumber</text-property>
                     <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
-                    <property name="dataType">integer</property>
-                </structure>
-                <structure>
-                    <property name="name">Bgci</property>
-                    <text-property name="displayName">Bgci</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Bgci"]</expression>
-                    <property name="dataType">boolean</property>
-                </structure>
-                <structure>
-                    <property name="name">CultivationDate</property>
-                    <text-property name="displayName">CultivationDate</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CultivationDate"]</expression>
-                    <property name="dataType">date</property>
-                </structure>
-                <structure>
-                    <property name="name">CultureNotes</property>
-                    <text-property name="displayName">CultureNotes</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CultureNotes"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Id</property>
-                    <text-property name="displayName">Id</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Id"]</expression>
-                    <property name="dataType">integer</property>
-                </structure>
-                <structure>
-                    <property name="name">IndexSeminum</property>
-                    <text-property name="displayName">IndexSeminum</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["IndexSeminum"]</expression>
-                    <property name="dataType">boolean</property>
-                </structure>
-                <structure>
-                    <property name="name">IpenLocked</property>
-                    <text-property name="displayName">IpenLocked</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["IpenLocked"]</expression>
-                    <property name="dataType">boolean</property>
-                </structure>
-                <structure>
-                    <property name="name">IpenNumber</property>
-                    <text-property name="displayName">IpenNumber</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["IpenNumber"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -650,60 +763,15 @@
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">LabelSynonymScientificNameId</property>
-                    <text-property name="displayName">LabelSynonymScientificNameId</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["LabelSynonymScientificNameId"]</expression>
-                    <property name="dataType">integer</property>
-                </structure>
-                <structure>
-                    <property name="name">PhytoControl</property>
-                    <text-property name="displayName">PhytoControl</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["PhytoControl"]</expression>
-                    <property name="dataType">boolean</property>
-                </structure>
-                <structure>
-                    <property name="name">PlaceNumber</property>
-                    <text-property name="displayName">PlaceNumber</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["PlaceNumber"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
                     <property name="name">ScientificName</property>
                     <text-property name="displayName">ScientificName</text-property>
                     <expression name="expression" type="javascript">dataSetRow["ScientificName"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">AccessionNumberColumn</property>
-                    <text-property name="displayName">AccessionNumber</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
-                    <property name="dataType">integer</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">ScientificNameColumn</property>
-                    <text-property name="displayName">ScientificNameNoAuthor</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["ScientificNameNoAuthor"]</expression>
+                    <property name="name">AccessionNumberBarcode</property>
+                    <expression name="expression" type="javascript">"*" + row["AccessionNumber"] + "*"</expression>
                     <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">LabelAnnotationColumn</property>
-                    <text-property name="displayName">LabelAnnotation</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["LabelAnnotation"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Column Binding</property>
-                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">AccessionNumberTextBinding</property>
-                    <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
-                    <property name="dataType">integer</property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
@@ -715,38 +783,36 @@
                     <row id="12">
                         <cell id="13">
                             <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
                             <property name="paddingBottom">1pt</property>
                             <grid id="29">
-                                <column id="30"/>
+                                <property name="width">2.6875in</property>
+                                <column id="30">
+                                    <property name="width">60mm</property>
+                                </column>
                                 <column id="31">
-                                    <property name="width">30%</property>
+                                    <property name="width">18mm</property>
                                 </column>
                                 <row id="32">
                                     <property name="fontSize">20pt</property>
                                     <cell id="33">
                                         <property name="paddingTop">0pt</property>
+                                        <property name="paddingLeft">0pt</property>
                                         <data id="26">
-                                            <property name="fontFamily">"39 No Text"</property>
-                                            <property name="fontSize">20pt</property>
+                                            <property name="fontFamily">"Code-39-Logitogo-sene"</property>
+                                            <property name="fontSize">16pt</property>
+                                            <property name="fontWeight">normal</property>
                                             <property name="paddingTop">0pt</property>
-                                            <structure name="numberFormat">
-                                                <property name="category">Custom</property>
-                                                <property name="pattern">*0000000*</property>
-                                            </structure>
-                                            <property name="resultSetColumn">AccessionNumberColumn</property>
+                                            <property name="paddingLeft">0pt</property>
+                                            <property name="resultSetColumn">AccessionNumberBarcode</property>
                                         </data>
                                     </cell>
                                     <cell id="34">
-                                        <property name="fontSize">15pt</property>
+                                        <property name="fontSize">6pt</property>
                                         <property name="verticalAlign">middle</property>
                                         <data id="36">
-                                            <property name="fontSize">15pt</property>
                                             <property name="paddingTop">0pt</property>
-                                            <structure name="numberFormat">
-                                                <property name="category">Custom</property>
-                                                <property name="pattern">0000000</property>
-                                            </structure>
-                                            <property name="resultSetColumn">AccessionNumberTextBinding</property>
+                                            <property name="resultSetColumn">AccessionNumber</property>
                                         </data>
                                     </cell>
                                 </row>
@@ -756,14 +822,14 @@
                     <row id="14">
                         <cell id="15">
                             <data id="27">
-                                <property name="resultSetColumn">ScientificNameColumn</property>
+                                <property name="resultSetColumn">ScientificName</property>
                             </data>
                         </cell>
                     </row>
                     <row id="16">
                         <cell id="17">
                             <data id="28">
-                                <property name="resultSetColumn">LabelAnnotationColumn</property>
+                                <property name="resultSetColumn">LabelAnnotation</property>
                             </data>
                         </cell>
                     </row>

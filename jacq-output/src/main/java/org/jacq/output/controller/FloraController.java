@@ -15,13 +15,12 @@
  */
 package org.jacq.output.controller;
 
-import java.util.UUID;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.jacq.output.util.ServicesUtil;
+import org.jacq.common.util.ServicesUtil;
 import org.jacq.output.view.LazyClassificationTreeNode;
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -31,6 +30,8 @@ import org.primefaces.model.TreeNode;
 @ManagedBean
 @ViewScoped
 public class FloraController {
+
+    private static Logger LOGGER = Logger.getLogger(FloraController.class.getName());
 
     protected LazyClassificationTreeNode root;
 
@@ -53,6 +54,15 @@ public class FloraController {
 
     public void setUuid(String uuid) {
         this.root.setUuid(uuid);
+    }
+
+    public String filterForProvince(int provinceId) {
+        LOGGER.severe("Action called!");
+
+        this.root.setProvinceId(provinceId);
+        this.root.applyFilter();
+
+        return null;
     }
 
 }

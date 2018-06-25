@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,9 +119,7 @@ public class TblIndexSeminumContent implements Serializable {
     @Size(max = 20)
     @Column(name = "acquisition_date")
     private String acquisitionDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumContentId", fetch = FetchType.LAZY)
@@ -140,14 +138,13 @@ public class TblIndexSeminumContent implements Serializable {
         this.indexSeminumContentId = indexSeminumContentId;
     }
 
-    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber, Date timestamp) {
+    public TblIndexSeminumContent(Long indexSeminumContentId, String accessionNumber, String family, String scientificName, String indexSeminumType, String ipenNumber) {
         this.indexSeminumContentId = indexSeminumContentId;
         this.accessionNumber = accessionNumber;
         this.family = family;
         this.scientificName = scientificName;
         this.indexSeminumType = indexSeminumType;
         this.ipenNumber = ipenNumber;
-        this.timestamp = timestamp;
     }
 
     public Long getIndexSeminumContentId() {

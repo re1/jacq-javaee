@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class FrmwrkAuthAssignment implements Serializable {
         this.frmwrkAuthAssignmentPK = frmwrkAuthAssignmentPK;
     }
 
-    public FrmwrkAuthAssignment(String itemname, int userid) {
+    public FrmwrkAuthAssignment(String itemname, long userid) {
         this.frmwrkAuthAssignmentPK = new FrmwrkAuthAssignmentPK(itemname, userid);
     }
 

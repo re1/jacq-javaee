@@ -12,11 +12,41 @@
             <h:form id="jacq_searchform" styleClass="jacq-searchform">
                 <div class="row jacq-search-row">
                     <div class="col-md-6">
-                        <p:inputText id="scientific_name" styleClass="jacq-search-full" placeholder="Wissenschaftlicher Name" value="#{searchController.scientificName}"/>
+                        <p:autoComplete value="#{searchController.scientificName}"
+                                        completeMethod="#{searchController.completeScientificName}"
+                                        var="scientificName"
+                                        itemLabel="#{scientificName.scientificName}"
+                                        itemValue="#{scientificName}"
+                                        forceSelection="true"
+                                        minQueryLength="3"
+                                        queryDelay="300"
+                                        converter="scientificNameConverter"
+                                        id="scientific_name"
+                                        placeholder="Wissenschaftlicher Name"
+                                        styleClass="jacq-search-full">
+                            <p:column>
+                                <h:outputText value="#{scientificName.scientificName}" />
+                            </p:column>
+                        </p:autoComplete>
                         <p:message for="scientific_name" />
                     </div>
                     <div class="col-md-6">
-                        <p:inputText id="organization" styleClass="jacq-search-full" placeholder="Standort im Garten" value="#{searchController.organization}" />
+                        <p:autoComplete value="#{searchController.organization}"
+                                        completeMethod="#{searchController.completeOrganisation}"
+                                        var="organisation"
+                                        itemLabel="#{organisation.description}"
+                                        itemValue="#{organisation}"
+                                        forceSelection="true"
+                                        minQueryLength="3"
+                                        queryDelay="300"
+                                        converter="outputOrganisationConverter"
+                                        id="organization"
+                                        styleClass="jacq-search-full"
+                                        placeholder="Standort im Garten">
+                            <p:column>
+                                <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                            </p:column>
+                        </p:autoComplete>
                         <p:message for="organization" />
                     </div>
                 </div>

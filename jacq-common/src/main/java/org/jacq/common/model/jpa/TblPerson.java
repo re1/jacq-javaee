@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,8 @@ public class TblPerson implements Serializable {
     private String name;
     @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
     private List<TblAcquisitionEvent> tblAcquisitionEventList;
+    @ManyToMany(mappedBy = "tblPersonList", fetch = FetchType.LAZY)
+    private List<TblNomName> tblNomNameList;
     @OneToMany(mappedBy = "determinedById", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
 
@@ -98,6 +100,15 @@ public class TblPerson implements Serializable {
 
     public void setTblAcquisitionEventList(List<TblAcquisitionEvent> tblAcquisitionEventList) {
         this.tblAcquisitionEventList = tblAcquisitionEventList;
+    }
+
+    @XmlTransient
+    public List<TblNomName> getTblNomNameList() {
+        return tblNomNameList;
+    }
+
+    public void setTblNomNameList(List<TblNomName> tblNomNameList) {
+        this.tblNomNameList = tblNomNameList;
     }
 
     @XmlTransient

@@ -1,0 +1,354 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <h:panelGroup id="jacq_livingplant-search" layout="block" styleClass="card">
+                <div class="jacq-content-header">
+                    <h1>#{messages['livingplant.livingplantmanage']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.scientificname']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedScientificName}" completeMethod="#{livingPlantController.completeScientificName}"
+                                                var="scientificName" itemLabel="#{scientificName.scientificName}" itemValue="#{scientificName}" forceSelection="true" minQueryLength="3" queryDelay="300" converter="scientificNameConverter">
+                                    <p:column>
+                                        <h:outputText value="#{scientificName.scientificName}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.classification']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.classification}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.location']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:autoComplete id="organisation" value="#{livingPlantController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{livingPlantController.completeOrganisation}"
+                                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter">
+                                    <p:column>
+                                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                    </p:column>
+                                    <p:ajax event="itemSelect" listener="#{livingPlantController.organisationHierachicSelectEvent}" />
+                                </p:autoComplete>
+                                <p:commandButton type="button" icon="ui-icon-search" id="hierachicSearchButton" />
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.hierarchic']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.hierarchic}" />
+                            </div>
+                        </div>
+                    </div>
+                    <p:remoteCommand name="updateOrganisation" update="organisation" />
+                    <p:blockUI block="hierachicSearchButton" trigger="organisation" />
+                    <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px" onHide="updateOrganisation();">
+                        <ui:include src="../organisation/hierarchicselect.xhtml" />
+                    </p:overlayPanel>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.placenumber']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{livingPlantController.derivativeSearchModel.placeNumber}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.gatheringlocation']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.gatheringLocation}" completeMethod="#{livingPlantController.completeLocation}"
+                                                var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
+                                    <p:column>
+                                        <h:outputText value="#{location.location}" /> (<h:outputText value="#{location.locationId}" />)
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{livingPlantController.derivativeSearchModel.accessionNumber}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.cultivar']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedCultivar}" completeMethod="#{livingPlantController.completeCultivar}"
+                                                var="cultivar" itemLabel="#{cultivar.cultivar}" itemValue="#{cultivar}" minQueryLength="2" queryDelay="300" converter="cultivarConverter">
+                                    <p:column>
+                                        <h:outputText value="#{cultivar.cultivar}" /> (<h:outputText value="#{cultivar.cultivarId}" />)
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.separated']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectOneButton value="#{livingPlantController.derivativeSearchModel.separated}">
+                                    <f:selectItem itemLabel="Alle" itemValue="0" />
+                                    <f:selectItem itemLabel="Ja" itemValue="1"/>
+                                    <f:selectItem itemLabel="Nein" itemValue="2"/>
+                                </p:selectOneButton>
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.label']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.workingFilter}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.indexseminum']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectOneButton value="#{livingPlantController.derivativeSearchModel.indexSeminum}">
+                                    <f:selectItem itemLabel="Alle" itemValue="0" />
+                                    <f:selectItem itemLabel="Ja" itemValue="1"/>
+                                    <f:selectItem itemLabel="Nein" itemValue="2"/>
+                                </p:selectOneButton>
+                            </div>
+                            <div class="ui-g-3">
+                                <h:outputText value="#{messages['livingplant.exhibition']}" />
+                            </div>
+                            <div class="ui-g-3">
+                                <p:selectBooleanCheckbox value="#{livingPlantController.derivativeSearchModel.exhibitionFilter}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jacq-buttons">
+                    <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
+                </div>
+
+
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:remoteCommand update="derivativeTable:rowCount" name="update_derivativeFooter" />
+
+                        <p:dataTable var="botanicalObjectDerivative"
+                                     lazy="true"
+                                     value="#{livingPlantController.dataModel}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                     rows="10"
+                                     widgetVar="derivativeTable"
+                                     id="derivativeTable"
+                                     rowsPerPageTemplate="10,20,30,50,100">
+
+                            <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
+
+
+                            <f:facet name="{Exporters}">
+                                <div style="float: right; height: 24px;" >
+                                    <p:commandButton title="CSV Download" id="downloadDerivativeCsvButtonCaller" icon="ui-icon-document" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeCsvButton').jq.click();" />
+                                    <p:commandButton title="XLSX Download" id="downloadDerivativeXlsxButtonCaller" icon="ui-icon-note" action="#{livingPlantController.setRenderedTrue}" update="jacq_form:downloadDerivativePanel" oncomplete="PF('downloadDerivativeXlsxButton').jq.click();" />
+                                </div>
+                            </f:facet>
+
+                            <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
+                                <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.cultivarname']}">
+                                <h:outputText value="#{botanicalObjectDerivative.cultivarName}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.location']}">
+                                <h:outputText value="#{botanicalObjectDerivative.organisationDescription}" />
+                            </p:column>
+
+                            <p:column filterBy="" sortBy="#{botanicalObjectDerivative.accessionNumber}" headerText="#{messages['livingplant.accessionnumber']}">
+                                <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.placenumber']}">
+                                <h:outputText value="#{botanicalObjectDerivative.placeNumber}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.gatheringlocation']}">
+                                <h:outputText value="#{botanicalObjectDerivative.gatheringLocationName}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.derivative_count']}">
+                                <h:outputText value="#{(botanicalObjectDerivative.derivativeCount == null) ? 0 : botanicalObjectDerivative.derivativeCount}" />
+                            </p:column>
+
+                            <p:column filterBy="" headerText="#{messages['livingplant.type']}">
+                                <h:outputText value="#{botanicalObjectDerivative.type}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['action']}">
+                                <p:button outcome="edit.xhtml" icon="ui-icon-pencil">
+                                    <f:param name="derivativeId" value="#{botanicalObjectDerivative.derivativeId}" />
+                                    <f:param name="type" value="#{botanicalObjectDerivative.type}" />
+                                </p:button>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                Showing a total of <h:outputText value="#{livingPlantController.dataModel.rowCount}" id="rowCount" /> entries.
+                            </f:facet>
+                        </p:dataTable>
+
+                        <p:blockUI block="derivativeTable" trigger="derivativeTable searchButton">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <h:panelGroup layout="block" styleClass="ui-g-12" style="display: none;" id="downloadDerivativePanel">
+                        <p:commandButton  id="downloadDerivativeCsvButton" value="Export" ajax="false" widgetVar="downloadDerivativeCsvButton">
+                            <p:dataExporter type="csv"  target="downloadDerivativeTable" fileName="derivativeTable"/>
+                        </p:commandButton>
+                        <p:commandButton  style="float: right;" id="downloadDerivativeXlsxButton" value="Export" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                            <p:dataExporter type="xlsx"  target="downloadDerivativeTable" fileName="derivativeTable"/>
+                        </p:commandButton>
+                        <p:tooltip for="downloadDerivativeXlsxButton" value="Xslx Download" />
+                        <p:dataTable rendered="#{livingPlantController.downloadRender}" var="botanicalObjectDownloadResult" lazy="true" value="#{livingPlantController.downloadDataModel}" paginator="true" rows="1" id="downloadDerivativeTable">
+                            <p:column headerText="#{messages['livingplant.derivative_id']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.derivativeId}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.scientificname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.scientificName}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.location']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.organisationDescription}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.accessionnumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.accessionNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.aquesitionLocation']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.aquesitionLocation}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.placenumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.placeNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.family']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.family}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.labelsynonymscientificname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.labelSynonymScientificName}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.commonnames']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.commonNames}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.spatialdistribution']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.spatialDistribution}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.familyreference']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.familyReference}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.labelannotation']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.labelAnnotation}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.scientificnamenoauthor']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.scientificNameNoAuthor}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.scientificnameauthor']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.scientificNameAuthor}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.familynoauthor']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.familyNoAuthor}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.familyauthor']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.familyAuthor}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.type']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.type}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.ipennumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.ipenNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.habitat']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.habitat}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.gatheringNumber']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.gatheringNumber}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.altitudemin']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.altitudeMin}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.altitudemax']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.altitudeMax}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.latitude']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.latitude}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.longitude']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.longitude}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.collectiondate']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.acquisitionDate}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.collectorname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.person}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['livingplant.cultivarname']}">
+                                <h:outputText value="#{botanicalObjectDownloadResult.cultivarName}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGroup>
+                </div>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

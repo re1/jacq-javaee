@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,9 +62,7 @@ public class TblInventoryType implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "type")
     private String type;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventoryTypeId", fetch = FetchType.LAZY)
@@ -77,10 +75,9 @@ public class TblInventoryType implements Serializable {
         this.inventoryTypeId = inventoryTypeId;
     }
 
-    public TblInventoryType(Long inventoryTypeId, String type, Date timestamp) {
+    public TblInventoryType(Long inventoryTypeId, String type) {
         this.inventoryTypeId = inventoryTypeId;
         this.type = type;
-        this.timestamp = timestamp;
     }
 
     public Long getInventoryTypeId() {

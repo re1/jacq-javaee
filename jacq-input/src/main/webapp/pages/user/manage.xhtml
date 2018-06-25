@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <div class="card">
+                <div class="jacq-content-header">
+                    <h1>#{messages['user.usermanage']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:dataTable
+                            var="userResult"
+                            lazy="true"
+                            value="#{userController.dataModel}"
+                            widgetVar="userTable"
+                            id="userTable"
+                            paginator="true"
+                            rows="10">
+                            <p:column filterBy="#{userResult.id}" headerText="#{messages['user.id']}">
+                                <h:outputText value="#{userResult.id}" />
+                            </p:column>
+                            <p:column filterBy="#{userResult.username}" headerText="#{messages['user.username']}">
+                                <h:outputText value="#{userResult.username}" />
+                            </p:column>
+                            <p:column filterBy="#{userResult.birthdate}" headerText="#{messages['user.birthdate']}">
+                                <f:facet name="filter">
+                                    <p:calendar value="#{organisationController.selectedBirthdate}" pattern="yyyy-MM-dd" >
+                                        <p:ajax event="dateSelect" oncomplete="PF('userTable').filter()"/>
+                                    </p:calendar>
+                                </f:facet>
+                                <h:outputText value="#{userResult.birthdate}">
+                                    <f:convertDateTime type="date" pattern="dd.MM.yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column filterBy="#{userResult.userType}" headerText="#{messages['user.usertype']}">
+                                <h:outputText value="#{userResult.userType}" />
+                            </p:column>
+                            <p:column filterBy="#{userResult.employmentType}" headerText="#{messages['user.employmentType']}">
+                                <h:outputText value="#{userResult.employmentType}" />
+                            </p:column>
+                            <p:column filterBy="#{userResult.organisationDescription}" headerText="#{messages['user.organisationDescription']}">
+                                <h:outputText value="#{userResult.organisationDescription}" />
+                            </p:column>
+                            <p:column headerText="#{messages['user.action']}">
+                                <p:button  outcome="edit.xhtml" icon="ui-icon-pencil">
+                                    <f:param name="id" value="#{userResult.id}" />
+                                </p:button>
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:blockUI block="userTable" trigger="userTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

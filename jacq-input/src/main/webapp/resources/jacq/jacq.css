@@ -1,0 +1,95 @@
+/*
+    Created on : Aug 2, 2017, 2:10:30 PM
+    Author     : fhafner
+*/
+
+/* Login Page
+-------------------------*/
+.jacq-login {
+    font-family: 'Hammersmith One', sans-serif;
+    margin: 5em auto;
+    width: 360px;
+    /*background-color: rgba(0, 0, 150, 0.25);*/
+    background-color: rgba(143, 147, 65, 0.25);
+    background-color: #E5CA97;
+    border-radius: 2%;
+    padding: 1em;
+    text-align: center;
+}
+
+/* Content Page
+-------------------------*/
+.jacq-menu {
+    position: fixed;
+}
+/*
+.active-menuitem > a {
+    font-style: italic;
+}
+*/
+.jacq-menu-gap {
+    margin-left: 25%;
+}
+
+.jacq-header {
+    right: 10px;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+}
+
+.ui-g-6 {
+    min-width: 210px;
+}
+.ui-g-3 {
+    min-width: 210px;
+}
+
+.jacq-menu-item {
+    width: auto !important;
+}
+
+.menu {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default {
+    border: 1px solid rgb(157,160,72);
+    color: #fff;
+    background: rgb(157,160,72);
+}
+
+.ui-chkbox-box.ui-state-active, .ui-chkbox-box.ui-state-focus.ui-state-active, .ui-radiobutton-box.ui-state-active, .ui-radiobutton-box.ui-state-focus.ui-state-active {
+    border: 1px solid rgb(105,109,49);
+    background: rgb(120,124,54);
+    color: #fff;
+}
+
+.ui-selectbooleanbutton.ui-button.ui-state-active, .ui-selectonebutton .ui-button.ui-state-active, .ui-selectmanybutton .ui-button.ui-state-active {
+    border: 1px solid rgb(105,109,49);
+    background: rgb(120,124,54);
+    color: #fff;
+}
+
+.ui-paginator .ui-paginator-page.ui-state-active {
+    background: rgb(120,124,54);
+    color: #fff;
+    border-color: rgb(105,109,49);
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 1px solid rgb(105,109,49);
+    /*background: rgb(120,124,54);*/
+    color: #fff;
+}
+
+/* using all available space for input boxes */
+input.ui-widget, textarea.ui-widget {
+    width: 90%;
+}
+
+/* using all available space for auto-completer */
+.ui-autocomplete {
+    width: 100% !important;
+}

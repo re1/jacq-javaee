@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 fhafner.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,19 +24,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author wkoller
+ * @author fhafner
  */
 @Entity
 @Table(name = "tbl_specimen")
@@ -45,13 +42,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblSpecimen.findAll", query = "SELECT t FROM TblSpecimen t")
     , @NamedQuery(name = "TblSpecimen.findBySpecimenId", query = "SELECT t FROM TblSpecimen t WHERE t.specimenId = :specimenId")
-    , @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber")
-    , @NamedQuery(name = "TblSpecimen.findByTimestamp", query = "SELECT t FROM TblSpecimen t WHERE t.timestamp = :timestamp")})
+    , @NamedQuery(name = "TblSpecimen.findByHerbarNumber", query = "SELECT t FROM TblSpecimen t WHERE t.herbarNumber = :herbarNumber")})
 public class TblSpecimen implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "specimen_id")
     private Long specimenId;
@@ -60,14 +55,9 @@ public class TblSpecimen implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "herbar_number")
     private String herbarNumber;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TblBotanicalObject botanicalObjectId;
+    @JoinColumn(name = "specimen_id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative tblDerivative;
 
     public TblSpecimen() {
     }
@@ -76,10 +66,9 @@ public class TblSpecimen implements Serializable {
         this.specimenId = specimenId;
     }
 
-    public TblSpecimen(Long specimenId, String herbarNumber, Date timestamp) {
+    public TblSpecimen(Long specimenId, String herbarNumber) {
         this.specimenId = specimenId;
         this.herbarNumber = herbarNumber;
-        this.timestamp = timestamp;
     }
 
     public Long getSpecimenId() {
@@ -98,20 +87,12 @@ public class TblSpecimen implements Serializable {
         this.herbarNumber = herbarNumber;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public TblDerivative getTblDerivative() {
+        return tblDerivative;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
-    }
-
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
+    public void setTblDerivative(TblDerivative tblDerivative) {
+        this.tblDerivative = tblDerivative;
     }
 
     @Override

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2018 fhafner.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:panelGroup id="accessOrganisation" layout="block" styleClass="ui-g">
+
+        <div class="ui-g-12">
+            <h3><h:outputText value="#{messages['organisation.permission']}" /></h3>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <p:dataTable var="accessOrganisation"
+                         lazy="true"
+                         value="#{organisationAccessController.dataModel}"
+                         widgetVar="accessOrganisationTable"
+                         id="accessOrganisationTable"
+                         paginator="true"
+                         rows="10">
+
+                <p:column headerText="#{messages['user.username']}">
+                    <h:outputText value="#{accessOrganisation.username}" />
+                </p:column>
+
+                <p:column headerText="#{messages['organisation.access']}">
+                    <p:selectOneButton value="#{accessOrganisation.allowDeny}">
+                        <f:selectItem itemLabel="#{messages['auto']}" itemValue="#{null}" />
+                        <f:selectItem itemLabel="#{messages['yes']}" itemValue="true"/>
+                        <f:selectItem itemLabel="#{messages['no']}" itemValue="false"/>
+                        <p:ajax event="change" listener="#{organisationAccessController.save(accessOrganisation)}" />
+                    </p:selectOneButton>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:panelGroup>
+
+</ui:composition>

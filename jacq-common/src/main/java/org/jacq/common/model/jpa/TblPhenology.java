@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class TblPhenology implements Serializable {
     @OneToMany(mappedBy = "phenologyId", fetch = FetchType.LAZY)
     private List<TblBotanicalObject> tblBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenologyId", fetch = FetchType.LAZY)
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
+    private List<TblVegetative> tblVegetativeList;
 
     public TblPhenology() {
     }
@@ -93,12 +93,12 @@ public class TblPhenology implements Serializable {
     }
 
     @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
+    public List<TblVegetative> getTblVegetativeList() {
+        return tblVegetativeList;
     }
 
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
+    public void setTblVegetativeList(List<TblVegetative> tblVegetativeList) {
+        this.tblVegetativeList = tblVegetativeList;
     }
 
     @Override

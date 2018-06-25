@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="id" value="#{userEditController.id}"/>
+            </f:metadata>
+            <h:panelGroup id="user_form" class="card" layout="block">
+                <div class="jacq-content-header">
+                    <h1>#{messages['user']} #{(userEditController.user.id == null) ? messages['create'] : messages['edit']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.username']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.username}" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.newpassword']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:password id="newPassword" value="#{userEditController.user.password}" label="password" required="#{userEditController.user.id == null}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.changeonlogin']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectBooleanCheckbox value="changePassword" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.usertype']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectOneMenu id="usertype" value="#{userEditController.user.userTypeId}" required="true">
+                                    <f:selectItems value="#{userEditController.userTypes}" var="userTypes" itemLabel="#{userTypes.type}" itemValue="#{userTypes.userTypeId}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.employmentType']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectOneMenu id="employmentType" value="#{userEditController.user.employmentTypeId}" required="true">
+                                    <f:selectItems value="#{userEditController.employmentTypes}" var="employmentTypes" itemLabel="#{employmentTypes.type}" itemValue="#{employmentTypes.employmentTypeId}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.firstname']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.firstname}" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.lastname']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.lastname}" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.birthdate']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.birthdate}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.titelprefix']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.titlePrefix}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.titelpostfix']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{userEditController.user.titleSuffix}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.organisationDescription']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:selectOneMenu id="organisation" value="#{userEditController.user.organisationId}" required="true">
+                                    <f:selectItems value="#{userEditController.organisations}" var="organisations" itemLabel="#{organisations.description}" itemValue="#{organisations.organisationId}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:selectManyCheckbox id="role" value="#{userEditController.selectedRoleIds}" layout="grid" columns="3">
+                                    <f:selectItems value="#{userEditController.roles}" var="role" itemLabel="#{role}" itemValue="#{role}" />
+                                </p:selectManyCheckbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jacq-buttons">
+                    <p:commandButton value="#{(userEditController.user.id == null) ? messages['create'] : messages['edit']}" actionListener="#{userEditController.saveMessage}" update="jacq_form:user_form jacq_form:messages" action="#{userEditController.edit}" />
+                </div>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

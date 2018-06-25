@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <div class="card">
+                <div class="jacq-content-header">
+                    <h1>#{messages['organisation.manage']}</h1>
+                </div>
+                <div class="ui-g-12 ui-g-nopad">
+                    <div class="ui-g-12">
+                        <p:dataTable
+                            var="organisationResult"
+                            lazy="true"
+                            value="#{organisationController.dataModel}"
+                            widgetVar="organisationTable"
+                            id="organisationTable"
+                            paginator="true"
+                            rows="10">
+                            <p:column filterBy="#{organisationResult.organisationId}" headerText="#{messages['organisation.id']}">
+                                <h:outputText value="#{organisationResult.organisationId}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.description}" headerText="#{messages['organisation.description']}">
+                                <h:outputText value="#{organisationResult.description}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.department}" headerText="#{messages['organisation.department']}">
+                                <h:outputText value="#{organisationResult.department}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.greenhouse}" headerText="#{messages['organisation.greenhouse']}" >
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('organisationTable').filter()">
+                                        <f:selectItem itemLabel="All" itemValue="#{organisationController.ALL}" />
+                                        <f:selectItem itemLabel="True" itemValue="#{organisationController.TRUE}" />
+                                        <f:selectItem itemLabel="False" itemValue="#{organisationController.FALSE}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{organisationResult.greenhouse}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.ipenCode}" headerText="#{messages['organisation.ipencode']}" >
+                                <h:outputText value="#{organisationResult.ipenCode}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.parentOrganisationDescription}" headerText="#{messages['organisation.parentOrganisation']}" >
+                                <h:outputText value="#{organisationResult.parentOrganisationDescription}"/>
+                            </p:column>
+                            <p:column filterBy="#{organisationResult.gardener}" headerText="#{messages['organisation.username']}" >
+                                <h:outputText value="#{organisationResult.gardener}"/>
+                            </p:column>
+                            <p:column filterBy="" headerText="#{messages['organisation.action']}" >
+                                <p:button  outcome="edit.xhtml" icon="ui-icon-pencil">
+                                    <f:param name="organisationId" value="#{organisationResult.organisationId}" />
+                                </p:button>
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:blockUI block="organisationTable" trigger="organisationTable">
+                            <h:outputText value="#{messages.loading}" />
+                        </p:blockUI>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

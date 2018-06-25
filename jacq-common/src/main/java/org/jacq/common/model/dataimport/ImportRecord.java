@@ -15,35 +15,83 @@
  */
 package org.jacq.common.model.dataimport;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Model for holding a single import record
  *
  * @author wkoller
  */
-public class ImportRecord {
+@Entity
+@XmlRootElement
+public class ImportRecord implements Serializable {
 
     /**
      * Reference to originating importFile object, must not be null
      */
+    @Transient
     protected ImportFile importFile;
 
+    @Id
+    @Column(name = "original_id")
     protected Long originalId;
+    @Column(name = "specimen_number")
     protected String specimenNumber;
+    @Column(name = "livingplant_number")
     protected String livingPlantNumber;
+    @Column(name = "alternative_living_plant_number")
     protected String alternativeLivingPlantNumber;
+    @Column(name = "organization")
     protected String organization;
+    @Column(name = "scientific_name")
     protected String scientificName;
+    @Column(name = "alternative_number")
     protected String alternativeNumber;
+    @Column(name = "generic_annotation")
     protected String genericAnnotation;
+    @Column(name = "gathering_number")
     protected String gatheringNumber;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "separation_date")
     protected Date separationDate;
+    @Column(name = "separation_type")
     protected String separationType;
+    @Column(name = "separation_annotation")
     protected String separationAnnotation;
+    @Column(name = "label_annotation")
     protected String labelAnnotation;
+    @Column(name = "match_family")
     protected String matchFamily;
+    @Column(name = "ipen_number")
     protected String ipenNumber;
+    @Column(name = "culture_notes")
+    protected String cultureNotes;
+    @Column(name = "place_number")
+    protected String placeNumber;
+    @Column(name = "count")
+    protected Long count;
+    @Column(name = "source_name")
+    protected String sourceName;
+    @Column(name = "original_botanical_object_id")
+    protected Long originalBotanicalObjectId;
+    @Column(name = "cultivar")
+    protected String cultivar;
+    @Column(name = "common_names")
+    protected String commonNames;
+    @Column(name = "price")
+    protected Float price;
+    @Column(name = "gathering_date")
+    protected Date gatheringDate;
+    @Column(name = "gathering_source")
+    protected String gatheringSource;
 
     public Long getOriginalId() {
         return originalId;
@@ -173,9 +221,89 @@ public class ImportRecord {
         this.importFile = importFile;
     }
 
+    public String getCultureNotes() {
+        return cultureNotes;
+    }
+
+    public void setCultureNotes(String cultureNotes) {
+        this.cultureNotes = cultureNotes;
+    }
+
+    public String getPlaceNumber() {
+        return placeNumber;
+    }
+
+    public void setPlaceNumber(String placeNumber) {
+        this.placeNumber = placeNumber;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public Long getOriginalBotanicalObjectId() {
+        return originalBotanicalObjectId;
+    }
+
+    public void setOriginalBotanicalObjectId(Long originalBotanicalObjectId) {
+        this.originalBotanicalObjectId = originalBotanicalObjectId;
+    }
+
+    public String getCultivar() {
+        return cultivar;
+    }
+
+    public void setCultivar(String cultivar) {
+        this.cultivar = cultivar;
+    }
+
+    public String getCommonNames() {
+        return commonNames;
+    }
+
+    public void setCommonNames(String commonNames) {
+        this.commonNames = commonNames;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Date getGatheringDate() {
+        return gatheringDate;
+    }
+
+    public void setGatheringDate(Date gatheringDate) {
+        this.gatheringDate = gatheringDate;
+    }
+
+    public String getGatheringSource() {
+        return gatheringSource;
+    }
+
+    public void setGatheringSource(String gatheringSource) {
+        this.gatheringSource = gatheringSource;
+    }
+
     /**
-     * Helper function for converting the import record to a single line string
-     * for appending to the annotation field of an existing record
+     * Helper function for converting the import record to a single line string for appending to the annotation field of
+     * an existing record
      *
      * @return
      */

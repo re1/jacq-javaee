@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,8 +58,7 @@ public class TblTreeRecordFile implements Serializable {
     @Column(name = "id")
     private Long id;
     @Column(name = "year")
-    @Temporal(TemporalType.DATE)
-    private Date year;
+    private Long year;
     @Size(max = 255)
     @Column(name = "name")
     private String name;
@@ -84,11 +83,11 @@ public class TblTreeRecordFile implements Serializable {
         this.id = id;
     }
 
-    public Date getYear() {
+    public Long getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Long year) {
         this.year = year;
     }
 

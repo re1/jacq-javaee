@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class TblImportError implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDPflanze")
-    private int iDPflanze;
+    private long iDPflanze;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -67,7 +67,7 @@ public class TblImportError implements Serializable {
         this.id = id;
     }
 
-    public TblImportError(Long id, int iDPflanze, String message) {
+    public TblImportError(Long id, long iDPflanze, String message) {
         this.id = id;
         this.iDPflanze = iDPflanze;
         this.message = message;
@@ -81,11 +81,11 @@ public class TblImportError implements Serializable {
         this.id = id;
     }
 
-    public int getIDPflanze() {
+    public long getIDPflanze() {
         return iDPflanze;
     }
 
-    public void setIDPflanze(int iDPflanze) {
+    public void setIDPflanze(long iDPflanze) {
         this.iDPflanze = iDPflanze;
     }
 

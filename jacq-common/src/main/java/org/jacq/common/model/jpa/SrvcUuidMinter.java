@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -70,13 +71,15 @@ public class SrvcUuidMinter implements Serializable {
     private String uuid;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinterType uuidMinterTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
+    private List<RevFlora> revFloraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
     private List<RevClassification> revClassificationList;
 
     public SrvcUuidMinter() {
@@ -131,6 +134,15 @@ public class SrvcUuidMinter implements Serializable {
 
     public void setUuidMinterTypeId(SrvcUuidMinterType uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
+    }
+
+    @XmlTransient
+    public List<RevFlora> getRevFloraList() {
+        return revFloraList;
+    }
+
+    public void setRevFloraList(List<RevFlora> revFloraList) {
+        this.revFloraList = revFloraList;
     }
 
     @XmlTransient

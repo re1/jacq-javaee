@@ -18,8 +18,11 @@ package org.jacq.output.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.jacq.common.model.BotanicalObjectResult;
-import org.jacq.common.rest.BotanicalObjectService;
+import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
+import org.jacq.common.model.rest.OrderDirection;
+import org.jacq.common.model.rest.OrganisationResult;
+import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.rest.output.SearchService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -28,49 +31,44 @@ import org.primefaces.model.SortOrder;
  *
  * @author wkoller
  */
-public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectResult> {
+public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectDerivative> {
 
     /**
      * Reference to botanical object service which is used during querying
      */
-    protected BotanicalObjectService botanicalObjectService;
+    protected SearchService searchService;
 
     /**
      * Internal storage of result list
      */
-    protected List<BotanicalObjectResult> botanicalObjectResults = new ArrayList<>();
+    protected List<BotanicalObjectDerivative> botanicalObjectDerivatives = new ArrayList<>();
 
     /**
      * Scientific name to search for
      */
-    protected String scientificName;
+    protected ScientificNameResult scientificName;
 
     /**
      * Organization to search for
      */
-    protected String organization;
+    protected OrganisationResult organization;
 
     /**
      * Filter for records with images only
      */
     protected Boolean hasImage;
 
-    /**
-     * Default constructor, needs a reference to the botanical object service for later querying
-     *
-     * @param botanicalObjectService
-     */
-    public LazyBotanicalObjectDataModel(BotanicalObjectService botanicalObjectService) {
-        this.botanicalObjectService = botanicalObjectService;
+    public LazyBotanicalObjectDataModel(SearchService searchService) {
+        this.searchService = searchService;
     }
 
     @Override
-    public BotanicalObjectResult getRowData(String rowKey) {
+    public BotanicalObjectDerivative getRowData(String rowKey) {
         Long rowKeyLong = Long.valueOf(rowKey);
 
-        for (BotanicalObjectResult botanicalObjectResult : this.botanicalObjectResults) {
-            if (botanicalObjectResult.getBotanicalObjectId().equals(rowKeyLong)) {
-                return botanicalObjectResult;
+        for (BotanicalObjectDerivative botanicalObjectDerivative : this.botanicalObjectDerivatives) {
+            if (botanicalObjectDerivative.getDerivativeId() == rowKeyLong) {
+                return botanicalObjectDerivative;
             }
         }
 
@@ -78,37 +76,38 @@ public class LazyBotanicalObjectDataModel extends LazyDataModel<BotanicalObjectR
     }
 
     @Override
-    public Object getRowKey(BotanicalObjectResult botanicalObjectResult) {
-        return botanicalObjectResult.getBotanicalObjectId();
+    public Object getRowKey(BotanicalObjectDerivative botanicalObjectDerivative) {
+        return botanicalObjectDerivative.getDerivativeId();
     }
 
     @Override
-    public List<BotanicalObjectResult> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<BotanicalObjectDerivative> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         // get count first
-        int rowCount = this.botanicalObjectService.searchCount(getScientificName(), getOrganization(), hasImage);
+        //int rowCount = this.derivativeService.count(getScientificName(), getOrganization(), hasImage);
+        int rowCount = this.searchService.count((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage);
         this.setRowCount(rowCount);
 
-        List<BotanicalObjectResult> results = new ArrayList<>();
+        List<BotanicalObjectDerivative> results = new ArrayList<>();
         if (rowCount > 0) {
-            results = this.botanicalObjectService.search(getScientificName(), getOrganization(), hasImage, first, pageSize);
+            results = this.searchService.find((scientificName != null) ? scientificName.getScientificNameId() : null, (organization != null) ? organization.getOrganisationId() : null, hasImage, sortField, (sortOrder.equals(SortOrder.DESCENDING)) ? OrderDirection.DESC : OrderDirection.ASC, first, pageSize);
         }
 
         return results;
     }
 
-    public String getScientificName() {
+    public ScientificNameResult getScientificName() {
         return scientificName;
     }
 
-    public void setScientificName(String scientificName) {
+    public void setScientificName(ScientificNameResult scientificName) {
         this.scientificName = scientificName;
     }
 
-    public String getOrganization() {
+    public OrganisationResult getOrganization() {
         return organization;
     }
 
-    public void setOrganization(String organization) {
+    public void setOrganization(OrganisationResult organization) {
         this.organization = organization;
     }
 

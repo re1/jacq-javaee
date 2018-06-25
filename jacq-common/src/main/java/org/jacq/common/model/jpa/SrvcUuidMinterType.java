@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -61,10 +62,10 @@ public class SrvcUuidMinterType implements Serializable {
     private String description;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterTypeId", fetch = FetchType.LAZY)
     private List<SrvcUuidMinter> srvcUuidMinterList;
 
     public SrvcUuidMinterType() {

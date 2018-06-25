@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="ui-g">
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.redetermine']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.redetermine}" />
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.determinedate']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:calendar value="#{livingPlantEditController.livingPlantResult.determinationDate}" pattern="yyyy-MM-dd" mask="true" />
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.ident_status']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.identStatus.identStatusId}">
+                        <f:selectItem itemLabel="#{messages['noselection']}" itemValue="" />
+                        <f:selectItems value="#{livingPlantEditController.identStatus}" var="identStatus" itemLabel="#{identStatus.status}" itemValue="#{identStatus.identStatusId}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.determineby']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:autoComplete value="#{livingPlantEditController.livingPlantResult.determinedBy}" completeMethod="#{livingPlantEditController.completePerson}"
+                                    var="person" itemLabel="#{person.name}" itemValue="#{person}" minQueryLength="3" queryDelay="300" converter="personConverter">
+                        <p:column>
+                            <h:outputText value="#{person.name}" /> (<h:outputText value="#{person.personId}" />)
+                        </p:column>
+                    </p:autoComplete>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-3">
+                    <h:outputText value="#{messages['livingplant.relevancy']}" />
+                </div>
+                <div class="ui-g-9">
+                    <p:selectManyCheckbox value="#{livingPlantEditController.livingPlantResult.relevancyTypes}">
+                        <f:selectItems value="#{livingPlantEditController.relevancyTypes}" var="relevancyType" itemLabel="#{relevancyType.type}" itemValue="#{relevancyType}" />
+                    </p:selectManyCheckbox>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <h3>#{messages['livingplant.certificate']}</h3>
+        </div>
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-3">
+                    <h:outputText value="#{messages['livingplant.certificate.type']}" />
+                </div>
+                <div class="ui-g-3">
+                    <h:outputText value="#{messages['livingplant.certificate.number']}" />
+                </div>
+                <div class="ui-g-5">
+                    <h:outputText value="#{messages['livingplant.certificate.annotation']}" />
+                </div>
+                <div class="ui-g-1">
+                </div>
+            </div>
+        </div>
+
+        <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+            <ui:repeat value="#{livingPlantEditController.livingPlantResult.certificates}" var="certificate">
+                <div class="ui-g-12 ui-g-nopad">
+                    <div class="ui-g-3">
+                        <p:selectOneMenu value="#{certificate.certificateType.certificateTypeId}">
+                            <f:selectItems value="#{livingPlantEditController.certificateTypes}" var="certificateType" itemLabel="#{certificateType.type}" itemValue="#{certificateType.certificateTypeId}" />
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="ui-g-3">
+                        <p:inputText value="#{certificate.number}" />
+                    </div>
+                    <div class="ui-g-5">
+                        <p:inputText value="#{certificate.annotation}" />
+                    </div>
+                    <div class="ui-g-1">
+                        <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCertificate(certificate)}" />
+                    </div>
+                </div>
+            </ui:repeat>
+        </h:panelGroup>
+
+        <div class="ui-g-12 ui-g-nopad">
+            <p:commandButton icon="ui-icon-plus" update="separations" action="#{livingPlantEditController.addCertificate}" />
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.phytocontrol']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.phytoControl}" />
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h:outputText value="#{messages['livingplant.bgci']}" />
+                </div>
+                <div class="ui-g-6">
+                    <p:selectBooleanCheckbox value="#{livingPlantEditController.livingPlantResult.bgci}" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>

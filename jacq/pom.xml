@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jacq</groupId>
     <artifactId>jacq</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <name>jacq</name>
     <packaging>pom</packaging>
     <modules>
@@ -12,6 +12,8 @@
         <module>../jacq-names</module>
         <module>../jacq-output</module>
         <module>../jacq-service</module>
+        <module>../jacq-service-report</module>
+        <module>../jacq-service-output</module>
     </modules>
 
     <build>
@@ -21,6 +23,27 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.3</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>

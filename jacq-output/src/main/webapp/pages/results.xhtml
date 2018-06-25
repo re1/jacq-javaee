@@ -16,24 +16,28 @@
 
                 <p:dataTable id="resultList" lazy="true" var="botanicalObject" value="#{searchController.dataModel}" paginator="true" rows="10">
                     <p:column headerText="Volksname">
-                        <ui:repeat value="#{botanicalObject.commonNames}" var="commonName">
-                            <h:outputText value="#{commonName}" />&nbsp;
-                        </ui:repeat>
+                        <ui:remove>
+                            <ui:repeat value="#{botanicalObject.commonNames}" var="commonName">
+                                <h:outputText value="#{commonName}" />&nbsp;
+                            </ui:repeat>
+                        </ui:remove>
                     </p:column>
                     <p:column headerText="Wissenschaftlicher Name">
                         <h:outputText value="#{botanicalObject.scientificName}" />
                     </p:column>
                     <p:column headerText="Standort im Garten">
                         <a target="_blank" href="http://www.botanik.univie.ac.at/hbv/download/plan_hbv_aktuell_mit_numm.pdf">
-                            <h:outputText value="#{botanicalObject.organization}" />
+                            <h:outputText value="#{botanicalObject.organisationDescription}" />
                         </a>
                     </p:column>
                     <p:column headerText="Bilder">
-                        <ui:repeat value="#{botanicalObject.imageServerResources}" var="imageServerResource">
-                            <a href="#{imageServerResource.imageUrl}" target="_blank">
-                                <h:outputText value="#{imageServerResource.identifier}" />
-                            </a>
-                        </ui:repeat>
+                        <ui:remove>
+                            <ui:repeat value="#{botanicalObject.imageServerResources}" var="imageServerResource">
+                                <a href="#{imageServerResource.imageUrl}" target="_blank">
+                                    <h:outputText value="#{imageServerResource.identifier}" />
+                                </a>
+                            </ui:repeat>
+                        </ui:remove>
                     </p:column>
                     <p:column headerText="Akzessionsnummer">
                         <h:outputText value="#{botanicalObject.accessionNumber}">

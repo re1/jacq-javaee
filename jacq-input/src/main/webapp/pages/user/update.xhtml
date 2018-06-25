@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <h:panelGroup layout="block" id="update_profile" styleClass="card">
+                <div class="jacq-content-header">
+                    <h1>#{messages['user.userupdate']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.newpassword']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:password id="newPassword" value="#{userUpdateController.newPassword}" required="true" label="#{messages['user.newpassword']}" />
+                                <p:message for="newPassword" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['user.newpasswordvalidate']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:password id="newPasswordCheck" value="#{userUpdateController.newPasswordValidate}" required="true" label="#{messages['user.newpasswordvalidate']}" />
+                                <p:message for="newPasswordCheck" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jacq-buttons">
+                    <p:commandButton value="#{messages['update']}" actionListener="#{userUpdateController.saveMessage}" update="jacq_form:messages jacq_form:update_profile"  action="#{userUpdateController.update}"/>
+                </div>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

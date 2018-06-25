@@ -50,4 +50,13 @@ public interface DataImportService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void importBromiMdb();
+
+    /**
+     * Triggers import from DB-View
+     */
+    @Path("/importDbView")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void importDbView();
 }

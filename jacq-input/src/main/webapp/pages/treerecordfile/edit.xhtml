@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content_noform">
+            <f:metadata>
+                <f:viewParam name="organisationId" value="#{treeRecordFileEditController.treeRecordFileId}"/>
+            </f:metadata>
+            <h:form enctype="multipart/form-data">
+                <div class="card">
+                    <div class="jacq-content-header">
+                        <h1>#{messages['treerecordfile.edit']}</h1>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['treerecordfile.description']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText id="description" value="#{treeRecordFileEditController.treeRecordFile.name}" label="#{messages['treerecordfile.description']}" required="true"/>
+                                    <p:message for="description" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['treerecordfile.filesnumber']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText id="filesnumber" value="#{treeRecordFileEditController.treeRecordFile.documentNumber}" label="#{messages['treerecordfile.filesnumber']}" required="true"/>
+                                    <p:message for="filesnumber" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['treerecordfile.filename']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:fileUpload id="treerecordfile" auto="true" value="#{treeRecordFileEditController.file}" mode="simple" skinSimple="true" label="#{messages['treerecordfile.filename']}" required="true"/>
+                                    <p:message for="treerecordfile" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jacq-buttons">
+                        <p:commandButton value="#{messages['create']}" actionListener="#{treeRecordFileEditController.saveMessage}" update="jacq_form:messages" action="#{treeRecordFileEditController.edit}" ajax="false" />
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -61,8 +63,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
     , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")
     , @NamedQuery(name = "TblLivingPlant.findByHasImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasImage = :hasImage")
-    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")
-    , @NamedQuery(name = "TblLivingPlant.resetImageStatus", query = "UPDATE TblLivingPlant t SET t.hasImage = FALSE, t.hasPublicImage = FALSE WHERE t.tblBotanicalObject IN ( SELECT tbo FROM TblBotanicalObject tbo WHERE tbo.organisationId IN (:organisations) )")})
+    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")})
 public class TblLivingPlant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,9 +73,10 @@ public class TblLivingPlant implements Serializable {
     @Column(name = "id")
     private Long id;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "accession_number")
-    private int accessionNumber;
-    @Size(max = 20)
+    private long accessionNumber;
+    @Size(max = 40)
     @Column(name = "ipen_number")
     private String ipenNumber;
     @Basic(optional = false)
@@ -126,21 +128,22 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "has_public_image")
     private boolean hasPublicImage;
+    @JoinTable(name = "tbl_relevancy", joinColumns = {
+        @JoinColumn(name = "living_plant_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TblRelevancyType> tblRelevancyTypeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblAlternativeAccessionNumber> tblAlternativeAccessionNumberList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private List<TblDerivativeVegetative> tblDerivativeVegetativeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
-    private List<TblRelevancy> tblRelevancyList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblCertificate> tblCertificateList;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private TblBotanicalObject tblBotanicalObject;
+    @JoinColumn(name = "id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative tblDerivative;
     @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblAcquisitionDate incomingDateId;
@@ -158,7 +161,7 @@ public class TblLivingPlant implements Serializable {
         this.id = id;
     }
 
-    public TblLivingPlant(Long id, int accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
+    public TblLivingPlant(Long id, long accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -179,11 +182,11 @@ public class TblLivingPlant implements Serializable {
         this.id = id;
     }
 
-    public int getAccessionNumber() {
+    public long getAccessionNumber() {
         return accessionNumber;
     }
 
-    public void setAccessionNumber(int accessionNumber) {
+    public void setAccessionNumber(long accessionNumber) {
         this.accessionNumber = accessionNumber;
     }
 
@@ -300,6 +303,15 @@ public class TblLivingPlant implements Serializable {
     }
 
     @XmlTransient
+    public List<TblRelevancyType> getTblRelevancyTypeList() {
+        return tblRelevancyTypeList;
+    }
+
+    public void setTblRelevancyTypeList(List<TblRelevancyType> tblRelevancyTypeList) {
+        this.tblRelevancyTypeList = tblRelevancyTypeList;
+    }
+
+    @XmlTransient
     public List<TblAlternativeAccessionNumber> getTblAlternativeAccessionNumberList() {
         return tblAlternativeAccessionNumberList;
     }
@@ -315,24 +327,6 @@ public class TblLivingPlant implements Serializable {
 
     public void setTblLivingPlantTreeRecordFilePageList(List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList) {
         this.tblLivingPlantTreeRecordFilePageList = tblLivingPlantTreeRecordFilePageList;
-    }
-
-    @XmlTransient
-    public List<TblDerivativeVegetative> getTblDerivativeVegetativeList() {
-        return tblDerivativeVegetativeList;
-    }
-
-    public void setTblDerivativeVegetativeList(List<TblDerivativeVegetative> tblDerivativeVegetativeList) {
-        this.tblDerivativeVegetativeList = tblDerivativeVegetativeList;
-    }
-
-    @XmlTransient
-    public List<TblRelevancy> getTblRelevancyList() {
-        return tblRelevancyList;
-    }
-
-    public void setTblRelevancyList(List<TblRelevancy> tblRelevancyList) {
-        this.tblRelevancyList = tblRelevancyList;
     }
 
     @XmlTransient
@@ -353,12 +347,12 @@ public class TblLivingPlant implements Serializable {
         this.tblCertificateList = tblCertificateList;
     }
 
-    public TblBotanicalObject getTblBotanicalObject() {
-        return tblBotanicalObject;
+    public TblDerivative getTblDerivative() {
+        return tblDerivative;
     }
 
-    public void setTblBotanicalObject(TblBotanicalObject tblBotanicalObject) {
-        this.tblBotanicalObject = tblBotanicalObject;
+    public void setTblDerivative(TblDerivative tblDerivative) {
+        this.tblDerivative = tblDerivative;
     }
 
     public TblAcquisitionDate getIncomingDateId() {
@@ -408,6 +402,17 @@ public class TblLivingPlant implements Serializable {
     @Override
     public String toString() {
         return "org.jacq.common.model.jpa.TblLivingPlant[ id=" + id + " ]";
+    }
+
+    /**
+     * Custom mappings
+     */
+    @JoinColumn(name = "label_synonym_scientific_name_id", referencedColumnName = "scientific_name_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ViewScientificName viewLabelSynonymScientificName;
+
+    public ViewScientificName getViewLabelSynonymScientificName() {
+        return viewLabelSynonymScientificName;
     }
 
 }

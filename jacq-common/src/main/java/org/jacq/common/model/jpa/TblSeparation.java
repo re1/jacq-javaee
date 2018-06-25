@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 wkoller.
+ * Copyright 2018 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblSeparation.findAll", query = "SELECT t FROM TblSeparation t")
-    , @NamedQuery(name = "TblSeparation.findById", query = "SELECT t FROM TblSeparation t WHERE t.id = :id")
+    , @NamedQuery(name = "TblSeparation.findBySeparationId", query = "SELECT t FROM TblSeparation t WHERE t.separationId = :separationId")
     , @NamedQuery(name = "TblSeparation.findByDate", query = "SELECT t FROM TblSeparation t WHERE t.date = :date")})
 public class TblSeparation implements Serializable {
 
@@ -52,8 +52,8 @@ public class TblSeparation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "separation_id")
+    private Long separationId;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -61,12 +61,9 @@ public class TblSeparation implements Serializable {
     @Size(max = 65535)
     @Column(name = "annotation")
     private String annotation;
-    @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblBotanicalObject botanicalObjectId;
-    @JoinColumn(name = "derivative_vegetative_id", referencedColumnName = "derivative_vegetative_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TblDerivativeVegetative derivativeVegetativeId;
+    @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative derivativeId;
     @JoinColumn(name = "separation_type_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblSeparationType separationTypeId;
@@ -74,16 +71,16 @@ public class TblSeparation implements Serializable {
     public TblSeparation() {
     }
 
-    public TblSeparation(Long id) {
-        this.id = id;
+    public TblSeparation(Long separationId) {
+        this.separationId = separationId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSeparationId() {
+        return separationId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSeparationId(Long separationId) {
+        this.separationId = separationId;
     }
 
     public Date getDate() {
@@ -102,20 +99,12 @@ public class TblSeparation implements Serializable {
         this.annotation = annotation;
     }
 
-    public TblBotanicalObject getBotanicalObjectId() {
-        return botanicalObjectId;
+    public TblDerivative getDerivativeId() {
+        return derivativeId;
     }
 
-    public void setBotanicalObjectId(TblBotanicalObject botanicalObjectId) {
-        this.botanicalObjectId = botanicalObjectId;
-    }
-
-    public TblDerivativeVegetative getDerivativeVegetativeId() {
-        return derivativeVegetativeId;
-    }
-
-    public void setDerivativeVegetativeId(TblDerivativeVegetative derivativeVegetativeId) {
-        this.derivativeVegetativeId = derivativeVegetativeId;
+    public void setDerivativeId(TblDerivative derivativeId) {
+        this.derivativeId = derivativeId;
     }
 
     public TblSeparationType getSeparationTypeId() {
@@ -129,7 +118,7 @@ public class TblSeparation implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (separationId != null ? separationId.hashCode() : 0);
         return hash;
     }
 
@@ -140,7 +129,7 @@ public class TblSeparation implements Serializable {
             return false;
         }
         TblSeparation other = (TblSeparation) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.separationId == null && other.separationId != null) || (this.separationId != null && !this.separationId.equals(other.separationId))) {
             return false;
         }
         return true;
@@ -148,7 +137,7 @@ public class TblSeparation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblSeparation[ id=" + id + " ]";
+        return "org.jacq.common.model.jpa.TblSeparation[ separationId=" + separationId + " ]";
     }
 
 }

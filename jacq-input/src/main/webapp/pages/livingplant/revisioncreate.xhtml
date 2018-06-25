@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="indexSeminumId" value="#{indexSeminumEditController.indexSeminumId}"/>
+            </f:metadata>
+            <h:panelGroup layout="block" id="revision_create" styleClass="card">
+                <div class="jacq-content-header">
+                    <h1>#{messages['livingplant.revisioncreate']}</h1>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.indexseminumcreate']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText id="indexseminumcreate" value="#{indexSeminumEditController.indexSeminum.name}" label="#{messages['livingplant.indexseminumcreate']}" required="true" />
+                                <p:message for="indexseminumcreate" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p:blockUI block="jacq_form" trigger="createRevisionButton">
+                    <h:outputText value="#{messages.processing}" />
+                </p:blockUI>
+                <div class="jacq-buttons">
+                    <p:commandButton id="createRevisionButton" value="#{messages['create']}" actionListener="#{indexSeminumEditController.saveMessage}" update="jacq_form:messages jacq_form:revision_create" action="#{indexSeminumEditController.edit}" />
+                </div>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,603 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/default/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="jacq-content">
+                    <div class="jacq-content-header">
+                        <h1>#{messages['literature.literaturecreate']}</h1>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.url']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.title']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.subtitle']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.keywords']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.annotations']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>#{messages['search']}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.authors']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.editors']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.periodical']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value=""/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.printer']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.printingloc']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.showsathors']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="showauthors" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.additions']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.listing']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.recentpublication']}" />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:selectBooleanCheckbox value="recentpublication" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{messages['literature.signature']}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputText />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p:tabView dynamic="true" cache="true">
+                        <p:tab title="#{messages['literature.index']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.id']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.taxon']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.citation']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.paginae']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.figures']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.taxon']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.paginae']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.figures']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['literature.citedtaxa']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.id']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.taxon']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.acctaxon']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.citation']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.source']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectOneMenu id="scource">
+                                                <f:selectItem itemLabel="#{messages['noselection']}" noSelectionOption="true" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.etal']}" />
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:selectBooleanCheckbox value="etal" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.taxon']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.acctaxon']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['literature.citedperson']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.id']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.person']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.citation']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['literature.container']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.id']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.lastupdatedby']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.annotations']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['literature.taxasynonym']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value=""/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value=""/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value=""/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value=""/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="literaturetable">
+                                    <p:column filterBy="" headerText="">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.name']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.annotations']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{messages['literature.taxonclassification']}">
+                            <div class="ui-g">
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.child']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6 ui-g-nopad">
+                                    <div class="ui-g">
+                                        <div class="ui-g-6">
+                                            <h:outputText value="#{messages['literature.parent']}"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:inputText />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jacq-data-table">
+                                <p:dataTable var="taxonomy">
+                                    <p:column filterBy="" headerText="#{messages['literature.genus']}">
+                                        <h:outputText  />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.authors']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.refno']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.family']}">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column filterBy="" headerText="#{messages['literature.categorie']}">
+                                        <h:outputText />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
