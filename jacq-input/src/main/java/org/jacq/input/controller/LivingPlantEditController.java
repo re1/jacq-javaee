@@ -38,6 +38,7 @@ import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.IdentStatusResult;
 import org.jacq.common.model.rest.IndexSeminumTypeResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
@@ -82,6 +83,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
      * Reference to derivative id which is currently edited
      */
     protected Long derivativeId;
+
+    /**
+     * Type of derivative which requested the load
+     */
+    protected String type;
 
     /**
      * Reference to derivative service which is called during editing
@@ -141,9 +147,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected List<RelevancyTypeResult> relevancyTypes;
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
-    protected List<SelectItem> sexes;
 
+    protected List<SelectItem> sexes;
     protected List<String> selectedSexes;
+
+    protected List<SelectItem> labelTypes;
+    protected List<String> selectedLabelTypes;
 
     @ManagedProperty(value = "#{organisationHierarchicSelectController}")
     protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
@@ -179,6 +188,14 @@ public class LivingPlantEditController implements OrganisationSelectListener {
             this.sexes.add(new SelectItem(sex.getSexId(), sex.getSex()));
         }
         this.selectedSexes = new ArrayList<>();
+
+        // load list of label types and convert to select item
+        List<LabelTypeResult> labelTypeList = this.derivativeService.findAllLabelType();
+        this.labelTypes = new ArrayList<>();
+        for (LabelTypeResult labelType : labelTypeList) {
+            this.labelTypes.add(new SelectItem(labelType.getLabelTypeId(), labelType.getType()));
+        }
+        this.selectedLabelTypes = new ArrayList<>();
 
         this.showorganisationHierarchicSelectController();
     }
@@ -254,10 +271,6 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.livingPlantResult.getGatherers().remove(gatherer);
     }
 
-    public Long getDerivativeId() {
-        return derivativeId;
-    }
-
     public OrganisationHierarchicSelectController getOrganisationHierarchicSelectController() {
         return organisationHierarchicSelectController;
     }
@@ -276,15 +289,26 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     /**
-     * Called by the JSF container, when a derivative id is passed the according
-     * entry will be loaded
-     *
-     * @param derivativeId
+     * Called by the JSF container, when the page is loaded and post parameter
+     * setting. Derivative entry will be loaded
      */
-    public void setDerivativeId(Long derivativeId) {
-        this.derivativeId = derivativeId;
-
+    public void onLoad() {
         if (this.derivativeId != null) {
+            // for vegetative entries, we load the parent living plant entry
+            if (VegetativeResult.VEGETATIVE.equals(this.type)) {
+                Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, VegetativeResult.VEGETATIVE);
+                if (botanicalObjectDerivative.getStatus() == 200) {
+                    VegetativeResult vegetativeResult = botanicalObjectDerivative.readEntity(VegetativeResult.class);
+                    this.derivativeId = vegetativeResult.getParentDerivativeId();
+                } else {
+                    // if access is not allowed, rediect to overview
+                    sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
+                    FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "default");
+
+                    return;
+                }
+            }
+
             // load derivative entry, make sure we received a correct one and cast it to living plant entry
             Response botanicalObjectDerivative = this.derivativeService.load(derivativeId, LivingPlantResult.LIVING);
             if (botanicalObjectDerivative.getStatus() == 200) {
@@ -311,6 +335,12 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         for (String sexId : this.selectedSexes) {
             this.livingPlantResult.getSexes().add(new SexResult(Long.parseLong(sexId)));
         }
+        // convert selected label type entries to LabelTypeResult(s)
+        this.livingPlantResult.getLabelTypes().clear();
+        for (String labelTypeId : this.selectedLabelTypes) {
+            this.livingPlantResult.getLabelTypes().add(new LabelTypeResult(Long.parseLong(labelTypeId)));
+        }
+
         this.livingPlantResult.setSpecimensList(this.getSpecimenList());
 
         // save the living plant entry
@@ -347,6 +377,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         // convert selected sex entries
         for (SexResult sex : this.livingPlantResult.getSexes()) {
             this.selectedSexes.add(sex.getSexId().toString());
+        }
+
+        // convert selected label-type entries
+        for (LabelTypeResult labelType : this.livingPlantResult.getLabelTypes()) {
+            this.selectedLabelTypes.add(labelType.getLabelTypeId().toString());
         }
     }
 
@@ -547,6 +582,18 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.selectedSexes = selectedSexes;
     }
 
+    public List<SelectItem> getLabelTypes() {
+        return labelTypes;
+    }
+
+    public List<String> getSelectedLabelTypes() {
+        return selectedLabelTypes;
+    }
+
+    public void setSelectedLabelTypes(List<String> selectedLabelTypes) {
+        this.selectedLabelTypes = selectedLabelTypes;
+    }
+
     public String getWorkLabelUrl() {
         if (this.livingPlantResult != null && this.livingPlantResult.getDerivativeId() != null) {
             return ServicesUtil.getWorkLabelURL(LivingPlantResult.LIVING, this.livingPlantResult.getDerivativeId());
@@ -583,4 +630,19 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("jacq_form:organisation");
     }
 
+    public Long getDerivativeId() {
+        return derivativeId;
+    }
+
+    public void setDerivativeId(Long derivativeId) {
+        this.derivativeId = derivativeId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

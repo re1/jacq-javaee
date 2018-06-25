@@ -86,7 +86,7 @@ public class OrganisationManager extends BaseOrganisationManager {
             tblOrganisation.setDepartment(organisationResult.getDepartment());
             tblOrganisation.setGreenhouse(organisationResult.getGreenhouse());
             tblOrganisation.setIpenCode(organisationResult.getIpenCode());
-            tblOrganisation.setParentOrganisationId(entityManager.find(TblOrganisation.class, organisationResult.getParentOrganisationId()));
+            tblOrganisation.setParentOrganisationId(entityManager.find(TblOrganisation.class, organisationResult.getParentOrganisationResult().getOrganisationId()));
             tblOrganisation.setGardenerId(entityManager.find(FrmwrkUser.class, organisationResult.getGardenerId()));
             tblOrganisation.setIndexSeminumStart(organisationResult.isIndexSeminumStart());
             tblOrganisation.setAccessionStart(organisationResult.isAccessionStart());

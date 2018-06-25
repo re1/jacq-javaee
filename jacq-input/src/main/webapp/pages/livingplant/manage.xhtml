@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <p:remoteCommand name="updateOrganisation" update="organisation" />
-
+                    <p:blockUI block="hierachicSearchButton" trigger="organisation" />
                     <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px" onHide="updateOrganisation();">
                         <ui:include src="../organisation/hierarchicselect.xhtml" />
                     </p:overlayPanel>
@@ -94,6 +94,21 @@
                             </div>
                             <div class="ui-g-6">
                                 <p:inputText value="#{livingPlantController.derivativeSearchModel.accessionNumber}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['livingplant.cultivar']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:autoComplete value="#{livingPlantController.derivativeSearchModel.selectedCultivar}" completeMethod="#{livingPlantController.completeCultivar}"
+                                                var="cultivar" itemLabel="#{cultivar.cultivar}" itemValue="#{cultivar}" minQueryLength="2" queryDelay="300" converter="cultivarConverter">
+                                    <p:column>
+                                        <h:outputText value="#{cultivar.cultivar}" /> (<h:outputText value="#{cultivar.cultivarId}" />)
+                                    </p:column>
+                                </p:autoComplete>
                             </div>
                         </div>
                     </div>
@@ -198,6 +213,7 @@
                             <p:column headerText="#{messages['action']}">
                                 <p:button outcome="edit.xhtml" icon="ui-icon-pencil">
                                     <f:param name="derivativeId" value="#{botanicalObjectDerivative.derivativeId}" />
+                                    <f:param name="type" value="#{botanicalObjectDerivative.type}" />
                                 </p:button>
                             </p:column>
 

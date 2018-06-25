@@ -23,7 +23,9 @@ import org.jacq.service.manager.DerivativeManager;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -55,20 +57,21 @@ public class DerivativeServiceImpl implements DerivativeService {
     protected VegetativeManager vegetativeManager;
 
     /**
-     * @see DerivativeService#find(java.lang.String, java.lang.Long, java.lang.String,
-     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     * @see DerivativeService#find(java.lang.String, java.lang.Long,
+     * java.lang.String, org.jacq.common.model.rest.OrderDirection,
+     * java.lang.Integer, java.lang.Integer)
      */
     @Override
-    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, classification, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDerivative> find(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, offset, count);
     }
 
     /**
      * @see DerivativeService#count(java.lang.String, java.lang.Long)
      */
     @Override
-    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification) {
-        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, classification);
+    public int count(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification) {
+        return derivativeManager.count(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification);
     }
 
     /**
@@ -80,8 +83,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     @Override
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, classification, orderColumn, orderDirection, offset, count);
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+        return derivativeManager.downloadFind(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -133,7 +136,8 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
+     * @see
+     * DerivativeService#livingPlantSave(org.jacq.common.model.rest.LivingPlantResult)
      */
     @Override
     public LivingPlantResult livingPlantSave(LivingPlantResult livingPlantResult) {
@@ -165,10 +169,37 @@ public class DerivativeServiceImpl implements DerivativeService {
     }
 
     /**
-     * @see DerivativeService#vegetativeSave(org.jacq.common.model.rest.VegetativeResult)
+     * @see
+     * DerivativeService#vegetativeSave(org.jacq.common.model.rest.VegetativeResult)
      */
     @Override
     public VegetativeResult vegetativeSave(VegetativeResult vegetativeResult) {
         return vegetativeManager.vegetativeSave(vegetativeResult);
     }
+
+    /**
+     * @see DerivativeService#findAllLabelType()
+     */
+    @Override
+    public List<LabelTypeResult> findAllLabelType() {
+        return derivativeManager.findAllLabelType();
+    }
+
+    /**
+     * @see DerivativeService#cultivarFind()
+     * @param cultivar
+     * @param offset
+     * @param count
+     * @return
+     */
+    @Override
+    public List<CultivarResult> cultivarFind(String cultivar, Integer offset, Integer count) {
+        return derivativeManager.cultivarFind(cultivar, offset, count);
+    }
+
+    @Override
+    public CultivarResult cultivarLoad(Long cultivarId) {
+        return derivativeManager.cultivarLoad(cultivarId);
+    }
+
 }

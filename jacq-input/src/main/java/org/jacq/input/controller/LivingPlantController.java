@@ -14,9 +14,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
+import org.jacq.common.rest.DerivativeService;
 import org.jacq.common.rest.GatheringService;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -46,6 +48,7 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
     protected LazyDerivativeDownloadDataModel downloadDataModel;
     protected ScientificNameService scientificNameService;
     protected OrganisationService organisationService;
+    protected DerivativeService derivativeService;
     /**
      * Reference to gathering service
      */
@@ -63,6 +66,7 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
         this.scientificNameService = ServicesUtil.getScientificNameService();
         this.organisationService = ServicesUtil.getOrganisationService();
         this.gatheringService = ServicesUtil.getGatheringService();
+        this.derivativeService = ServicesUtil.getDerivativeService();
 
         this.downloadRender = false;
         if (sessionController.getUser() != null && this.dataModel.getDerivativeSearchModel().getCallFlag() == 0) {
@@ -103,6 +107,10 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
 
     public List<LocationResult> completeLocation(String query) {
         return this.gatheringService.locationFind(query, 0, 10);
+    }
+
+    public List<CultivarResult> completeCultivar(String query) {
+        return this.derivativeService.cultivarFind(query, 0, 10);
     }
 
     public Boolean getDownloadRender() {

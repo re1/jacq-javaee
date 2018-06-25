@@ -39,11 +39,12 @@ public class SearchServiceImpl implements SearchService {
 
     /**
      * @see SearchService#find(java.lang.Long, java.lang.Long, java.lang.String,
-     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer, java.lang.Integer)
+     * org.jacq.common.model.rest.OrderDirection, java.lang.Integer,
+     * java.lang.Integer)
      */
     @Override
     public List<BotanicalObjectDerivative> find(Long scientificNameId, Long organisationId, Boolean hasImage, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
-        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null, orderColumn, orderDirection, offset, count);
+        return searchManager.find(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null, null, orderColumn, orderDirection, offset, count);
     }
 
     /**
@@ -51,12 +52,13 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public int count(Long scientificNameId, Long organisationId, Boolean hasImage) {
-        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null);
+        return searchManager.count(null, null, null, null, null, scientificNameId, organisationId, null, null, null, null, null, null, null);
     }
 
     /**
-     * @see SearchService#organisationSearch(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see SearchService#organisationSearch(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
      */
     @Override
     public List<OrganisationResult> organisationSearch(Long id, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {

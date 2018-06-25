@@ -52,14 +52,18 @@
                                 <h:outputText value="#{messages['organisation.parentOrganisation']}" />
                             </div>
                             <div class="ui-g-9">
-                                <p:selectOneMenu id="organisation" value="#{organisationEditController.organisation.parentOrganisationId}">
-                                    <f:selectItems value="#{organisationEditController.organisations}" var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation.organisationId}" />
+                                <p:autoComplete id="organisation" value="#{organisationEditController.organisation.parentOrganisationResult}" completeMethod="#{organisationEditController.completeOrganisation}"
+                                                var="parentOrganisationResult" itemLabel="#{parentOrganisationResult.description}" itemValue="#{parentOrganisationResult}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}">
+                                    <p:column>
+                                        <h:outputText value="#{parentOrganisationResult.description}" /> (<h:outputText value="#{parentOrganisationResult.parentOrganisationDescription}" />)
+                                    </p:column>
                                     <p:ajax event="itemSelect" listener="#{organisationEditController.organisationHierachicSelectEvent}" />
-                                </p:selectOneMenu>
-                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" rendered="false" />
+                                </p:autoComplete>
+                                <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
                             </div>
                         </div>
                     </div>
+                    <p:blockUI block="hierachicSearchButton" trigger="organisation" />
                     <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px">
                         <ui:include src="hierarchicselect.xhtml" />
                     </p:overlayPanel>

@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jacq.common.model.jpa.TblOrganisation;
 
 /**
- * Wrapper model which represents a single result after a search Used to minimize the transfered data and only return
- * the relevant information
+ * Wrapper model which represents a single result after a search Used to
+ * minimize the transfered data and only return the relevant information
  *
  * @author fhafner
  */
@@ -39,6 +39,7 @@ public class OrganisationResult {
     protected String ipenCode;
     protected String parentOrganisationDescription;
     protected Long parentOrganisationId;
+    protected OrganisationResult parentOrganisationResult;
     protected String gardener;
     protected Long gardenerId;
     protected boolean indexSeminumStart;
@@ -137,6 +138,14 @@ public class OrganisationResult {
         this.accessionStart = accessionStart;
     }
 
+    public OrganisationResult getParentOrganisationResult() {
+        return parentOrganisationResult;
+    }
+
+    public void setParentOrganisationResult(OrganisationResult parentOrganisationResult) {
+        this.parentOrganisationResult = parentOrganisationResult;
+    }
+
     public OrganisationResult() {
     }
 
@@ -152,10 +161,12 @@ public class OrganisationResult {
         this.gardenerId = (organisation.getGardenerId() != null) ? organisation.getGardenerId().getId() : null;
         this.indexSeminumStart = organisation.getIndexSeminumStart();
         this.accessionStart = organisation.getAccessionStart();
+        this.parentOrganisationResult = (organisation.getParentOrganisationId() != null) ? new OrganisationResult(organisation.getParentOrganisationId()) : null;
     }
 
     /**
-     * Helper function for converting a list of Organisation entries to organisation results
+     * Helper function for converting a list of Organisation entries to
+     * organisation results
      *
      * @param organisationList
      * @return

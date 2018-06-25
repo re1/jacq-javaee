@@ -64,6 +64,9 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected String family;
     protected String familyReference;
 
+    protected String acceptedScientificname;
+    protected String acceptedScientificnameReference;
+
     protected Date recordingDate;
     protected Date incomingDate;
     protected Date cultivationDate;
@@ -99,6 +102,8 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
 
     protected List<SpecimenResult> specimensList;
 
+    protected List<LabelTypeResult> labelTypes;
+
     public LivingPlantResult() {
         this.indexSeminumType = new IndexSeminumTypeResult();
         this.phenology = new PhenologyResult();
@@ -118,6 +123,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.sexes = new ArrayList<>();
         this.gatherers = new ArrayList<>();
         this.specimensList = new ArrayList<>();
+        this.labelTypes = new ArrayList<>();
     }
 
     public LivingPlantResult(TblLivingPlant tblLivingPlant) {
@@ -149,6 +155,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.acquistionEventSources = AcquistionEventSourceResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblAcquisitionEventSourceList());
         this.sexes = SexResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getTblSexList());
         this.gatherers = PersonResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getAcquisitionEventId().getTblPersonList());
+        this.labelTypes = LabelTypeResult.fromList(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getTblLabelTypeList());
 
         // Derivative properties
         this.count = tblLivingPlant.getTblDerivative().getCount();
@@ -656,4 +663,27 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.specimensList = specimensList;
     }
 
+    public String getAcceptedScientificname() {
+        return acceptedScientificname;
+    }
+
+    public void setAcceptedScientificname(String acceptedScientificname) {
+        this.acceptedScientificname = acceptedScientificname;
+    }
+
+    public String getAcceptedScientificnameReference() {
+        return acceptedScientificnameReference;
+    }
+
+    public void setAcceptedScientificnameReference(String acceptedScientificnameReference) {
+        this.acceptedScientificnameReference = acceptedScientificnameReference;
+    }
+
+    public List<LabelTypeResult> getLabelTypes() {
+        return labelTypes;
+    }
+
+    public void setLabelTypes(List<LabelTypeResult> labelTypes) {
+        this.labelTypes = labelTypes;
+    }
 }

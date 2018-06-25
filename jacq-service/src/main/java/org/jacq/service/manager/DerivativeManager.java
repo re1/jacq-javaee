@@ -23,6 +23,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import javax.ws.rs.ForbiddenException;
 import org.jacq.common.manager.BaseDerivativeManager;
@@ -31,8 +36,10 @@ import org.jacq.common.model.jpa.FrmwrkaccessOrganisation;
 import org.jacq.common.model.jpa.TblBotanicalObject;
 import org.jacq.common.model.jpa.TblCertificateType;
 import org.jacq.common.model.jpa.TblClassification;
+import org.jacq.common.model.jpa.TblCultivar;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblIdentStatus;
+import org.jacq.common.model.jpa.TblLabelType;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
@@ -46,8 +53,9 @@ import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
-import org.jacq.common.model.rest.ClassificationSourceType;
+import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.IdentStatusResult;
+import org.jacq.common.model.rest.LabelTypeResult;
 import org.jacq.common.model.rest.LivingPlantResult;
 import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.PhenologyResult;
@@ -55,16 +63,16 @@ import org.jacq.common.model.rest.RelevancyTypeResult;
 import org.jacq.common.model.rest.SeparationTypeResult;
 import org.jacq.common.model.rest.SexResult;
 import org.jacq.common.model.rest.SpecimenResult;
-import org.jacq.common.model.rest.UserResult;
 import org.jacq.common.model.rest.VegetativeResult;
 import org.jacq.common.rest.DerivativeService;
 import org.jacq.service.ApplicationManager;
 import org.jacq.service.JacqServiceConfig;
 
 /**
- * Helper class for querying all derivatives in a unified way Due to MySQL not performing well on views with UNION ALL
- * we simulate a view by writing the queries directly in this class Normally native queries should not be used at all
- * costs
+ * Helper class for querying all derivatives in a unified way Due to MySQL not
+ * performing well on views with UNION ALL we simulate a view by writing the
+ * queries directly in this class Normally native queries should not be used at
+ * all costs
  *
  * @author wkoller
  */
@@ -115,20 +123,34 @@ public class DerivativeManager extends BaseDerivativeManager {
                 LivingPlantResult livingPlantResult = new LivingPlantResult(tblLivingPlant);
                 livingPlantResult.setImageServerResources(imageServerManager.getResources(tblLivingPlant.getTblDerivative(), false));
                 if (tblLivingPlant.getTblDerivative().getBotanicalObjectId() != null) {
-                    TblClassification classification = classificationManager.getFamily(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
-                    ViewProtolog protolog = getProtolog(classification);
-                    if (classification != null && classification.getViewScientificName() != null) {
-                        livingPlantResult.setFamily(classification.getViewScientificName().getScientificName() != null ? classification.getViewScientificName().getScientificName() : null);
+                    TblClassification classification = null;
+                    ViewProtolog protolog = null;
+                    // Gets Family and Family Reference
+                    classification = classificationManager.getFamily(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+                    if (classification != null) {
+                        livingPlantResult.setFamily(classification.getViewScientificName().getScientificName());
+                        protolog = getProtolog(classification);
+                        if (protolog != null) {
+                            livingPlantResult.setFamilyReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                        }
                     }
-                    if (protolog != null) {
-                        livingPlantResult.setFamilyReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                    classification = null;
+                    protolog = null;
+                    // Gets AcceptedScrientificName and AcceptedScientificName Reference
+                    classification = classificationManager.getAcceptedName(tblLivingPlant.getTblDerivative().getBotanicalObjectId().getScientificNameId());
+                    if (classification != null) {
+                        livingPlantResult.setAcceptedScientificname(classification.getViewScientificName().getScientificName());
+                        protolog = getProtolog(classification);
+                        if (protolog != null) {
+                            livingPlantResult.setAcceptedScientificnameReference(protolog.getProtolog() != null ? protolog.getProtolog() : null);
+                        }
+
                     }
                 }
 
                 return livingPlantResult;
             }
-        }
-        else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
+        } else if (VegetativeResult.VEGETATIVE.equalsIgnoreCase(type)) {
             TblVegetative tblVegetative = em.find(TblVegetative.class, derivativeId);
             if (tblVegetative != null) {
                 // check if user has access to this entry
@@ -183,10 +205,10 @@ public class DerivativeManager extends BaseDerivativeManager {
      * @return
      */
     @Transactional
-    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
+    public List<BotanicalObjectDownloadResult> downloadFind(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection, Integer offset, Integer count) {
         List<BotanicalObjectDownloadResult> botanicalObjectDownloadResultList = new ArrayList<>();
 
-        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, classification, orderColumn, orderDirection, offset, count);
+        List<BotanicalObjectDerivative> botanicalObjectDerivativeList = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, offset, count);
 
         for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivativeList) {
             TblDerivative dervivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
@@ -262,7 +284,17 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Small helper function for fetching relevancy type based on important parameter
+     * @see DerivativeService#findAllLabelType()
+     */
+    public List<LabelTypeResult> findAllLabelType() {
+        TypedQuery<TblLabelType> labelTypeQuery = em.createNamedQuery("TblLabelType.findAll", TblLabelType.class);
+
+        return LabelTypeResult.fromList(labelTypeQuery.getResultList());
+    }
+
+    /**
+     * Small helper function for fetching relevancy type based on important
+     * parameter
      *
      * @param important
      * @return
@@ -306,7 +338,8 @@ public class DerivativeManager extends BaseDerivativeManager {
     }
 
     /**
-     * Determines if the currently active user has access to the given derivative
+     * Determines if the currently active user has access to the given
+     * derivative
      *
      * @param tblDerivative
      * @return
@@ -344,5 +377,64 @@ public class DerivativeManager extends BaseDerivativeManager {
         }
 
         return hasAccess;
+    }
+
+    /**
+     * @see DerivativeService#cultivarFind()
+     * @param cultivar
+     * @param offset
+     * @param count
+     * @return
+     */
+    @Transactional
+    public List<CultivarResult> cultivarFind(String cultivar, Integer offset, Integer count) {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TblCultivar> cq = cb.createQuery(TblCultivar.class);
+        Root<TblCultivar> bo = cq.from(TblCultivar.class);
+
+        // select result list
+        cq.select(bo);
+
+        Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (cultivar != null) {
+            path = bo.get("cultivar");
+            predicates.add(cb.like(path, cultivar + "%"));
+        }
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblCultivar> cultivarSearchQuery = em.createQuery(cq);
+        if (offset != null) {
+            cultivarSearchQuery.setFirstResult(offset);
+        }
+        if (count != null) {
+            cultivarSearchQuery.setMaxResults(count);
+        }
+
+        // finally fetch the results
+        ArrayList<CultivarResult> results = new ArrayList<>();
+        List<TblCultivar> cultivars = cultivarSearchQuery.getResultList();
+        for (TblCultivar tblCultivar : cultivars) {
+            CultivarResult cultivarResult = new CultivarResult(tblCultivar);
+
+            // add cultivar object to result list
+            results.add(cultivarResult);
+        }
+
+        return results;
+
+    }
+
+    /**
+     * @see DerivativeService#cultivarLoad()
+     * @param cultivarId
+     * @return
+     */
+    public CultivarResult cultivarLoad(Long cultivarId) {
+        return new CultivarResult(em.find(TblCultivar.class, cultivarId));
     }
 }
