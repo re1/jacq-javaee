@@ -27,6 +27,38 @@ import org.openqa.selenium.WebElement;
  */
 public class EditTest extends BaseTest {
 
+    /**
+     * Test basic create capabilities of living plant form
+     */
+    @Test
+    public void createLiving() {
+        doLogin();
+
+        // find living plant menu
+        WebElement livingPlantmenu = driver.findElement(By.id("jacq_form-menu:livingplant"));
+        Assert.assertNotNull(livingPlantmenu);
+        livingPlantmenu.click();
+
+        // find create living plant entry
+        WebElement createLivingplant = livingPlantmenu.findElement(By.id("jacq_form-menu:livingplant_create"));
+        Assert.assertNotNull(createLivingplant);
+        createLivingplant.click();
+
+        // find scientific name form
+        WebElement scientificNameInput = driver.findElement(By.id("jacq_form:scientificName_input"));
+        Assert.assertNotNull(scientificNameInput);
+        scientificNameInput.sendKeys("Acer");
+
+        // wait for auto-complete to appear ()
+        WebElement scientificNamePanel = driver.findElement(By.id("jacq_form:scientificName_panel"));
+        Assert.assertNotNull(scientificNameInput);
+
+        // find list of results & select first scientific name
+        List<WebElement> scientificNameRows = scientificNamePanel.findElements(By.tagName("tr"));
+        Assert.assertTrue(scientificNameRows.size() > 0);
+        scientificNameRows.get(0).click();
+    }
+
     @Test
     public void openLiving() {
         doLogin();
