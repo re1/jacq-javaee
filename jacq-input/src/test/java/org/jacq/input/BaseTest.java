@@ -16,6 +16,7 @@
 package org.jacq.input;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,9 +32,9 @@ import org.openqa.selenium.firefox.FirefoxOptions;
  */
 public abstract class BaseTest {
 
-    protected static final String TEST_URL = "https://development.jacq.org/jacq-input/";
-    protected static final String TEST_USERNAME = "test";
-    protected static final String TEST_PASSWORD = "test";
+    protected static final String TEST_URL = "http://localhost:8080/jacq-input/";
+    protected static final String TEST_USERNAME = "admin";
+    protected static final String TEST_PASSWORD = "admin&jacq-input";
 
     protected WebDriver driver = null;
     protected FirefoxOptions options = null;
@@ -41,10 +42,14 @@ public abstract class BaseTest {
     @Before
     public void init() {
         options = new FirefoxOptions();
-        options.addArguments("--headless");
+        // options.addArguments("--headless");
 
         //Step 1- Driver Instantiation: Instantiate driver object as FirefoxDriver
         driver = new FirefoxDriver(options);
+
+        // implicitly wait some time for elements to appear
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         //Step 2- Navigation: Open a website
         driver.navigate().to(TEST_URL);
     }

@@ -88,7 +88,7 @@ public class TblBotanicalObject implements Serializable {
     private String annotation;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "recording_date", insertable = false, updatable = false)
+    @Column(name = "recording_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date recordingDate;
     @Basic(optional = false)
