@@ -92,6 +92,16 @@ public class ImportRecord implements Serializable {
     protected Date gatheringDate;
     @Column(name = "gathering_source")
     protected String gatheringSource;
+    @Column(name = "altitude_min")
+    protected Long altitudeMin;
+    @Column(name = "altitude_max")
+    protected Long altitudeMax;
+    @Column(name = "ident_status")
+    protected Long identStatus;
+    @Column(name = "gathering_person")
+    protected Long gatheringPerson;
+    @Column(name = "gathering_location")
+    protected Long gatheringLocation;
 
     public Long getOriginalId() {
         return originalId;
@@ -301,9 +311,49 @@ public class ImportRecord implements Serializable {
         this.gatheringSource = gatheringSource;
     }
 
+    public Long getAltitudeMin() {
+        return altitudeMin;
+    }
+
+    public void setAltitudeMin(Long altitudeMin) {
+        this.altitudeMin = altitudeMin;
+    }
+
+    public Long getAltitudeMax() {
+        return altitudeMax;
+    }
+
+    public void setAltitudeMax(Long altitudeMax) {
+        this.altitudeMax = altitudeMax;
+    }
+
+    public Long getIdentStatus() {
+        return identStatus;
+    }
+
+    public void setIdentStatus(Long identStatus) {
+        this.identStatus = identStatus;
+    }
+
+    public Long getGatheringPerson() {
+        return gatheringPerson;
+    }
+
+    public void setGatheringPerson(Long gatheringPerson) {
+        this.gatheringPerson = gatheringPerson;
+    }
+
+    public Long getGatheringLocation() {
+        return gatheringLocation;
+    }
+
+    public void setGatheringLocation(Long gatheringLocation) {
+        this.gatheringLocation = gatheringLocation;
+    }
+
     /**
-     * Helper function for converting the import record to a single line string for appending to the annotation field of
-     * an existing record
+     * Helper function for converting the import record to a single line string
+     * for appending to the annotation field of an existing record
      *
      * @return
      */
