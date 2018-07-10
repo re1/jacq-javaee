@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jacq</groupId>
         <artifactId>jacq</artifactId>
-        <version>0.5.0</version>
+        <version>0.6.0</version>
         <relativePath>../jacq/pom.xml</relativePath>
     </parent>
 
@@ -31,6 +31,10 @@
                 <exclusion>
                     <artifactId>dom4j</artifactId>
                     <groupId>dom4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+                    <artifactId>org.apache.commons.codec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
