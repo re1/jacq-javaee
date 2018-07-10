@@ -61,6 +61,7 @@ import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.SessionManager;
 import org.jacq.input.listener.OrganisationSelectListener;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
@@ -78,6 +79,9 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     @Inject
     protected SessionController sessionController;
+
+    @Inject
+    protected SessionManager sessionManager;
 
     /**
      * Reference to derivative id which is currently edited
@@ -172,6 +176,10 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
         // setup default values
         this.livingPlantResult.setIpenType("default");
+
+        if (sessionManager.getUser() != null) {
+            livingPlantResult.setOrganisation(this.organisationService.load(sessionManager.getUser().getOrganisationId()));
+        }
 
         // load all lookup tables
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();

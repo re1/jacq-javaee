@@ -29,6 +29,7 @@ import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.input.ApplicationManager;
+import org.jacq.input.SessionManager;
 import org.jacq.input.listener.OrganisationSelectListener;
 import org.primefaces.event.SelectEvent;
 
@@ -45,6 +46,9 @@ public class OrganisationEditController implements OrganisationSelectListener {
 
     @Inject
     protected ApplicationManager applicationManager;
+
+    @Inject
+    protected SessionManager sessionManager;
 
     protected Long organisationId;
 
@@ -72,6 +76,11 @@ public class OrganisationEditController implements OrganisationSelectListener {
         this.organisations = this.organisationService.findAll();
 
         this.organisation = new OrganisationResult();
+        if (sessionManager.getUser() != null && sessionManager.getUser().getOrganisationId() != null) {
+            this.organisation.setParentOrganisationResult(this.organisationService.load(sessionManager.getUser().getOrganisationId()));
+            this.organisation.setParentOrganisationDescription(this.organisation.getParentOrganisationResult().getDescription());
+            this.organisation.setParentOrganisationId(this.organisation.getParentOrganisationResult().getOrganisationId());
+        }
 
         this.users = this.userService.findAll();
 
