@@ -76,7 +76,8 @@ public class TblBotanicalObject implements Serializable {
     @Column(name = "determination_date")
     @Temporal(TemporalType.DATE)
     private Date determinationDate;
-    @Size(max = 45)
+    @Lob
+    @Size(max = 65535)
     @Column(name = "habitat")
     private String habitat;
     @Size(max = 45)

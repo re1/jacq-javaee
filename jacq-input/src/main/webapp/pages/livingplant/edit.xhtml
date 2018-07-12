@@ -131,7 +131,7 @@
                                 <div class="ui-g-6">
                                     <h:outputText value="#{messages['livingplant.location']}" />
                                 </div>
-                                <div class="ui-g-6">
+                                <div class="ui-g-5">
                                     <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
                                                     var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
                                         <p:ajax event="itemSelect" listener="#{livingPlantEditController.onOrganisationSelect}" update="ipennumber" />
@@ -142,6 +142,8 @@
                                         <p:ajax event="itemSelect" listener="#{livingPlantEditController.organisationHierachicSelectEvent}" />
                                     </p:autoComplete>
                                     <p:message for="organisation" />
+                                </div>
+                                <div class="ui-g-1">
                                     <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
                                 </div>
                             </div>
@@ -358,9 +360,9 @@
                             </div>
                         </div>
 
-                        <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+                        <h:panelGroup id="separations" layout="block" styleClass="ui-g-12 ui-g-nopad">
                             <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
-                                <div class="ui-g-12 ui-g-nopad">
+                                <div class="ui-g">
                                     <div class="ui-g-3">
                                         <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
                                             <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
