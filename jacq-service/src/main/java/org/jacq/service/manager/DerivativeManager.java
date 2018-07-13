@@ -170,10 +170,13 @@ public class DerivativeManager extends BaseDerivativeManager {
      */
     @Transactional
     public List<VegetativeResult> vegetativeFind(Long derivativeId) {
-        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
-        vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
+        if (derivativeId != null) {
+            TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
+            vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
 
-        return VegetativeResult.fromList(vegetativeQuery.getResultList());
+            return VegetativeResult.fromList(vegetativeQuery.getResultList());
+        }
+        return null;
     }
 
     /**
@@ -183,10 +186,13 @@ public class DerivativeManager extends BaseDerivativeManager {
      */
     @Transactional
     public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
-        TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
-        specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
+        if (botanicalObjectId != null) {
+            TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
+            specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
 
-        return SpecimenResult.fromList(specimenQuery.getResultList());
+            return SpecimenResult.fromList(specimenQuery.getResultList());
+        }
+        return null;
     }
 
     /**
