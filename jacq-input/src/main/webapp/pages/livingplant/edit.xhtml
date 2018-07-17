@@ -59,14 +59,24 @@
                                             <div class="ui-g-6">
                                                 <h:outputText value="#{messages['livingplant.cultivar']}" />
                                             </div>
-                                            <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="cultivar">
-                                                <ui:repeat value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}" var="cultivar">
-                                                    <div class="ui-g-12">
-                                                        <p:inputText id="cultivar" value="#{cultivar.cultivar}" />
+                                            <h:panelGroup layout="block" styleClass="ui-g-6" id="cultivar">
+                                                <p:inputText value="#{livingPlantEditController.cultivarResult.cultivar}" />
+                                                <p:commandButton icon="ui-icon-plus" update="@parent jacq_form:cultivarTable" action="#{livingPlantEditController.addCultivar}" />
+                                                <p:dataTable
+                                                    var="cultivar"
+                                                    lazy="true"
+                                                    value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}"
+                                                    widgetVar="cultivarTable"
+                                                    id="cultivarTable"
+                                                    paginator="true"
+                                                    rows="5">
+                                                    <p:column headerText="#{messages['livingplant.cultivar']}">
+                                                        <h:outputText value="#{cultivar.cultivar}"/>
+                                                    </p:column>
+                                                    <p:column style="width: 50px">
                                                         <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCultivar(cultivar)}" />
-                                                    </div>
-                                                </ui:repeat>
-                                                <p:commandButton icon="ui-icon-plus" update="@parent" action="#{livingPlantEditController.addCultivar}" />
+                                                    </p:column>
+                                                </p:dataTable>
                                             </h:panelGroup>
                                         </h:panelGroup>
 
