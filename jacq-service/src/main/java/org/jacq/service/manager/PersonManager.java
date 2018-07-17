@@ -35,11 +35,12 @@ public class PersonManager {
     protected EntityManager em;
 
     /**
-     * @see PersonService#search(java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see PersonService#search(java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
      */
     public List<PersonResult> search(String name, Integer offset, Integer limit) {
-        TypedQuery<TblPerson> tblPersonQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
-        tblPersonQuery.setParameter("name", name);
+        TypedQuery<TblPerson> tblPersonQuery = em.createNamedQuery("TblPerson.findByLikeName", TblPerson.class);
+        tblPersonQuery.setParameter("name", name + "%");
 
         if (offset != null) {
             tblPersonQuery.setFirstResult(offset);

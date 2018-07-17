@@ -58,7 +58,7 @@ public class TblAcquisitionSource implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TblAcquisitionEventSource> tblAcquisitionEventSourceList;
 
     public TblAcquisitionSource() {
