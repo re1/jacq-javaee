@@ -265,6 +265,7 @@ public class DataImportManager {
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
                 if (importRecord.getGatheringLocation() != null) {
                     acquisitionEvent.setLocationId(em.find(TblLocation.class, importRecord.getGatheringLocation()));
+                    // GatheringManager Geonames
                 }
                 List<TblPerson> tblPersonList = acquisitionEvent.getTblPersonList();
                 if (importRecord.getGatheringPerson() != null) {
