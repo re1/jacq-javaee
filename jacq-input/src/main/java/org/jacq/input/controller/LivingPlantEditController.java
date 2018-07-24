@@ -158,6 +158,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected List<SelectItem> labelTypes;
     protected List<String> selectedLabelTypes;
 
+    protected CultivarResult cultivarResult;
+
     @ManagedProperty(value = "#{organisationHierarchicSelectController}")
     protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
 
@@ -206,6 +208,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.selectedLabelTypes = new ArrayList<>();
 
         this.showorganisationHierarchicSelectController();
+
+        this.cultivarResult = new CultivarResult();
     }
 
     /**
@@ -224,7 +228,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     public void addCultivar() {
-        this.scientificNameInformationResult.getCultivarList().add(new CultivarResult());
+        this.scientificNameInformationResult.getCultivarList().add(this.cultivarResult);
+        this.cultivarResult = new CultivarResult();
     }
 
     public void removeCultivar(CultivarResult cultivarResult) {
@@ -446,7 +451,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         if (event.getObject() != null) {
             LocationResult locationResult = (LocationResult) event.getObject();
             if (locationResult.getCountryCode() != null) {
-                this.setIpenNumberCountry(locationResult.getCountryCode());;
+                this.setIpenNumberCountry(locationResult.getCountryCode());
             }
         }
     }
@@ -652,5 +657,13 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public CultivarResult getCultivarResult() {
+        return cultivarResult;
+    }
+
+    public void setCultivarResult(CultivarResult cultivarResult) {
+        this.cultivarResult = cultivarResult;
     }
 }

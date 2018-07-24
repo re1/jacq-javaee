@@ -103,7 +103,7 @@ public abstract class BaseDerivativeManager {
         // organisation List for hierarchic
         if (organisationId != null) {
             if (hierarchic != null && hierarchic == true) {
-
+                organisationIdList = baseApplicationManager.findOrganisationHierachyCache(organisationId);
                 if (organisationIdList == null) {
                     organisationIdList = findChildren(entityManager.find(TblOrganisation.class, organisationId));
                     organisationIdList.add(organisationId);

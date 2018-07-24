@@ -66,6 +66,8 @@ import org.jacq.common.model.jpa.TblAcquisitionSource;
 import org.jacq.common.model.jpa.TblIdentStatus;
 import org.jacq.common.model.jpa.TblLocation;
 import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.rest.LocationResult;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
 /**
@@ -93,6 +95,8 @@ public class DataImportManager {
 
     protected OrganisationService organisationService;
 
+    protected GatheringService gatheringService;
+
     protected SimpleDateFormat separationDateFormat = new SimpleDateFormat("YYYY-mm-dd");
 
     protected HashMap<Integer, Long> taxamatchCache = new HashMap<>();
@@ -102,7 +106,8 @@ public class DataImportManager {
 
     @PostConstruct
     public void init() {
-        organisationService = ServicesUtil.getOrganisationService();
+        this.organisationService = ServicesUtil.getOrganisationService();
+        this.gatheringService = ServicesUtil.getGatheringService();
     }
 
     /**
@@ -154,7 +159,7 @@ public class DataImportManager {
             importRecord.setAltitudeMax(Long.valueOf(record.get(i++)));
             importRecord.setIdentStatus(Long.valueOf(record.get(i++)));
             importRecord.setGatheringPerson(Long.valueOf(record.get(i++)));
-            importRecord.setGatheringLocation(Long.valueOf(record.get(i++)));
+            importRecord.setGatheringLocation(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -235,6 +240,7 @@ public class DataImportManager {
                 }
             }
 
+            List<LocationResult> locationResults = new ArrayList<>(); // For IPEN
             // if no previous botanical object is found, create a new entry for it
             if (botanicalObject == null) {
                 // no entry exists yet, start creating the data
@@ -263,8 +269,10 @@ public class DataImportManager {
                 acquisitionEvent.setAcquisitionDateId(acquisitionDate);
                 acquisitionEvent.setAcquisitionTypeId(acquisitionType);
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
+
                 if (importRecord.getGatheringLocation() != null) {
-                    acquisitionEvent.setLocationId(em.find(TblLocation.class, importRecord.getGatheringLocation()));
+                    locationResults = this.gatheringService.locationFind(importRecord.getGatheringLocation(), 0, 1);
+                    acquisitionEvent.setLocationId(em.find(TblLocation.class, locationResults.get(0).getLocationId()));
                 }
                 List<TblPerson> tblPersonList = acquisitionEvent.getTblPersonList();
                 if (importRecord.getGatheringPerson() != null) {
@@ -479,8 +487,9 @@ public class DataImportManager {
                 livingPlant.setIpenNumber(importRecord.getIpenNumber());
             } else {
                 livingPlant.setIpenType("default");
-                livingPlant.setIpenNumber("XX-0-" + organisationService.getIpenCode(organisation.getId()));
+                livingPlant.setIpenNumber(String.format("%s-%s-%s", locationResults.size() > 0 ? locationResults.get(0).getCountryCode() : "XX", "0", organisationService.getIpenCode(organisation.getId())));
             }
+
             em.persist(livingPlant);
 
             // store alternative accession number

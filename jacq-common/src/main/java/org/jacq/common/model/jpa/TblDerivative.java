@@ -64,7 +64,7 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "price")
     private float price;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TblSeparation> tblSeparationList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblVegetative tblVegetative;

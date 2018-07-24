@@ -18,6 +18,7 @@ package org.jacq.service.dataimport.util;
 import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.rest.filter.ContentTypeResponseFilter;
 import org.jacq.common.external.rest.ScientificNamesService;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.service.dataimport.security.BasicClientRequestFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -39,6 +40,10 @@ public class ServicesUtil {
 
     public static OrganisationService getOrganisationService() {
         return getProxy(OrganisationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static GatheringService getGatheringService() {
+        return getProxy(GatheringService.class, JACQ_SERVICE_URL);
     }
 
     protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
