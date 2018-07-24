@@ -101,7 +101,7 @@ public class ImportRecord implements Serializable {
     @Column(name = "gathering_person")
     protected Long gatheringPerson;
     @Column(name = "gathering_location")
-    protected Long gatheringLocation;
+    protected String gatheringLocation;
 
     public Long getOriginalId() {
         return originalId;
@@ -343,11 +343,11 @@ public class ImportRecord implements Serializable {
         this.gatheringPerson = gatheringPerson;
     }
 
-    public Long getGatheringLocation() {
+    public String getGatheringLocation() {
         return gatheringLocation;
     }
 
-    public void setGatheringLocation(Long gatheringLocation) {
+    public void setGatheringLocation(String gatheringLocation) {
         this.gatheringLocation = gatheringLocation;
     }
 

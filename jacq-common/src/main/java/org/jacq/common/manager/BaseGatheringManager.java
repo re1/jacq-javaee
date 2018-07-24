@@ -88,4 +88,11 @@ public abstract class BaseGatheringManager {
         return locationResults;
     }
 
+    /**
+     * @see GatheringService#locationLoad(java.lang.Long)
+     */
+    public LocationResult locationLoad(Long locationId) {
+        return new LocationResult(entityManager.find(TblLocation.class, locationId));
+    }
+
 }

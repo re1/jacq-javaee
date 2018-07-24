@@ -451,7 +451,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         if (event.getObject() != null) {
             LocationResult locationResult = (LocationResult) event.getObject();
             if (locationResult.getCountryCode() != null) {
-                this.setIpenNumberCountry(locationResult.getCountryCode());;
+                this.setIpenNumberCountry(locationResult.getCountryCode());
             }
         }
     }
