@@ -114,6 +114,8 @@ public class LivingPlantManager {
 
         if (livingPlantResult.getLabelSynonymScientificName() != null) {
             tblLivingPlant.setLabelSynonymScientificNameId((livingPlantResult.getLabelSynonymScientificName().getScientificNameId() != null) ? livingPlantResult.getLabelSynonymScientificName().getScientificNameId() : null);
+        } else {
+            tblLivingPlant.setLabelSynonymScientificNameId(null);
         }
 
         // assign relevancy
