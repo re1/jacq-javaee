@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.LocationResult;
+import org.jacq.common.model.rest.OrderDirection;
 import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.DerivativeService;
@@ -28,6 +29,7 @@ import org.jacq.input.view.DerivativeSearchModel;
 import org.jacq.input.view.LazyDerivativeDataModel;
 import org.jacq.input.view.LazyDerivativeDownloadDataModel;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -75,6 +77,14 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
             this.dataModel.getDerivativeSearchModel().setHierarchic(true);
         }
         this.showorganisationHierarchicSelectController();
+    }
+
+    /**
+     * Removes Markings of IndexSeminum
+     */
+    public void removeIndexSeminumMarking() {
+        this.derivativeService.removeIndexSeminumMarking(this.dataModel.getDerivativeSearchModel().getType(), this.dataModel.getDerivativeSearchModel().getId(), this.dataModel.getDerivativeSearchModel().getPlaceNumber(), this.dataModel.getDerivativeSearchModel().getAccessionNumber(), this.dataModel.getDerivativeSearchModel().getSeparatedFilter(), this.dataModel.getDerivativeSearchModel().getScientificNameId(), this.dataModel.getDerivativeSearchModel().getOrganisationId(), this.dataModel.getDerivativeSearchModel().getHierarchic(), this.dataModel.getDerivativeSearchModel().getIndexSeminumFilter(), this.dataModel.getDerivativeSearchModel().getGatheringLocationName(), (this.dataModel.getDerivativeSearchModel().getExhibition() != null) ? this.dataModel.getDerivativeSearchModel().getExhibition() : null, (this.dataModel.getDerivativeSearchModel().getWorking() != null) ? this.dataModel.getDerivativeSearchModel().getWorking() : null, (this.dataModel.getDerivativeSearchModel().getSelectedCultivar() != null) ? this.dataModel.getDerivativeSearchModel().getSelectedCultivar().getCultivar() : null, this.dataModel.getDerivativeSearchModel().getClassification(), null, null);
+
     }
 
     public DerivativeSearchModel getDerivativeSearchModel() {

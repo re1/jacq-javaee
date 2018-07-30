@@ -151,6 +151,10 @@
                 </div>
                 <div class="jacq-buttons">
                     <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
+                    <p:commandButton id="removeIndexseminumButton" value="#{messages['livingplant.removeindexseminum']}" action="#{livingPlantController.removeIndexSeminumMarking()}" update="jacq_livingplant-search" />
+                    <p:blockUI block="jacq_livingplant-search" trigger="removeIndexseminumButton">
+                        <h:outputText value="#{messages.loading}" />
+                    </p:blockUI>
                 </div>
 
 

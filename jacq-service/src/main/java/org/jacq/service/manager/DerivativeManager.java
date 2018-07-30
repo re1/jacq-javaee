@@ -51,6 +51,7 @@ import org.jacq.common.model.jpa.TblSex;
 import org.jacq.common.model.jpa.TblSpecimen;
 import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
+import org.jacq.common.model.rest.AccessOrganisationResult;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.CultivarResult;
@@ -96,6 +97,9 @@ public class DerivativeManager extends BaseDerivativeManager {
 
     @Inject
     protected SecurityManager securityManager;
+
+    @Inject
+    protected AuthorizationManager authorizationManager;
 
     /**
      * Initialize bean and make sure abstract base class has entity manager
@@ -443,4 +447,64 @@ public class DerivativeManager extends BaseDerivativeManager {
     public CultivarResult cultivarLoad(Long cultivarId) {
         return new CultivarResult(em.find(TblCultivar.class, cultivarId));
     }
+
+    /**
+     * @see DerivativeService#removeIndexSeminumMarking()
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param hierarchic
+     * @param indexSeminum
+     * @param gatheringLocation
+     * @param exhibition
+     * @param working
+     * @param cultivar
+     * @param classification
+     * @param orderColumn
+     * @param orderDirection
+     * @return
+     */
+    @Transactional
+    public List<BotanicalObjectDerivative> removeIndexSeminumMarking(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection) {
+        List<BotanicalObjectDerivative> botanicalObjectDerivatives = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, Boolean.TRUE, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, null, null);
+
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<FrmwrkaccessOrganisation> cq = cb.createQuery(FrmwrkaccessOrganisation.class);
+        Root<FrmwrkaccessOrganisation> bo = cq.from(FrmwrkaccessOrganisation.class);
+
+        // select result list
+        cq.select(bo);
+        Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
+
+        path = bo.get("allowDeny");
+        predicates.add(cb.equal(path, Boolean.TRUE));
+
+        path = bo.get("userId");
+        predicates.add(cb.equal(path, this.securityManager.getUser().getId()));
+
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
+
+        for (FrmwrkaccessOrganisation frmwrkaccessOrganisation : accessOrganisationSearchQuery.getResultList()) {
+            for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivatives) {
+                if (botanicalObjectDerivative.getOrganisationId().compareTo(frmwrkaccessOrganisation.getOrganisationId().getId()) == 0) {
+                    TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, botanicalObjectDerivative.getBotanicalObjectId());
+                    tblLivingPlant.setIndexSeminum(Boolean.FALSE);
+                    em.persist(tblLivingPlant);
+                }
+            }
+        }
+
+        return botanicalObjectDerivatives;
+    }
+
 }
