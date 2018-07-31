@@ -148,7 +148,10 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected List<HabitusTypeResult> habitusTypes;
     protected List<PhenologyResult> phenologies;
     protected List<IdentStatusResult> identStatus;
+
     protected List<RelevancyTypeResult> relevancyTypes;
+    protected List<String> selectedRelevancyTypes;
+
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
 
@@ -188,6 +191,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
+        this.selectedRelevancyTypes = new ArrayList<>();
         this.separationTypes = this.derivativeService.findAllSeparationType();
         this.certificateTypes = this.derivativeService.findAllCertificateType();
 
@@ -353,6 +357,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         for (String labelTypeId : this.selectedLabelTypes) {
             this.livingPlantResult.getLabelTypes().add(new LabelTypeResult(Long.parseLong(labelTypeId)));
         }
+        // convert selected relevancy tpes entries
+        this.livingPlantResult.getRelevancyTypes().clear();
+        for (String relevancyTypeId : this.selectedRelevancyTypes) {
+            this.livingPlantResult.getRelevancyTypes().add(new RelevancyTypeResult(Long.parseLong(relevancyTypeId)));
+        }
 
         this.livingPlantResult.setSpecimensList(this.getSpecimenList());
 
@@ -395,6 +404,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         // convert selected label-type entries
         for (LabelTypeResult labelType : this.livingPlantResult.getLabelTypes()) {
             this.selectedLabelTypes.add(labelType.getLabelTypeId().toString());
+        }
+
+        // convert selected relevancy-type entries
+        for (RelevancyTypeResult relevancyType : this.livingPlantResult.getRelevancyTypes()) {
+            this.selectedRelevancyTypes.add(relevancyType.getRelevancyTypeId().toString());
         }
     }
 
@@ -666,4 +680,13 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     public void setCultivarResult(CultivarResult cultivarResult) {
         this.cultivarResult = cultivarResult;
     }
+
+    public List<String> getSelectedRelevancyTypes() {
+        return selectedRelevancyTypes;
+    }
+
+    public void setSelectedRelevancyTypes(List<String> selectedRelevancyTypes) {
+        this.selectedRelevancyTypes = selectedRelevancyTypes;
+    }
+
 }
