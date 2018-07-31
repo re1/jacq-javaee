@@ -149,12 +149,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="jacq-buttons">
-                    <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
-                    <p:commandButton id="removeIndexseminumButton" value="#{messages['livingplant.removeindexseminum']}" action="#{livingPlantController.removeIndexSeminumMarking()}" update="jacq_livingplant-search" />
-                    <p:blockUI block="jacq_livingplant-search" trigger="removeIndexseminumButton">
-                        <h:outputText value="#{messages.loading}" />
-                    </p:blockUI>
+                <div class="ui-g ui-g-nopad">
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g-3">
+                            <div class="jacq-buttons">
+                                <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
+                            </div>
+                        </div>
+                        <div class="ui-g-3">
+                        </div>
+                        <div class="ui-g-3">
+                        </div>
+                        <div class="ui-g-3">
+                            <div class="jacq-buttons">
+                                <p:commandButton id="removeIndexseminumButton" value="#{messages['livingplant.removeindexseminum']}" action="#{livingPlantController.removeIndexSeminumMarking()}" update="jacq_livingplant-search" >
+                                    <p:confirm header="#{messages['livingplant.confirmation']}" message="#{messages['livingplant.sure']}" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </div>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="#{messages['yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="#{messages['no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                            <p:blockUI block="jacq_livingplant-search" trigger="removeIndexseminumButton">
+                                <h:outputText value="#{messages.loading}" />
+                            </p:blockUI>
+                        </div>
+                    </div>
                 </div>
 
 

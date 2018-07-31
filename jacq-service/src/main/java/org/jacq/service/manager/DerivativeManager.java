@@ -483,20 +483,39 @@ public class DerivativeManager extends BaseDerivativeManager {
         // list of predicates to add in where clause
         List<Predicate> predicates = new ArrayList<>();
 
-        path = bo.get("allowDeny");
-        predicates.add(cb.equal(path, Boolean.TRUE));
-
         path = bo.get("userId");
         predicates.add(cb.equal(path, this.securityManager.getUser().getId()));
+
+        if (organisationId != null) {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, organisationId));
+        } else {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, 1L));
+        }
 
         // add all predicates as where clause
         cq.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
 
-        for (FrmwrkaccessOrganisation frmwrkaccessOrganisation : accessOrganisationSearchQuery.getResultList()) {
+        List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
+        List<Long> ids = new ArrayList<>();
+
+        if (hierarchic != null && hierarchic && frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            TblOrganisation tblOrganisation = em.find(TblOrganisation.class, frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+            ids = this.findChildren(tblOrganisation, this.securityManager.getUser().getId());
+        }
+
+        if (frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            ids.add(frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+        } else {
+            return null;
+        }
+
+        for (Long id : ids) {
             for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivatives) {
-                if (botanicalObjectDerivative.getOrganisationId().compareTo(frmwrkaccessOrganisation.getOrganisationId().getId()) == 0) {
+                if (botanicalObjectDerivative.getOrganisationId().compareTo(id) == 0) {
                     TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, botanicalObjectDerivative.getBotanicalObjectId());
                     tblLivingPlant.setIndexSeminum(Boolean.FALSE);
                     em.persist(tblLivingPlant);
@@ -505,6 +524,50 @@ public class DerivativeManager extends BaseDerivativeManager {
         }
 
         return botanicalObjectDerivatives;
+    }
+
+    /**
+     * Find all childs to the Head of the organisation Tree Recursiv
+     *
+     * @param tblOrganisation
+     * @return
+     */
+    @Transactional
+    protected List<Long> findChildren(TblOrganisation tblOrganisation, Long userId) {
+        List<Long> ids = new ArrayList<>();
+        for (TblOrganisation organisation : tblOrganisation.getTblOrganisationList()) {
+
+            // prepare criteria builder & query
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<FrmwrkaccessOrganisation> cq = cb.createQuery(FrmwrkaccessOrganisation.class);
+            Root<FrmwrkaccessOrganisation> bo = cq.from(FrmwrkaccessOrganisation.class);
+
+            // select result list
+            cq.select(bo);
+            Expression<String> path = null;
+            // list of predicates to add in where clause
+            List<Predicate> predicates = new ArrayList<>();
+
+            path = bo.get("userId");
+            predicates.add(cb.equal(path, userId));
+
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, organisation.getId()));
+
+            // add all predicates as where clause
+            cq.where(predicates.toArray(new Predicate[0]));
+
+            TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
+
+            List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
+
+            if (frmwrkaccessOrganisations.size() == 0 || frmwrkaccessOrganisations.get(0).getAllowDeny() != Boolean.FALSE) {
+                ids.add(organisation.getId());
+            }
+            ids.addAll(this.findChildren(organisation, userId));
+        }
+        return ids;
+
     }
 
 }
