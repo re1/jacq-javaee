@@ -808,7 +808,7 @@
                                         </data>
                                     </cell>
                                     <cell id="34">
-                                        <property name="fontSize">10pt</property>
+                                        <property name="fontSize">11pt</property>
                                         <property name="verticalAlign">middle</property>
                                         <data id="36">
                                             <property name="paddingTop">0pt</property>

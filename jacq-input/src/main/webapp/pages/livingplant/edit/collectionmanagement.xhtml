@@ -61,8 +61,8 @@
                     <h:outputText value="#{messages['livingplant.relevancy']}" />
                 </div>
                 <div class="ui-g-9">
-                    <p:selectManyCheckbox value="#{livingPlantEditController.livingPlantResult.relevancyTypes}">
-                        <f:selectItems value="#{livingPlantEditController.relevancyTypes}" var="relevancyType" itemLabel="#{relevancyType.type}" itemValue="#{relevancyType}" />
+                    <p:selectManyCheckbox value="#{livingPlantEditController.selectedRelevancyTypes}">
+                        <f:selectItems value="#{livingPlantEditController.relevancyTypes}" var="relevancyType" itemLabel="#{relevancyType.type}" itemValue="#{relevancyType.relevancyTypeId}" />
                     </p:selectManyCheckbox>
                 </div>
             </div>
