@@ -160,6 +160,8 @@ public class DataImportManager {
             importRecord.setIdentStatus(Long.valueOf(record.get(i++)));
             importRecord.setGatheringPerson(Long.valueOf(record.get(i++)));
             importRecord.setGatheringLocation(record.get(i++));
+            importRecord.setDefaultScientificNameId(Long.valueOf(record.get(i++)));
+            importRecord.setHabitat(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -355,7 +357,9 @@ public class DataImportManager {
                         }
                     }
                     if (scientificNameId == 0L) {
-                        if (genusScientificNameId == 0L) {
+                        if (importRecord.getDefaultScientificNameId() != null) {
+                            scientificNameId = importRecord.getDefaultScientificNameId();
+                        } else if (genusScientificNameId == 0L) {
                             LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
                             scientificNameId = INDET_SCIENTIFIC_NAME_ID;
                         } else {
@@ -435,6 +439,7 @@ public class DataImportManager {
                 botanicalObject.setRecordingDate(new Date());
                 botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
                 botanicalObject.setScientificNameId(scientificNameId);
+                botanicalObject.setHabitat(importRecord.getHabitat());
                 if (importRecord.getIdentStatus() != null) {
                     botanicalObject.setIdentStatusId(em.find(TblIdentStatus.class, importRecord.getIdentStatus()));
                 }
