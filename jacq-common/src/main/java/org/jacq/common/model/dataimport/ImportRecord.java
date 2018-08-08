@@ -102,6 +102,8 @@ public class ImportRecord implements Serializable {
     protected Long gatheringPerson;
     @Column(name = "gathering_location")
     protected String gatheringLocation;
+    @Column(name = "default_scientific_name_id")
+    protected Long defaultScientificNameId;
 
     public Long getOriginalId() {
         return originalId;
@@ -349,6 +351,14 @@ public class ImportRecord implements Serializable {
 
     public void setGatheringLocation(String gatheringLocation) {
         this.gatheringLocation = gatheringLocation;
+    }
+
+    public Long getDefaultScientificNameId() {
+        return defaultScientificNameId;
+    }
+
+    public void setDefaultScientificNameId(Long defaultScientificNameId) {
+        this.defaultScientificNameId = defaultScientificNameId;
     }
 
     /**
