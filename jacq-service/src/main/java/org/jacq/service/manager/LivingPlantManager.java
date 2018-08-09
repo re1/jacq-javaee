@@ -297,6 +297,9 @@ public class LivingPlantManager {
         em.persist(tblBotanicalObject);
         em.persist(tblDerivative);
 
+        // refresh required objects
+        em.refresh(tblAcquisitionEvent);
+
         // living plant needs manual assignment of id
         tblLivingPlant.setId(tblDerivative.getDerivativeId());
         em.persist(tblLivingPlant);
