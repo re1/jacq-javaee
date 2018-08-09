@@ -500,10 +500,13 @@ public class DataImportManager {
             // store alternative accession number
             TblAlternativeAccessionNumber alternativeAccessionNumber = null;
             if (!StringUtils.isEmpty(importRecord.getAlternativeNumber())) {
-                alternativeAccessionNumber = new TblAlternativeAccessionNumber();
-                alternativeAccessionNumber.setLivingPlantId(livingPlant);
-                alternativeAccessionNumber.setNumber(importRecord.getAlternativeNumber());
-                em.persist(alternativeAccessionNumber);
+                String[] alternativeNumbers = importRecord.getAlternativeNumber().split(";");
+                for (String number : alternativeNumbers) {
+                    alternativeAccessionNumber = new TblAlternativeAccessionNumber();
+                    alternativeAccessionNumber.setLivingPlantId(livingPlant);
+                    alternativeAccessionNumber.setNumber(number);
+                    em.persist(alternativeAccessionNumber);
+                }
             }
 
             // store original living plant id as alternative accession number
