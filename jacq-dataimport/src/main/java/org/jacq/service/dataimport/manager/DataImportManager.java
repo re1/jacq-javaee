@@ -357,11 +357,13 @@ public class DataImportManager {
                         }
                     }
                     if (scientificNameId == 0L) {
-                        if (importRecord.getDefaultScientificNameId() != null) {
-                            scientificNameId = importRecord.getDefaultScientificNameId();
-                        } else if (genusScientificNameId == 0L) {
-                            LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                            scientificNameId = INDET_SCIENTIFIC_NAME_ID;
+                        if (genusScientificNameId == 0L) {
+                            if (importRecord.getDefaultScientificNameId() != null) {
+                                scientificNameId = importRecord.getDefaultScientificNameId();
+                            } else {
+                                LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                                scientificNameId = INDET_SCIENTIFIC_NAME_ID;
+                            }
                         } else {
                             LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
                             scientificNameId = genusScientificNameId;
