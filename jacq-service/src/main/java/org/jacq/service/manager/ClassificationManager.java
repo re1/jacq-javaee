@@ -220,10 +220,16 @@ public class ClassificationManager {
             while (tblNomName.getRankId().getRankId() != 9 && tblClassification.getParentScientificNameId() != null) {
                 tblClassification = getAcceptedName(source, sourceId, tblClassification.getParentScientificNameId());
 
+                if (tblClassification == null) {
+                    break;
+                }
+
                 query.setParameter("nameId", tblClassification.getScientificNameId());
                 tblNomName = (TblNomName) query.getSingleResult();
             }
-            if (tblNomName.getRankId().getRankId() != 9 && tblClassification.getParentScientificNameId() == null) {
+
+            // if no family ranked name was found, continue with next reference
+            if (tblNomName == null || tblClassification == null || (tblNomName.getRankId().getRankId() != 9 && tblClassification.getParentScientificNameId() == null)) {
                 continue;
             }
 
