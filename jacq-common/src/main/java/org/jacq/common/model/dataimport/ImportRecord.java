@@ -99,13 +99,17 @@ public class ImportRecord implements Serializable {
     @Column(name = "ident_status")
     protected Long identStatus;
     @Column(name = "gathering_person")
-    protected Long gatheringPerson;
+    protected String gatheringPerson;
     @Column(name = "gathering_location")
     protected String gatheringLocation;
     @Column(name = "default_scientific_name_id")
     protected Long defaultScientificNameId;
     @Column(name = "habitat")
     protected String habitat;
+    @Column(name = "acquisition_date")
+    protected Date acquisitionDate;
+    @Column(name = "custom_acquisition_date")
+    protected String customAcquisitionDate;
 
     public Long getOriginalId() {
         return originalId;
@@ -339,11 +343,11 @@ public class ImportRecord implements Serializable {
         this.identStatus = identStatus;
     }
 
-    public Long getGatheringPerson() {
+    public String getGatheringPerson() {
         return gatheringPerson;
     }
 
-    public void setGatheringPerson(Long gatheringPerson) {
+    public void setGatheringPerson(String gatheringPerson) {
         this.gatheringPerson = gatheringPerson;
     }
 
@@ -369,6 +373,22 @@ public class ImportRecord implements Serializable {
 
     public void setHabitat(String habitat) {
         this.habitat = habitat;
+    }
+
+    public Date getAcquisitionDate() {
+        return acquisitionDate;
+    }
+
+    public void setAcquisitionDate(Date acquisitionDate) {
+        this.acquisitionDate = acquisitionDate;
+    }
+
+    public String getCustomAcquisitionDate() {
+        return customAcquisitionDate;
+    }
+
+    public void setCustomAcquisitionDate(String customAcquisitionDate) {
+        this.customAcquisitionDate = customAcquisitionDate;
     }
 
     /**

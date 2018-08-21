@@ -35,6 +35,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.model.dataimport.ImportRecord;
@@ -158,10 +159,12 @@ public class DataImportManager {
             importRecord.setAltitudeMin(Long.valueOf(record.get(i++)));
             importRecord.setAltitudeMax(Long.valueOf(record.get(i++)));
             importRecord.setIdentStatus(Long.valueOf(record.get(i++)));
-            importRecord.setGatheringPerson(Long.valueOf(record.get(i++)));
+            importRecord.setGatheringPerson(record.get(i++));
             importRecord.setGatheringLocation(record.get(i++));
             importRecord.setDefaultScientificNameId(Long.valueOf(record.get(i++)));
             importRecord.setHabitat(record.get(i++));
+            importRecord.setAcquisitionDate(separationDateFormat.parse(record.get(i++)));
+            importRecord.setCustomAcquisitionDate(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -262,27 +265,85 @@ public class DataImportManager {
                 em.persist(locationCoordinates);
 
                 // setup gathering date
-                TblAcquisitionDate acquisitionDate = new TblAcquisitionDate();
-                em.persist(acquisitionDate);
+                TblAcquisitionDate tblAcquisitionDate = new TblAcquisitionDate();
+                if (importRecord.getCustomAcquisitionDate() != null && !StringUtils.isEmpty(importRecord.getCustomAcquisitionDate())) {
+                    tblAcquisitionDate.setCustom(importRecord.getCustomAcquisitionDate());
+                }
+                if (importRecord.getAcquisitionDate() != null) {
+                    tblAcquisitionDate.setYear(String.valueOf(importRecord.getAcquisitionDate().getYear() + 1900));
+                    tblAcquisitionDate.setMonth(String.valueOf(importRecord.getAcquisitionDate().getMonth() + 1));
+                    tblAcquisitionDate.setDay(String.valueOf(importRecord.getAcquisitionDate().getDate()));
+                } else {
+                    tblAcquisitionDate.setYear(null);
+                    tblAcquisitionDate.setMonth(null);
+                    tblAcquisitionDate.setDay(null);
+                }
+                em.persist(tblAcquisitionDate);
 
                 // setup the gathering event
                 TblAcquisitionEvent acquisitionEvent = new TblAcquisitionEvent();
                 acquisitionEvent.setLocationCoordinatesId(locationCoordinates);
-                acquisitionEvent.setAcquisitionDateId(acquisitionDate);
+                acquisitionEvent.setAcquisitionDateId(tblAcquisitionDate);
                 acquisitionEvent.setAcquisitionTypeId(acquisitionType);
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
 
-                if (importRecord.getGatheringLocation() != null) {
-                    locationResults = this.gatheringService.locationFind(importRecord.getGatheringLocation(), 0, 1);
-                    acquisitionEvent.setLocationId(em.find(TblLocation.class, locationResults.get(0).getLocationId()));
+                if (importRecord.getGatheringLocation() != null && !StringUtils.isEmpty(importRecord.getGatheringLocation())) {
+                    TblLocation tblGatheringLocation = null;
+                    TypedQuery<TblLocation> locationQuery = em.createNamedQuery("TblLocation.findByLocation", TblLocation.class);
+                    locationQuery.setParameter("location", importRecord.getGatheringLocation());
+                    List<TblLocation> locationList = locationQuery.getResultList();
+                    if (locationList != null & locationList.size() > 0) {
+                        tblGatheringLocation = locationList.get(0);
+                    } else {
+                        tblGatheringLocation = new TblLocation();
+                        tblGatheringLocation.setLocation(importRecord.getGatheringLocation());
+                        em.persist(tblGatheringLocation);
+                    }
+                    acquisitionEvent.setLocationId(tblGatheringLocation);
                 }
                 List<TblPerson> tblPersonList = acquisitionEvent.getTblPersonList();
                 if (importRecord.getGatheringPerson() != null) {
+                    // store alternative accession number
+                    String[] persons = importRecord.getGatheringPerson().split(";");
                     if (tblPersonList != null && tblPersonList.size() > 0) {
-                        tblPersonList.add(em.find(TblPerson.class, importRecord.getGatheringPerson()));
+                        for (String person : persons) {
+                            if (StringUtils.isNumeric(person)) {
+                                tblPersonList.add(em.find(TblPerson.class, Long.valueOf(person)));
+                            } else {
+                                TypedQuery<TblPerson> tblGathererQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+                                tblGathererQuery.setParameter("name", person);
+                                List<TblPerson> gatherers = tblGathererQuery.getResultList();
+                                TblPerson tblGatherer = null;
+                                if (gatherers != null & gatherers.size() > 0) {
+                                    tblGatherer = gatherers.get(0);
+                                } else {
+                                    tblGatherer = new TblPerson();
+                                    tblGatherer.setName(person);
+                                    em.persist(tblGatherer);
+                                }
+                                tblPersonList.add(tblGatherer);
+                            }
+                        }
                     } else {
                         tblPersonList = new ArrayList<>();
-                        tblPersonList.add(em.find(TblPerson.class, importRecord.getGatheringPerson()));
+                        for (String person : persons) {
+                            if (StringUtils.isNumeric(person)) {
+                                tblPersonList.add(em.find(TblPerson.class, Long.valueOf(person)));
+                            } else {
+                                TypedQuery<TblPerson> tblGathererQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+                                tblGathererQuery.setParameter("name", person);
+                                List<TblPerson> gatherers = tblGathererQuery.getResultList();
+                                TblPerson tblGatherer = null;
+                                if (gatherers != null & gatherers.size() > 0) {
+                                    tblGatherer = gatherers.get(0);
+                                } else {
+                                    tblGatherer = new TblPerson();
+                                    tblGatherer.setName(person);
+                                    em.persist(tblGatherer);
+                                }
+                                tblPersonList.add(tblGatherer);
+                            }
+                        }
                     }
                     acquisitionEvent.setTblPersonList(tblPersonList);
                 }
