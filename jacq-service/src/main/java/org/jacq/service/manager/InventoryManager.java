@@ -40,6 +40,7 @@ import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.rest.InventoryService;
+import org.jacq.service.ApplicationManager;
 
 /**
  *
@@ -55,6 +56,9 @@ public class InventoryManager {
 
     @Inject
     protected SecurityManager sessionManager;
+
+    @Inject
+    protected ApplicationManager applicationManager;
 
     /**
      * @param inventoryResult
@@ -162,32 +166,53 @@ public class InventoryManager {
         String line;
         List<Long> livingPlantIdList = new ArrayList<>();
         TblOrganisation organisation = null;
+
+        // Find Fist Organisation Accession Start = true
+        TblOrganisation tblOrganisation = findAccessionStart(em.find(TblOrganisation.class, sessionManager.getUser().getOrganisationId()));
+        // Create Hierachic tree with Organisation where Accession = true
+        List<Long> organisationIdList = new ArrayList<>();
+        organisationIdList = applicationManager.findOrganisationHierachyCache(tblOrganisation.getId());
+        if (organisationIdList == null) {
+            organisationIdList = findChildren(em.find(TblOrganisation.class, tblOrganisation.getId()));
+            organisationIdList.add(tblOrganisation.getId());
+            applicationManager.addOrganisationHierachyCache(tblOrganisation.getId(), organisationIdList);
+        }
         while ((line = bufferedReader.readLine()) != null) {
 
-            if (line.length() < 10) {
+            if (line.length() < 7) {
                 Long organisationId = Long.parseLong(line);
                 organisation = em.find(TblOrganisation.class, organisationId);
             }
             // Reads Line and adds AccessionNumber from BufferedReader
-            if (line.length() >= 10) {
-                Query query = em.createNamedQuery("TblLivingPlant.findByAccessionNumber").setParameter("accessionNumber", Long.parseLong(line.substring(0, 6)));
-                TblLivingPlant livingPlant = (TblLivingPlant) query.getSingleResult();
-                List<TblDerivative> derivativeList = new ArrayList<>();
-                query = em.createNamedQuery("TblDerivative.findByDerivativeId").setParameter("derivativeId", livingPlant.getId());
-                derivativeList.addAll(query.getResultList());
-                // Change the Organisation to the new Organisation from the File
-                for (TblDerivative derivative : derivativeList) {
-                    derivative.setCount(Long.parseLong(line.substring(8, 12)));
-                    derivative.setOrganisationId(organisation);
-                    em.merge(derivative);
-                    // Create tblInventoryObject
-                    TblInventoryObject tblInventoryObject = new TblInventoryObject();
-                    tblInventoryObject.setInventoryId(tblInventory);
-                    tblInventoryObject.setBotanicalObjectId(derivative.getBotanicalObjectId());
-                    tblInventoryObject.setMessage("TEST");
-                    em.persist(tblInventoryObject);
+            if (line.length() == 7) {
+                Query query = em.createNamedQuery("TblLivingPlant.findByAccessionAndOrganisation")
+                        .setParameter("accessionNumber", Long.parseLong(line.substring(0, 7)))
+                        .setParameter("organisations", organisationIdList);
+                List<TblLivingPlant> livingPlantList = query.getResultList();
+                if (livingPlantList == null || livingPlantList.size() < 1) {
+                    query = em.createNamedQuery("TblLivingPlant.findByAlternateAccessionAndOrganisation")
+                            .setParameter("accessionNumber", line.substring(0, 7))
+                            .setParameter("organisations", organisationIdList);
+                    livingPlantList = query.getResultList();
                 }
-                livingPlantIdList.add(livingPlant.getId());
+                if (livingPlantList != null && livingPlantList.size() > 0) {
+                    List<TblDerivative> derivativeList = new ArrayList<>();
+                    query = em.createNamedQuery("TblDerivative.findByDerivativeId").setParameter("derivativeId", livingPlantList.get(0).getId());
+                    derivativeList.addAll(query.getResultList());
+                    // Change the Organisation to the new Organisation from the File
+                    for (TblDerivative derivative : derivativeList) {
+                        derivative.setCount(Long.parseLong(line.substring(8, 12)));
+                        derivative.setOrganisationId(organisation);
+                        em.merge(derivative);
+                        // Create tblInventoryObject
+                        TblInventoryObject tblInventoryObject = new TblInventoryObject();
+                        tblInventoryObject.setInventoryId(tblInventory);
+                        tblInventoryObject.setBotanicalObjectId(derivative.getBotanicalObjectId());
+                        tblInventoryObject.setMessage("TEST");
+                        em.persist(tblInventoryObject);
+                    }
+                    livingPlantIdList.add(livingPlantList.get(0).getId());
+                }
             }
             if (separated) {
                 setSeparatedByLivingPlantIdListAndOrganisation(livingPlantIdList, organisation);
@@ -276,6 +301,40 @@ public class InventoryManager {
             tblInventoryObject.setMessage("TEST");
             em.persist(tblInventoryObject);
         }
+    }
+
+    /**
+     * Find the Head of the Organisation Tree
+     *
+     * @param tblOrganisation
+     * @return
+     */
+    protected TblOrganisation findAccessionStart(TblOrganisation tblOrganisation) {
+        while (tblOrganisation.getAccessionStart() != true) {
+            if (tblOrganisation.getParentOrganisationId() == null) {
+                return null;
+            }
+            tblOrganisation = em.find(TblOrganisation.class, tblOrganisation.getParentOrganisationId().getId());
+        }
+        return tblOrganisation;
+
+    }
+
+    /**
+     * Find all childs to the Head of the organisation Tree Recursiv
+     *
+     * @param tblOrganisation
+     * @return
+     */
+    @Transactional
+    protected List<Long> findChildren(TblOrganisation tblOrganisation) {
+        List<Long> organisationIdList = new ArrayList<>();
+        for (TblOrganisation organisation : tblOrganisation.getTblOrganisationList()) {
+            organisationIdList.add(organisation.getId());
+            organisationIdList.addAll(findChildren(organisation));
+        }
+        return organisationIdList;
+
     }
 
 }
