@@ -16,6 +16,7 @@
 package org.jacq.common.model.rest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,6 +37,7 @@ public class InventoryResult {
     protected String fileContent;
     protected Boolean separated;
     protected Long organisationId;
+    protected Date timestamp;
 
     public Long getInventoryId() {
         return inventoryId;
@@ -85,6 +87,14 @@ public class InventoryResult {
         this.organisationId = organisationId;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public InventoryResult() {
     }
 
@@ -92,6 +102,7 @@ public class InventoryResult {
         this.inventoryId = inventory.getInventoryId();
         this.userId = inventory.getUserId().getId();
         this.inventoryTypeId = inventory.getInventoryTypeId().getInventoryTypeId();
+        this.timestamp = inventory.getTimestamp();
     }
 
     /**

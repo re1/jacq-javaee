@@ -21,6 +21,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
@@ -54,5 +55,30 @@ public interface InventoryService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<InventoryTypeResult> findAllInventoryType();
+
+    /**
+     * Search the database using the given filter
+     *
+     *
+     * @param offset Return result with an offset
+     * @param limit Limit total count of results
+     * @return
+     */
+    @GET
+    @Path("/search")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<InventoryResult> search(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     * Search the database using the given filter and return the count
+     *
+     * @see InventoryService#search()
+     */
+    @GET
+    @Path("/searchCount")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int searchCount();
 
 }

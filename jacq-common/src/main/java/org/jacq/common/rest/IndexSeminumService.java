@@ -73,7 +73,7 @@ public interface IndexSeminumService {
     /**
      * Search the database using the given filter and return the count
      *
-     * @see OrganisationService#search()
+     * @see IndexSeminumService#search()
      */
     @GET
     @Path("/searchCount")

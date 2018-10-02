@@ -12,18 +12,12 @@
                     <h1>#{messages['livingplant.inventorymanage']}</h1>
                 </div>
                 <div class="jacq-data-table">
-                    <p:dataTable var="item">
+                    <p:dataTable id="inventoryTable" var="inventoryResult" widgetVar="inventoryTable" lazy="true" value="#{inventoryController.dataModel}" paginator="true" rows="10">
                         <p:column headerText="#{messages['livingplant.inventories']}">
-                            <h:outputText  />
-                        </p:column>
-                        <p:column headerText="#{messages['username']}">
-                            <h:outputText />
-                        </p:column>
-                        <p:column headerText="#{messages['livingplant.type']}">
-                            <h:outputText />
+                            <h:outputText  value="#{inventoryResult.inventoryId}"/>
                         </p:column>
                         <p:column headerText="#{messages['livingplant.timestamp']}">
-                            <h:outputText />
+                            <h:outputText value="#{inventoryResult.timestamp}"/>
                         </p:column>
                         <p:column headerText="">
                             <h:outputText />

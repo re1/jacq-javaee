@@ -34,14 +34,43 @@ public class InventoryServiceImpl implements InventoryService {
     @Inject
     protected InventoryManager inventoryManager;
 
+    /**
+     * @see InventoryService#findAllInventoryType()
+     * @return
+     */
     @Override
     public List<InventoryTypeResult> findAllInventoryType() {
         return inventoryManager.findAllInventoryType();
     }
 
+    /**
+     * @see InventoryService#save(org.jacq.common.model.rest.InventoryResult)
+     * @param inventoryResult
+     * @return
+     */
     @Override
     public InventoryResult save(InventoryResult inventoryResult) {
         return inventoryManager.save(inventoryResult);
+    }
+
+    /**
+     * @see InventoryService#search(java.lang.Integer, java.lang.Integer)
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @Override
+    public List<InventoryResult> search(Integer offset, Integer limit) {
+        return this.inventoryManager.search(offset, limit);
+    }
+
+    /**
+     * @see InventoryService#searchCount()
+     * @return
+     */
+    @Override
+    public int searchCount() {
+        return this.inventoryManager.searchCount();
     }
 
 }

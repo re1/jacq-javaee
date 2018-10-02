@@ -29,14 +29,20 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblDerivative;
+import org.jacq.common.model.jpa.TblIndexSeminumRevision;
 import org.jacq.common.model.jpa.TblInventory;
 import org.jacq.common.model.jpa.TblInventoryObject;
 import org.jacq.common.model.jpa.TblInventoryType;
 import org.jacq.common.model.jpa.TblLivingPlant;
 import org.jacq.common.model.jpa.TblOrganisation;
+import org.jacq.common.model.rest.IndexSeminumResult;
 import org.jacq.common.model.rest.InventoryResult;
 import org.jacq.common.model.rest.InventoryTypeResult;
 import org.jacq.common.rest.InventoryService;
@@ -169,7 +175,7 @@ public class InventoryManager {
 
         // Find Fist Organisation Accession Start = true
         TblOrganisation tblOrganisation = findAccessionStart(em.find(TblOrganisation.class, sessionManager.getUser().getOrganisationId()));
-        // Create Hierachic tree with Organisation where Accession = true
+        // Create Hierachic tree with Organisation where root Accession = true
         List<Long> organisationIdList = new ArrayList<>();
         organisationIdList = applicationManager.findOrganisationHierachyCache(tblOrganisation.getId());
         if (organisationIdList == null) {
@@ -178,30 +184,33 @@ public class InventoryManager {
             applicationManager.addOrganisationHierachyCache(tblOrganisation.getId(), organisationIdList);
         }
         while ((line = bufferedReader.readLine()) != null) {
-
-            if (line.length() < 7) {
-                Long organisationId = Long.parseLong(line);
+            // Check if Entry is a Organisation starts with "O"
+            if (line.startsWith("O")) {
+                Long organisationId = Long.parseLong(line.substring(1));
                 organisation = em.find(TblOrganisation.class, organisationId);
-            }
-            // Reads Line and adds AccessionNumber from BufferedReader
-            if (line.length() == 7) {
+            } // Reads Line and adds AccessionNumber from BufferedReader
+            else {
+                // Search for Livingplants by Accesion in File and by Hierachic Organisation Tree
                 Query query = em.createNamedQuery("TblLivingPlant.findByAccessionAndOrganisation")
                         .setParameter("accessionNumber", Long.parseLong(line.substring(0, 7)))
                         .setParameter("organisations", organisationIdList);
                 List<TblLivingPlant> livingPlantList = query.getResultList();
+                // No Entry found Search now by Alternative Accesion number and by by Hierachic Organisation Tree
                 if (livingPlantList == null || livingPlantList.size() < 1) {
                     query = em.createNamedQuery("TblLivingPlant.findByAlternateAccessionAndOrganisation")
                             .setParameter("accessionNumber", line.substring(0, 7))
                             .setParameter("organisations", organisationIdList);
                     livingPlantList = query.getResultList();
                 }
+                // Check if any Entry was found
                 if (livingPlantList != null && livingPlantList.size() > 0) {
                     List<TblDerivative> derivativeList = new ArrayList<>();
+                    // Loads Derivative by Livinplant ID
                     query = em.createNamedQuery("TblDerivative.findByDerivativeId").setParameter("derivativeId", livingPlantList.get(0).getId());
                     derivativeList.addAll(query.getResultList());
                     // Change the Organisation to the new Organisation from the File
                     for (TblDerivative derivative : derivativeList) {
-                        derivative.setCount(Long.parseLong(line.substring(8, 12)));
+                        derivative.setCount(Long.parseLong(line.substring(8)));
                         derivative.setOrganisationId(organisation);
                         em.merge(derivative);
                         // Create tblInventoryObject
@@ -335,6 +344,62 @@ public class InventoryManager {
         }
         return organisationIdList;
 
+    }
+
+    /**
+     * @see InventoryService#search(java.lang.Integer, java.lang.Integer)
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @Transactional
+    public List<InventoryResult> search(Integer offset, Integer limit) {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TblInventory> cq = cb.createQuery(TblInventory.class);
+        Root<TblInventory> bo = cq.from(TblInventory.class);
+
+        // select result list
+        cq.select(bo);
+
+        // convert to typed query and apply offset / limit
+        TypedQuery<TblInventory> query = em.createQuery(cq);
+        if (offset != null) {
+            query.setFirstResult(offset);
+        }
+        if (limit != null) {
+            query.setMaxResults(limit);
+        }
+
+        // finally fetch the results
+        ArrayList<InventoryResult> results = new ArrayList<>();
+        List<TblInventory> tblInventorys = query.getResultList();
+        for (TblInventory tblInventory : tblInventorys) {
+            InventoryResult inventoryResult = new InventoryResult(tblInventory);
+
+            // add indexSeminumResult to result list
+            results.add(inventoryResult);
+        }
+
+        return results;
+    }
+
+    /**
+     * @see InventoryService#searchCount()
+     * @return
+     */
+    @Transactional
+    public int searchCount() {
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<TblInventory> bo = cq.from(TblInventory.class);
+
+        // count result
+        cq.select(cb.count(bo));
+
+        // run query and return count
+        return em.createQuery(cq).getSingleResult().intValue();
     }
 
 }
