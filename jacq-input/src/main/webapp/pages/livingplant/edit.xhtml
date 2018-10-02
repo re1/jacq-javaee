@@ -704,7 +704,7 @@
                         </p:tab>
                     </p:tabView>
                     <div class="jacq-buttons">
-                        <p:commandButton id="saveButton" widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
+                        <p:commandButton id="saveButton" widgetVar="saveLivingPLantResultButton" value="#{(livingPlantEditController.livingPlantResult.derivativeId == null) ? messages['create'] : messages['save']}" action="#{livingPlantEditController.save}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView jacq_form-menu" />
                         <p:commandButton id="copyButton" widgetVar="copyLivingPLantResultButton" value="#{messages['copyandnew']}" action="#{livingPlantEditController.copyAndNew()}" update="jacq_form:messages jacq_form:livingplant_form jacq_form-menu:quickActions jacq_form:tabView" />
                     </div>
 
