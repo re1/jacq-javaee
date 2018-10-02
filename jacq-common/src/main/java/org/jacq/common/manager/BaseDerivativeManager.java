@@ -109,6 +109,8 @@ public abstract class BaseDerivativeManager {
                     organisationIdList.add(organisationId);
                     baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
                 }
+            } else {
+                organisationIdList.add(organisationId);
             }
         }
 
@@ -176,6 +178,8 @@ public abstract class BaseDerivativeManager {
                     organisationIdList.add(organisationId);
                     baseApplicationManager.addOrganisationHierachyCache(organisationId, organisationIdList);
                 }
+            } else {
+                organisationIdList.add(organisationId);
             }
         }
 

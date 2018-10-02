@@ -59,14 +59,24 @@
                                             <div class="ui-g-6">
                                                 <h:outputText value="#{messages['livingplant.cultivar']}" />
                                             </div>
-                                            <h:panelGroup layout="block" styleClass="ui-g-6 ui-g-nopad" id="cultivar">
-                                                <ui:repeat value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}" var="cultivar">
-                                                    <div class="ui-g-12">
-                                                        <p:inputText id="cultivar" value="#{cultivar.cultivar}" />
+                                            <h:panelGroup layout="block" styleClass="ui-g-6" id="cultivar">
+                                                <p:inputText value="#{livingPlantEditController.cultivarResult.cultivar}" />
+                                                <p:commandButton icon="ui-icon-plus" update="@parent jacq_form:cultivarTable" action="#{livingPlantEditController.addCultivar}" />
+                                                <p:dataTable
+                                                    var="cultivar"
+                                                    lazy="true"
+                                                    value="#{livingPlantEditController.scientificNameInformationResult.cultivarList}"
+                                                    widgetVar="cultivarTable"
+                                                    id="cultivarTable"
+                                                    paginator="true"
+                                                    rows="5">
+                                                    <p:column headerText="#{messages['livingplant.cultivar']}">
+                                                        <h:outputText value="#{cultivar.cultivar}"/>
+                                                    </p:column>
+                                                    <p:column style="width: 50px">
                                                         <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeCultivar(cultivar)}" />
-                                                    </div>
-                                                </ui:repeat>
-                                                <p:commandButton icon="ui-icon-plus" update="@parent" action="#{livingPlantEditController.addCultivar}" />
+                                                    </p:column>
+                                                </p:dataTable>
                                             </h:panelGroup>
                                         </h:panelGroup>
 
@@ -131,7 +141,7 @@
                                 <div class="ui-g-6">
                                     <h:outputText value="#{messages['livingplant.location']}" />
                                 </div>
-                                <div class="ui-g-6">
+                                <div class="ui-g-5">
                                     <p:autoComplete id="organisation" value="#{livingPlantEditController.livingPlantResult.organisation}" completeMethod="#{livingPlantEditController.completeOrganisation}"
                                                     var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
                                         <p:ajax event="itemSelect" listener="#{livingPlantEditController.onOrganisationSelect}" update="ipennumber" />
@@ -142,6 +152,8 @@
                                         <p:ajax event="itemSelect" listener="#{livingPlantEditController.organisationHierachicSelectEvent}" />
                                     </p:autoComplete>
                                     <p:message for="organisation" />
+                                </div>
+                                <div class="ui-g-1">
                                     <p:commandButton icon="ui-icon-search" id="hierachicSearchButton" />
                                 </div>
                             </div>
@@ -358,9 +370,9 @@
                             </div>
                         </div>
 
-                        <h:panelGroup id="separations" layout="block" styleClass="ui-g">
+                        <h:panelGroup id="separations" layout="block" styleClass="ui-g-12 ui-g-nopad">
                             <ui:repeat value="#{livingPlantEditController.livingPlantResult.separations}" var="separation">
-                                <div class="ui-g-12 ui-g-nopad">
+                                <div class="ui-g">
                                     <div class="ui-g-3">
                                         <p:selectOneMenu value="#{separation.separationType.separationTypeId}">
                                             <f:selectItems value="#{livingPlantEditController.separationTypes}" var="separationType" itemLabel="#{messages['separation.type.'.concat(separationType.type)]}" itemValue="#{separationType.separationTypeId}" />
@@ -491,8 +503,8 @@
                                             <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeMinutes}" style="width: 30px" />
                                             <p:inputText value="#{livingPlantEditController.livingPlantResult.latitudeSeconds}" style="width: 30px" />
                                             <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.latitudeHalf}" id="latitudeselect">
-                                                <f:selectItem itemLabel="N" noSelectionOption="true" />
-                                                <f:selectItem itemLabel="S" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="N" itemValue="N" />
+                                                <f:selectItem itemLabel="S" itemValue="S" />
                                             </p:selectOneMenu>
                                         </h:panelGrid>
                                     </div>
@@ -507,8 +519,8 @@
                                             <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeMinutes}" style="width: 30px" />
                                             <p:inputText value="#{livingPlantEditController.livingPlantResult.longitudeSeconds}" style="width: 30px" />
                                             <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.longitudeHalf}" id="longitudeselect">
-                                                <f:selectItem itemLabel="E" noSelectionOption="true" />
-                                                <f:selectItem itemLabel="W" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="E" itemValue="E" />
+                                                <f:selectItem itemLabel="W" itemValue="W" />
                                             </p:selectOneMenu>
                                         </h:panelGrid>
                                     </div>

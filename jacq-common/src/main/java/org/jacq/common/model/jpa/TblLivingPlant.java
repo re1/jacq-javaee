@@ -139,7 +139,7 @@ public class TblLivingPlant implements Serializable {
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TblCertificate> tblCertificateList;
     @JoinColumn(name = "id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)

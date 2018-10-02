@@ -9,6 +9,7 @@ import org.jacq.input.SessionManager;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -38,7 +39,10 @@ import org.primefaces.event.SelectEvent;
 public class LivingPlantController implements Serializable, OrganisationSelectListener {
 
     @Inject
-    protected SessionManager sessionController;
+    protected SessionManager sessionManager;
+
+    @Inject
+    protected SessionController sessionController;
 
     public static final String TYPE_ALL = "all";
     public static final String TYPE_LIVING = "living";
@@ -69,16 +73,26 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
         this.derivativeService = ServicesUtil.getDerivativeService();
 
         this.downloadRender = false;
-        if (sessionController.getUser() != null && this.dataModel.getDerivativeSearchModel().getCallFlag() == 0) {
-            this.dataModel.getDerivativeSearchModel().setOrganisationId(sessionController.getUser().getOrganisationId() != null ? sessionController.getUser().getOrganisationId() : null);
+        if (sessionManager.getUser() != null && this.dataModel.getDerivativeSearchModel().getCallFlag() == 0) {
+            this.dataModel.getDerivativeSearchModel().setOrganisationId(sessionManager.getUser().getOrganisationId() != null ? sessionManager.getUser().getOrganisationId() : null);
             this.dataModel.getDerivativeSearchModel().setSelectedOrganisation(this.organisationService.load(this.dataModel.getDerivativeSearchModel().getOrganisationId()));
             this.dataModel.getDerivativeSearchModel().setHierarchic(true);
         }
         this.showorganisationHierarchicSelectController();
     }
 
+    /**
+     * Removes Markings of IndexSeminum
+     */
+    public void removeIndexSeminumMarking() {
+        if (this.derivativeService.removeIndexSeminumMarking(this.dataModel.getDerivativeSearchModel().getType(), this.dataModel.getDerivativeSearchModel().getId(), this.dataModel.getDerivativeSearchModel().getPlaceNumber(), this.dataModel.getDerivativeSearchModel().getAccessionNumber(), this.dataModel.getDerivativeSearchModel().getSeparatedFilter(), this.dataModel.getDerivativeSearchModel().getScientificNameId(), this.dataModel.getDerivativeSearchModel().getOrganisationId(), this.dataModel.getDerivativeSearchModel().getHierarchic(), this.dataModel.getDerivativeSearchModel().getIndexSeminumFilter(), this.dataModel.getDerivativeSearchModel().getGatheringLocationName(), (this.dataModel.getDerivativeSearchModel().getExhibition() != null) ? this.dataModel.getDerivativeSearchModel().getExhibition() : null, (this.dataModel.getDerivativeSearchModel().getWorking() != null) ? this.dataModel.getDerivativeSearchModel().getWorking() : null, (this.dataModel.getDerivativeSearchModel().getSelectedCultivar() != null) ? this.dataModel.getDerivativeSearchModel().getSelectedCultivar().getCultivar() : null, this.dataModel.getDerivativeSearchModel().getClassification(), null, null) == null) {
+            sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
+        }
+
+    }
+
     public DerivativeSearchModel getDerivativeSearchModel() {
-        return sessionController.getDerivativeSearchModel();
+        return sessionManager.getDerivativeSearchModel();
     }
 
     public LazyDerivativeDataModel getDataModel() {

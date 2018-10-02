@@ -114,6 +114,8 @@ public class LivingPlantManager {
 
         if (livingPlantResult.getLabelSynonymScientificName() != null) {
             tblLivingPlant.setLabelSynonymScientificNameId((livingPlantResult.getLabelSynonymScientificName().getScientificNameId() != null) ? livingPlantResult.getLabelSynonymScientificName().getScientificNameId() : null);
+        } else {
+            tblLivingPlant.setLabelSynonymScientificNameId(null);
         }
 
         // assign relevancy
@@ -295,6 +297,9 @@ public class LivingPlantManager {
         em.persist(tblBotanicalObject);
         em.persist(tblDerivative);
 
+        // refresh required objects
+        em.refresh(tblAcquisitionEvent);
+
         // living plant needs manual assignment of id
         tblLivingPlant.setId(tblDerivative.getDerivativeId());
         em.persist(tblLivingPlant);
@@ -317,6 +322,10 @@ public class LivingPlantManager {
         }
 
         // save certificates
+        if (tblLivingPlant.getTblCertificateList() == null) {
+            tblLivingPlant.setTblCertificateList(new ArrayList<TblCertificate>());
+        }
+        tblLivingPlant.getTblCertificateList().clear();
         for (CertificateResult certificate : livingPlantResult.getCertificates()) {
             TblCertificate tblCertificate = null;
             if (certificate.getCertificateId() != null) {
@@ -331,11 +340,17 @@ public class LivingPlantManager {
             tblCertificate.setAnnotation(certificate.getAnnotation());
             tblCertificate.setCertificateTypeId(em.find(TblCertificateType.class, certificate.getCertificateType().getCertificateTypeId()));
 
+            tblLivingPlant.getTblCertificateList().add(tblCertificate);
+
             // save certificate
             em.persist(tblCertificate);
         }
 
         // save separations
+        if (tblDerivative.getTblSeparationList() == null) {
+            tblDerivative.setTblSeparationList(new ArrayList<TblSeparation>());
+        }
+        tblDerivative.getTblSeparationList().clear();
         for (SeparationResult separation : livingPlantResult.getSeparations()) {
             TblSeparation tblSeparation = null;
             if (separation.getSeparationId() != null) {
@@ -350,8 +365,29 @@ public class LivingPlantManager {
             tblSeparation.setAnnotation(separation.getAnnotation());
             tblSeparation.setSeparationTypeId(em.find(TblSeparationType.class, separation.getSeparationType().getSeparationTypeId()));
 
+            tblDerivative.getTblSeparationList().add(tblSeparation);
+
             // save separation
             em.persist(tblSeparation);
+        }
+
+        // remove deleted acquisition event sources
+        List<TblAcquisitionEventSource> removeAcquisitionEventSources = new ArrayList<>();
+        for (TblAcquisitionEventSource tblAcquisitionEventSource : tblAcquisitionEvent.getTblAcquisitionEventSourceList()) {
+            Boolean contains = false;
+            for (AcquistionEventSourceResult acquistionEventSourceResult : livingPlantResult.getAcquistionEventSources()) {
+                if (acquistionEventSourceResult.getAcquisitionEventSourceId() != null && Objects.equals(tblAcquisitionEventSource.getAcquisitionEventSourceId(), acquistionEventSourceResult.getAcquisitionEventSourceId())) {
+                    contains = true;
+                }
+            }
+            if (!contains) {
+                removeAcquisitionEventSources.add(tblAcquisitionEventSource);
+            }
+
+        }
+        for (TblAcquisitionEventSource tblAcquisitionEventSource : removeAcquisitionEventSources) {
+            tblAcquisitionEvent.getTblAcquisitionEventSourceList().remove(tblAcquisitionEventSource);
+            em.remove(tblAcquisitionEventSource);
         }
 
         // save acquisition event sources

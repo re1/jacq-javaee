@@ -51,6 +51,7 @@ import org.jacq.common.model.jpa.TblSex;
 import org.jacq.common.model.jpa.TblSpecimen;
 import org.jacq.common.model.jpa.TblVegetative;
 import org.jacq.common.model.jpa.ViewProtolog;
+import org.jacq.common.model.rest.AccessOrganisationResult;
 import org.jacq.common.model.rest.BotanicalObjectDownloadResult;
 import org.jacq.common.model.rest.CertificateTypeResult;
 import org.jacq.common.model.rest.CultivarResult;
@@ -96,6 +97,9 @@ public class DerivativeManager extends BaseDerivativeManager {
 
     @Inject
     protected SecurityManager securityManager;
+
+    @Inject
+    protected AuthorizationManager authorizationManager;
 
     /**
      * Initialize bean and make sure abstract base class has entity manager
@@ -170,10 +174,13 @@ public class DerivativeManager extends BaseDerivativeManager {
      */
     @Transactional
     public List<VegetativeResult> vegetativeFind(Long derivativeId) {
-        TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
-        vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
+        if (derivativeId != null) {
+            TypedQuery<TblVegetative> vegetativeQuery = em.createNamedQuery("TblVegetative.findByBotanicalObjectId", TblVegetative.class);
+            vegetativeQuery.setParameter("botanicalObjectId", em.find(TblDerivative.class, derivativeId).getBotanicalObjectId());
 
-        return VegetativeResult.fromList(vegetativeQuery.getResultList());
+            return VegetativeResult.fromList(vegetativeQuery.getResultList());
+        }
+        return null;
     }
 
     /**
@@ -183,10 +190,13 @@ public class DerivativeManager extends BaseDerivativeManager {
      */
     @Transactional
     public List<SpecimenResult> specimenFind(Long botanicalObjectId) {
-        TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
-        specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
+        if (botanicalObjectId != null) {
+            TypedQuery<TblSpecimen> specimenQuery = em.createNamedQuery("TblSpecimen.findByBotanicalObjectId", TblSpecimen.class);
+            specimenQuery.setParameter("botanicalObjectId", em.find(TblBotanicalObject.class, botanicalObjectId));
 
-        return SpecimenResult.fromList(specimenQuery.getResultList());
+            return SpecimenResult.fromList(specimenQuery.getResultList());
+        }
+        return null;
     }
 
     /**
@@ -437,4 +447,127 @@ public class DerivativeManager extends BaseDerivativeManager {
     public CultivarResult cultivarLoad(Long cultivarId) {
         return new CultivarResult(em.find(TblCultivar.class, cultivarId));
     }
+
+    /**
+     * @see DerivativeService#removeIndexSeminumMarking()
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param hierarchic
+     * @param indexSeminum
+     * @param gatheringLocation
+     * @param exhibition
+     * @param working
+     * @param cultivar
+     * @param classification
+     * @param orderColumn
+     * @param orderDirection
+     * @return
+     */
+    @Transactional
+    public List<BotanicalObjectDerivative> removeIndexSeminumMarking(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection) {
+        List<BotanicalObjectDerivative> botanicalObjectDerivatives = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, Boolean.TRUE, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, null, null);
+
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<FrmwrkaccessOrganisation> cq = cb.createQuery(FrmwrkaccessOrganisation.class);
+        Root<FrmwrkaccessOrganisation> bo = cq.from(FrmwrkaccessOrganisation.class);
+
+        // select result list
+        cq.select(bo);
+        Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
+
+        path = bo.get("userId");
+        predicates.add(cb.equal(path, this.securityManager.getUser().getId()));
+
+        if (organisationId != null) {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, organisationId));
+        } else {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, 1L));
+        }
+
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
+
+        List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
+        List<Long> ids = new ArrayList<>();
+
+        if (hierarchic != null && hierarchic && frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            TblOrganisation tblOrganisation = em.find(TblOrganisation.class, frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+            ids = this.findChildren(tblOrganisation, this.securityManager.getUser().getId());
+        }
+
+        if (frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            ids.add(frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+        } else {
+            return null;
+        }
+
+        for (Long id : ids) {
+            for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivatives) {
+                if (botanicalObjectDerivative.getOrganisationId().compareTo(id) == 0) {
+                    TblLivingPlant tblLivingPlant = em.find(TblLivingPlant.class, botanicalObjectDerivative.getBotanicalObjectId());
+                    tblLivingPlant.setIndexSeminum(Boolean.FALSE);
+                    em.persist(tblLivingPlant);
+                }
+            }
+        }
+
+        return botanicalObjectDerivatives;
+    }
+
+    /**
+     * Find all childs to the Head of the organisation Tree Recursiv
+     *
+     * @param tblOrganisation
+     * @return
+     */
+    @Transactional
+    protected List<Long> findChildren(TblOrganisation tblOrganisation, Long userId) {
+        List<Long> ids = new ArrayList<>();
+        for (TblOrganisation organisation : tblOrganisation.getTblOrganisationList()) {
+
+            // prepare criteria builder & query
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<FrmwrkaccessOrganisation> cq = cb.createQuery(FrmwrkaccessOrganisation.class);
+            Root<FrmwrkaccessOrganisation> bo = cq.from(FrmwrkaccessOrganisation.class);
+
+            // select result list
+            cq.select(bo);
+            Expression<String> path = null;
+            // list of predicates to add in where clause
+            List<Predicate> predicates = new ArrayList<>();
+
+            path = bo.get("userId");
+            predicates.add(cb.equal(path, userId));
+
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, organisation.getId()));
+
+            // add all predicates as where clause
+            cq.where(predicates.toArray(new Predicate[0]));
+
+            TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
+
+            List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
+
+            if (frmwrkaccessOrganisations.size() == 0 || frmwrkaccessOrganisations.get(0).getAllowDeny() != Boolean.FALSE) {
+                ids.add(organisation.getId());
+            }
+            ids.addAll(this.findChildren(organisation, userId));
+        }
+        return ids;
+
+    }
+
 }

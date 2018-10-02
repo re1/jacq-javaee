@@ -92,6 +92,24 @@ public class ImportRecord implements Serializable {
     protected Date gatheringDate;
     @Column(name = "gathering_source")
     protected String gatheringSource;
+    @Column(name = "altitude_min")
+    protected Long altitudeMin;
+    @Column(name = "altitude_max")
+    protected Long altitudeMax;
+    @Column(name = "ident_status")
+    protected Long identStatus;
+    @Column(name = "gathering_person")
+    protected String gatheringPerson;
+    @Column(name = "gathering_location")
+    protected String gatheringLocation;
+    @Column(name = "default_scientific_name_id")
+    protected Long defaultScientificNameId;
+    @Column(name = "habitat")
+    protected String habitat;
+    @Column(name = "acquisition_date")
+    protected Date acquisitionDate;
+    @Column(name = "custom_acquisition_date")
+    protected String customAcquisitionDate;
 
     public Long getOriginalId() {
         return originalId;
@@ -301,9 +319,81 @@ public class ImportRecord implements Serializable {
         this.gatheringSource = gatheringSource;
     }
 
+    public Long getAltitudeMin() {
+        return altitudeMin;
+    }
+
+    public void setAltitudeMin(Long altitudeMin) {
+        this.altitudeMin = altitudeMin;
+    }
+
+    public Long getAltitudeMax() {
+        return altitudeMax;
+    }
+
+    public void setAltitudeMax(Long altitudeMax) {
+        this.altitudeMax = altitudeMax;
+    }
+
+    public Long getIdentStatus() {
+        return identStatus;
+    }
+
+    public void setIdentStatus(Long identStatus) {
+        this.identStatus = identStatus;
+    }
+
+    public String getGatheringPerson() {
+        return gatheringPerson;
+    }
+
+    public void setGatheringPerson(String gatheringPerson) {
+        this.gatheringPerson = gatheringPerson;
+    }
+
+    public String getGatheringLocation() {
+        return gatheringLocation;
+    }
+
+    public void setGatheringLocation(String gatheringLocation) {
+        this.gatheringLocation = gatheringLocation;
+    }
+
+    public Long getDefaultScientificNameId() {
+        return defaultScientificNameId;
+    }
+
+    public void setDefaultScientificNameId(Long defaultScientificNameId) {
+        this.defaultScientificNameId = defaultScientificNameId;
+    }
+
+    public String getHabitat() {
+        return habitat;
+    }
+
+    public void setHabitat(String habitat) {
+        this.habitat = habitat;
+    }
+
+    public Date getAcquisitionDate() {
+        return acquisitionDate;
+    }
+
+    public void setAcquisitionDate(Date acquisitionDate) {
+        this.acquisitionDate = acquisitionDate;
+    }
+
+    public String getCustomAcquisitionDate() {
+        return customAcquisitionDate;
+    }
+
+    public void setCustomAcquisitionDate(String customAcquisitionDate) {
+        this.customAcquisitionDate = customAcquisitionDate;
+    }
+
     /**
-     * Helper function for converting the import record to a single line string for appending to the annotation field of
-     * an existing record
+     * Helper function for converting the import record to a single line string
+     * for appending to the annotation field of an existing record
      *
      * @return
      */

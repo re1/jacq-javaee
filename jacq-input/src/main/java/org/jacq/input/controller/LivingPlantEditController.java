@@ -61,6 +61,7 @@ import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.SessionManager;
 import org.jacq.input.listener.OrganisationSelectListener;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
@@ -78,6 +79,9 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     @Inject
     protected SessionController sessionController;
+
+    @Inject
+    protected SessionManager sessionManager;
 
     /**
      * Reference to derivative id which is currently edited
@@ -144,7 +148,10 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     protected List<HabitusTypeResult> habitusTypes;
     protected List<PhenologyResult> phenologies;
     protected List<IdentStatusResult> identStatus;
+
     protected List<RelevancyTypeResult> relevancyTypes;
+    protected List<String> selectedRelevancyTypes;
+
     protected List<SeparationTypeResult> separationTypes;
     protected List<CertificateTypeResult> certificateTypes;
 
@@ -153,6 +160,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
 
     protected List<SelectItem> labelTypes;
     protected List<String> selectedLabelTypes;
+
+    protected CultivarResult cultivarResult;
 
     @ManagedProperty(value = "#{organisationHierarchicSelectController}")
     protected OrganisationHierarchicSelectController organisationHierarchicSelectController;
@@ -173,11 +182,16 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         // setup default values
         this.livingPlantResult.setIpenType("default");
 
+        if (sessionManager.getUser() != null) {
+            livingPlantResult.setOrganisation(this.organisationService.load(sessionManager.getUser().getOrganisationId()));
+        }
+
         // load all lookup tables
         this.indexSeminumTypes = this.indexSeminumService.typeFindAll();
         this.phenologies = this.derivativeService.findAllPhenology();
         this.identStatus = this.derivativeService.findAllIdentStatus();
         this.relevancyTypes = this.derivativeService.findAllRelevancyType();
+        this.selectedRelevancyTypes = new ArrayList<>();
         this.separationTypes = this.derivativeService.findAllSeparationType();
         this.certificateTypes = this.derivativeService.findAllCertificateType();
 
@@ -198,6 +212,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         this.selectedLabelTypes = new ArrayList<>();
 
         this.showorganisationHierarchicSelectController();
+
+        this.cultivarResult = new CultivarResult();
     }
 
     /**
@@ -216,7 +232,8 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     public void addCultivar() {
-        this.scientificNameInformationResult.getCultivarList().add(new CultivarResult());
+        this.scientificNameInformationResult.getCultivarList().add(this.cultivarResult);
+        this.cultivarResult = new CultivarResult();
     }
 
     public void removeCultivar(CultivarResult cultivarResult) {
@@ -340,6 +357,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         for (String labelTypeId : this.selectedLabelTypes) {
             this.livingPlantResult.getLabelTypes().add(new LabelTypeResult(Long.parseLong(labelTypeId)));
         }
+        // convert selected relevancy tpes entries
+        this.livingPlantResult.getRelevancyTypes().clear();
+        for (String relevancyTypeId : this.selectedRelevancyTypes) {
+            this.livingPlantResult.getRelevancyTypes().add(new RelevancyTypeResult(Long.parseLong(relevancyTypeId)));
+        }
 
         this.livingPlantResult.setSpecimensList(this.getSpecimenList());
 
@@ -382,6 +404,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         // convert selected label-type entries
         for (LabelTypeResult labelType : this.livingPlantResult.getLabelTypes()) {
             this.selectedLabelTypes.add(labelType.getLabelTypeId().toString());
+        }
+
+        // convert selected relevancy-type entries
+        for (RelevancyTypeResult relevancyType : this.livingPlantResult.getRelevancyTypes()) {
+            this.selectedRelevancyTypes.add(relevancyType.getRelevancyTypeId().toString());
         }
     }
 
@@ -438,7 +465,7 @@ public class LivingPlantEditController implements OrganisationSelectListener {
         if (event.getObject() != null) {
             LocationResult locationResult = (LocationResult) event.getObject();
             if (locationResult.getCountryCode() != null) {
-                this.setIpenNumberCountry(locationResult.getCountryCode());;
+                this.setIpenNumberCountry(locationResult.getCountryCode());
             }
         }
     }
@@ -645,4 +672,21 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     public void setType(String type) {
         this.type = type;
     }
+
+    public CultivarResult getCultivarResult() {
+        return cultivarResult;
+    }
+
+    public void setCultivarResult(CultivarResult cultivarResult) {
+        this.cultivarResult = cultivarResult;
+    }
+
+    public List<String> getSelectedRelevancyTypes() {
+        return selectedRelevancyTypes;
+    }
+
+    public void setSelectedRelevancyTypes(List<String> selectedRelevancyTypes) {
+        this.selectedRelevancyTypes = selectedRelevancyTypes;
+    }
+
 }

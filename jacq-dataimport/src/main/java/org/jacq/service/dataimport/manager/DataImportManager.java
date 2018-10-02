@@ -35,6 +35,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.model.dataimport.ImportRecord;
@@ -63,6 +64,11 @@ import org.jacq.common.rest.OrganisationService;
 import org.jacq.common.external.rest.ScientificNamesService;
 import org.jacq.common.model.jpa.TblAcquisitionEventSource;
 import org.jacq.common.model.jpa.TblAcquisitionSource;
+import org.jacq.common.model.jpa.TblIdentStatus;
+import org.jacq.common.model.jpa.TblLocation;
+import org.jacq.common.model.jpa.TblPerson;
+import org.jacq.common.model.rest.LocationResult;
+import org.jacq.common.rest.GatheringService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
 /**
@@ -90,6 +96,8 @@ public class DataImportManager {
 
     protected OrganisationService organisationService;
 
+    protected GatheringService gatheringService;
+
     protected SimpleDateFormat separationDateFormat = new SimpleDateFormat("YYYY-mm-dd");
 
     protected HashMap<Integer, Long> taxamatchCache = new HashMap<>();
@@ -99,12 +107,14 @@ public class DataImportManager {
 
     @PostConstruct
     public void init() {
-        organisationService = ServicesUtil.getOrganisationService();
+        this.organisationService = ServicesUtil.getOrganisationService();
+        this.gatheringService = ServicesUtil.getGatheringService();
     }
 
     /**
      * @throws java.io.IOException
-     * @see DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
+     * @see
+     * DataImportService#dataImport(org.jacq.common.model.dataimport.ImportFile)
      */
     public void dataImport(ImportFile importFile) throws IOException, ParseException {
         // Decode Base64 file content
@@ -146,6 +156,15 @@ public class DataImportManager {
             importRecord.setPrice(Float.valueOf(record.get(i++)));
             importRecord.setGatheringDate(separationDateFormat.parse(record.get(i++)));
             importRecord.setGatheringSource(record.get(i++));
+            importRecord.setAltitudeMin(Long.valueOf(record.get(i++)));
+            importRecord.setAltitudeMax(Long.valueOf(record.get(i++)));
+            importRecord.setIdentStatus(Long.valueOf(record.get(i++)));
+            importRecord.setGatheringPerson(record.get(i++));
+            importRecord.setGatheringLocation(record.get(i++));
+            importRecord.setDefaultScientificNameId(Long.valueOf(record.get(i++)));
+            importRecord.setHabitat(record.get(i++));
+            importRecord.setAcquisitionDate(separationDateFormat.parse(record.get(i++)));
+            importRecord.setCustomAcquisitionDate(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -195,8 +214,7 @@ public class DataImportManager {
                             // check if we already have an annotation, if yes append a newline
                             if (StringUtils.isEmpty(annotation)) {
                                 annotation = importRecord.getImportFile().getFileName() + ": " + importRecord.toAnnotationString();
-                            }
-                            else {
+                            } else {
                                 annotation += "\n" + importRecord.getImportFile().getFileName() + ": " + importRecord.toAnnotationString();
                             }
                             botanicalObject.setAnnotation(annotation);
@@ -205,12 +223,10 @@ public class DataImportManager {
                             LOGGER.log(Level.INFO, "Updated annotation for entry: ''{0}''", botanicalObject.getId());
 
                             return ImportStatus.UPDATED;
-                        }
-                        else {
+                        } else {
                             LOGGER.log(Level.INFO, "Family of matched entry does not conform to match-family: ''{0}'' vs ''{1}''", new Object[]{botanicalObject.getViewTaxon().getFamily(), importRecord.getMatchFamily()});
                         }
-                    }
-                    else {
+                    } else {
                         LOGGER.log(Level.INFO, "No family entry found for: ''{0}'' ({1})", new Object[]{botanicalObject.getViewScientificName().getScientificName(), botanicalObject.getScientificNameId()});
                     }
                 }
@@ -229,6 +245,7 @@ public class DataImportManager {
                 }
             }
 
+            List<LocationResult> locationResults = new ArrayList<>(); // For IPEN
             // if no previous botanical object is found, create a new entry for it
             if (botanicalObject == null) {
                 // no entry exists yet, start creating the data
@@ -243,18 +260,93 @@ public class DataImportManager {
 
                 // start with the gathering location coordinates
                 TblLocationCoordinates locationCoordinates = new TblLocationCoordinates();
+                locationCoordinates.setAltitudeMin(importRecord.getAltitudeMin());
+                locationCoordinates.setAltitudeMax(importRecord.getAltitudeMax());
                 em.persist(locationCoordinates);
 
                 // setup gathering date
-                TblAcquisitionDate acquisitionDate = new TblAcquisitionDate();
-                em.persist(acquisitionDate);
+                TblAcquisitionDate tblAcquisitionDate = new TblAcquisitionDate();
+                if (importRecord.getCustomAcquisitionDate() != null && !StringUtils.isEmpty(importRecord.getCustomAcquisitionDate())) {
+                    tblAcquisitionDate.setCustom(importRecord.getCustomAcquisitionDate());
+                }
+                if (importRecord.getAcquisitionDate() != null) {
+                    tblAcquisitionDate.setYear(String.valueOf(importRecord.getAcquisitionDate().getYear() + 1900));
+                    tblAcquisitionDate.setMonth(String.valueOf(importRecord.getAcquisitionDate().getMonth() + 1));
+                    tblAcquisitionDate.setDay(String.valueOf(importRecord.getAcquisitionDate().getDate()));
+                } else {
+                    tblAcquisitionDate.setYear(null);
+                    tblAcquisitionDate.setMonth(null);
+                    tblAcquisitionDate.setDay(null);
+                }
+                em.persist(tblAcquisitionDate);
 
                 // setup the gathering event
                 TblAcquisitionEvent acquisitionEvent = new TblAcquisitionEvent();
                 acquisitionEvent.setLocationCoordinatesId(locationCoordinates);
-                acquisitionEvent.setAcquisitionDateId(acquisitionDate);
+                acquisitionEvent.setAcquisitionDateId(tblAcquisitionDate);
                 acquisitionEvent.setAcquisitionTypeId(acquisitionType);
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
+
+                if (importRecord.getGatheringLocation() != null && !StringUtils.isEmpty(importRecord.getGatheringLocation())) {
+                    TblLocation tblGatheringLocation = null;
+                    TypedQuery<TblLocation> locationQuery = em.createNamedQuery("TblLocation.findByLocation", TblLocation.class);
+                    locationQuery.setParameter("location", importRecord.getGatheringLocation());
+                    List<TblLocation> locationList = locationQuery.getResultList();
+                    if (locationList != null & locationList.size() > 0) {
+                        tblGatheringLocation = locationList.get(0);
+                    } else {
+                        tblGatheringLocation = new TblLocation();
+                        tblGatheringLocation.setLocation(importRecord.getGatheringLocation());
+                        em.persist(tblGatheringLocation);
+                    }
+                    acquisitionEvent.setLocationId(tblGatheringLocation);
+                }
+                List<TblPerson> tblPersonList = acquisitionEvent.getTblPersonList();
+                if (importRecord.getGatheringPerson() != null) {
+                    // store alternative accession number
+                    String[] persons = importRecord.getGatheringPerson().split(";");
+                    if (tblPersonList != null && tblPersonList.size() > 0) {
+                        for (String person : persons) {
+                            if (StringUtils.isNumeric(person)) {
+                                tblPersonList.add(em.find(TblPerson.class, Long.valueOf(person)));
+                            } else {
+                                TypedQuery<TblPerson> tblGathererQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+                                tblGathererQuery.setParameter("name", person);
+                                List<TblPerson> gatherers = tblGathererQuery.getResultList();
+                                TblPerson tblGatherer = null;
+                                if (gatherers != null & gatherers.size() > 0) {
+                                    tblGatherer = gatherers.get(0);
+                                } else {
+                                    tblGatherer = new TblPerson();
+                                    tblGatherer.setName(person);
+                                    em.persist(tblGatherer);
+                                }
+                                tblPersonList.add(tblGatherer);
+                            }
+                        }
+                    } else {
+                        tblPersonList = new ArrayList<>();
+                        for (String person : persons) {
+                            if (StringUtils.isNumeric(person)) {
+                                tblPersonList.add(em.find(TblPerson.class, Long.valueOf(person)));
+                            } else {
+                                TypedQuery<TblPerson> tblGathererQuery = em.createNamedQuery("TblPerson.findByName", TblPerson.class);
+                                tblGathererQuery.setParameter("name", person);
+                                List<TblPerson> gatherers = tblGathererQuery.getResultList();
+                                TblPerson tblGatherer = null;
+                                if (gatherers != null & gatherers.size() > 0) {
+                                    tblGatherer = gatherers.get(0);
+                                } else {
+                                    tblGatherer = new TblPerson();
+                                    tblGatherer.setName(person);
+                                    em.persist(tblGatherer);
+                                }
+                                tblPersonList.add(tblGatherer);
+                            }
+                        }
+                    }
+                    acquisitionEvent.setTblPersonList(tblPersonList);
+                }
                 em.persist(acquisitionEvent);
 
                 // check if gathering source already exists
@@ -265,8 +357,7 @@ public class DataImportManager {
                     TblAcquisitionSource acquisitionSource = null;
                     if (acquisitionSourceList != null && acquisitionSourceList.size() > 0) {
                         acquisitionSource = acquisitionSourceList.get(0);
-                    }
-                    else {
+                    } else {
                         acquisitionSource = new TblAcquisitionSource();
                         acquisitionSource.setName(importRecord.getGatheringSource());
                         em.persist(acquisitionSource);
@@ -283,8 +374,7 @@ public class DataImportManager {
                 Long scientificNameId = 0L;
                 if (taxamatchCache.get(importRecord.getScientificName().hashCode()) != null) {
                     scientificNameId = taxamatchCache.get(importRecord.getScientificName().hashCode());
-                }
-                else {
+                } else {
                     // 'vienna', $model_importSpecies->getScientificName(), array('showSyn' => false, 'NearMatch' => false)
                     TaxamatchOptions taxamatchOptions = new TaxamatchOptions();
                     taxamatchOptions.setNearMatch(false);
@@ -329,10 +419,13 @@ public class DataImportManager {
                     }
                     if (scientificNameId == 0L) {
                         if (genusScientificNameId == 0L) {
-                            LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
-                            scientificNameId = INDET_SCIENTIFIC_NAME_ID;
-                        }
-                        else {
+                            if (importRecord.getDefaultScientificNameId() != null) {
+                                scientificNameId = importRecord.getDefaultScientificNameId();
+                            } else {
+                                LOGGER.log(Level.INFO, "No scientific name id found for ''{0}''. Pointing to indet.", importRecord.getScientificName());
+                                scientificNameId = INDET_SCIENTIFIC_NAME_ID;
+                            }
+                        } else {
                             LOGGER.log(Level.INFO, "No exact scientific name match found for ''{0}''. Pointing to genus entry.", importRecord.getScientificName());
                             scientificNameId = genusScientificNameId;
                         }
@@ -350,8 +443,7 @@ public class DataImportManager {
                     TblScientificNameInformation scientificNameInformation = null;
                     if (scientificNameInformations != null && scientificNameInformations.size() > 0) {
                         scientificNameInformation = scientificNameInformations.get(0);
-                    }
-                    else {
+                    } else {
                         // create a new scientific name information entry
                         scientificNameInformation = new TblScientificNameInformation();
                         scientificNameInformation.setScientificNameId(scientificNameId);
@@ -377,8 +469,7 @@ public class DataImportManager {
                     List<TblCultivar> cultivars = cultivarQuery.getResultList();
                     if (cultivars != null && cultivars.size() > 0) {
                         cultivar = cultivars.get(0);
-                    }
-                    else {
+                    } else {
                         // try to find a matching scientific name information entry
                         TypedQuery<TblScientificNameInformation> scientificNameInformationQuery = em.createNamedQuery("TblScientificNameInformation.findByScientificNameId", TblScientificNameInformation.class);
                         scientificNameInformationQuery.setParameter("scientificNameId", scientificNameId);
@@ -386,8 +477,7 @@ public class DataImportManager {
                         TblScientificNameInformation scientificNameInformation = null;
                         if (scientificNameInformations != null && scientificNameInformations.size() > 0) {
                             scientificNameInformation = scientificNameInformations.get(0);
-                        }
-                        else {
+                        } else {
                             // create a new scientific name information entry
                             scientificNameInformation = new TblScientificNameInformation();
                             scientificNameInformation.setScientificNameId(scientificNameId);
@@ -412,6 +502,10 @@ public class DataImportManager {
                 botanicalObject.setRecordingDate(new Date());
                 botanicalObject.setAnnotation(importRecord.getGenericAnnotation());
                 botanicalObject.setScientificNameId(scientificNameId);
+                botanicalObject.setHabitat(importRecord.getHabitat());
+                if (importRecord.getIdentStatus() != null) {
+                    botanicalObject.setIdentStatusId(em.find(TblIdentStatus.class, importRecord.getIdentStatus()));
+                }
                 em.persist(botanicalObject);
             }
 
@@ -459,20 +553,23 @@ public class DataImportManager {
             if (!StringUtils.isEmpty(importRecord.getIpenNumber())) {
                 livingPlant.setIpenType("custom");
                 livingPlant.setIpenNumber(importRecord.getIpenNumber());
-            }
-            else {
+            } else {
                 livingPlant.setIpenType("default");
-                livingPlant.setIpenNumber("XX-0-" + organisationService.getIpenCode(organisation.getId()));
+                livingPlant.setIpenNumber(String.format("%s-%s-%s", locationResults.size() > 0 ? locationResults.get(0).getCountryCode() : "XX", "0", organisationService.getIpenCode(organisation.getId())));
             }
+
             em.persist(livingPlant);
 
             // store alternative accession number
             TblAlternativeAccessionNumber alternativeAccessionNumber = null;
             if (!StringUtils.isEmpty(importRecord.getAlternativeNumber())) {
-                alternativeAccessionNumber = new TblAlternativeAccessionNumber();
-                alternativeAccessionNumber.setLivingPlantId(livingPlant);
-                alternativeAccessionNumber.setNumber(importRecord.getAlternativeNumber());
-                em.persist(alternativeAccessionNumber);
+                String[] alternativeNumbers = importRecord.getAlternativeNumber().split(";");
+                for (String number : alternativeNumbers) {
+                    alternativeAccessionNumber = new TblAlternativeAccessionNumber();
+                    alternativeAccessionNumber.setLivingPlantId(livingPlant);
+                    alternativeAccessionNumber.setNumber(number);
+                    em.persist(alternativeAccessionNumber);
+                }
             }
 
             // store original living plant id as alternative accession number

@@ -32,6 +32,10 @@ public class RelevancyTypeResult {
     public RelevancyTypeResult() {
     }
 
+    public RelevancyTypeResult(Long relevancyTypeId) {
+        this.relevancyTypeId = relevancyTypeId;
+    }
+
     public RelevancyTypeResult(TblRelevancyType tblRelevancyType) {
         if (tblRelevancyType != null) {
             this.relevancyTypeId = tblRelevancyType.getId();
@@ -65,7 +69,8 @@ public class RelevancyTypeResult {
     }
 
     /**
-     * Helper function for converting a list of TblRelevancyType entries to RelevancyTypeResult
+     * Helper function for converting a list of TblRelevancyType entries to
+     * RelevancyTypeResult
      *
      * @param tblRelevancyTypeList
      * @return

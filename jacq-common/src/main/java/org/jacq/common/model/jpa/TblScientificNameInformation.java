@@ -64,7 +64,7 @@ public class TblScientificNameInformation implements Serializable {
     @JoinColumn(name = "habitus_type_id", referencedColumnName = "habitus_type_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblHabitusType habitusTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scientificNameId", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TblCultivar> tblCultivarList;
 
     public TblScientificNameInformation() {
