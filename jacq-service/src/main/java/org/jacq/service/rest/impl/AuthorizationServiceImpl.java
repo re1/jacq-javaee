@@ -31,16 +31,57 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Inject
     protected AuthorizationManager authorizationManager;
 
+    /**
+     * @see AuthorizationService#search(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String,
+     * java.lang.Long, java.lang.Boolean, java.lang.Long, java.lang.Long,
+     * java.lang.Integer, java.lang.Integer)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param userType
+     * @param employmentType
+     * @param organisationDescription
+     * @param accessOrganisationId
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Override
     public List<AccessOrganisationResult> search(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId, Integer offset, Integer limit) {
         return authorizationManager.search(id, username, birthdate, userType, employmentType, organisationDescription, accessOrganisationId, allowDeny, userId, organisationId, offset, limit);
     }
 
+    /**
+     * @see AuthorizationService#searchCount(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String,
+     * java.lang.Long, java.lang.Boolean, java.lang.Long, java.lang.Long)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param userType
+     * @param employmentType
+     * @param organisationDescription
+     * @param accessOrganisationId
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @return
+     */
     @Override
     public int searchCount(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId) {
         return authorizationManager.searchCount(id, username, birthdate, userType, employmentType, organisationDescription, accessOrganisationId, allowDeny, userId, organisationId);
     }
 
+    /**
+     * @see
+     * AuthorizationService#save(org.jacq.common.model.rest.AccessOrganisationResult)
+     * @param accessOrganisationResult
+     * @return
+     */
     @Override
     public AccessOrganisationResult save(AccessOrganisationResult accessOrganisationResult) {
         return authorizationManager.save(accessOrganisationResult);

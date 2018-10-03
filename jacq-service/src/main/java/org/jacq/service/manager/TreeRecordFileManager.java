@@ -59,7 +59,15 @@ public class TreeRecordFileManager {
     protected EntityManager em;
 
     /**
-     * @see TreeRecordFileService#search()
+     * @see TreeRecordFileService#search(java.lang.Long, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @param offset
+     * @param limit
+     * @return
      */
     @Transactional
     public List<TreeRecordFileResult> search(Long treeRecordFileId, Long year, String name, String documentNumber, Integer offset, Integer limit) {
@@ -97,7 +105,13 @@ public class TreeRecordFileManager {
     }
 
     /**
-     * @see TreeRecordFileService#searchCount()
+     * @see TreeRecordFileService#searchCount(java.lang.Long, java.lang.Long,
+     * java.lang.String, java.lang.String)
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @return
      */
     @Transactional
     public int searchCount(Long treeRecordFileId, Long year, String name, String documentNumber) {
@@ -117,8 +131,10 @@ public class TreeRecordFileManager {
     }
 
     /**
+     * @see
+     * TreeRecordFileService#save(org.jacq.common.model.rest.TreeRecordFileResult)
      * @param treeRecordFileResult
-     * @see TreeRecordFileService
+     * @return
      */
     @Transactional
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) throws IOException {
@@ -156,7 +172,7 @@ public class TreeRecordFileManager {
     }
 
     /**
-     *
+     * @see TreeRecordFileService#load(java.lang.Long)
      * @param treeRecordFileId
      * @return
      */
@@ -171,7 +187,7 @@ public class TreeRecordFileManager {
     }
 
     /**
-     *
+     * @see TreeRecordFileService#loadPage(java.lang.Long)
      * @param treeRecordFilePageId
      * @return
      */
@@ -188,16 +204,15 @@ public class TreeRecordFileManager {
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @param treeRecordFileId
-     * @param year
-     * @param name
-     * @param documentNumber
      * @see OrganisationManager#search(java.lang.Long, java.lang.String,
      * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
      * java.lang.Integer)
      * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
      * java.lang.String, java.lang.Boolean, java.lang.String)
-     *
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
      * @param cb
      * @param cq
      * @param bo

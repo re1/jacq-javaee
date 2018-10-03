@@ -79,6 +79,7 @@ public interface TreeRecordFileService {
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult);
 
     /**
+     * Load a Entry from DB
      *
      * @param treeRecordFileId
      * @return
@@ -90,6 +91,7 @@ public interface TreeRecordFileService {
     public TreeRecordFileResult load(@QueryParam("treeRecordFileId") Long treeRecordFileId);
 
     /**
+     * Load a PDF Page from DB
      *
      * @param treeRecordFilePageId
      * @return

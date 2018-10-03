@@ -32,6 +32,12 @@ public class IndexSeminumServiceImpl implements IndexSeminumService {
     @Inject
     protected IndexSeminumManager indexSeminumManager;
 
+    /**
+     * @see
+     * IndexSeminumService#save(org.jacq.common.model.rest.IndexSeminumResult)
+     * @param indexSeminumResult
+     * @return
+     */
     @Override
     public IndexSeminumResult save(IndexSeminumResult indexSeminumResult) {
         return indexSeminumManager.save(indexSeminumResult);
@@ -45,21 +51,44 @@ public class IndexSeminumServiceImpl implements IndexSeminumService {
         return indexSeminumManager.typeFindAll();
     }
 
+    /**
+     * @see IndexSeminumService#search(java.lang.Integer, java.lang.Integer)
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Override
     public List<IndexSeminumResult> search(Integer offset, Integer limit) {
         return indexSeminumManager.search(offset, limit);
     }
 
+    /**
+     * @see IndexSeminumService#searchCount()
+     * @return
+     */
     @Override
     public int searchCount() {
         return indexSeminumManager.searchCount();
     }
 
+    /**
+     * @see IndexSeminumService#searchContent(java.lang.Long, java.lang.Integer,
+     * java.lang.Integer)
+     * @param indexSeminumRevisionId
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Override
     public List<IndexSeminumDownloadResult> searchContent(Long indexSeminumRevisionId, Integer offset, Integer limit) {
         return indexSeminumManager.searchContent(indexSeminumRevisionId, offset, limit);
     }
 
+    /**
+     * @see IndexSeminumService#searchCountContent(java.lang.Long)
+     * @param indexSeminumRevisionId
+     * @return
+     */
     @Override
     public int searchCountContent(Long indexSeminumRevisionId) {
         return indexSeminumManager.searchCountContent(indexSeminumRevisionId);

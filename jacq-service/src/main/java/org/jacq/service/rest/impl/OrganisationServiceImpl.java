@@ -31,33 +31,78 @@ public class OrganisationServiceImpl implements OrganisationService {
     protected OrganisationManager organisationManager;
 
     /**
-     * @see OrganisationService#search()
+     * @see OrganisationService#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @param organisationId
+     * @param description
+     * @param department
+     * @param greenhouse
+     * @param ipenCode
+     * @param parentOrganisationDescription
+     * @param gardener
+     * @param offset
+     * @param limit
+     * @return
      */
     @Override
     public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
         return organisationManager.search(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener, offset, limit);
     }
 
+    /**
+     * @see OrganisationService#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.String,
+     * java.lang.String)
+     * @param organisationId
+     * @param description
+     * @param department
+     * @param greenhouse
+     * @param ipenCode
+     * @param parentOrganisationDescription
+     * @param gardener
+     * @return
+     */
     @Override
     public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener) {
         return organisationManager.searchCount(organisationId, description, department, greenhouse, ipenCode, parentOrganisationDescription, gardener);
     }
 
+    /**
+     * @see OrganisationService#load(java.lang.Long)
+     * @param organisationId
+     * @return
+     */
     @Override
     public OrganisationResult load(Long organisationId) {
         return organisationManager.load(organisationId);
     }
 
+    /**
+     * @see
+     * OrganisationService#save(org.jacq.common.model.rest.OrganisationResult)
+     * @param organisationResult
+     * @return
+     */
     @Override
     public OrganisationResult save(OrganisationResult organisationResult) {
         return organisationManager.save(organisationResult);
     }
 
+    /**
+     * @see OrganisationService#findAll()
+     * @return
+     */
     @Override
     public List<OrganisationResult> findAll() {
         return organisationManager.search(null, null, null, null, null, null, null, null, null);
     }
 
+    /**
+     * @see OrganisationService#getIpenCode(java.lang.Long)
+     * @param organisationId
+     * @return
+     */
     @Override
     public String getIpenCode(Long organisationId) {
         return organisationManager.getIpenCode(organisationId);

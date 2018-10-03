@@ -34,6 +34,7 @@ import org.jacq.common.model.rest.AccessOrganisationResult;
 public interface AuthorizationService {
 
     /**
+     * Search the database using the given filter
      *
      * @param id
      * @param username
@@ -56,7 +57,7 @@ public interface AuthorizationService {
     public List<AccessOrganisationResult> search(@QueryParam("id") Long id, @QueryParam("username") String username, @QueryParam("birthdate") Date birthdate, @QueryParam("userType") String userType, @QueryParam("employmentType") String employmentType, @QueryParam("organisationDescription") String organisationDescription, @QueryParam("accessOrganisationId") Long accessOrganisationId, @QueryParam("allowDeny") Boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
-     *
+     * Search the database using the given filter and return the count
      *
      * @param id
      * @param username
@@ -77,7 +78,7 @@ public interface AuthorizationService {
     public int searchCount(@QueryParam("id") Long id, @QueryParam("username") String username, @QueryParam("birthdate") Date birthdate, @QueryParam("userType") String userType, @QueryParam("employmentType") String employmentType, @QueryParam("organisationDescription") String organisationDescription, @QueryParam("accessOrganisationId") Long accessOrganisationId, @QueryParam("allowDeny") Boolean allowDeny, @QueryParam("userId") Long userId, @QueryParam("organisationId") Long organisationId);
 
     /**
-     *      *
+     *
      * @param accessOrganisationResult
      * @return
      */

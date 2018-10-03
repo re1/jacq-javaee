@@ -67,8 +67,9 @@ public class InventoryManager {
     protected ApplicationManager applicationManager;
 
     /**
+     * @see InventoryService#save(org.jacq.common.model.rest.InventoryResult)
      * @param inventoryResult
-     * @see InventoryService
+     * @return
      */
     @Transactional
     public InventoryResult save(InventoryResult inventoryResult) {
@@ -114,8 +115,7 @@ public class InventoryManager {
     }
 
     /**
-     *
-     * @see InventoryService
+     * @see InventoryService#findAllInventoryType()
      * @return
      */
     @Transactional
@@ -377,7 +377,7 @@ public class InventoryManager {
         for (TblInventory tblInventory : tblInventorys) {
             InventoryResult inventoryResult = new InventoryResult(tblInventory);
 
-            // add indexSeminumResult to result list
+            // add inventoryResult to result list
             results.add(inventoryResult);
         }
 

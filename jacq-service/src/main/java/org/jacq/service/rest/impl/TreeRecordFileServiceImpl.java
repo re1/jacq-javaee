@@ -16,7 +16,6 @@
 package org.jacq.service.rest.impl;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,18 +35,41 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
     protected TreeRecordFileManager treeRecordFileManager;
 
     /**
-     * @see TreeRecordFileService#search()
+     * @see TreeRecordFileService#search(java.lang.Long, java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @param offset
+     * @param limit
+     * @return
      */
     @Override
     public List<TreeRecordFileResult> search(Long treeRecordFileId, Long year, String name, String documentNumber, Integer offset, Integer limit) {
         return treeRecordFileManager.search(treeRecordFileId, year, name, documentNumber, offset, limit);
     }
 
+    /**
+     * @see TreeRecordFileService#searchCount(java.lang.Long, java.lang.Long,
+     * java.lang.String, java.lang.String)
+     * @param treeRecordFileId
+     * @param year
+     * @param name
+     * @param documentNumber
+     * @return
+     */
     @Override
     public int searchCount(Long treeRecordFileId, Long year, String name, String documentNumber) {
         return treeRecordFileManager.searchCount(treeRecordFileId, year, name, documentNumber);
     }
 
+    /**
+     * @see
+     * TreeRecordFileService#save(org.jacq.common.model.rest.TreeRecordFileResult)
+     * @param treeRecordFileResult
+     * @return
+     */
     @Override
     public TreeRecordFileResult save(TreeRecordFileResult treeRecordFileResult) {
         try {
@@ -58,11 +80,21 @@ public class TreeRecordFileServiceImpl implements TreeRecordFileService {
         return null;
     }
 
+    /**
+     * @see TreeRecordFileService#load(java.lang.Long)
+     * @param treeRecordFileId
+     * @return
+     */
     @Override
     public TreeRecordFileResult load(Long treeRecordFileId) {
         return treeRecordFileManager.load(treeRecordFileId);
     }
 
+    /**
+     * @see TreeRecordFileService#loadPage(java.lang.Long)
+     * @param treeRecordFilePageId
+     * @return
+     */
     @Override
     public TreeRecordFilePageResult loadPage(Long treeRecordFilePageId) {
         return treeRecordFileManager.loadPage(treeRecordFilePageId);

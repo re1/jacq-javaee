@@ -51,7 +51,17 @@ public class OrganisationManager extends BaseOrganisationManager {
     }
 
     /**
-     * @see OrganisationService#searchCount()
+     * @see OrganisationService#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.String,
+     * java.lang.String)
+     * @param organisationId
+     * @param description
+     * @param department
+     * @param greenhouse
+     * @param ipenCode
+     * @param parentOrganisationDescription
+     * @param gardener
+     * @return
      */
     @Transactional
     public int searchCount(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener) {
@@ -71,17 +81,22 @@ public class OrganisationManager extends BaseOrganisationManager {
     }
 
     /**
-     * @see OrganisationService#save(org.jacq.common.model.OrganisationResult)
+     * @see
+     * OrganisationService#save(org.jacq.common.model.rest.OrganisationResult)
+     * @param organisationResult
+     * @return
      */
     @Transactional
     public OrganisationResult save(OrganisationResult organisationResult) {
         TblOrganisation tblOrganisation = null;
+        // Check if id then load from db else create new
         if (organisationResult.getOrganisationId() != null) {
             tblOrganisation = entityManager.find(TblOrganisation.class, organisationResult.getOrganisationId());
         } else {
             tblOrganisation = new TblOrganisation();
         }
         if (tblOrganisation != null) {
+            // Set TblOrganisation
             tblOrganisation.setDescription(organisationResult.getDescription());
             tblOrganisation.setDepartment(organisationResult.getDepartment());
             tblOrganisation.setGreenhouse(organisationResult.getGreenhouse());
@@ -91,6 +106,7 @@ public class OrganisationManager extends BaseOrganisationManager {
             tblOrganisation.setIndexSeminumStart(organisationResult.isIndexSeminumStart());
             tblOrganisation.setAccessionStart(organisationResult.isAccessionStart());
 
+            // When id then merge else persist
             if (tblOrganisation.getId() != null) {
                 entityManager.merge(tblOrganisation);
             } else {
@@ -105,6 +121,8 @@ public class OrganisationManager extends BaseOrganisationManager {
 
     /**
      * @see OrganisationService#getIpenCode(java.lang.Long)
+     * @param organisationId
+     * @return
      */
     @Transactional
     public String getIpenCode(Long organisationId) {

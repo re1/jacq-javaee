@@ -221,6 +221,12 @@ public class IndexSeminumManager {
 
     }
 
+    /**
+     * @see IndexSeminumService#search(java.lang.Integer, java.lang.Integer)
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Transactional
     public List<IndexSeminumResult> search(Integer offset, Integer limit) {
         // prepare criteria builder & query
@@ -253,6 +259,10 @@ public class IndexSeminumManager {
         return results;
     }
 
+    /**
+     * @see IndexSeminumService#searchCount()
+     * @return
+     */
     @Transactional
     public int searchCount() {
         // prepare criteria builder & query
@@ -267,6 +277,14 @@ public class IndexSeminumManager {
         return em.createQuery(cq).getSingleResult().intValue();
     }
 
+    /**
+     * @see IndexSeminumService#searchContent(java.lang.Long, java.lang.Integer,
+     * java.lang.Integer)
+     * @param indexSeminumRevisionId
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Transactional
     public List<IndexSeminumDownloadResult> searchContent(Long indexSeminumRevisionId, Integer offset, Integer limit) {
 
@@ -303,6 +321,12 @@ public class IndexSeminumManager {
         return results;
     }
 
+    /**
+     * @see IndexSeminumService#searchCountContent(java.lang.Long)
+     * @param indexSeminumRevisionId
+     * @return
+     */
+    @Transactional
     public int searchCountContent(Long indexSeminumRevisionId) {
 
         // prepare criteria builder & query

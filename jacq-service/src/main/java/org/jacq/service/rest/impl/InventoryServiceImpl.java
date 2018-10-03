@@ -28,9 +28,6 @@ import org.jacq.service.manager.InventoryManager;
  */
 public class InventoryServiceImpl implements InventoryService {
 
-    /**
-     *
-     */
     @Inject
     protected InventoryManager inventoryManager;
 

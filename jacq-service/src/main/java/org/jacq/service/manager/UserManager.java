@@ -57,6 +57,20 @@ public class UserManager {
     @PersistenceContext(unitName = "jacq-service")
     protected EntityManager em;
 
+    /**
+     * @see UserService#search(java.lang.Long, java.lang.String, java.util.Date,
+     * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param usertype
+     * @param employmentType
+     * @param organisationDescription
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Transactional
     public List<UserResult> search(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Integer offset, Integer limit) {
         // prepare criteria builder & query
@@ -92,6 +106,17 @@ public class UserManager {
         return results;
     }
 
+    /**
+     * @see UserService#searchCount(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param usertype
+     * @param employmentType
+     * @param organisationDescription
+     * @return
+     */
     @Transactional
     public int searchCount(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription) {
         // prepare criteria builder & query
@@ -111,6 +136,8 @@ public class UserManager {
 
     /**
      * @see UserService#load(java.lang.Long)
+     * @param id
+     * @return
      */
     @Transactional
     public UserResult load(Long id) {
@@ -123,7 +150,9 @@ public class UserManager {
     }
 
     /**
-     * @see UserService#save(org.jacq.common.model.UserResult)
+     * @see UserService#save(org.jacq.common.model.rest.UserResult)
+     * @param userResult
+     * @return
      */
     @Transactional
     public UserResult save(UserResult userResult) {
@@ -169,6 +198,10 @@ public class UserManager {
         return null;
     }
 
+    /**
+     * @see UserService#findAllUserType()
+     * @return
+     */
     @Transactional
     public List<UserTypeResult> findAllUserType() {
         // Create Query to get FrmwrkUserType List
@@ -187,6 +220,10 @@ public class UserManager {
         return results;
     }
 
+    /**
+     * @see UserService#findAllEmploymentType()
+     * @return
+     */
     @Transactional
     public List<EmploymentTypeResult> findAllEmploymentType() {
         // Create Query to get FrmwrkUserType List
@@ -205,6 +242,10 @@ public class UserManager {
         return results;
     }
 
+    /**
+     * @see UserService#findAllRole()
+     * @return
+     */
     @Transactional
     public List<RoleResult> findAllRole() {
         // Create Query to get FrmwrkRole List
@@ -225,6 +266,9 @@ public class UserManager {
 
     /**
      * @see UserService#authenticate(java.lang.String, java.lang.String)
+     * @param username
+     * @param password
+     * @return
      */
     @Transactional
     public UserResult authenticate(String username, String password) {
@@ -308,6 +352,11 @@ public class UserManager {
         return RandomStringUtils.randomAlphanumeric(16);
     }
 
+    /**
+     * @see UserService#update(java.lang.String)
+     * @param password
+     * @return
+     */
     @Transactional
     public UserResult update(String password) {
         FrmwrkUser frmwrkUser = em.find(FrmwrkUser.class, sessionManager.getUser().getId());

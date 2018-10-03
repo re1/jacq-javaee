@@ -97,6 +97,7 @@ public interface IndexSeminumService {
     public List<IndexSeminumDownloadResult> searchContent(@QueryParam("indexSeminumRevisionId") Long indexSeminumRevisionId, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
     /**
+     * Search the database using the given filter and return the count
      *
      * @param indexSeminumRevisionId
      * @return

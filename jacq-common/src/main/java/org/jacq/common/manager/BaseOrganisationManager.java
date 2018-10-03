@@ -33,7 +33,8 @@ import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.rest.OrganisationService;
 
 /**
- * Contains organisation manager functionality which is used across different services
+ * Contains organisation manager functionality which is used across different
+ * services
  *
  * @author wkoller
  */
@@ -42,7 +43,19 @@ public class BaseOrganisationManager {
     protected EntityManager entityManager;
 
     /**
-     * @see OrganisationService#search()
+     * @see OrganisationService#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @param organisationId
+     * @param description
+     * @param department
+     * @param greenhouse
+     * @param ipenCode
+     * @param parentOrganisationDescription
+     * @param gardener
+     * @param offset
+     * @param limit
+     * @return
      */
     @Transactional
     public List<OrganisationResult> search(Long organisationId, String description, String department, Boolean greenhouse, String ipenCode, String parentOrganisationDescription, String gardener, Integer offset, Integer limit) {
@@ -81,6 +94,8 @@ public class BaseOrganisationManager {
 
     /**
      * @see OrganisationService#load(java.lang.Long)
+     * @param organisationId
+     * @return
      */
     @Transactional
     public OrganisationResult load(Long organisationId) {
@@ -96,10 +111,11 @@ public class BaseOrganisationManager {
      * Helper function for applying the search criteria for counting / selecting
      *
      * @param parentOrganisationDescription
-     * @see BaseOrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see BaseOrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see BaseOrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see BaseOrganisationManager#searchCount(java.lang.Long,
+     * java.lang.String, java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq

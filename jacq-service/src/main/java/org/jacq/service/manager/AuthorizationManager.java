@@ -47,6 +47,25 @@ public class AuthorizationManager {
     @Inject
     protected UserManager userManager;
 
+    /**
+     * @see AuthorizationService#search(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String,
+     * java.lang.Long, java.lang.Boolean, java.lang.Long, java.lang.Long,
+     * java.lang.Integer, java.lang.Integer)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param userType
+     * @param employmentType
+     * @param organisationDescription
+     * @param accessOrganisationId
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Transactional
     public List<AccessOrganisationResult> search(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId, Integer offset, Integer limit) {
         // prepare criteria builder & query
@@ -86,6 +105,22 @@ public class AuthorizationManager {
         return results;
     }
 
+    /**
+     * @see AuthorizationService#searchCount(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String,
+     * java.lang.Long, java.lang.Boolean, java.lang.Long, java.lang.Long)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param userType
+     * @param employmentType
+     * @param organisationDescription
+     * @param accessOrganisationId
+     * @param allowDeny
+     * @param userId
+     * @param organisationId
+     * @return
+     */
     @Transactional
     public int searchCount(Long id, String username, Date birthdate, String userType, String employmentType, String organisationDescription, Long accessOrganisationId, Boolean allowDeny, Long userId, Long organisationId) {
         return userManager.searchCount(id, username, birthdate, userType, employmentType, organisationDescription);
@@ -131,6 +166,12 @@ public class AuthorizationManager {
         cq.where(predicates.toArray(new Predicate[0]));
     }
 
+    /**
+     * @see
+     * AuthorizationService#save(org.jacq.common.model.rest.AccessOrganisationResult)
+     * @param accessOrganisationResult
+     * @return
+     */
     @Transactional
     public AccessOrganisationResult save(AccessOrganisationResult accessOrganisationResult) {
 

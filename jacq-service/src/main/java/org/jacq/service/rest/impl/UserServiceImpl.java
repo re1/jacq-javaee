@@ -34,41 +34,92 @@ public class UserServiceImpl implements UserService {
     @Inject
     protected UserManager userManager;
 
+    /**
+     * @see UserService#search(java.lang.Long, java.lang.String, java.util.Date,
+     * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param usertype
+     * @param employmentType
+     * @param organisationDescription
+     * @param offset
+     * @param limit
+     * @return
+     */
     @Override
     public List<UserResult> search(Long id, String username, Date birthdate, String usertype, String employmentType, String organisationDescription, Integer offset, Integer limit) {
         return userManager.search(id, username, birthdate, usertype, employmentType, organisationDescription, offset, limit);
     }
 
+    /**
+     * @see UserService#searchCount(java.lang.Long, java.lang.String,
+     * java.util.Date, java.lang.String, java.lang.String, java.lang.String)
+     * @param id
+     * @param username
+     * @param birthdate
+     * @param usertype
+     * @param employmentType
+     * @param organisationDescription
+     * @return
+     */
     @Override
     public int searchCount(Long id, String username, Date birthdate, String usertype, String employmentType, String organisationDescription) {
         return userManager.searchCount(id, username, birthdate, usertype, employmentType, organisationDescription);
     }
 
+    /**
+     * @see UserService#findAll()
+     * @return
+     */
     @Override
     public List<UserResult> findAll() {
         return userManager.search(null, null, null, null, null, null, null, null);
     }
 
+    /**
+     * @see UserService#load(java.lang.Long)
+     * @param id
+     * @return
+     */
     @Override
     public UserResult load(Long id) {
         return userManager.load(id);
     }
 
+    /**
+     * @see UserService#save(org.jacq.common.model.rest.UserResult)
+     * @param userResult
+     * @return
+     */
     @Override
     public UserResult save(UserResult userResult) {
         return userManager.save(userResult);
     }
 
+    /**
+     * @see UserService#findAllUserType()
+     * @return
+     */
     @Override
     public List<UserTypeResult> findAllUserType() {
         return userManager.findAllUserType();
     }
 
+    /**
+     * @see UserService#findAllEmploymentType()
+     * @return
+     */
     @Override
     public List<EmploymentTypeResult> findAllEmploymentType() {
         return userManager.findAllEmploymentType();
     }
 
+    /**
+     * @see UserService#findAllRole()
+     * @return
+     */
     @Override
     public List<RoleResult> findAllRole() {
         return userManager.findAllRole();
@@ -76,12 +127,20 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#authenticate(java.lang.String, java.lang.String)
+     * @param username
+     * @param password
+     * @return
      */
     @Override
     public UserResult authenticate(String username, String password) {
         return userManager.authenticate(username, password);
     }
 
+    /**
+     * @see UserService#update(java.lang.String)
+     * @param password
+     * @return
+     */
     @Override
     public UserResult update(String password) {
         return userManager.update(password);
