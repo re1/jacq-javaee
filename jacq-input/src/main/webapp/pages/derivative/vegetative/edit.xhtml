@@ -8,46 +8,87 @@
 
     <h:form id="jacq_form-vegetative">
         <h:panelGroup styleClass="ui-g" id="vegetative">
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['auto']}" rendered="#{vegetativeEditController.vegetative.accessionNumber == null}" />
+                        <h:outputText value="#{vegetativeEditController.vegetative.accessionNumber}" rendered="#{vegetativeEditController.vegetative.accessionNumber != null}" />
+                    </div>
+                </div>
             </div>
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['auto']}" rendered="#{vegetativeEditController.vegetative.accessionNumber == null}" />
-                <h:outputText value="#{vegetativeEditController.vegetative.accessionNumber}" rendered="#{vegetativeEditController.vegetative.accessionNumber != null}" />
-            </div>
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['livingplant.location']}" />
-            </div>
-            <div class="ui-g-3">
-                <p:autoComplete id="organisation" value="#{vegetativeEditController.vegetative.organisation}" completeMethod="#{vegetativeEditController.completeOrganisation}"
-                                var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
-                    <p:column>
-                        <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
-                    </p:column>
-                </p:autoComplete>
-                <p:message for="organisation" />
-            </div>
-
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['livingplant.phenology']}" />
-            </div>
-            <div class="ui-g-3">
-                <p:selectOneMenu value="#{vegetativeEditController.vegetative.phenology.phenologyId}">
-                    <f:selectItems value="#{vegetativeEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
-                </p:selectOneMenu>
-            </div>
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['derivative.propagation_date']}" />
-            </div>
-            <div class="ui-g-3">
-                <p:calendar value="#{vegetativeEditController.vegetative.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.location']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:autoComplete id="organisation" value="#{vegetativeEditController.vegetative.organisation}" completeMethod="#{vegetativeEditController.completeOrganisation}"
+                                        var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" label="#{messages['livingplant.location']}" required="true">
+                            <p:column>
+                                <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                            </p:column>
+                        </p:autoComplete>
+                        <p:message for="organisation" />
+                    </div>
+                </div>
             </div>
 
-            <div class="ui-g-3">
-                <h:outputText value="#{messages['livingplant.indexseminum']}" />
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.phenology']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:selectOneMenu value="#{vegetativeEditController.vegetative.phenology.phenologyId}">
+                            <f:selectItems value="#{vegetativeEditController.phenologies}" var="phenology" itemLabel="#{phenology.phenology}" itemValue="#{phenology.phenologyId}" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
             </div>
-            <div cass="ui-g-3">
-                <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.indexSeminum}" />
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['derivative.propagation_date']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:calendar value="#{vegetativeEditController.vegetative.cultivationDate}" pattern="yyyy-MM-dd" mask="true" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.indexseminum']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:selectBooleanCheckbox value="#{vegetativeEditController.vegetative.indexSeminum}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.count']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:spinner value="#{vegetativeEditController.vegetative.count}" min="0" />
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-6 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        <h:outputText value="#{messages['livingplant.price']}" />
+                    </div>
+                    <div class="ui-g-6">
+                        <p:inputNumber value="#{vegetativeEditController.vegetative.price}" symbol=" €" decimalPlaces="2" />
+                    </div>
+                </div>
             </div>
 
             <div class="ui-g-12 ui-g-nopad">

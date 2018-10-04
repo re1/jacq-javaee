@@ -34,6 +34,8 @@ public class VegetativeResult extends BotanicalObjectDerivative {
     protected PhenologyResult phenology;
     protected OrganisationResult organisation;
     protected Long parentDerivativeId;
+    protected long count;
+    protected float price;
 
     protected List<SeparationResult> separations;
 
@@ -55,13 +57,16 @@ public class VegetativeResult extends BotanicalObjectDerivative {
             this.phenology = new PhenologyResult(tblVegetative.getPhenologyId());
             this.organisation = new OrganisationResult(tblVegetative.getTblDerivative().getOrganisationId());
             this.parentDerivativeId = tblVegetative.getTblDerivative().getParentDerivativeId().getDerivativeId();
+            this.count = tblVegetative.getTblDerivative().getCount();
+            this.price = tblVegetative.getTblDerivative().getPrice();
 
             this.separations = SeparationResult.fromList(tblVegetative.getTblDerivative().getTblSeparationList());
         }
     }
 
     /**
-     * Helper function for converting a list of TblVegetative entries to Vegetative results
+     * Helper function for converting a list of TblVegetative entries to
+     * Vegetative results
      *
      * @param tblVegetativeList
      * @return
@@ -133,4 +138,21 @@ public class VegetativeResult extends BotanicalObjectDerivative {
     public void setParentDerivativeId(Long parentDerivativeId) {
         this.parentDerivativeId = parentDerivativeId;
     }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
 }

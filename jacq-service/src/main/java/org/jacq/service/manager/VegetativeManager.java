@@ -32,15 +32,15 @@ public class VegetativeManager {
     protected EntityManager em;
 
     /**
-     * @see DerivativeService#vegetativeSave(org.jacq.common.model.rest.VegetativeResult)
+     * @see
+     * DerivativeService#vegetativeSave(org.jacq.common.model.rest.VegetativeResult)
      */
     @Transactional
     public VegetativeResult vegetativeSave(VegetativeResult vegetativeResult) {
         TblVegetative tblVegetative = null;
         if (vegetativeResult.getVegetativeId() != null) {
             tblVegetative = em.find(TblVegetative.class, vegetativeResult.getVegetativeId());
-        }
-        else {
+        } else {
             // prepare skeleton vegetative entry
             tblVegetative = new TblVegetative();
         }
@@ -62,6 +62,8 @@ public class VegetativeManager {
         tblDerivative.setCount(1L);
         tblDerivative.setDerivativeTypeId(em.find(TblDerivativeType.class, 2L));
         tblDerivative.setOrganisationId(em.find(TblOrganisation.class, vegetativeResult.getOrganisation().getOrganisationId()));
+        tblDerivative.setCount(vegetativeResult.getCount());
+        tblDerivative.setPrice(vegetativeResult.getPrice());
 
         // persist derivative
         em.persist(tblDerivative);
@@ -75,8 +77,7 @@ public class VegetativeManager {
             TblSeparation tblSeparation = null;
             if (separation.getSeparationId() != null) {
                 tblSeparation = em.find(TblSeparation.class, separation.getSeparationId());
-            }
-            else {
+            } else {
                 tblSeparation = new TblSeparation();
             }
 
