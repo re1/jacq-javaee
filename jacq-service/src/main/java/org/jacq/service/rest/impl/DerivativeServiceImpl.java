@@ -238,4 +238,34 @@ public class DerivativeServiceImpl implements DerivativeService {
         return this.derivativeManager.removeIndexSeminumMarking(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection);
     }
 
+    /**
+     * @see DerivativeService#removeLabelMarking(java.lang.String,
+     * java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.Long, java.lang.Long, java.lang.Boolean, java.lang.Boolean,
+     * java.lang.String, java.lang.Long, java.lang.Long, java.lang.String,
+     * java.lang.Boolean, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection)
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param hierarchic
+     * @param indexSeminum
+     * @param gatheringLocation
+     * @param exhibition
+     * @param working
+     * @param cultivar
+     * @param classification
+     * @param orderColumn
+     * @param orderDirection
+     * @return
+     */
+    @Override
+    public List<BotanicalObjectDerivative> removeLabelMarking(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection) {
+        return this.derivativeManager.removeLabelMarking(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, indexSeminum, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection);
+    }
+
 }

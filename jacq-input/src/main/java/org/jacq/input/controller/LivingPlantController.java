@@ -82,10 +82,24 @@ public class LivingPlantController implements Serializable, OrganisationSelectLi
     }
 
     /**
-     * Removes Markings of IndexSeminum
+     * Removes Markings of Label
      */
-    public void removeIndexSeminumMarking() {
-        if (this.derivativeService.removeIndexSeminumMarking(this.dataModel.getDerivativeSearchModel().getType(), this.dataModel.getDerivativeSearchModel().getId(), this.dataModel.getDerivativeSearchModel().getPlaceNumber(), this.dataModel.getDerivativeSearchModel().getAccessionNumber(), this.dataModel.getDerivativeSearchModel().getSeparatedFilter(), this.dataModel.getDerivativeSearchModel().getScientificNameId(), this.dataModel.getDerivativeSearchModel().getOrganisationId(), this.dataModel.getDerivativeSearchModel().getHierarchic(), this.dataModel.getDerivativeSearchModel().getIndexSeminumFilter(), this.dataModel.getDerivativeSearchModel().getGatheringLocationName(), (this.dataModel.getDerivativeSearchModel().getExhibition() != null) ? this.dataModel.getDerivativeSearchModel().getExhibition() : null, (this.dataModel.getDerivativeSearchModel().getWorking() != null) ? this.dataModel.getDerivativeSearchModel().getWorking() : null, (this.dataModel.getDerivativeSearchModel().getSelectedCultivar() != null) ? this.dataModel.getDerivativeSearchModel().getSelectedCultivar().getCultivar() : null, this.dataModel.getDerivativeSearchModel().getClassification(), null, null) == null) {
+    public void removeLabelMarking() {
+        if (this.derivativeService.removeLabelMarking(
+                this.dataModel.getDerivativeSearchModel().getType(),
+                this.dataModel.getDerivativeSearchModel().getId(),
+                this.dataModel.getDerivativeSearchModel().getPlaceNumber(),
+                this.dataModel.getDerivativeSearchModel().getAccessionNumber(),
+                this.dataModel.getDerivativeSearchModel().getSeparatedFilter(),
+                this.dataModel.getDerivativeSearchModel().getScientificNameId(),
+                this.dataModel.getDerivativeSearchModel().getOrganisationId(),
+                this.dataModel.getDerivativeSearchModel().getHierarchic(),
+                this.dataModel.getDerivativeSearchModel().getIndexSeminumFilter(),
+                this.dataModel.getDerivativeSearchModel().getGatheringLocationName(),
+                (this.dataModel.getDerivativeSearchModel().getExhibition() != null) ? this.dataModel.getDerivativeSearchModel().getExhibition() : null,
+                (this.dataModel.getDerivativeSearchModel().getWorking() != null) ? this.dataModel.getDerivativeSearchModel().getWorking() : null,
+                (this.dataModel.getDerivativeSearchModel().getSelectedCultivar() != null) ? this.dataModel.getDerivativeSearchModel().getSelectedCultivar().getCultivar() : null,
+                this.dataModel.getDerivativeSearchModel().getClassification(), null, null) == null) {
             sessionController.setGrowlMessage(FacesMessage.SEVERITY_ERROR, "error", "not_allowed");
         }
 

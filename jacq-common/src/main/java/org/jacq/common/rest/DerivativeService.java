@@ -306,7 +306,7 @@ public interface DerivativeService {
     public CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
 
     /**
-     * Search for a specific derivative and and remove Indexseminum Markings
+     * Search for a specific derivatives and and remove Indexseminum Markings
      *
      * @param type
      * @param derivativeId
@@ -331,5 +331,32 @@ public interface DerivativeService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<BotanicalObjectDerivative> removeIndexSeminumMarking(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("cultivar") String cultivar, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection);
+
+    /**
+     * Search for a specific derivatives and and remove Indexseminum Markings
+     *
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param hierarchic
+     * @param indexSeminum
+     * @param gatheringLocation
+     * @param exhibition
+     * @param working
+     * @param cultivar
+     * @param classification
+     * @param orderColumn
+     * @param orderDirection
+     * @return
+     */
+    @GET
+    @Path("/removeLabelMarking")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BotanicalObjectDerivative> removeLabelMarking(@QueryParam("type") String type, @QueryParam("derivativeId") Long derivativeId, @QueryParam("placeNumber") String placeNumber, @QueryParam("accessionNumber") String accessionNumber, @QueryParam("separated") Boolean separated, @QueryParam("scientificNameId") Long scientificNameId, @QueryParam("organisationId") Long organisationId, @QueryParam("hierarchic") Boolean hierarchic, @QueryParam("indexSeminum") Boolean indexSeminum, @QueryParam("gatheringLocation") String gatheringLocation, @QueryParam("exhibition") Long exhibition, @QueryParam("working") Long working, @QueryParam("cultivar") String cultivar, @QueryParam("classification") Boolean classification, @QueryParam("orderColumn") String orderColumn, @QueryParam("orderDirection") OrderDirection orderDirection);
 
 }

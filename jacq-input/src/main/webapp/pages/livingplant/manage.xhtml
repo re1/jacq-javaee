@@ -159,6 +159,18 @@
                         <div class="ui-g-3">
                         </div>
                         <div class="ui-g-3">
+                            <div class="jacq-buttons">
+                                <p:commandButton id="removeLabelMarkingButton" value="#{messages['livingplant.removelabelmarking']}" action="#{livingPlantController.removeLabelMarking()}" update="jacq_livingplant-search" >
+                                    <p:confirm header="#{messages['livingplant.confirmation']}" message="#{messages['livingplant.sure']}" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </div>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="#{messages['yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="#{messages['no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                            <p:blockUI block="jacq_livingplant-search" trigger="removeLabelMarkingButton">
+                                <h:outputText value="#{messages.loading}" />
+                            </p:blockUI>
                         </div>
                         <div class="ui-g-3">
                             <div class="jacq-buttons">

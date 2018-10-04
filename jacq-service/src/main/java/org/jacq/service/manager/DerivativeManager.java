@@ -483,6 +483,7 @@ public class DerivativeManager extends BaseDerivativeManager {
         // list of predicates to add in where clause
         List<Predicate> predicates = new ArrayList<>();
 
+        // Get Organisation of User for access
         path = bo.get("userId");
         predicates.add(cb.equal(path, this.securityManager.getUser().getId()));
 
@@ -499,20 +500,24 @@ public class DerivativeManager extends BaseDerivativeManager {
 
         TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
 
+        // Get all Organisations with user access
         List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
         List<Long> ids = new ArrayList<>();
 
+        // Check if search was hierachic
         if (hierarchic != null && hierarchic && frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
             TblOrganisation tblOrganisation = em.find(TblOrganisation.class, frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
             ids = this.findChildren(tblOrganisation, this.securityManager.getUser().getId());
         }
 
+        // add when true
         if (frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
             ids.add(frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
         } else {
             return null;
         }
 
+        // Remove Indexseminum from all with access True or auto from above
         for (Long id : ids) {
             for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivatives) {
                 if (botanicalObjectDerivative.getOrganisationId().compareTo(id) == 0) {
@@ -568,6 +573,94 @@ public class DerivativeManager extends BaseDerivativeManager {
         }
         return ids;
 
+    }
+
+    /**
+     * @see DerivativeService#removeLabelMarking(java.lang.String,
+     * java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.Long, java.lang.Long, java.lang.Boolean, java.lang.Boolean,
+     * java.lang.String, java.lang.Long, java.lang.Long, java.lang.String,
+     * java.lang.Boolean, java.lang.String,
+     * org.jacq.common.model.rest.OrderDirection)
+     * @param type
+     * @param derivativeId
+     * @param placeNumber
+     * @param accessionNumber
+     * @param separated
+     * @param scientificNameId
+     * @param organisationId
+     * @param hierarchic
+     * @param indexSeminum
+     * @param gatheringLocation
+     * @param exhibition
+     * @param working
+     * @param cultivar
+     * @param classification
+     * @param orderColumn
+     * @param orderDirection
+     * @return
+     */
+    @Transactional
+    public List<BotanicalObjectDerivative> removeLabelMarking(String type, Long derivativeId, String placeNumber, String accessionNumber, Boolean separated, Long scientificNameId, Long organisationId, Boolean hierarchic, Boolean indexSeminum, String gatheringLocation, Long exhibition, Long working, String cultivar, Boolean classification, String orderColumn, OrderDirection orderDirection) {
+        List<BotanicalObjectDerivative> botanicalObjectDerivatives = this.find(type, derivativeId, placeNumber, accessionNumber, separated, scientificNameId, organisationId, hierarchic, Boolean.TRUE, gatheringLocation, exhibition, working, cultivar, classification, orderColumn, orderDirection, null, null);
+
+        // prepare criteria builder & query
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<FrmwrkaccessOrganisation> cq = cb.createQuery(FrmwrkaccessOrganisation.class);
+        Root<FrmwrkaccessOrganisation> bo = cq.from(FrmwrkaccessOrganisation.class);
+
+        // select result list
+        cq.select(bo);
+        Expression<String> path = null;
+        // list of predicates to add in where clause
+        List<Predicate> predicates = new ArrayList<>();
+
+        path = bo.get("userId");
+        predicates.add(cb.equal(path, this.securityManager.getUser().getId()));
+
+        if (organisationId != null) {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, organisationId));
+        } else {
+            path = bo.get("organisationId");
+            predicates.add(cb.equal(path, 1L));
+        }
+
+        // add all predicates as where clause
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<FrmwrkaccessOrganisation> accessOrganisationSearchQuery = em.createQuery(cq);
+
+        // Get all Organisations with user access
+        List<FrmwrkaccessOrganisation> frmwrkaccessOrganisations = accessOrganisationSearchQuery.getResultList();
+        List<Long> ids = new ArrayList<>();
+
+        // Check if search was hierachic
+        if (hierarchic != null && hierarchic && frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            TblOrganisation tblOrganisation = em.find(TblOrganisation.class, frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+            ids = this.findChildren(tblOrganisation, this.securityManager.getUser().getId());
+        }
+
+        // add when true
+        if (frmwrkaccessOrganisations.size() > 0 && frmwrkaccessOrganisations.get(0).getAllowDeny() == true) {
+            ids.add(frmwrkaccessOrganisations.get(0).getOrganisationId().getId());
+        } else {
+            return null;
+        }
+
+        // remove LabelMarkings
+        for (Long id : ids) {
+            for (BotanicalObjectDerivative botanicalObjectDerivative : botanicalObjectDerivatives) {
+                if (botanicalObjectDerivative.getOrganisationId().compareTo(id) == 0) {
+                    TblBotanicalObject tblBotanicalObject = em.find(TblBotanicalObject.class, botanicalObjectDerivative.getBotanicalObjectId());
+                    tblBotanicalObject.setTblLabelTypeList(null);
+                    em.persist(tblBotanicalObject);
+
+                }
+            }
+        }
+
+        return botanicalObjectDerivatives;
     }
 
 }

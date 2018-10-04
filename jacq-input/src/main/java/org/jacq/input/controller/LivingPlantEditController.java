@@ -281,7 +281,9 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     public void addGatherer() {
-        this.livingPlantResult.getGatherers().add(new PersonResult());
+        List<PersonResult> gatherers = this.livingPlantResult.getGatherers() != null ? this.livingPlantResult.getGatherers() : new ArrayList<>();
+        gatherers.add(new PersonResult());
+        this.livingPlantResult.setGatherers(gatherers);
     }
 
     public void removeGatherer(PersonResult gatherer) {
