@@ -153,7 +153,7 @@
                     <div class="ui-g-12 ui-g-nopad">
                         <div class="ui-g-3">
                             <div class="jacq-buttons">
-                                <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
+                                <p:commandButton onclick="PF('derivativeTable').paginator.setPage(0);" type="submit" id="searchButton" value="#{messages['search']}" update="jacq_livingplant-search" />
                             </div>
                         </div>
                         <div class="ui-g-3">
