@@ -536,7 +536,11 @@ public class LivingPlantEditController implements OrganisationSelectListener {
     }
 
     public void setIpenNumberCountry(String ipenNumberCountry) {
-        this.livingPlantResult.setIpenNumber(String.format("%s-%s-%s", ipenNumberCountry, getIpenNumberRestriction(), getIpenNumberGardenCode()));
+        try {
+            this.livingPlantResult.setIpenNumber(String.format("%s-%s-%s", ipenNumberCountry, getIpenNumberRestriction(), getIpenNumberGardenCode()));
+        } catch (Exception exception) {
+
+        }
     }
 
     public String getIpenNumberRestriction() {
