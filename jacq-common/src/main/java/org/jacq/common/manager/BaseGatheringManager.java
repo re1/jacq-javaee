@@ -67,21 +67,23 @@ public abstract class BaseGatheringManager {
             if (locationGeonamesList != null && locationGeonamesList.size() > 0) {
                 locationResults.add(new LocationResult(locationGeonamesList.get(0).getTblLocation()));
             } else {
-                TblLocation tblLocation = new TblLocation();
-                tblLocation.setLocation(geoNamesEntryResult.getName());
-                entityManager.persist(tblLocation);
+                if (geoNamesEntryResult.getCountryCode() != null) {
+                    TblLocation tblLocation = new TblLocation();
+                    tblLocation.setLocation(geoNamesEntryResult.getName());
+                    entityManager.persist(tblLocation);
 
-                TblLocationGeonames tblLocationGeonames = new TblLocationGeonames();
-                tblLocationGeonames.setId(tblLocation.getId());
-                tblLocationGeonames.setTblLocation(tblLocation);
-                tblLocationGeonames.setCountryCode(geoNamesEntryResult.getCountryCode());
-                tblLocationGeonames.setGeonameId(geoNamesEntryResult.getGeonameId());
-                tblLocationGeonames.setServiceData(geoNamesEntryResult.toString());
-                entityManager.persist(tblLocationGeonames);
+                    TblLocationGeonames tblLocationGeonames = new TblLocationGeonames();
+                    tblLocationGeonames.setId(tblLocation.getId());
+                    tblLocationGeonames.setTblLocation(tblLocation);
+                    tblLocationGeonames.setCountryCode(geoNamesEntryResult.getCountryCode());
+                    tblLocationGeonames.setGeonameId(geoNamesEntryResult.getGeonameId());
+                    tblLocationGeonames.setServiceData(geoNamesEntryResult.toString());
+                    entityManager.persist(tblLocationGeonames);
 
-                tblLocation.setTblLocationGeonames(tblLocationGeonames);
+                    tblLocation.setTblLocationGeonames(tblLocationGeonames);
 
-                locationResults.add(new LocationResult(tblLocation));
+                    locationResults.add(new LocationResult(tblLocation));
+                }
             }
         }
 
