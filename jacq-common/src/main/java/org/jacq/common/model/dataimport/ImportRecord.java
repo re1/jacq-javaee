@@ -110,6 +110,8 @@ public class ImportRecord implements Serializable {
     protected Date acquisitionDate;
     @Column(name = "custom_acquisition_date")
     protected String customAcquisitionDate;
+    @Column(name = "gathering_annotation")
+    protected String gatheringAnnotation;
 
     public Long getOriginalId() {
         return originalId;
@@ -389,6 +391,14 @@ public class ImportRecord implements Serializable {
 
     public void setCustomAcquisitionDate(String customAcquisitionDate) {
         this.customAcquisitionDate = customAcquisitionDate;
+    }
+
+    public String getGatheringAnnotation() {
+        return gatheringAnnotation;
+    }
+
+    public void setGatheringAnnotation(String gatheringAnnotation) {
+        this.gatheringAnnotation = gatheringAnnotation;
     }
 
     /**

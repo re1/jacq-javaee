@@ -165,6 +165,7 @@ public class DataImportManager {
             importRecord.setHabitat(record.get(i++));
             importRecord.setAcquisitionDate(separationDateFormat.parse(record.get(i++)));
             importRecord.setCustomAcquisitionDate(record.get(i++));
+            importRecord.setGatheringAnnotation(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -286,6 +287,7 @@ public class DataImportManager {
                 acquisitionEvent.setAcquisitionDateId(tblAcquisitionDate);
                 acquisitionEvent.setAcquisitionTypeId(acquisitionType);
                 acquisitionEvent.setNumber(importRecord.getGatheringNumber());
+                acquisitionEvent.setAnnotation(importRecord.getGatheringAnnotation());
 
                 if (importRecord.getGatheringLocation() != null && !StringUtils.isEmpty(importRecord.getGatheringLocation())) {
                     TblLocation tblGatheringLocation = null;
