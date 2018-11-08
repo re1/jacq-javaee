@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -35,7 +37,6 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.dataimport.ImportFile;
 import org.jacq.common.model.dataimport.ImportRecord;
@@ -69,6 +70,7 @@ import org.jacq.common.model.jpa.TblLocation;
 import org.jacq.common.model.jpa.TblPerson;
 import org.jacq.common.model.rest.LocationResult;
 import org.jacq.common.rest.GatheringService;
+import org.jacq.common.rest.dataimport.DataImportService;
 import org.jacq.service.dataimport.util.ServicesUtil;
 
 /**
@@ -99,6 +101,8 @@ public class DataImportManager {
     protected GatheringService gatheringService;
 
     protected SimpleDateFormat separationDateFormat = new SimpleDateFormat("YYYY-mm-dd");
+
+    protected Pattern coordinatePattern = Pattern.compile("([N|S|W|E])(\\d+)°(\\d+)'(\\d+)\"");
 
     protected HashMap<Integer, Long> taxamatchCache = new HashMap<>();
 
@@ -166,6 +170,8 @@ public class DataImportManager {
             importRecord.setAcquisitionDate(separationDateFormat.parse(record.get(i++)));
             importRecord.setCustomAcquisitionDate(record.get(i++));
             importRecord.setGatheringAnnotation(record.get(i++));
+            importRecord.setLatitude(record.get(i++));
+            importRecord.setLongitude(record.get(i++));
 
             // call import function
             this.importRecord(importRecord);
@@ -263,6 +269,27 @@ public class DataImportManager {
                 TblLocationCoordinates locationCoordinates = new TblLocationCoordinates();
                 locationCoordinates.setAltitudeMin(importRecord.getAltitudeMin());
                 locationCoordinates.setAltitudeMax(importRecord.getAltitudeMax());
+
+                // try to match the coordinates (if they exist)
+                if (importRecord.getLatitude() != null) {
+                    Matcher latitudeMatcher = coordinatePattern.matcher(importRecord.getLatitude());
+                    if (latitudeMatcher.matches()) {
+                        locationCoordinates.setLatitudeDegrees(Long.valueOf(latitudeMatcher.group(2)));
+                        locationCoordinates.setLatitudeMinutes(Long.valueOf(latitudeMatcher.group(3)));
+                        locationCoordinates.setLatitudeSeconds(Long.valueOf(latitudeMatcher.group(4)));
+                        locationCoordinates.setLatitudeHalf(latitudeMatcher.group(1));
+                    }
+                }
+                if (importRecord.getLongitude() != null) {
+                    Matcher longitudeMatcher = coordinatePattern.matcher(importRecord.getLongitude());
+                    if (longitudeMatcher.matches()) {
+                        locationCoordinates.setLongitudeDegrees(Long.valueOf(longitudeMatcher.group(2)));
+                        locationCoordinates.setLongitudeMinutes(Long.valueOf(longitudeMatcher.group(3)));
+                        locationCoordinates.setLongitudeSeconds(Long.valueOf(longitudeMatcher.group(4)));
+                        locationCoordinates.setLongitudeHalf(longitudeMatcher.group(1));
+                    }
+                }
+
                 em.persist(locationCoordinates);
 
                 // setup gathering date
