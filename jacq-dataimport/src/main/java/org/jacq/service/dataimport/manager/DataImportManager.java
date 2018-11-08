@@ -278,6 +278,8 @@ public class DataImportManager {
                         locationCoordinates.setLatitudeMinutes(Long.valueOf(latitudeMatcher.group(3)));
                         locationCoordinates.setLatitudeSeconds(Long.valueOf(latitudeMatcher.group(4)));
                         locationCoordinates.setLatitudeHalf(latitudeMatcher.group(1));
+                    } else {
+                        throw new IllegalArgumentException("Invalid coordinate format (latitude): '" + importRecord.getLatitude() + "'");
                     }
                 }
                 if (importRecord.getLongitude() != null) {
@@ -287,6 +289,8 @@ public class DataImportManager {
                         locationCoordinates.setLongitudeMinutes(Long.valueOf(longitudeMatcher.group(3)));
                         locationCoordinates.setLongitudeSeconds(Long.valueOf(longitudeMatcher.group(4)));
                         locationCoordinates.setLongitudeHalf(longitudeMatcher.group(1));
+                    } else {
+                        throw new IllegalArgumentException("Invalid coordinate format (longitude): '" + importRecord.getLatitude() + "'");
                     }
                 }
 
