@@ -296,6 +296,7 @@ public class LivingPlantManager {
         em.persist(tblAcquisitionEvent);
         em.persist(tblBotanicalObject);
         em.persist(tblDerivative);
+        em.flush();
 
         // refresh required objects
         em.refresh(tblAcquisitionEvent);
