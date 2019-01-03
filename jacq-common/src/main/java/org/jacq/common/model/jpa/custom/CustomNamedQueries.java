@@ -54,6 +54,7 @@ import javax.persistence.NamedQuery;
     , @NamedQuery(name = "FrmwrkaccessOrganisation.findByUserAndOrganisation", query = "SELECT f FROM FrmwrkaccessOrganisation f WHERE f.userId = :userId AND f.organisationId = :organisationId")
     , @NamedQuery(name = "TblNomName.findBySubstantiveAndRank", query = "SELECT t FROM TblNomName t INNER JOIN t.substantiveId s INNER JOIN t.rankId r WHERE s.substantiveId = :substantiveId AND r.rankId = :rankId")
     , @NamedQuery(name = "TblPerson.findByLikeName", query = "SELECT t FROM TblPerson t WHERE t.name like :name")
+    , @NamedQuery(name = "TblIndexSeminumRevision.findByUserId", query = "SELECT t FROM TblIndexSeminumRevision t WHERE t.userId = :userId")
 })
 public class CustomNamedQueries {
 
