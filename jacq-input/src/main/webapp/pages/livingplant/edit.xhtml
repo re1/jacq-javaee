@@ -614,35 +614,23 @@
                                     </div>
                                 </div>
                                 <div class="ui-g-12 ui-g-nopad">
-                                    <div class="ui-g">
-                                        <div class="ui-g-4">
-                                            <h:outputText value="#{messages['livingplant.acquisition.source_date']}" />
-                                        </div>
-                                        <div class="ui-g-4">
-                                            <h:outputText value="#{messages['livingplant.acquisition.source_name']}" />
-                                        </div>
-                                        <div class="ui-g-4">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui-g-12 ui-g-nopad">
                                     <h:panelGroup id="acquistionEventSources" layout="block" styleClass="ui-g">
-                                        <ui:repeat value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}" var="acquistionEventSource">
-                                            <div class="ui-g-4">
+                                        <p:dataTable var="acquistionEventSource" value="#{livingPlantEditController.livingPlantResult.acquistionEventSources}">
+                                            <p:column styleClass="ui-g-3 ui-g-nopad" headerText="#{messages['livingplant.acquisition.source_date']}">
                                                 <p:calendar value="#{acquistionEventSource.sourceDate}" pattern="yyyy-MM-dd" mask="true" />
-                                            </div>
-                                            <div class="ui-g-4">
+                                            </p:column>
+                                            <p:column styleClass="ui-g-7 ui-g-nopad" headerText="#{messages['livingplant.acquisition.source_name']}">
                                                 <p:autoComplete value="#{acquistionEventSource.acquisitionEventSource}" completeMethod="#{livingPlantEditController.completeAcquisitionSource}"
                                                                 var="acquisitionSource" itemLabel="#{acquisitionSource.name}" itemValue="#{acquisitionSource}" minQueryLength="3" queryDelay="300" converter="acquisitionSourceConverter">
                                                     <p:column>
                                                         <h:outputText value="#{acquisitionSource.name}" /> (<h:outputText value="#{acquisitionSource.acquisitionSourceId}" />)
                                                     </p:column>
                                                 </p:autoComplete>
-                                            </div>
-                                            <div class="ui-g-4">
+                                            </p:column>
+                                            <p:column styleClass="ui-g-2 ui-g-nopad">
                                                 <p:commandButton icon="ui-icon-minus" update="@parent:@parent" action="#{livingPlantEditController.removeAcquisitionEventSource(acquistionEventSource)}" />
-                                            </div>
-                                        </ui:repeat>
+                                            </p:column>
+                                        </p:dataTable>
                                     </h:panelGroup>
                                 </div>
                                 <div class="ui-g-12 ui-g-nopad">

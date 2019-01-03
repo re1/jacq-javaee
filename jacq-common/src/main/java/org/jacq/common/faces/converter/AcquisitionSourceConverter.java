@@ -35,7 +35,7 @@ public class AcquisitionSourceConverter implements Converter {
         if (value != null && !value.equalsIgnoreCase("null")) {
             // check if we have a value
             try {
-                return new AcquisitionSourceResult(Long.valueOf(value));
+                return ServicesUtil.getAcquisitionService().sourceLoad(Long.valueOf(value));
             } catch (NumberFormatException nfe) {
                 return new AcquisitionSourceResult(value);
             }
@@ -48,8 +48,7 @@ public class AcquisitionSourceConverter implements Converter {
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         if (value != null) {
             return String.valueOf(((AcquisitionSourceResult) value).getAcquisitionSourceId());
-        }
-        else {
+        } else {
             return null;
         }
     }

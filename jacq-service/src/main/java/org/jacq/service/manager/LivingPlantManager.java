@@ -477,6 +477,7 @@ public class LivingPlantManager {
         // make sure changes are flushed to the database
         em.flush();
         // refresh botanical object in order to resolve manual relations
+        em.refresh(tblBotanicalObject.getAcquisitionEventId());
         em.refresh(tblBotanicalObject);
         em.refresh(tblLivingPlant);
 

@@ -26,7 +26,8 @@ public class AcquisitionManager {
     protected EntityManager em;
 
     /**
-     * @see AcquisitionService#sourceSearch(java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see AcquisitionService#sourceSearch(java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
      */
     public List<AcquisitionSourceResult> sourceSearch(String name, Integer offset, Integer limit) {
         TypedQuery<TblAcquisitionSource> acquisitionSourceQuery = em.createNamedQuery("TblAcquisitionSource.findLikeName", TblAcquisitionSource.class);
@@ -35,5 +36,12 @@ public class AcquisitionManager {
         acquisitionSourceQuery.setMaxResults(limit);
 
         return AcquisitionSourceResult.fromList(acquisitionSourceQuery.getResultList());
+    }
+
+    /**
+     * @see AcquisitionService#sourceLoad(java.lang.Long)
+     */
+    public AcquisitionSourceResult sourceLoad(Long locationId) {
+        return new AcquisitionSourceResult(em.find(TblAcquisitionSource.class, locationId));
     }
 }

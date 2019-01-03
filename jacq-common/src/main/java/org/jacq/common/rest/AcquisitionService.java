@@ -44,4 +44,16 @@ public interface AcquisitionService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<AcquisitionSourceResult> sourceSearch(@QueryParam("name") String name, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
+
+    /**
+     * Load a single acquisition source entry
+     *
+     * @param locationId
+     * @return
+     */
+    @Path("/source/load")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public AcquisitionSourceResult sourceLoad(@QueryParam("acquisitionSourceId") Long locationId);
 }
