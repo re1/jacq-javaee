@@ -54,6 +54,7 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
     protected String familyAuthor;
     protected String familyNoAuthor;
     protected String familyReference;
+    protected String indexSeminumType;
 
     public BotanicalObjectDownloadResult() {
     }
@@ -124,6 +125,9 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
             //label synonym scientific name
             if (derivative.getTblLivingPlant().getViewLabelSynonymScientificName() != null) {
                 this.setLabelSynonymScientificName(derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() != null ? derivative.getTblLivingPlant().getViewLabelSynonymScientificName().getScientificName() : null);
+            }
+            if (derivative.getTblLivingPlant().getIndexSeminumTypeId() != null) {
+                this.setIndexSeminumType(derivative.getTblLivingPlant().getIndexSeminumTypeId().getType());
             }
         }
         if (tblScientificNameInformation != null) {
@@ -296,6 +300,14 @@ public class BotanicalObjectDownloadResult extends BotanicalObjectDerivative {
 
     public void setFamily(String family) {
         this.family = family;
+    }
+
+    public String getIndexSeminumType() {
+        return indexSeminumType;
+    }
+
+    public void setIndexSeminumType(String indexSeminumType) {
+        this.indexSeminumType = indexSeminumType;
     }
 
 }

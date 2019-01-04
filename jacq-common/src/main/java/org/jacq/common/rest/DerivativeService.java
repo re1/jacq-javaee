@@ -294,7 +294,7 @@ public interface DerivativeService {
     public List<CultivarResult> cultivarFind(@QueryParam("cultivar") String cultivar, @QueryParam("offset") Integer offset, @QueryParam("count") Integer count);
 
     /**
-     * Load a single location entry
+     * Load a single cultivar entry
      *
      * @param cultivarId
      * @return

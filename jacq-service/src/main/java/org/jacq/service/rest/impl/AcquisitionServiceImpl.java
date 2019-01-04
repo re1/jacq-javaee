@@ -21,10 +21,19 @@ public class AcquisitionServiceImpl implements AcquisitionService {
     protected AcquisitionManager acquisitionManager;
 
     /**
-     * @see AcquisitionService#sourceSearch(java.lang.String, java.lang.Integer, java.lang.Integer)
+     * @see AcquisitionService#sourceSearch(java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
      */
     @Override
     public List<AcquisitionSourceResult> sourceSearch(String name, Integer offset, Integer limit) {
         return acquisitionManager.sourceSearch(name, offset, limit);
+    }
+
+    /**
+     * @see AcquisitionService#sourceLoad(java.lang.Long)
+     */
+    @Override
+    public AcquisitionSourceResult sourceLoad(Long locationId) {
+        return acquisitionManager.sourceLoad(locationId);
     }
 }

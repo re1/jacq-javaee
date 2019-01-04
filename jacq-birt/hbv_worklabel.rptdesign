@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706222054</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
     <list-property name="propertyBindings">
         <structure>
             <property name="name">pojoDataSetClassPath</property>
@@ -788,10 +788,12 @@
                             <grid id="29">
                                 <property name="width">2.6875in</property>
                                 <column id="30">
-                                    <property name="width">60mm</property>
+                                    <property name="textAlign">left</property>
+                                    <property name="width">52mm</property>
                                 </column>
                                 <column id="31">
-                                    <property name="width">18mm</property>
+                                    <property name="textAlign">left</property>
+                                    <property name="width">26mm</property>
                                 </column>
                                 <row id="32">
                                     <property name="fontSize">20pt</property>

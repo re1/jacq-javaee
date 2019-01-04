@@ -110,6 +110,12 @@ public class ImportRecord implements Serializable {
     protected Date acquisitionDate;
     @Column(name = "custom_acquisition_date")
     protected String customAcquisitionDate;
+    @Column(name = "gathering_annotation")
+    protected String gatheringAnnotation;
+    @Column(name = "latitude")
+    protected String latitude;
+    @Column(name = "longitude")
+    protected String longitude;
 
     public Long getOriginalId() {
         return originalId;
@@ -389,6 +395,30 @@ public class ImportRecord implements Serializable {
 
     public void setCustomAcquisitionDate(String customAcquisitionDate) {
         this.customAcquisitionDate = customAcquisitionDate;
+    }
+
+    public String getGatheringAnnotation() {
+        return gatheringAnnotation;
+    }
+
+    public void setGatheringAnnotation(String gatheringAnnotation) {
+        this.gatheringAnnotation = gatheringAnnotation;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     /**
