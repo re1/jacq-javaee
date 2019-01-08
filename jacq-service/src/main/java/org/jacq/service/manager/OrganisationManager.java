@@ -90,6 +90,12 @@ public class OrganisationManager extends BaseOrganisationManager {
             tblOrganisation.setGardenerId(entityManager.find(FrmwrkUser.class, organisationResult.getGardenerId()));
             tblOrganisation.setIndexSeminumStart(organisationResult.isIndexSeminumStart());
             tblOrganisation.setAccessionStart(organisationResult.isAccessionStart());
+            tblOrganisation.setAddress(organisationResult.getAddress());
+            tblOrganisation.setCity(organisationResult.getCity());
+            tblOrganisation.setPostcode(organisationResult.getPostcode());
+            tblOrganisation.setCountry(organisationResult.getCountry());
+            tblOrganisation.setPhone(organisationResult.getPhone());
+            tblOrganisation.setEmail(organisationResult.getEmail());
 
             if (tblOrganisation.getId() != null) {
                 entityManager.merge(tblOrganisation);
