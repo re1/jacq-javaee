@@ -16,15 +16,12 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,7 +29,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblSeed.findAll", query = "SELECT t FROM TblSeed t")
     , @NamedQuery(name = "TblSeed.findBySeedId", query = "SELECT t FROM TblSeed t WHERE t.seedId = :seedId")
-    , @NamedQuery(name = "TblSeed.findByIndexSeminum", query = "SELECT t FROM TblSeed t WHERE t.indexSeminum = :indexSeminum")})
+    , @NamedQuery(name = "TblSeed.findByIndexSeminum", query = "SELECT t FROM TblSeed t WHERE t.indexSeminum = :indexSeminum")
+    , @NamedQuery(name = "TblSeed.findByCount", query = "SELECT t FROM TblSeed t WHERE t.count = :count")})
 public class TblSeed implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,11 +54,10 @@ public class TblSeed implements Serializable {
     @NotNull
     @Column(name = "index_seminum")
     private boolean indexSeminum;
-    @JoinTable(name = "tbl_orderer_seed", joinColumns = {
-        @JoinColumn(name = "seed_id", referencedColumnName = "seed_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "seed_order_id", referencedColumnName = "seed_order_id")})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<TblSeedOrder> tblSeedOrderList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "count")
+    private long count;
     @JoinColumn(name = "seed_id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative tblDerivative;
@@ -76,9 +72,10 @@ public class TblSeed implements Serializable {
         this.seedId = seedId;
     }
 
-    public TblSeed(Long seedId, boolean indexSeminum) {
+    public TblSeed(Long seedId, boolean indexSeminum, long count) {
         this.seedId = seedId;
         this.indexSeminum = indexSeminum;
+        this.count = count;
     }
 
     public Long getSeedId() {
@@ -97,13 +94,12 @@ public class TblSeed implements Serializable {
         this.indexSeminum = indexSeminum;
     }
 
-    @XmlTransient
-    public List<TblSeedOrder> getTblSeedOrderList() {
-        return tblSeedOrderList;
+    public long getCount() {
+        return count;
     }
 
-    public void setTblSeedOrderList(List<TblSeedOrder> tblSeedOrderList) {
-        this.tblSeedOrderList = tblSeedOrderList;
+    public void setCount(long count) {
+        this.count = count;
     }
 
     public TblDerivative getTblDerivative() {

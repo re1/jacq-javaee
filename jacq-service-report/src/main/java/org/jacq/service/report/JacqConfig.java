@@ -28,6 +28,7 @@ public class JacqConfig {
 
     protected static final String BIRT = "birt";
     public static final String BIRT_WORK_LABEL = BIRT + CONFIG_SEPARATOR + "work_label";
+    public static final String BIRT_SEED_EXCHANGE = BIRT + CONFIG_SEPARATOR + "seed_exchange";
 
     protected HashMap<String, String> config;
 

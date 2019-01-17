@@ -22,8 +22,11 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -53,8 +56,8 @@ public class TblSeedOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "seed_order_id")
     private Long seedOrderId;
     @Basic(optional = false)
@@ -70,17 +73,20 @@ public class TblSeedOrder implements Serializable {
     @NotNull
     @Column(name = "complete")
     private boolean complete;
-    @ManyToMany(mappedBy = "tblSeedOrderList", fetch = FetchType.LAZY)
-    private List<TblSeed> tblSeedList;
+    @JoinTable(name = "tbl_seed_order_derivative", joinColumns = {
+        @JoinColumn(name = "seed_order_id", referencedColumnName = "seed_order_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TblDerivative> tblDerivativeList;
+    @JoinColumn(name = "sender_user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private FrmwrkUser senderUserId;
     @JoinColumn(name = "sender_organisation_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation senderOrganisationId;
     @JoinColumn(name = "orderer_organisation_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblOrganisation ordererOrganisationId;
-    @JoinColumn(name = "sender_user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private FrmwrkUser senderUserId;
 
     public TblSeedOrder() {
     }
@@ -128,12 +134,20 @@ public class TblSeedOrder implements Serializable {
     }
 
     @XmlTransient
-    public List<TblSeed> getTblSeedList() {
-        return tblSeedList;
+    public List<TblDerivative> getTblDerivativeList() {
+        return tblDerivativeList;
     }
 
-    public void setTblSeedList(List<TblSeed> tblSeedList) {
-        this.tblSeedList = tblSeedList;
+    public void setTblDerivativeList(List<TblDerivative> tblDerivativeList) {
+        this.tblDerivativeList = tblDerivativeList;
+    }
+
+    public FrmwrkUser getSenderUserId() {
+        return senderUserId;
+    }
+
+    public void setSenderUserId(FrmwrkUser senderUserId) {
+        this.senderUserId = senderUserId;
     }
 
     public TblOrganisation getSenderOrganisationId() {
@@ -150,14 +164,6 @@ public class TblSeedOrder implements Serializable {
 
     public void setOrdererOrganisationId(TblOrganisation ordererOrganisationId) {
         this.ordererOrganisationId = ordererOrganisationId;
-    }
-
-    public FrmwrkUser getSenderUserId() {
-        return senderUserId;
-    }
-
-    public void setSenderUserId(FrmwrkUser senderUserId) {
-        this.senderUserId = senderUserId;
     }
 
     @Override

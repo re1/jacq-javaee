@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblLivingPlant.findByBgci", query = "SELECT t FROM TblLivingPlant t WHERE t.bgci = :bgci")
     , @NamedQuery(name = "TblLivingPlant.findByReviewed", query = "SELECT t FROM TblLivingPlant t WHERE t.reviewed = :reviewed")
     , @NamedQuery(name = "TblLivingPlant.findByHasImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasImage = :hasImage")
-    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")})
+    , @NamedQuery(name = "TblLivingPlant.findByHasPublicImage", query = "SELECT t FROM TblLivingPlant t WHERE t.hasPublicImage = :hasPublicImage")
+    , @NamedQuery(name = "TblLivingPlant.findBySeminumCount", query = "SELECT t FROM TblLivingPlant t WHERE t.seminumCount = :seminumCount")})
 public class TblLivingPlant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -128,6 +129,10 @@ public class TblLivingPlant implements Serializable {
     @NotNull
     @Column(name = "has_public_image")
     private boolean hasPublicImage;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "seminum_count")
+    private long seminumCount;
     @JoinTable(name = "tbl_relevancy", joinColumns = {
         @JoinColumn(name = "living_plant_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "relevancy_type_id", referencedColumnName = "id")})
@@ -139,17 +144,17 @@ public class TblLivingPlant implements Serializable {
     private List<TblLivingPlantTreeRecordFilePage> tblLivingPlantTreeRecordFilePageList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "botanicalObjectId", fetch = FetchType.LAZY)
     private List<FrmwrkaccessBotanicalObject> frmwrkaccessBotanicalObjectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livingPlantId", fetch = FetchType.LAZY)
     private List<TblCertificate> tblCertificateList;
-    @JoinColumn(name = "id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    private TblDerivative tblDerivative;
     @JoinColumn(name = "incoming_date_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblAcquisitionDate incomingDateId;
     @JoinColumn(name = "cultivar_id", referencedColumnName = "cultivar_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblCultivar cultivarId;
+    @JoinColumn(name = "id", referencedColumnName = "derivative_id", insertable = false, updatable = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private TblDerivative tblDerivative;
     @JoinColumn(name = "index_seminum_type_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblIndexSeminumType indexSeminumTypeId;
@@ -161,7 +166,7 @@ public class TblLivingPlant implements Serializable {
         this.id = id;
     }
 
-    public TblLivingPlant(Long id, long accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage) {
+    public TblLivingPlant(Long id, long accessionNumber, boolean ipenLocked, String ipenType, boolean phytoControl, boolean indexSeminum, boolean bgci, boolean reviewed, boolean hasImage, boolean hasPublicImage, long seminumCount) {
         this.id = id;
         this.accessionNumber = accessionNumber;
         this.ipenLocked = ipenLocked;
@@ -172,6 +177,7 @@ public class TblLivingPlant implements Serializable {
         this.reviewed = reviewed;
         this.hasImage = hasImage;
         this.hasPublicImage = hasPublicImage;
+        this.seminumCount = seminumCount;
     }
 
     public Long getId() {
@@ -302,6 +308,14 @@ public class TblLivingPlant implements Serializable {
         this.hasPublicImage = hasPublicImage;
     }
 
+    public long getSeminumCount() {
+        return seminumCount;
+    }
+
+    public void setSeminumCount(long seminumCount) {
+        this.seminumCount = seminumCount;
+    }
+
     @XmlTransient
     public List<TblRelevancyType> getTblRelevancyTypeList() {
         return tblRelevancyTypeList;
@@ -347,14 +361,6 @@ public class TblLivingPlant implements Serializable {
         this.tblCertificateList = tblCertificateList;
     }
 
-    public TblDerivative getTblDerivative() {
-        return tblDerivative;
-    }
-
-    public void setTblDerivative(TblDerivative tblDerivative) {
-        this.tblDerivative = tblDerivative;
-    }
-
     public TblAcquisitionDate getIncomingDateId() {
         return incomingDateId;
     }
@@ -369,6 +375,14 @@ public class TblLivingPlant implements Serializable {
 
     public void setCultivarId(TblCultivar cultivarId) {
         this.cultivarId = cultivarId;
+    }
+
+    public TblDerivative getTblDerivative() {
+        return tblDerivative;
+    }
+
+    public void setTblDerivative(TblDerivative tblDerivative) {
+        this.tblDerivative = tblDerivative;
     }
 
     public TblIndexSeminumType getIndexSeminumTypeId() {
