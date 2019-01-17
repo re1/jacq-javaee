@@ -45,15 +45,7 @@ public class SeedExchangeManager {
     public SeedOrderResult find(Long seedOrderId) {
         TblSeedOrder tblSeedOrder = em.find(TblSeedOrder.class, seedOrderId);
 
-        // convert derivatives to botanicalobjectderivative objects
-        List<BotanicalObjectDerivative> botanicalObjectDerivatives = new ArrayList<>();
-        for (TblDerivative tblDerivative : tblSeedOrder.getTblDerivativeList()) {
-            List<BotanicalObjectDerivative> botanicalObjectDerivativeResults = derivativeManager.find(null, tblDerivative.getDerivativeId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-            if (botanicalObjectDerivativeResults != null && botanicalObjectDerivativeResults.size() > 0) {
-                botanicalObjectDerivatives.add(botanicalObjectDerivativeResults.get(0));
-            }
-        }
-        return new SeedOrderResult(tblSeedOrder, botanicalObjectDerivatives);
+        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList()));
     }
 
     /**
@@ -68,16 +60,7 @@ public class SeedExchangeManager {
         List<TblSeedOrder> tblSeedOrderList = tblSeedOrderQuery.getResultList();
 
         for (TblSeedOrder tblSeedOrder : tblSeedOrderList) {
-            // convert derivatives to botanicalobjectderivative objects
-            List<BotanicalObjectDerivative> botanicalObjectDerivatives = new ArrayList<>();
-            for (TblDerivative tblDerivative : tblSeedOrder.getTblDerivativeList()) {
-                List<BotanicalObjectDerivative> botanicalObjectDerivativeResults = derivativeManager.find(null, tblDerivative.getDerivativeId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-                if (botanicalObjectDerivativeResults != null && botanicalObjectDerivativeResults.size() > 0) {
-                    botanicalObjectDerivatives.add(botanicalObjectDerivativeResults.get(0));
-                }
-            }
-
-            seedOrderResults.add(new SeedOrderResult(tblSeedOrder, botanicalObjectDerivatives));
+            seedOrderResults.add(new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList())));
         }
 
         return seedOrderResults;
@@ -90,7 +73,8 @@ public class SeedExchangeManager {
     public SeedOrderResult save(SeedOrderResult seedOrderResult) {
         TblSeedOrder tblSeedOrder = null;
         if (seedOrderResult.getSeedOrderId() != null) {
-            tblSeedOrder = em.find(TblSeedOrder.class, seedOrderResult.getSeedOrderId());
+            throw new IllegalArgumentException("Not allowed to edit completed seed order");
+            // tblSeedOrder = em.find(TblSeedOrder.class, seedOrderResult.getSeedOrderId());
         } else {
             tblSeedOrder = new TblSeedOrder();
         }
@@ -112,7 +96,16 @@ public class SeedExchangeManager {
             tblDerivatives = new ArrayList<>();
         }
         for (BotanicalObjectDerivative botanicalObjectDerivative : seedOrderResult.getDerivativeList()) {
-            tblDerivatives.add(em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId()));
+            TblDerivative tblDerivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
+
+            // for living plants, decrease seminum count by one
+            if (BotanicalObjectDerivative.LIVING.equalsIgnoreCase(tblDerivative.getDerivativeTypeId().getType())) {
+                tblDerivative.getTblLivingPlant().setSeminumCount(tblDerivative.getTblLivingPlant().getSeminumCount() - 1L);
+
+                em.persist(tblDerivative);
+            }
+
+            tblDerivatives.add(tblDerivative);
         }
         tblSeedOrder.setTblDerivativeList(tblDerivatives);
 
@@ -121,15 +114,25 @@ public class SeedExchangeManager {
         em.flush();
         em.refresh(tblSeedOrder);
 
-        // convert derivatives to botanicalobjectderivative objects
+        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList()));
+    }
+
+    /**
+     * Helper function for converting a list of tblderivatives to
+     * botanicalobject derivatives
+     *
+     * @param tblDerivatives
+     * @return
+     */
+    protected List<BotanicalObjectDerivative> fromTblDerivativeList(List<TblDerivative> tblDerivatives) {
         List<BotanicalObjectDerivative> botanicalObjectDerivatives = new ArrayList<>();
-        for (TblDerivative tblDerivative : tblSeedOrder.getTblDerivativeList()) {
+        for (TblDerivative tblDerivative : tblDerivatives) {
             List<BotanicalObjectDerivative> botanicalObjectDerivativeResults = derivativeManager.find(null, tblDerivative.getDerivativeId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             if (botanicalObjectDerivativeResults != null && botanicalObjectDerivativeResults.size() > 0) {
                 botanicalObjectDerivatives.add(botanicalObjectDerivativeResults.get(0));
             }
         }
 
-        return new SeedOrderResult(tblSeedOrder, botanicalObjectDerivatives);
+        return botanicalObjectDerivatives;
     }
 }
