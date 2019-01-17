@@ -63,8 +63,9 @@ public class IndexSeminumManager {
     protected JacqServiceConfig jacqConfig;
 
     /**
-     * Create TblIndexSeminumRevision, find Organiation Tree Head of current User Create TblIndexSeminumContent, based
-     * on BontanicalObjects in the List of OrganisationTree Including TblIndexSeminumPerson
+     * Create TblIndexSeminumRevision, find Organiation Tree Head of current
+     * User Create TblIndexSeminumContent, based on BontanicalObjects in the
+     * List of OrganisationTree Including TblIndexSeminumPerson
      *
      * @param indexSeminumResult
      * @return
@@ -139,8 +140,7 @@ public class IndexSeminumManager {
                 // acquisition_date
                 if (!StringUtils.isEmpty(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom())) {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getCustom());
-                }
-                else {
+                } else {
                     tblIndexSeminumContent.setAcquisitionDate(derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getDay() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getMonth() + "." + derivative.getBotanicalObjectId().getAcquisitionEventId().getAcquisitionDateId().getYear());
                 }
                 if (derivative.getBotanicalObjectId().getAcquisitionEventId().getLocationCoordinatesId() != null) {
@@ -223,34 +223,17 @@ public class IndexSeminumManager {
 
     @Transactional
     public List<IndexSeminumResult> search(Integer offset, Integer limit) {
-        // prepare criteria builder & query
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<TblIndexSeminumRevision> cq = cb.createQuery(TblIndexSeminumRevision.class);
-        Root<TblIndexSeminumRevision> bo = cq.from(TblIndexSeminumRevision.class);
-
-        // select result list
-        cq.select(bo);
-
-        // convert to typed query and apply offset / limit
-        TypedQuery<TblIndexSeminumRevision> query = em.createQuery(cq);
+        TypedQuery<TblIndexSeminumRevision> indexSeminumRevisionQuery = em.createNamedQuery("TblIndexSeminumRevision.findByUserId", TblIndexSeminumRevision.class);
+        indexSeminumRevisionQuery.setParameter("userId", em.find(FrmwrkUser.class, sessionManager.getUser().getId()));
         if (offset != null) {
-            query.setFirstResult(offset);
+            indexSeminumRevisionQuery.setFirstResult(offset);
         }
         if (limit != null) {
-            query.setMaxResults(limit);
+            indexSeminumRevisionQuery.setMaxResults(limit);
         }
 
         // finally fetch the results
-        ArrayList<IndexSeminumResult> results = new ArrayList<>();
-        List<TblIndexSeminumRevision> tblIndexSeminumRevisionResults = query.getResultList();
-        for (TblIndexSeminumRevision tblIndexSeminumRevision : tblIndexSeminumRevisionResults) {
-            IndexSeminumResult indexSeminumResult = new IndexSeminumResult(tblIndexSeminumRevision);
-
-            // add indexSeminumResult to result list
-            results.add(indexSeminumResult);
-        }
-
-        return results;
+        return IndexSeminumResult.fromList(indexSeminumRevisionQuery.getResultList());
     }
 
     public int searchCount() {
@@ -322,10 +305,11 @@ public class IndexSeminumManager {
     /**
      * Helper function for applying the search criteria for counting / selecting
      *
-     * @see OrganisationManager#search(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String, java.lang.Integer, java.lang.Integer)
-     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Boolean,
-     * java.lang.String)
+     * @see OrganisationManager#search(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String, java.lang.Integer,
+     * java.lang.Integer)
+     * @see OrganisationManager#searchCount(java.lang.Long, java.lang.String,
+     * java.lang.String, java.lang.Boolean, java.lang.String)
      *
      * @param cb
      * @param cq

@@ -109,6 +109,69 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.address']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.address}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.city']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.city}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.postcode']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.postcode}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['observations.country']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.country}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.phone']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.phone}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-6 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputText value="#{messages['organisation.email']}" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:inputText value="#{organisationEditController.organisation.email}" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="jacq-buttons">
                     <p:commandButton value="#{(organisationEditController.organisation.organisationId == null) ? messages['create'] : messages['edit']}" actionListener="#{organisationEditController.saveMessage}" update="jacq_form:messages jacq_form:edit_Organisation" action="#{organisationEditController.edit}" />

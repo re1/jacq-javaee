@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.data.oda.pojo" name="SeedOrderDataSource" id="12">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>SynchronizeClassPath</name>
+                    <value>true</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClassPath</name>
+                    <value>C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.8.0.jar;</value>
+                </ex-property>
+            </list-property>
+            <property name="pojoDataSetClassPath">C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.8.0.jar;</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="SeedOrderDataSet" id="13">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">Annotation</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">Annotation</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrderDate</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrderDate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">DerivativeList</property>
+                    <text-property name="heading">DerivativeList</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrdererDescription</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrdererDescription</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrdererAddress</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrdererAddress</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrdererCity</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrdererCity</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrdererCountry</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrdererCountry</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OrdererPostcode</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">OrdererPostcode</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">Annotation</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">OrderDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">DerivativeList</property>
+                        <property name="dataType">javaObject</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">OrdererDescription</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">OrdererAddress</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">OrdererCity</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">OrdererCountry</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">OrdererPostcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">SeedOrderDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">Annotation</property>
+                    <property name="nativeName">Annotation</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">OrderDate</property>
+                    <property name="nativeName">OrderDate</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">DerivativeList</property>
+                    <property name="nativeName">DerivativeList</property>
+                    <property name="dataType">javaObject</property>
+                    <property name="nativeDataType">2000</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">OrdererDescription</property>
+                    <property name="nativeName">OrdererDescription</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">OrdererAddress</property>
+                    <property name="nativeName">OrdererAddress</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">OrdererCity</property>
+                    <property name="nativeName">OrdererCity</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">OrdererCountry</property>
+                    <property name="nativeName">OrdererCountry</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">OrdererPostcode</property>
+                    <property name="nativeName">OrdererPostcode</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<PojoQuery appContextKey="APP_CONTEXT_KEY_SEEDORDERDATASET" dataSetClass="org.jacq.service.report.birt.SeedOrderDataSet" version="1.0">
+    <ColumnMapping index="1" name="Annotation" odaDataType="String">
+        <Method name="getAnnotation"/>
+    </ColumnMapping>
+    <ColumnMapping index="2" name="OrderDate" odaDataType="Date">
+        <Method name="getOrderDate"/>
+    </ColumnMapping>
+    <ColumnMapping index="3" name="DerivativeList" odaDataType="Java Object">
+        <Method name="getDerivativeList"/>
+    </ColumnMapping>
+    <ClassColumnMappings>
+        <ColumnMapping index="4" name="OrdererDescription" odaDataType="String">
+            <Method name="getDescription"/>
+        </ColumnMapping>
+        <ColumnMapping index="5" name="OrdererAddress" odaDataType="String">
+            <Method name="getAddress"/>
+        </ColumnMapping>
+        <ColumnMapping index="6" name="OrdererCity" odaDataType="String">
+            <Method name="getCity"/>
+        </ColumnMapping>
+        <ColumnMapping index="7" name="OrdererCountry" odaDataType="String">
+            <Method name="getCountry"/>
+        </ColumnMapping>
+        <ColumnMapping index="8" name="OrdererPostcode" odaDataType="String">
+            <Method name="getPostcode"/>
+        </ColumnMapping>
+        <Method name="getOrdererOrganisation"/>
+    </ClassColumnMappings>
+</PojoQuery>
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>Annotation</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>Annotation</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DerivativeList</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2000</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DerivativeList</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>OrderDate</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>OrderDate</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>OrdererOrganisation</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2000</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>OrdererOrganisation</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>methodNameRegx</name>
+                    <value>get*</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClass</name>
+                    <value>org.jacq.common.model.rest.SeedOrderResult</value>
+                </ex-property>
+            </list-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="SeedOrderDerivativesDataSet" id="43">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">AccessionNumber</property>
+                    <text-property name="heading">AccessionNumber</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">GatheringLocationName</property>
+                    <text-property name="heading">GatheringLocationName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ScientificName</property>
+                    <text-property name="heading">ScientificName</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">AccessionNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">GatheringLocationName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">ScientificName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">SeedOrderDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">AccessionNumber</property>
+                    <property name="nativeName">AccessionNumber</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">GatheringLocationName</property>
+                    <property name="nativeName">GatheringLocationName</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">ScientificName</property>
+                    <property name="nativeName">ScientificName</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<PojoQuery appContextKey="APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET" dataSetClass="org.jacq.service.report.birt.SeedOrderDerivativesDataSet" version="1.0">
+    <ColumnMapping index="1" name="AccessionNumber" odaDataType="String">
+        <Method name="getAccessionNumber"/>
+    </ColumnMapping>
+    <ColumnMapping index="2" name="GatheringLocationName" odaDataType="String">
+        <Method name="getGatheringLocationName"/>
+    </ColumnMapping>
+    <ColumnMapping index="3" name="ScientificName" odaDataType="String">
+        <Method name="getScientificName"/>
+    </ColumnMapping>
+</PojoQuery>
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AccessionNumber</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AccessionNumber</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>GatheringLocationName</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>GatheringLocationName</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ScientificName</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>1</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ScientificName</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>methodNameRegx</name>
+                    <value>get*</value>
+                </ex-property>
+                <ex-property>
+                    <name>pojoClass</name>
+                    <value>org.jacq.common.model.jpa.custom.BotanicalObjectDerivative</value>
+                </ex-property>
+            </list-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">a4</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="4">
+            <column id="5"/>
+            <row id="6">
+                <cell id="7">
+                    <grid id="15">
+                        <column id="16"/>
+                        <column id="17"/>
+                        <row id="18">
+                            <cell id="19">
+                                <data id="33">
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrdererDescription</property>
+                                            <text-property name="displayName">OrdererDescription</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrdererDescription"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrdererDescription</property>
+                                </data>
+                            </cell>
+                            <cell id="20">
+                                <data id="38">
+                                    <property name="textAlign">right</property>
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrderDate</property>
+                                            <text-property name="displayName">OrderDate</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrderDate"]</expression>
+                                            <property name="dataType">date</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrderDate</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="21">
+                            <cell id="22"/>
+                            <cell id="23"/>
+                        </row>
+                        <row id="24">
+                            <cell id="25">
+                                <data id="34">
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrdererAddress</property>
+                                            <text-property name="displayName">OrdererAddress</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrdererAddress"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrdererAddress</property>
+                                </data>
+                            </cell>
+                            <cell id="26"/>
+                        </row>
+                        <row id="27">
+                            <cell id="28">
+                                <data id="35">
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrdererPostcode</property>
+                                            <text-property name="displayName">OrdererPostcode</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrdererPostcode"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrdererPostcode</property>
+                                </data>
+                                <data id="36">
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrdererCity</property>
+                                            <text-property name="displayName">OrdererCity</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrdererCity"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrdererCity</property>
+                                </data>
+                            </cell>
+                            <cell id="29"/>
+                        </row>
+                        <row id="30">
+                            <cell id="31">
+                                <data id="37">
+                                    <property name="dataSet">SeedOrderDataSet</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">OrdererCountry</property>
+                                            <text-property name="displayName">OrdererCountry</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["OrdererCountry"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">OrdererCountry</property>
+                                </data>
+                            </cell>
+                            <cell id="32"/>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+            <row id="8">
+                <cell id="9">
+                    <text id="40">
+                        <property name="fontSize">16pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="marginBottom">10pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[Samenbestellung]]></text-property>
+                    </text>
+                    <text id="39">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[Enclosed please find seed portions you have ordered from us. Numbers not encountered in the listing are out of stock.]]></text-property>
+                    </text>
+                    <data id="41">
+                        <property name="dataSet">SeedOrderDataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">Annotation</property>
+                                <text-property name="displayName">Annotation</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Annotation"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">Annotation</property>
+                    </data>
+                    <text id="42">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[Thank you for your interest, yours sincerely]]></text-property>
+                    </text>
+                </cell>
+            </row>
+            <row id="10">
+                <cell id="11">
+                    <table id="44">
+                        <property name="marginTop">30pt</property>
+                        <property name="dataSet">SeedOrderDerivativesDataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">AccessionNumber</property>
+                                <text-property name="displayName">AccessionNumber</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["AccessionNumber"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">GatheringLocationName</property>
+                                <text-property name="displayName">GatheringLocationName</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["GatheringLocationName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ScientificName</property>
+                                <text-property name="displayName">ScientificName</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ScientificName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <column id="63"/>
+                        <column id="64"/>
+                        <column id="65"/>
+                        <header>
+                            <row id="45">
+                                <property name="fontWeight">bold</property>
+                                <property name="borderBottomStyle">solid</property>
+                                <property name="borderBottomWidth">1px</property>
+                                <property name="borderTopStyle">solid</property>
+                                <property name="borderTopWidth">1px</property>
+                                <cell id="46">
+                                    <label id="47">
+                                        <text-property name="text">Accession-Number</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="48">
+                                    <label id="49">
+                                        <text-property name="text">Gathering-Location</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="50">
+                                    <label id="51">
+                                        <text-property name="text">Scientific-Name</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="52">
+                                <cell id="53">
+                                    <data id="54">
+                                        <property name="resultSetColumn">AccessionNumber</property>
+                                    </data>
+                                </cell>
+                                <cell id="55">
+                                    <data id="56">
+                                        <property name="resultSetColumn">GatheringLocationName</property>
+                                    </data>
+                                </cell>
+                                <cell id="57">
+                                    <data id="58">
+                                        <property name="resultSetColumn">ScientificName</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                        <footer>
+                            <row id="59">
+                                <cell id="60"/>
+                                <cell id="61"/>
+                                <cell id="62"/>
+                            </row>
+                        </footer>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

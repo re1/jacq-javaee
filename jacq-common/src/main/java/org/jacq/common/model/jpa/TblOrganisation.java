@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TblOrganisation.findByGreenhouse", query = "SELECT t FROM TblOrganisation t WHERE t.greenhouse = :greenhouse")
     , @NamedQuery(name = "TblOrganisation.findByIpenCode", query = "SELECT t FROM TblOrganisation t WHERE t.ipenCode = :ipenCode")
     , @NamedQuery(name = "TblOrganisation.findByIndexSeminumStart", query = "SELECT t FROM TblOrganisation t WHERE t.indexSeminumStart = :indexSeminumStart")
-    , @NamedQuery(name = "TblOrganisation.findByAccessionStart", query = "SELECT t FROM TblOrganisation t WHERE t.accessionStart = :accessionStart")})
+    , @NamedQuery(name = "TblOrganisation.findByAccessionStart", query = "SELECT t FROM TblOrganisation t WHERE t.accessionStart = :accessionStart")
+    , @NamedQuery(name = "TblOrganisation.findByAddress", query = "SELECT t FROM TblOrganisation t WHERE t.address = :address")
+    , @NamedQuery(name = "TblOrganisation.findByCity", query = "SELECT t FROM TblOrganisation t WHERE t.city = :city")
+    , @NamedQuery(name = "TblOrganisation.findByPostcode", query = "SELECT t FROM TblOrganisation t WHERE t.postcode = :postcode")
+    , @NamedQuery(name = "TblOrganisation.findByCountry", query = "SELECT t FROM TblOrganisation t WHERE t.country = :country")
+    , @NamedQuery(name = "TblOrganisation.findByPhone", query = "SELECT t FROM TblOrganisation t WHERE t.phone = :phone")
+    , @NamedQuery(name = "TblOrganisation.findByEmail", query = "SELECT t FROM TblOrganisation t WHERE t.email = :email")})
 public class TblOrganisation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,6 +88,30 @@ public class TblOrganisation implements Serializable {
     @NotNull
     @Column(name = "accession_start")
     private boolean accessionStart;
+    @Size(max = 45)
+    @Column(name = "address")
+    private String address;
+    @Size(max = 45)
+    @Column(name = "city")
+    private String city;
+    @Size(max = 45)
+    @Column(name = "postcode")
+    private String postcode;
+    @Size(max = 45)
+    @Column(name = "country")
+    private String country;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 45)
+    @Column(name = "phone")
+    private String phone;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 45)
+    @Column(name = "email")
+    private String email;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "senderOrganisationId", fetch = FetchType.LAZY)
+    private List<TblSeedOrder> tblSeedOrderList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordererOrganisationId", fetch = FetchType.LAZY)
+    private List<TblSeedOrder> tblSeedOrderList1;
     @OneToMany(mappedBy = "parentOrganisationId", fetch = FetchType.LAZY)
     private List<TblOrganisation> tblOrganisationList;
     @JoinColumn(name = "parent_organisation_id", referencedColumnName = "id")
@@ -169,6 +199,72 @@ public class TblOrganisation implements Serializable {
 
     public void setAccessionStart(boolean accessionStart) {
         this.accessionStart = accessionStart;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @XmlTransient
+    public List<TblSeedOrder> getTblSeedOrderList() {
+        return tblSeedOrderList;
+    }
+
+    public void setTblSeedOrderList(List<TblSeedOrder> tblSeedOrderList) {
+        this.tblSeedOrderList = tblSeedOrderList;
+    }
+
+    @XmlTransient
+    public List<TblSeedOrder> getTblSeedOrderList1() {
+        return tblSeedOrderList1;
+    }
+
+    public void setTblSeedOrderList1(List<TblSeedOrder> tblSeedOrderList1) {
+        this.tblSeedOrderList1 = tblSeedOrderList1;
     }
 
     @XmlTransient

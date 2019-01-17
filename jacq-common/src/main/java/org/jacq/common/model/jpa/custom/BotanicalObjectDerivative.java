@@ -237,5 +237,4 @@ public class BotanicalObjectDerivative implements Serializable {
     public void setWorking(Long working) {
         this.working = working;
     }
-
 }

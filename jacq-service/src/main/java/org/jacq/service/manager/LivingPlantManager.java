@@ -111,6 +111,7 @@ public class LivingPlantManager {
         tblLivingPlant.setPlaceNumber(livingPlantResult.getPlaceNumber());
         tblLivingPlant.setCultivarId((livingPlantResult.getCultivar() != null && livingPlantResult.getCultivar().getCultivarId() != null) ? em.find(TblCultivar.class, livingPlantResult.getCultivar().getCultivarId()) : null);
         tblLivingPlant.setIndexSeminumTypeId((livingPlantResult.getIndexSeminumType() != null && livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId() != null) ? em.find(TblIndexSeminumType.class, livingPlantResult.getIndexSeminumType().getIndexSeminumTypeId()) : null);
+        tblLivingPlant.setSeminumCount(livingPlantResult.getSeminumCount());
 
         if (livingPlantResult.getLabelSynonymScientificName() != null) {
             tblLivingPlant.setLabelSynonymScientificNameId((livingPlantResult.getLabelSynonymScientificName().getScientificNameId() != null) ? livingPlantResult.getLabelSynonymScientificName().getScientificNameId() : null);
