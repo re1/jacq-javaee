@@ -7,14 +7,21 @@ package org.jacq.input.controller;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
+import org.jacq.common.model.rest.OrganisationResult;
 import org.jacq.common.model.rest.SeedOrderResult;
 import org.jacq.common.rest.SeedExchangeService;
 import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
+import org.jacq.input.view.DerivativeSearchModel;
+import org.jacq.input.view.LazyDerivativeDataModel;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -35,7 +42,13 @@ public class SeedExchangeEditController implements Serializable {
      */
     protected SeedExchangeService seedExchangeService;
 
+    /**
+     * Service for printing seed order
+     */
     protected LabelService labelService;
+
+    @ManagedProperty(value = "#{livingPlantController}")
+    protected LivingPlantController livingPlantController;
 
     @PostConstruct
     public void init() {
@@ -43,6 +56,9 @@ public class SeedExchangeEditController implements Serializable {
         this.labelService = ServicesUtil.getLabelService();
 
         this.seedOrderResult = new SeedOrderResult();
+
+        // only search for entries with index seminum
+        this.livingPlantController.getDerivativeSearchModel().setIndexSeminum(1);
     }
 
     public SeedOrderResult getSeedOrderResult() {
@@ -84,6 +100,30 @@ public class SeedExchangeEditController implements Serializable {
         if (this.seedOrderId != null) {
             this.seedOrderResult = this.seedExchangeService.find(this.seedOrderId);
         }
+    }
+
+    public DerivativeSearchModel getDerivativeSearchModel() {
+        return livingPlantController.getDerivativeSearchModel();
+    }
+
+    public LazyDerivativeDataModel getDataModel() {
+        return livingPlantController.getDataModel();
+    }
+
+    public List<OrganisationResult> completeOrganisation(String query) {
+        return livingPlantController.completeOrganisation(query);
+    }
+
+    public void organisationHierachicSelectEvent(SelectEvent event) {
+        livingPlantController.organisationHierachicSelectEvent(event);
+    }
+
+    public LivingPlantController getLivingPlantController() {
+        return livingPlantController;
+    }
+
+    public void setLivingPlantController(LivingPlantController livingPlantController) {
+        this.livingPlantController = livingPlantController;
     }
 
 }

@@ -16,6 +16,7 @@
 package org.jacq.input.controller;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -75,7 +76,7 @@ import org.primefaces.model.StreamedContent;
  */
 @ManagedBean
 @ViewScoped
-public class LivingPlantEditController implements OrganisationSelectListener {
+public class LivingPlantEditController implements OrganisationSelectListener, Serializable {
 
     @Inject
     protected SessionController sessionController;

@@ -288,17 +288,26 @@
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">AccessionNumber</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">AccessionNumber</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">GatheringLocationName</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">GatheringLocationName</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">ScientificName</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">ScientificName</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">IpenNumber</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">IpenNumber</text-property>
+                </structure>
             </list-property>
+            <list-property name="parameters"/>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -314,6 +323,11 @@
                     <structure>
                         <property name="position">3</property>
                         <property name="name">ScientificName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">IpenNumber</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -341,6 +355,13 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">IpenNumber</property>
+                    <property name="nativeName">IpenNumber</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET" dataSetClass="org.jacq.service.report.birt.SeedOrderDerivativesDataSet" version="1.0">
@@ -352,6 +373,9 @@
     </ColumnMapping>
     <ColumnMapping index="3" name="ScientificName" odaDataType="String">
         <Method name="getScientificName"/>
+    </ColumnMapping>
+    <ColumnMapping index="4" name="IpenNumber" odaDataType="String">
+        <Method name="getIpenNumber"/>
     </ColumnMapping>
 </PojoQuery>
 ]]></xml-property>
@@ -602,10 +626,24 @@
                                 <expression name="expression" type="javascript">dataSetRow["ScientificName"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
+                            <structure>
+                                <property name="name">IpenNumberDataBinding</property>
+                                <expression name="expression" type="javascript">dataSetRow["IpenNumber"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">IpenNumber</property>
+                                <text-property name="displayName">IpenNumber</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["IpenNumber"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
                         </list-property>
                         <column id="63"/>
                         <column id="64"/>
                         <column id="65"/>
+                        <column id="69"/>
                         <header>
                             <row id="45">
                                 <property name="fontWeight">bold</property>
@@ -628,6 +666,11 @@
                                         <text-property name="text">Scientific-Name</text-property>
                                     </label>
                                 </cell>
+                                <cell id="66">
+                                    <label id="73">
+                                        <text-property name="text">Ipen-Number</text-property>
+                                    </label>
+                                </cell>
                             </row>
                         </header>
                         <detail>
@@ -647,6 +690,11 @@
                                         <property name="resultSetColumn">ScientificName</property>
                                     </data>
                                 </cell>
+                                <cell id="67">
+                                    <data id="72">
+                                        <property name="resultSetColumn">IpenNumber</property>
+                                    </data>
+                                </cell>
                             </row>
                         </detail>
                         <footer>
@@ -654,6 +702,7 @@
                                 <cell id="60"/>
                                 <cell id="61"/>
                                 <cell id="62"/>
+                                <cell id="68"/>
                             </row>
                         </footer>
                     </table>

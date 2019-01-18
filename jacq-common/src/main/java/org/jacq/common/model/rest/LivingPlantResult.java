@@ -257,10 +257,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.ipenType = ipenType;
     }
 
+    @Override
     public String getIpenNumber() {
         return ipenNumber;
     }
 
+    @Override
     public void setIpenNumber(String ipenNumber) {
         this.ipenNumber = ipenNumber;
     }

@@ -90,6 +90,8 @@ public class BotanicalObjectDerivative implements Serializable {
     private Long exhibition;
     @Column(name = "working")
     private Long working;
+    @Column(name = "ipen_number")
+    private String ipenNumber;
 
     public BotanicalObjectDerivative() {
     }
@@ -236,5 +238,13 @@ public class BotanicalObjectDerivative implements Serializable {
 
     public void setWorking(Long working) {
         this.working = working;
+    }
+
+    public String getIpenNumber() {
+        return ipenNumber;
+    }
+
+    public void setIpenNumber(String ipenNumber) {
+        this.ipenNumber = ipenNumber;
     }
 }
