@@ -98,6 +98,11 @@ public class SeedExchangeManager {
         for (BotanicalObjectDerivative botanicalObjectDerivative : seedOrderResult.getDerivativeList()) {
             TblDerivative tblDerivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
 
+            // check for access, if not ignore and continue
+            if (!derivativeManager.checkAccess(tblDerivative)) {
+                continue;
+            }
+
             // for living plants, decrease seminum count by one
             if (BotanicalObjectDerivative.LIVING.equalsIgnoreCase(tblDerivative.getDerivativeTypeId().getType())) {
                 tblDerivative.getTblLivingPlant().setSeminumCount(tblDerivative.getTblLivingPlant().getSeminumCount() - 1L);
