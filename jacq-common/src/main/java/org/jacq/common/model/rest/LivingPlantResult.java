@@ -60,6 +60,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected boolean indexSeminum;
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
+    protected long seminumCount;
 
     protected String family;
     protected String familyReference;
@@ -173,6 +174,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.alternativeAccessionNumbers = AlternativeAccessionNumberResult.fromList(tblLivingPlant.getTblAlternativeAccessionNumberList());
         this.indexSeminum = tblLivingPlant.getIndexSeminum();
         this.indexSeminumType = new IndexSeminumTypeResult(tblLivingPlant.getIndexSeminumTypeId());
+        this.seminumCount = tblLivingPlant.getSeminumCount();
         this.phytoControl = tblLivingPlant.getPhytoControl();
         this.bgci = tblLivingPlant.getBgci();
         this.certificates = CertificateResult.fromList(tblLivingPlant.getTblCertificateList());
@@ -255,10 +257,12 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.ipenType = ipenType;
     }
 
+    @Override
     public String getIpenNumber() {
         return ipenNumber;
     }
 
+    @Override
     public void setIpenNumber(String ipenNumber) {
         this.ipenNumber = ipenNumber;
     }
@@ -686,4 +690,13 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     public void setLabelTypes(List<LabelTypeResult> labelTypes) {
         this.labelTypes = labelTypes;
     }
+
+    public long getSeminumCount() {
+        return seminumCount;
+    }
+
+    public void setSeminumCount(long seminumCount) {
+        this.seminumCount = seminumCount;
+    }
+
 }

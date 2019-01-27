@@ -20,7 +20,9 @@ import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.jacq.common.model.report.WorkLabel;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
+import org.jacq.common.model.rest.SeedOrderResult;
 import org.jacq.common.rest.DerivativeService;
+import org.jacq.common.rest.SeedExchangeService;
 import org.jacq.common.rest.report.LabelService;
 import org.jacq.common.util.ServicesUtil;
 import org.jacq.service.report.ApplicationManager;
@@ -35,6 +37,7 @@ import org.jacq.service.report.JacqConfig;
 public class LabelManager {
 
     public static String REPORT_PATH = null;
+    public static String SEED_EXCHANGE_REPORT_PATH = null;
 
     private static final Logger LOGGER = Logger.getLogger(LabelManager.class.getName());
 
@@ -49,8 +52,12 @@ public class LabelManager {
 
     protected DerivativeService derivativeSerive;
 
+    protected SeedExchangeService seedExchangeService;
+
     // Context key for birt reporting
     public static final String APP_CONTEXT_KEY_WORKLABELDATASET = "APP_CONTEXT_KEY_WORKLABELDATASET";
+    public static final String APP_CONTEXT_KEY_SEEDORDERDATASET = "APP_CONTEXT_KEY_SEEDORDERDATASET";
+    public static final String APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET = "APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET";
     protected IReportEngine reportEngine;
 
     @PostConstruct
@@ -58,7 +65,10 @@ public class LabelManager {
         this.reportEngine = applicationManager.getReportEngine();
 
         LabelManager.REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_WORK_LABEL);
+        LabelManager.SEED_EXCHANGE_REPORT_PATH = jacqConfig.getString(JacqConfig.BIRT_SEED_EXCHANGE);
+
         this.derivativeSerive = ServicesUtil.getDerivativeService();
+        this.seedExchangeService = ServicesUtil.getSeedExchangeService();
     }
 
     /**
@@ -116,6 +126,53 @@ public class LabelManager {
 
         // return the produces PDF
         return Response.ok(baos.toByteArray()).header("Content-Disposition", "attachment; filename=hbv_worklabel.pdf").build();
+    }
 
+    /**
+     * @see LabelService#getSeedOrder(java.lang.Long)
+     */
+    public Response getSeedOrder(Long seedOrderId) throws EngineException {
+        SeedOrderResult seedOrderResult = this.seedExchangeService.find(seedOrderId);
+
+        // if no result is found, return an error
+        if (seedOrderResult == null) {
+            throw new NotFoundException("No seed order with id '" + seedOrderId + "' found!");
+        }
+
+        // convert results to WorkLabel POJOs for passing data to BIRT Engine
+        List<SeedOrderResult> seedOrderResults = new ArrayList<>();
+        seedOrderResults.add(seedOrderResult);
+
+        // create report instance
+        IReportRunnable report = reportEngine.openReportDesign(SEED_EXCHANGE_REPORT_PATH);
+
+        // setup task for rendering the labels, make sure to set ClassLoader & LivingPlant dataset
+        IRunAndRenderTask task = reportEngine.createRunAndRenderTask(report);
+        task.getAppContext().put(EngineConstants.APPCONTEXT_CLASSLOADER_KEY, LabelManager.class.getClassLoader());
+        task.getAppContext().put(APP_CONTEXT_KEY_SEEDORDERDATASET, seedOrderResults.iterator());
+        task.getAppContext().put(APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET, seedOrderResult.getDerivativeList().iterator());
+
+        // output stream for returning the rendered pdf
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // setup pdf rendering options
+        PDFRenderOption options = new PDFRenderOption();
+        options.setOutputFormat("pdf");
+        options.setOutputStream(baos);
+        task.setRenderOption(options);
+
+        // finally run the task
+        task.run();
+
+        // get exceptions
+        for (EngineException error : (List<EngineException>) task.getErrors()) {
+            LOGGER.log(Level.SEVERE, error.getMessage(), error);
+        }
+
+        // close task
+        task.close();
+
+        // return the produces PDF
+        return Response.ok(baos.toByteArray()).header("Content-Disposition", "attachment; filename=seed_exchange_order.pdf").build();
     }
 }

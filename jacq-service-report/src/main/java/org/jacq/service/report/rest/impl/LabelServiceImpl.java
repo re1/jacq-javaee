@@ -43,4 +43,16 @@ public class LabelServiceImpl implements LabelService, Serializable {
             throw new JacqRestException(e);
         }
     }
+
+    @Override
+    public Response getSeedOrder(Long seedOrderId) {
+        try {
+            return labelManager.getSeedOrder(seedOrderId);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            // encapsulate exception into Jacq specific rest exception
+            throw new JacqRestException(e);
+        }
+    }
 }

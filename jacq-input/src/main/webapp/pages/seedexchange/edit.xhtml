@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/WEB-INF/templates/omega/template.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="seedOrderId" value="#{seedExchangeEditController.seedOrderId}" />
+            </f:metadata>
+
+            <h:panelGroup layout="block" id="seedexchange_form">
+                <h:panelGroup layout="block" styleClass="card">
+                    <div class="jacq-content-header">
+                        <h1>#{messages['seedexchange.order']} #{(seedExchangeEditController.seedOrderResult.seedOrderId == null) ? messages['create'] : messages['show']}</h1>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="#{messages['seedexchange.ordererOrganisation']}" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:autoComplete id="ordererOrganisation" value="#{seedExchangeEditController.seedOrderResult.ordererOrganisation}" completeMethod="#{seedExchangeEditController.completeOrganisation}"
+                                                    var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter" required="true">
+                                        <p:column>
+                                            <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                        </p:column>
+                                        <p:ajax event="itemSelect" listener="#{seedExchangeEditController.organisationHierachicSelectEvent}" />
+                                    </p:autoComplete>
+                                </div>
+                                <div class="ui-g-3"></div>
+                                <div class="ui-g-3">
+                                    <p:commandButton rendered="#{(seedExchangeEditController.seedOrderResult.seedOrderId == null)}" icon="ui-icon-check" value="#{messages['seedexchange.save']}" update="jacq_form:seedexchange_form" action="#{seedExchangeEditController.save()}" />
+                                    <p:commandButton rendered="#{(seedExchangeEditController.seedOrderResult.seedOrderId != null)}" value="#{messages['seedexchange.order_sheet']}" ajax="false" icon="pi pi-arrow-down">
+                                        <p:fileDownload value="#{seedExchangeEditController.seedOrder}" />
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="#{messages['seedexchange.annotation']}" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:inputTextarea value="#{seedExchangeEditController.seedOrderResult.annotation}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                <h:panelGroup id="jacq_seedexchange-search" layout="block" styleClass="card" rendered="#{(seedExchangeEditController.seedOrderResult.seedOrderId == null)}">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="#{messages['livingplant.location']}" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <div class="ui-g-11 ui-g-nopad">
+                                        <p:autoComplete id="organisation" value="#{seedExchangeEditController.derivativeSearchModel.selectedOrganisation}" completeMethod="#{seedExchangeEditController.completeOrganisation}"
+                                                        var="organisation" itemLabel="#{organisation.description}" itemValue="#{organisation}" forceSelection="true" minQueryLength="2" queryDelay="300" converter="organisationConverter">
+                                            <p:column>
+                                                <h:outputText value="#{organisation.description}" /> (<h:outputText value="#{organisation.parentOrganisationDescription}" />)
+                                            </p:column>
+                                            <p:ajax event="itemSelect" listener="#{seedExchangeEditController.organisationHierachicSelectEvent}" />
+                                        </p:autoComplete>
+                                    </div>
+                                    <div class="ui-g-1 ui-g-nopad">
+                                        <p:commandButton type="button" icon="ui-icon-search" id="hierachicSearchButton" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="#{messages['livingplant.hierarchic']}" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <p:selectBooleanCheckbox value="#{seedExchangeEditController.derivativeSearchModel.hierarchic}" />
+                                </div>
+                            </div>
+                        </div>
+                        <p:remoteCommand name="updateOrganisation" update="organisation" />
+                        <p:blockUI block="hierachicSearchButton" trigger="organisation" />
+                        <p:overlayPanel id="hierachicSearch" for="hierachicSearchButton" dismissable="true" modal="true" hideEffect="fade" dynamic="false" style="width:600px" onHide="updateOrganisation();">
+                            <ui:include src="../organisation/hierarchicselect.xhtml" />
+                        </p:overlayPanel>
+                        <div class="ui-g-12 ui-g-nopad">
+                            <div class="ui-g-6 ui-g-nopad">
+                                <div class="ui-g">
+                                    <div class="ui-g-6">
+                                        <h:outputText value="#{messages['livingplant.accessionnumber']}" />
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <p:inputText value="#{seedExchangeEditController.derivativeSearchModel.accessionNumber}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-g-nopad">
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <div class="jacq-buttons">
+                                        <p:commandButton type="submit" id="searchButton" value="#{messages['search']}" update="jacq_seedexchange-search" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:remoteCommand update="derivativeTable:rowCount" name="update_derivativeFooter" />
+
+                            <p:dataTable var="botanicalObjectDerivative"
+                                         lazy="true"
+                                         value="#{seedExchangeEditController.dataModel}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                         rows="5"
+                                         widgetVar="derivativeTable"
+                                         id="derivativeTable"
+                                         rowsPerPageTemplate="10,20,30,50,100">
+
+                                <p:ajax event="filter" oncomplete="update_derivativeFooter();" />
+
+                                <p:column filterBy="" sortBy="#{botanicalObjectDerivative.scientificName}" headerText="#{messages['livingplant.scientificname']}">
+                                    <h:outputText value="#{(botanicalObjectDerivative.scientificNameId == sessionController.indetId) ? botanicalObjectDerivative.importedSpeciesName.concat('*') : botanicalObjectDerivative.scientificName}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.cultivarname']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.cultivarName}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.location']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.organisationDescription}" />
+                                </p:column>
+
+                                <p:column filterBy="" sortBy="#{botanicalObjectDerivative.accessionNumber}" headerText="#{messages['livingplant.accessionnumber']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.placenumber']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.placeNumber}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.gatheringlocation']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.gatheringLocationName}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.derivative_count']}">
+                                    <h:outputText value="#{(botanicalObjectDerivative.derivativeCount == null) ? 0 : botanicalObjectDerivative.derivativeCount}" />
+                                </p:column>
+
+                                <p:column filterBy="" headerText="#{messages['livingplant.type']}">
+                                    <h:outputText value="#{botanicalObjectDerivative.type}" />
+                                </p:column>
+
+                                <p:column headerText="#{messages['action']}">
+                                    <p:commandButton action="#{seedExchangeEditController.addDerivative(botanicalObjectDerivative)}" icon="ui-icon-plus" update="jacq_form:seedExchangeDerivativesList" />
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    Showing a total of <h:outputText value="#{seedExchangeEditController.dataModel.rowCount}" id="rowCount" /> entries.
+                                </f:facet>
+                            </p:dataTable>
+
+                            <p:blockUI block="derivativeTable" trigger="derivativeTable searchButton">
+                                <h:outputText value="#{messages.loading}" />
+                            </p:blockUI>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="card" id="seedExchangeDerivativesList">
+                    <p:dataTable
+                        id="seedExchangeDerivativesTable"
+                        var="botanicalObjectDerivative"
+                        value="#{seedExchangeEditController.seedOrderResult.derivativeList}"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                        paginator="true">
+
+                        <f:facet name="{Exporters}">
+                            <div style="float: right; height: 24px;" >
+                                <p:commandButton  id="downloadDerivativeCsvButton" icon="ui-icon-document" ajax="false" widgetVar="downloadDerivativeCsvButton">
+                                    <p:dataExporter type="csv"  target="seedExchangeDerivativesTable" fileName="seedExchangeDerivativesTable"/>
+                                </p:commandButton>
+                                <p:commandButton  style="float: right;" id="downloadDerivativeXlsxButton" icon="ui-icon-note" ajax="false" widgetVar="downloadDerivativeXlsxButton">
+                                    <p:dataExporter type="xlsx"  target="seedExchangeDerivativesTable" fileName="seedExchangeDerivativesTable"/>
+                                </p:commandButton>
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="#{messages['livingplant.accessionnumber']}">
+                            <h:outputText value="#{botanicalObjectDerivative.accessionNumber}" />
+                        </p:column>
+
+                        <p:column headerText="#{messages['livingplant.gatheringlocation']}">
+                            <h:outputText value="#{botanicalObjectDerivative.gatheringLocationName}" />
+                        </p:column>
+
+                        <p:column headerText="#{messages['livingplant.scientificname']}">
+                            <h:outputText value="#{botanicalObjectDerivative.scientificName}" />
+                        </p:column>
+
+                        <p:column headerText="#{messages['action']}" rendered="#{(seedExchangeEditController.seedOrderResult.seedOrderId == null)}">
+                            <p:commandButton action="#{seedExchangeEditController.removeDerivative(botanicalObjectDerivative)}" icon="ui-icon-close" update="jacq_form:seedExchangeDerivativesList" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

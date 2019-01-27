@@ -31,6 +31,10 @@
                                     <p:menuitem value="#{messages['livingplant.revisioncreate']}" url="/pages/livingplant/revisioncreate.xhtml"/>
                                 </p:submenu>
                             </p:submenu>
+                            <p:submenu label="#{messages['seedexchange']}" rendered="#{loginController.securityContext.isCallerInRole('indexSeminum') ? true : false}">
+                                <p:menuitem value="#{messages['create']}" url="/pages/seedexchange/edit.xhtml"/>
+                                <p:menuitem value="#{messages['manage']}" url="/pages/seedexchange/manage.xhtml"/>
+                            </p:submenu>
                             <p:submenu label="#{messages['location']}" rendered="#{loginController.securityContext.isCallerInRole('createOrganisation') ? true : false}">
                                 <p:menuitem value="#{messages['create']}" url="/pages/organisation/edit.xhtml"/>
                                 <p:menuitem value="#{messages['manage']}" url="/pages/organisation/manage.xhtml"/>

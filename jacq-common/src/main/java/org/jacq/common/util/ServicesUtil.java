@@ -35,6 +35,7 @@ import org.jacq.common.rest.IndexSeminumService;
 import org.jacq.common.rest.InventoryService;
 import org.jacq.common.rest.PersonService;
 import org.jacq.common.rest.PortalService;
+import org.jacq.common.rest.SeedExchangeService;
 import org.jacq.common.rest.TreeRecordFileService;
 import org.jacq.common.rest.UserService;
 import org.jacq.common.rest.names.ScientificNameService;
@@ -125,6 +126,10 @@ public class ServicesUtil {
 
     public static AuthorizationService getAuthorizationService() {
         return getProxy(AuthorizationService.class, JACQ_SERVICE_URL);
+    }
+
+    public static SeedExchangeService getSeedExchangeService() {
+        return getProxy(SeedExchangeService.class, JACQ_SERVICE_URL);
     }
 
     public static String getWorkLabelURL(String type, Long derivativeId) {

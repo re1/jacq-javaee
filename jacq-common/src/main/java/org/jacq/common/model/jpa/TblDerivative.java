@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 fhafner.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author fhafner
+ * @author wkoller
  */
 @Entity
 @Table(name = "tbl_derivative")
@@ -59,17 +61,19 @@ public class TblDerivative implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "count")
-    private Long count;
+    private long count;
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
     private float price;
+    @ManyToMany(mappedBy = "tblDerivativeList", fetch = FetchType.LAZY)
+    private List<TblSeedOrder> tblSeedOrderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TblSeparation> tblSeparationList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
-    private TblVegetative tblVegetative;
+    private TblSeed tblSeed;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
-    private TblSpecimen tblSpecimen;
+    private TblVegetative tblVegetative;
     @JoinColumn(name = "botanical_object_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblBotanicalObject botanicalObjectId;
@@ -96,7 +100,7 @@ public class TblDerivative implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public TblDerivative(Long derivativeId, Long count, float price) {
+    public TblDerivative(Long derivativeId, long count, float price) {
         this.derivativeId = derivativeId;
         this.count = count;
         this.price = price;
@@ -110,11 +114,11 @@ public class TblDerivative implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public Long getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
@@ -127,6 +131,15 @@ public class TblDerivative implements Serializable {
     }
 
     @XmlTransient
+    public List<TblSeedOrder> getTblSeedOrderList() {
+        return tblSeedOrderList;
+    }
+
+    public void setTblSeedOrderList(List<TblSeedOrder> tblSeedOrderList) {
+        this.tblSeedOrderList = tblSeedOrderList;
+    }
+
+    @XmlTransient
     public List<TblSeparation> getTblSeparationList() {
         return tblSeparationList;
     }
@@ -135,20 +148,20 @@ public class TblDerivative implements Serializable {
         this.tblSeparationList = tblSeparationList;
     }
 
+    public TblSeed getTblSeed() {
+        return tblSeed;
+    }
+
+    public void setTblSeed(TblSeed tblSeed) {
+        this.tblSeed = tblSeed;
+    }
+
     public TblVegetative getTblVegetative() {
         return tblVegetative;
     }
 
     public void setTblVegetative(TblVegetative tblVegetative) {
         this.tblVegetative = tblVegetative;
-    }
-
-    public TblSpecimen getTblSpecimen() {
-        return tblSpecimen;
-    }
-
-    public void setTblSpecimen(TblSpecimen tblSpecimen) {
-        this.tblSpecimen = tblSpecimen;
     }
 
     public TblBotanicalObject getBotanicalObjectId() {

@@ -44,6 +44,12 @@ public class OrganisationResult {
     protected Long gardenerId;
     protected boolean indexSeminumStart;
     protected boolean accessionStart;
+    private String address;
+    private String city;
+    private String postcode;
+    private String country;
+    private String phone;
+    private String email;
 
     public OrganisationResult(Long organisationId) {
         this.organisationId = organisationId;
@@ -162,6 +168,12 @@ public class OrganisationResult {
         this.indexSeminumStart = organisation.getIndexSeminumStart();
         this.accessionStart = organisation.getAccessionStart();
         this.parentOrganisationResult = (organisation.getParentOrganisationId() != null) ? new OrganisationResult(organisation.getParentOrganisationId()) : null;
+        this.address = organisation.getAddress();
+        this.city = organisation.getCity();
+        this.postcode = organisation.getPostcode();
+        this.country = organisation.getCountry();
+        this.phone = organisation.getPhone();
+        this.email = organisation.getEmail();
     }
 
     /**
@@ -182,4 +194,53 @@ public class OrganisationResult {
 
         return organisationResult;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }
