@@ -668,7 +668,7 @@
                                 </cell>
                                 <cell id="66">
                                     <label id="73">
-                                        <text-property name="text">Ipen-Number</text-property>
+                                        <text-property name="text">IPEN-Number</text-property>
                                     </label>
                                 </cell>
                             </row>

@@ -60,7 +60,7 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
     protected boolean indexSeminum;
     protected IndexSeminumTypeResult indexSeminumType;
     protected float price;
-    protected Long seminumCount;
+    protected long seminumCount;
 
     protected String family;
     protected String familyReference;
@@ -691,11 +691,11 @@ public class LivingPlantResult extends BotanicalObjectDerivative {
         this.labelTypes = labelTypes;
     }
 
-    public Long getSeminumCount() {
+    public long getSeminumCount() {
         return seminumCount;
     }
 
-    public void setSeminumCount(Long seminumCount) {
+    public void setSeminumCount(long seminumCount) {
         this.seminumCount = seminumCount;
     }
 
