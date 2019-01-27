@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jacq</groupId>
         <artifactId>jacq</artifactId>
-        <version>0.8.0</version>
+        <version>0.9.0</version>
         <relativePath>../jacq/pom.xml</relativePath>
     </parent>
 
