@@ -17,6 +17,8 @@ package org.jacq.common.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -32,6 +34,8 @@ import org.jacq.common.model.rest.LocationResult;
  * @author fhafner
  */
 public abstract class BaseGatheringManager {
+
+    private static final Logger LOGGER = Logger.getLogger(BaseGatheringManager.class.getName());
 
     protected EntityManager entityManager;
 
@@ -61,27 +65,35 @@ public abstract class BaseGatheringManager {
         List<LocationResult> locationResults = new ArrayList<>();
 
         for (GeoNamesEntryResult geoNamesEntryResult : geoNamesSearchResult.getGeonames()) {
-            TypedQuery<TblLocationGeonames> locationGeonamesQuery = entityManager.createNamedQuery("TblLocationGeonames.findByGeonameId", TblLocationGeonames.class);
-            locationGeonamesQuery.setParameter("geonameId", geoNamesEntryResult.getGeonameId());
-            List<TblLocationGeonames> locationGeonamesList = locationGeonamesQuery.getResultList();
-            if (locationGeonamesList != null && locationGeonamesList.size() > 0) {
-                locationResults.add(new LocationResult(locationGeonamesList.get(0).getTblLocation()));
-            } else {
-                TblLocation tblLocation = new TblLocation();
-                tblLocation.setLocation(geoNamesEntryResult.getName());
-                entityManager.persist(tblLocation);
+            try {
+                TypedQuery<TblLocationGeonames> locationGeonamesQuery = entityManager.createNamedQuery("TblLocationGeonames.findByGeonameId", TblLocationGeonames.class);
+                locationGeonamesQuery.setParameter("geonameId", geoNamesEntryResult.getGeonameId());
+                List<TblLocationGeonames> locationGeonamesList = locationGeonamesQuery.getResultList();
+                if (locationGeonamesList != null && locationGeonamesList.size() > 0) {
+                    locationResults.add(new LocationResult(locationGeonamesList.get(0).getTblLocation()));
+                } else {
+                    if (geoNamesEntryResult.getCountryCode() == null) {
+                        continue;
+                    }
 
-                TblLocationGeonames tblLocationGeonames = new TblLocationGeonames();
-                tblLocationGeonames.setId(tblLocation.getId());
-                tblLocationGeonames.setTblLocation(tblLocation);
-                tblLocationGeonames.setCountryCode(geoNamesEntryResult.getCountryCode());
-                tblLocationGeonames.setGeonameId(geoNamesEntryResult.getGeonameId());
-                tblLocationGeonames.setServiceData(geoNamesEntryResult.toString());
-                entityManager.persist(tblLocationGeonames);
+                    TblLocation tblLocation = new TblLocation();
+                    tblLocation.setLocation(geoNamesEntryResult.getName());
+                    entityManager.persist(tblLocation);
 
-                tblLocation.setTblLocationGeonames(tblLocationGeonames);
+                    TblLocationGeonames tblLocationGeonames = new TblLocationGeonames();
+                    tblLocationGeonames.setId(tblLocation.getId());
+                    tblLocationGeonames.setTblLocation(tblLocation);
+                    tblLocationGeonames.setCountryCode(geoNamesEntryResult.getCountryCode());
+                    tblLocationGeonames.setGeonameId(geoNamesEntryResult.getGeonameId());
+                    tblLocationGeonames.setServiceData(geoNamesEntryResult.toString());
+                    entityManager.persist(tblLocationGeonames);
 
-                locationResults.add(new LocationResult(tblLocation));
+                    tblLocation.setTblLocationGeonames(tblLocationGeonames);
+
+                    locationResults.add(new LocationResult(tblLocation));
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
         }
 

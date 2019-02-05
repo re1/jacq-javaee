@@ -469,7 +469,7 @@
                                         </div>
                                         <div class="ui-g-6">
                                             <p:autoComplete value="#{livingPlantEditController.livingPlantResult.gatheringLocation}" completeMethod="#{livingPlantEditController.completeLocation}"
-                                                            var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="300" converter="locationConverter">
+                                                            var="location" itemLabel="#{location.location}" itemValue="#{location}" minQueryLength="3" queryDelay="500" converter="locationConverter">
                                                 <p:ajax event="itemSelect" listener="#{livingPlantEditController.onLocationItemSelect}" update="jacq_form:ipennumber" />
 
                                                 <p:column>
@@ -557,7 +557,7 @@
                                             <h:outputText value="#{messages['livingplant.type']}" />
                                         </div>
                                         <div class="ui-g-6">
-                                            <p:selectOneMenu value="#{livingPlantEditController.livingPlantResult.indexSeminumType.indexSeminumTypeId}">
+                                            <p:selectOneMenu id="index_seminum_type" value="#{livingPlantEditController.livingPlantResult.indexSeminumType.indexSeminumTypeId}">
                                                 <f:selectItems value="#{livingPlantEditController.indexSeminumTypes}" var="indexSeminumType" itemLabel="#{indexSeminumType.type}" itemValue="#{indexSeminumType.indexSeminumTypeId}" />
                                             </p:selectOneMenu>
                                         </div>

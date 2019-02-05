@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 /**
  *
@@ -57,6 +58,11 @@ public class EditTest extends BaseTest {
         List<WebElement> scientificNameRows = scientificNamePanel.findElements(By.tagName("tr"));
         Assert.assertTrue(scientificNameRows.size() > 0);
         scientificNameRows.get(0).click();
+
+        // check index seminum type for "WS" as default value
+        WebElement indexSeminumTypeSelect = driver.findElement(By.id("jacq_form:tabView:index_seminum_type_input"));
+        Assert.assertNotNull(indexSeminumTypeSelect);
+        Assert.assertEquals("WS", (new Select(indexSeminumTypeSelect)).getFirstSelectedOption().getText());
     }
 
     @Test

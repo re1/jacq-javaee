@@ -180,9 +180,6 @@ public class LivingPlantEditController implements OrganisationSelectListener, Se
 
         this.livingPlantResult = new LivingPlantResult();
 
-        // setup default values
-        this.livingPlantResult.setIpenType("default");
-
         if (sessionManager.getUser() != null) {
             livingPlantResult.setOrganisation(this.organisationService.load(sessionManager.getUser().getOrganisationId()));
         }
@@ -211,10 +208,17 @@ public class LivingPlantEditController implements OrganisationSelectListener, Se
             this.labelTypes.add(new SelectItem(labelType.getLabelTypeId(), labelType.getType()));
         }
         this.selectedLabelTypes = new ArrayList<>();
-
         this.showorganisationHierarchicSelectController();
-
         this.cultivarResult = new CultivarResult();
+
+        // setup default values
+        this.livingPlantResult.setIpenType("default");
+        for (IndexSeminumTypeResult indexSeminumType : this.indexSeminumTypes) {
+            if (indexSeminumType.getType().equals("WS")) {
+                this.livingPlantResult.setIndexSeminumType(indexSeminumType);
+                break;
+            }
+        }
     }
 
     /**
