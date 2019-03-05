@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class TblAcquisitionSource implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acquisitionSourceId", fetch = FetchType.LAZY)
     private List<TblAcquisitionEventSource> tblAcquisitionEventSourceList;
 
     public TblAcquisitionSource() {

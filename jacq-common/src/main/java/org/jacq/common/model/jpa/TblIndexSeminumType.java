@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.jacq.common.model.jpa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,6 +58,8 @@ public class TblIndexSeminumType implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "type")
     private String type;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "indexSeminumTypeId", fetch = FetchType.LAZY)
+    private List<TblSeed> tblSeedList;
     @OneToMany(mappedBy = "indexSeminumTypeId", fetch = FetchType.LAZY)
     private List<TblLivingPlant> tblLivingPlantList;
 
@@ -86,6 +89,15 @@ public class TblIndexSeminumType implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @XmlTransient
+    public List<TblSeed> getTblSeedList() {
+        return tblSeedList;
+    }
+
+    public void setTblSeedList(List<TblSeed> tblSeedList) {
+        this.tblSeedList = tblSeedList;
     }
 
     @XmlTransient

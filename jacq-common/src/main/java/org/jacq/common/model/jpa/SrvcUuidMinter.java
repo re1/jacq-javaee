@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 wkoller.
+ * Copyright 2019 wkoller.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@ package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,14 +28,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -77,10 +73,6 @@ public class SrvcUuidMinter implements Serializable {
     @JoinColumn(name = "uuid_minter_type_id", referencedColumnName = "uuid_minter_type_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SrvcUuidMinterType uuidMinterTypeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
-    private List<RevFlora> revFloraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uuidMinterId", fetch = FetchType.LAZY)
-    private List<RevClassification> revClassificationList;
 
     public SrvcUuidMinter() {
     }
@@ -134,24 +126,6 @@ public class SrvcUuidMinter implements Serializable {
 
     public void setUuidMinterTypeId(SrvcUuidMinterType uuidMinterTypeId) {
         this.uuidMinterTypeId = uuidMinterTypeId;
-    }
-
-    @XmlTransient
-    public List<RevFlora> getRevFloraList() {
-        return revFloraList;
-    }
-
-    public void setRevFloraList(List<RevFlora> revFloraList) {
-        this.revFloraList = revFloraList;
-    }
-
-    @XmlTransient
-    public List<RevClassification> getRevClassificationList() {
-        return revClassificationList;
-    }
-
-    public void setRevClassificationList(List<RevClassification> revClassificationList) {
-        this.revClassificationList = revClassificationList;
     }
 
     @Override

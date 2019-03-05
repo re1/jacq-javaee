@@ -16,7 +16,6 @@
 package org.jacq.common.model.jpa;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,14 +24,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,63 +35,39 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_separation")
+@Table(name = "tbl_seed_order_derivative")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSeparation.findAll", query = "SELECT t FROM TblSeparation t")
-    , @NamedQuery(name = "TblSeparation.findBySeparationId", query = "SELECT t FROM TblSeparation t WHERE t.separationId = :separationId")
-    , @NamedQuery(name = "TblSeparation.findByDate", query = "SELECT t FROM TblSeparation t WHERE t.date = :date")})
-public class TblSeparation implements Serializable {
+    @NamedQuery(name = "TblSeedOrderDerivative.findAll", query = "SELECT t FROM TblSeedOrderDerivative t")
+    , @NamedQuery(name = "TblSeedOrderDerivative.findBySeedOrderDerivativeId", query = "SELECT t FROM TblSeedOrderDerivative t WHERE t.seedOrderDerivativeId = :seedOrderDerivativeId")})
+public class TblSeedOrderDerivative implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "separation_id")
-    private Long separationId;
-    @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "annotation")
-    private String annotation;
+    @Column(name = "seed_order_derivative_id")
+    private Long seedOrderDerivativeId;
     @JoinColumn(name = "derivative_id", referencedColumnName = "derivative_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblDerivative derivativeId;
-    @JoinColumn(name = "separation_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "seed_order_id", referencedColumnName = "seed_order_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TblSeparationType separationTypeId;
+    private TblSeedOrder seedOrderId;
 
-    public TblSeparation() {
+    public TblSeedOrderDerivative() {
     }
 
-    public TblSeparation(Long separationId) {
-        this.separationId = separationId;
+    public TblSeedOrderDerivative(Long seedOrderDerivativeId) {
+        this.seedOrderDerivativeId = seedOrderDerivativeId;
     }
 
-    public Long getSeparationId() {
-        return separationId;
+    public Long getSeedOrderDerivativeId() {
+        return seedOrderDerivativeId;
     }
 
-    public void setSeparationId(Long separationId) {
-        this.separationId = separationId;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getAnnotation() {
-        return annotation;
-    }
-
-    public void setAnnotation(String annotation) {
-        this.annotation = annotation;
+    public void setSeedOrderDerivativeId(Long seedOrderDerivativeId) {
+        this.seedOrderDerivativeId = seedOrderDerivativeId;
     }
 
     public TblDerivative getDerivativeId() {
@@ -107,29 +78,29 @@ public class TblSeparation implements Serializable {
         this.derivativeId = derivativeId;
     }
 
-    public TblSeparationType getSeparationTypeId() {
-        return separationTypeId;
+    public TblSeedOrder getSeedOrderId() {
+        return seedOrderId;
     }
 
-    public void setSeparationTypeId(TblSeparationType separationTypeId) {
-        this.separationTypeId = separationTypeId;
+    public void setSeedOrderId(TblSeedOrder seedOrderId) {
+        this.seedOrderId = seedOrderId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (separationId != null ? separationId.hashCode() : 0);
+        hash += (seedOrderDerivativeId != null ? seedOrderDerivativeId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblSeparation)) {
+        if (!(object instanceof TblSeedOrderDerivative)) {
             return false;
         }
-        TblSeparation other = (TblSeparation) object;
-        if ((this.separationId == null && other.separationId != null) || (this.separationId != null && !this.separationId.equals(other.separationId))) {
+        TblSeedOrderDerivative other = (TblSeedOrderDerivative) object;
+        if ((this.seedOrderDerivativeId == null && other.seedOrderDerivativeId != null) || (this.seedOrderDerivativeId != null && !this.seedOrderDerivativeId.equals(other.seedOrderDerivativeId))) {
             return false;
         }
         return true;
@@ -137,7 +108,7 @@ public class TblSeparation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jacq.common.model.jpa.TblSeparation[ separationId=" + separationId + " ]";
+        return "org.jacq.common.model.jpa.TblSeedOrderDerivative[ seedOrderDerivativeId=" + seedOrderDerivativeId + " ]";
     }
 
 }

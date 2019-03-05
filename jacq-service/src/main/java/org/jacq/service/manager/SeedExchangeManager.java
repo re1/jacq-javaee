@@ -18,6 +18,7 @@ import org.jacq.common.model.jpa.FrmwrkUser;
 import org.jacq.common.model.jpa.TblDerivative;
 import org.jacq.common.model.jpa.TblOrganisation;
 import org.jacq.common.model.jpa.TblSeedOrder;
+import org.jacq.common.model.jpa.TblSeedOrderDerivative;
 import org.jacq.common.model.jpa.custom.BotanicalObjectDerivative;
 import org.jacq.common.model.rest.SeedOrderResult;
 import org.jacq.common.rest.SeedExchangeService;
@@ -45,7 +46,7 @@ public class SeedExchangeManager {
     public SeedOrderResult find(Long seedOrderId) {
         TblSeedOrder tblSeedOrder = em.find(TblSeedOrder.class, seedOrderId);
 
-        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList()));
+        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblSeedOrderDerivativeList()));
     }
 
     /**
@@ -60,7 +61,7 @@ public class SeedExchangeManager {
         List<TblSeedOrder> tblSeedOrderList = tblSeedOrderQuery.getResultList();
 
         for (TblSeedOrder tblSeedOrder : tblSeedOrderList) {
-            seedOrderResults.add(new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList())));
+            seedOrderResults.add(new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblSeedOrderDerivativeList())));
         }
 
         return seedOrderResults;
@@ -90,10 +91,13 @@ public class SeedExchangeManager {
         tblSeedOrder.setSenderOrganisationId(frmwrkUser.getOrganisationId());
         tblSeedOrder.setSenderUserId(frmwrkUser);
 
+        // save & refresh seed order
+        em.persist(tblSeedOrder);
+
         // add list of derivatives
-        List<TblDerivative> tblDerivatives = tblSeedOrder.getTblDerivativeList();
-        if (tblDerivatives == null) {
-            tblDerivatives = new ArrayList<>();
+        List<TblSeedOrderDerivative> tblSeedOrderDerivatives = tblSeedOrder.getTblSeedOrderDerivativeList();
+        if (tblSeedOrderDerivatives == null) {
+            tblSeedOrderDerivatives = new ArrayList<>();
         }
         for (BotanicalObjectDerivative botanicalObjectDerivative : seedOrderResult.getDerivativeList()) {
             TblDerivative tblDerivative = em.find(TblDerivative.class, botanicalObjectDerivative.getDerivativeId());
@@ -110,29 +114,34 @@ public class SeedExchangeManager {
                 em.persist(tblDerivative);
             }
 
-            tblDerivatives.add(tblDerivative);
-        }
-        tblSeedOrder.setTblDerivativeList(tblDerivatives);
+            TblSeedOrderDerivative tblSeedOrderDerivative = new TblSeedOrderDerivative();
+            tblSeedOrderDerivative.setDerivativeId(tblDerivative);
+            tblSeedOrderDerivative.setSeedOrderId(tblSeedOrder);
 
-        // save & refresh seed order
-        em.persist(tblSeedOrder);
+            // persist derivative association and save it
+            em.persist(tblSeedOrderDerivative);
+            em.flush();
+            em.refresh(tblSeedOrderDerivative);
+        }
+
+        // refresh seed order
         em.flush();
         em.refresh(tblSeedOrder);
 
-        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblDerivativeList()));
+        return new SeedOrderResult(tblSeedOrder, this.fromTblDerivativeList(tblSeedOrder.getTblSeedOrderDerivativeList()));
     }
 
     /**
      * Helper function for converting a list of tblderivatives to
      * botanicalobject derivatives
      *
-     * @param tblDerivatives
+     * @param tblSeedOrderDerivatives
      * @return
      */
-    protected List<BotanicalObjectDerivative> fromTblDerivativeList(List<TblDerivative> tblDerivatives) {
+    protected List<BotanicalObjectDerivative> fromTblDerivativeList(List<TblSeedOrderDerivative> tblSeedOrderDerivatives) {
         List<BotanicalObjectDerivative> botanicalObjectDerivatives = new ArrayList<>();
-        for (TblDerivative tblDerivative : tblDerivatives) {
-            List<BotanicalObjectDerivative> botanicalObjectDerivativeResults = derivativeManager.find(null, tblDerivative.getDerivativeId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        for (TblSeedOrderDerivative tblSeedOrderDerivative : tblSeedOrderDerivatives) {
+            List<BotanicalObjectDerivative> botanicalObjectDerivativeResults = derivativeManager.find(null, tblSeedOrderDerivative.getDerivativeId().getDerivativeId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             if (botanicalObjectDerivativeResults != null && botanicalObjectDerivativeResults.size() > 0) {
                 botanicalObjectDerivatives.add(botanicalObjectDerivativeResults.get(0));
             }

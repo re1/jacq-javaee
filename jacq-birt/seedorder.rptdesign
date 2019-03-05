@@ -14,10 +14,10 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.8.0.jar;</value>
+                    <value>C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.9.0.jar;</value>
                 </ex-property>
             </list-property>
-            <property name="pojoDataSetClassPath">C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.8.0.jar;</property>
+            <property name="pojoDataSetClassPath">C:\Dev\Repositories\jacq-javaee\jacq-service-report\target\jacq-service-report.jar;C:\Dev\Repositories\jacq-javaee\jacq-common\target\jacq-common-0.9.0.jar;</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -306,6 +306,11 @@
                     <property name="analysis">dimension</property>
                     <text-property name="heading">IpenNumber</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">CultivarName</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">CultivarName</text-property>
+                </structure>
             </list-property>
             <list-property name="parameters"/>
             <structure name="cachedMetaData">
@@ -328,6 +333,11 @@
                     <structure>
                         <property name="position">4</property>
                         <property name="name">IpenNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">CultivarName</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -362,6 +372,13 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">CultivarName</property>
+                    <property name="nativeName">CultivarName</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">1</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_SEEDORDERDERIVATIVESDATASET" dataSetClass="org.jacq.service.report.birt.SeedOrderDerivativesDataSet" version="1.0">
@@ -376,6 +393,9 @@
     </ColumnMapping>
     <ColumnMapping index="4" name="IpenNumber" odaDataType="String">
         <Method name="getIpenNumber"/>
+    </ColumnMapping>
+    <ColumnMapping index="5" name="CultivarName" odaDataType="String">
+        <Method name="getCultivarName"/>
     </ColumnMapping>
 </PojoQuery>
 ]]></xml-property>
@@ -639,10 +659,17 @@
                                 <property name="dataType">string</property>
                                 <property name="allowExport">true</property>
                             </structure>
+                            <structure>
+                                <property name="name">CultivarName</property>
+                                <expression name="expression" type="javascript">dataSetRow["CultivarName"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
                         </list-property>
                         <column id="63"/>
                         <column id="64"/>
                         <column id="65"/>
+                        <column id="81"/>
                         <column id="69"/>
                         <header>
                             <row id="45">
@@ -664,6 +691,11 @@
                                 <cell id="50">
                                     <label id="51">
                                         <text-property name="text">Scientific-Name</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="78">
+                                    <label id="82">
+                                        <text-property name="text">Cultivar-Name</text-property>
                                     </label>
                                 </cell>
                                 <cell id="66">
@@ -690,6 +722,11 @@
                                         <property name="resultSetColumn">ScientificName</property>
                                     </data>
                                 </cell>
+                                <cell id="79">
+                                    <data id="83">
+                                        <property name="resultSetColumn">CultivarName</property>
+                                    </data>
+                                </cell>
                                 <cell id="67">
                                     <data id="72">
                                         <property name="resultSetColumn">IpenNumber</property>
@@ -702,6 +739,7 @@
                                 <cell id="60"/>
                                 <cell id="61"/>
                                 <cell id="62"/>
+                                <cell id="80"/>
                                 <cell id="68"/>
                             </row>
                         </footer>

@@ -26,8 +26,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -66,9 +64,11 @@ public class TblDerivative implements Serializable {
     @NotNull
     @Column(name = "price")
     private float price;
-    @ManyToMany(mappedBy = "tblDerivativeList", fetch = FetchType.LAZY)
-    private List<TblSeedOrder> tblSeedOrderList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
+    private List<TblSeedOrderDerivative> tblSeedOrderDerivativeList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
+    private TblSpecimen tblSpecimen;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "derivativeId", fetch = FetchType.LAZY)
     private List<TblSeparation> tblSeparationList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblDerivative", fetch = FetchType.LAZY)
     private TblSeed tblSeed;
@@ -131,12 +131,20 @@ public class TblDerivative implements Serializable {
     }
 
     @XmlTransient
-    public List<TblSeedOrder> getTblSeedOrderList() {
-        return tblSeedOrderList;
+    public List<TblSeedOrderDerivative> getTblSeedOrderDerivativeList() {
+        return tblSeedOrderDerivativeList;
     }
 
-    public void setTblSeedOrderList(List<TblSeedOrder> tblSeedOrderList) {
-        this.tblSeedOrderList = tblSeedOrderList;
+    public void setTblSeedOrderDerivativeList(List<TblSeedOrderDerivative> tblSeedOrderDerivativeList) {
+        this.tblSeedOrderDerivativeList = tblSeedOrderDerivativeList;
+    }
+
+    public TblSpecimen getTblSpecimen() {
+        return tblSpecimen;
+    }
+
+    public void setTblSpecimen(TblSpecimen tblSpecimen) {
+        this.tblSpecimen = tblSpecimen;
     }
 
     @XmlTransient

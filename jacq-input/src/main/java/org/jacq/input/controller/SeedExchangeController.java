@@ -5,6 +5,7 @@
  */
 package org.jacq.input.controller;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -19,7 +20,7 @@ import org.jacq.common.util.ServicesUtil;
  */
 @ViewScoped
 @ManagedBean
-public class SeedExchangeController {
+public class SeedExchangeController implements Serializable {
 
     protected SeedExchangeService seedExchangeService;
 

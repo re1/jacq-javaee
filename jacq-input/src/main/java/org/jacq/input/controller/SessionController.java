@@ -15,6 +15,7 @@
  */
 package org.jacq.input.controller;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -33,7 +34,7 @@ import org.jacq.input.ApplicationManager;
  */
 @ManagedBean
 @SessionScoped
-public class SessionController {
+public class SessionController implements Serializable {
 
     @Inject
     protected SessionManager sessionManager;
