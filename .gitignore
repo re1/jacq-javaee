@@ -7,3 +7,6 @@ rebel.xml
 nb-configuration.xml
 */nbproject/*
 nbactions.xml
+.idea/
+*.iml
+.vscode/
