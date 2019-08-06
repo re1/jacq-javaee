@@ -39,7 +39,7 @@ import org.jacq.common.model.names.NameParserResponse;
  *
  * ~ # parserver -r -o json
  *
- * @see https://rubygems.org/gems/biodiversity/
+ * @see "https://rubygems.org/gems/biodiversity/"
  *
  * @author wkoller
  */
@@ -72,7 +72,7 @@ public class NameParserManager {
     }
 
     /**
-     * Parse a given scientificname into its components
+     * Parse a given scientific name into its components
      *
      * @param scientificName
      * @return

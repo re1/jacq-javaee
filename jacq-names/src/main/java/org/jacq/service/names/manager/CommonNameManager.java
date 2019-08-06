@@ -75,7 +75,7 @@ public class CommonNameManager {
     protected NameParserManager nameParserManager;
 
     /**
-     * @see CommonNamesService#info()
+     * @see org.jacq.common.rest.names.CommonNameService#query(java.lang.String)
      */
     public OpenRefineInfo info() {
         OpenRefineInfo openRefineInfo = new OpenRefineInfo();
@@ -87,7 +87,7 @@ public class CommonNameManager {
     }
 
     /**
-     * @see CommonNamesService#query(java.lang.String)
+     * @see org.jacq.common.rest.names.CommonNameService#query(java.lang.String)
      */
     @Transactional
     public OpenRefineResponse<CommonName> query(String query) {
@@ -96,7 +96,7 @@ public class CommonNameManager {
         // before we start, clean the queried name
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
-        // create the list of common name sources
+        // create a list of common name sources before executing any queries
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
@@ -114,7 +114,7 @@ public class CommonNameManager {
                         // clean the scientific name
                         commonName.setTaxon(nameParserManager.parseName(commonName.getTaxon()).getScientificName());
 
-                        // check if matching / score should be updated
+                        // update score and match if one of them is not set
                         if (commonName.getMatch() == null || commonName.getScore() == null) {
                             if (commonName.getTaxon().equalsIgnoreCase(nameParserResponse.getScientificName())) {
                                 commonName.setMatch(Boolean.TRUE);
@@ -146,21 +146,23 @@ public class CommonNameManager {
             LOGGER.log(Level.SEVERE, null, ex);
         }
 
-        // convert resultmap to list
+        // convert result map to list
         ArrayList<CommonName> resultList = new ArrayList(resultMap.values());
 
-        // iterate over result and fetch ids resp. create them
+        // iterate over results and fetch ids respectively or create them
         for (CommonName result : resultList) {
-            // lookup the scientific name
+            // lookup scientific name from cache
             TblScientificNameCache scientificNameCache = null;
             TypedQuery<TblScientificNameCache> scientificNameCacheQuery = em.createNamedQuery("TblScientificNameCache.findByName", TblScientificNameCache.class);
             scientificNameCacheQuery.setParameter("name", result.getTaxon());
             List<TblScientificNameCache> scientificNameCaches = scientificNameCacheQuery.getResultList();
+
             if (scientificNameCaches != null && scientificNameCaches.size() > 0) {
+                // use scientific name from cache
                 scientificNameCache = scientificNameCaches.get(0);
             }
             else {
-                // add the scientific name
+                // add scientific name to cache
                 scientificNameCache = new TblScientificNameCache();
                 scientificNameCache.setName(result.getTaxon());
                 em.persist(scientificNameCache);
@@ -168,23 +170,25 @@ public class CommonNameManager {
             // set id of scientific name in our result
             result.setTaxonId(scientificNameCache.getId());
 
-            // lookup the common name
+            // lookup common names from cache
             TblCommonNamesCache commonNamesCache = null;
 
-            // we use a string building query here for performance reason - shoud normally be avoided at any costs!
+            // we use a string building query here for performance reasons - should normally be avoided at any cost!
             String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.name = '" + result.getName() + "'";
             lookupQuery += " AND " + queryFieldHelper("language", result.getLanguage());
             lookupQuery += " AND " + queryFieldHelper("geography", result.getGeography());
             lookupQuery += " AND " + queryFieldHelper("period", result.getPeriod());
 
-            // query and fetch the result
+            // create query and fetch the result
             TypedQuery<TblCommonNamesCache> commonNamesCacheQuery = em.createQuery(lookupQuery, TblCommonNamesCache.class);
             List<TblCommonNamesCache> commonNamesCaches = commonNamesCacheQuery.getResultList();
+
             if (commonNamesCaches != null && commonNamesCaches.size() > 0) {
+                // use common names from cache
                 commonNamesCache = commonNamesCaches.get(0);
             }
             else {
-                // add the common name
+                // add common names to cache
                 commonNamesCache = new TblCommonNamesCache();
                 commonNamesCache.setName(result.getName());
                 commonNamesCache.setLanguage(result.getLanguage());
@@ -192,10 +196,11 @@ public class CommonNameManager {
                 commonNamesCache.setPeriod(result.getPeriod());
                 em.persist(commonNamesCache);
             }
+            // set id of common names in our result
             result.setId(commonNamesCache.getId());
         }
 
-        // prepare open refine response
+        // prepare OpenRefine response
         OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse();
         openRefineResponse.setResult(resultList);
 
@@ -205,9 +210,9 @@ public class CommonNameManager {
     /**
      * Small helper function for string building a null / value query
      *
-     * @param field
-     * @param value
-     * @return
+     * @param field key to set value for
+     * @param value content for the given field
+     * @return String of "field='value'" or "field IS NULL"
      */
     protected String queryFieldHelper(String field, String value) {
         if (value == null) {

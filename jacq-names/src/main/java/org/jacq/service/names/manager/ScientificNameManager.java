@@ -171,8 +171,7 @@ public class ScientificNameManager {
     }
 
     /**
-     * @see
-     * ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
+     * @see ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
      */
     @Transactional
     public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult) {

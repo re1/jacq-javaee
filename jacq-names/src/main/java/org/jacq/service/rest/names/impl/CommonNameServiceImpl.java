@@ -37,7 +37,7 @@ public class CommonNameServiceImpl implements CommonNameService {
     private static final Logger LOGGER = Logger.getLogger(CommonNameServiceImpl.class.getName());
 
     @Inject
-    protected CommonNameManager commonNamesManager;
+    protected CommonNameManager commonNameManager;
 
     /**
      * @see CommonNameService#query(java.lang.String)
@@ -46,10 +46,10 @@ public class CommonNameServiceImpl implements CommonNameService {
     public Response query(String query) {
         try {
             if (StringUtils.isEmpty(query)) {
-                return Response.ok(commonNamesManager.info()).build();
+                return Response.ok(commonNameManager.info()).build();
             }
             else {
-                return Response.ok(commonNamesManager.query(query)).build();
+                return Response.ok(commonNameManager.query(query)).build();
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, null, e);

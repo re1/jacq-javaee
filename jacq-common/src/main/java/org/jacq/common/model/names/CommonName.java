@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Pojo for all information of a common name
+ * POJO for all information of a common name
  *
  * @author wkoller
  */
@@ -137,9 +137,9 @@ public class CommonName {
     }
 
     /**
-     * Helper function for creating a unique hash which is used for quickly deduplicating during result fetching
+     * Helper function for creating a unique hash which is used for quick deduplication during result fetching
      *
-     * @return
+     * @return Unique hash for this common name
      */
     @Transient
     public Long deduplicateHash() {
