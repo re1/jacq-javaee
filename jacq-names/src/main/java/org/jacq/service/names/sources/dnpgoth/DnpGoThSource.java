@@ -29,7 +29,7 @@ import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 /**
- * Queries dnp.go.th for common names and returns them
+ * Queries http://www.dnp.go.th for common names by simulating form submits
  *
  * @author wkoller
  */
@@ -61,13 +61,14 @@ public class DnpGoThSource implements CommonNamesSource {
     /**
      * Query http://www.dnp.go.th by simulating form submits and processing the view state
      *
-     * @param query
-     * @return
+     * @param query parsed scientific name
+     * @return list of common names for given query
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
 
+        // create proxy service instance
         DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getDnpGoThWebSearch();
 
         // get genus and species from parsed name
@@ -122,7 +123,7 @@ public class DnpGoThSource implements CommonNamesSource {
 
             LOGGER.log(Level.FINEST, "{0} = {1}", new Object[]{resultLinkMatcher.group(1), resultLinkMatcher.group(2)});
 
-            // query the source again for the actual common names
+            // query source again for actual common names
             response = dnpGoThWebSearch.searchTreeExpand("%" + genus + "%", "%" + species + "%", "Species", viewState, viewStateGenerator, eventValidation, eventTarget, eventArgument);
 
             // read returned result and parse it
@@ -133,7 +134,7 @@ public class DnpGoThSource implements CommonNamesSource {
                 String commonName = resultNameMatcher.group(1);
                 String geography = resultNameMatcher.group(2);
 
-                // clean the common name, since it may contain <b> tags
+                // remove potential <b> tags from common name
                 commonName = commonName.replaceAll("<b>", "").replaceAll("</b>", "");
 
                 // put together the result information into a common name object
@@ -153,5 +154,4 @@ public class DnpGoThSource implements CommonNamesSource {
 
         return results;
     }
-
 }

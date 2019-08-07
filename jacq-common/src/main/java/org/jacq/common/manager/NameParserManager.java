@@ -15,29 +15,25 @@
  */
 package org.jacq.common.manager;
 
-import java.io.BufferedInputStream;
+import org.jacq.common.model.names.NameParserResponse;
+
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import org.jacq.common.model.names.NameParserResponse;
 
 /**
- * Provides easy access to the biodiversity nameParser Note: the parser needs to be started manually using the parserver
- * command:
+ * Provides easy access to the biodiversity nameParser
  *
- * ~ # parserver -r -o json
+ * Note: The parser needs to be started manually using the parserver command: {@code ~ # parserver -r -o json}
  *
  * @see "https://rubygems.org/gems/biodiversity/"
  *
@@ -48,13 +44,9 @@ public class NameParserManager {
 
     private static final Logger LOGGER = Logger.getLogger(NameParserManager.class.getName());
 
-    /**
-     * Reference to open socket
-     */
+    // Reference to open socket
     protected Socket socket;
-
     protected PrintWriter out;
-
     protected BufferedReader in;
 
     /**
@@ -74,8 +66,8 @@ public class NameParserManager {
     /**
      * Parse a given scientific name into its components
      *
-     * @param scientificName
-     * @return
+     * @param scientificName unparsed scientific name
+     * @return parsed scientific name
      */
     public NameParserResponse parseName(String scientificName) {
         NameParserResponse nameParserResponse = new NameParserResponse();

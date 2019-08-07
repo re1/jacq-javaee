@@ -31,7 +31,7 @@ public interface YListWebSearch {
     /**
      * Search names for the given scientific name
      *
-     * @param anyField Scientific name to search for
+     * @param anyField scientific name to search for
      * @param capital
      * @param familyOrder
      * @param familyDispType

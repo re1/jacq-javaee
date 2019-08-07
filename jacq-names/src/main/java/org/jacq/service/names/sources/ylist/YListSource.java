@@ -15,7 +15,6 @@
  */
 package org.jacq.service.names.sources.ylist;
 
-import org.jacq.service.names.sources.dnpgoth.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +29,7 @@ import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 /**
- * Queries ylist.info for common names and returns them
+ * Queries http://ylist.info for common names by simulating form submits
  *
  * @author wkoller
  */
@@ -64,16 +63,16 @@ public class YListSource implements CommonNamesSource {
     }
 
     /**
-     * Query ylist.info by simulating form submits and parsing the result
+     * Query http://ylist.info by simulating form submits and parsing the result
      *
-     * @param query
-     * @return
+     * @param query parsed scientific name
+     * @return list of common names for given query
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
 
-        // get proxy to ylist web search
+        // create proxy service instance
         YListWebSearch yListWebSearch = SourcesUtil.getYListWebSearch();
 
         // send initial query to search form
@@ -149,5 +148,4 @@ public class YListSource implements CommonNamesSource {
 
         return results;
     }
-
 }

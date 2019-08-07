@@ -18,7 +18,7 @@ package org.jacq.common.model.names;
 import java.util.ArrayList;
 
 /**
- * Wrapper object for open-refine response format
+ * Wrapper object for OpenRefine response format
  *
  * @author wkoller
  */

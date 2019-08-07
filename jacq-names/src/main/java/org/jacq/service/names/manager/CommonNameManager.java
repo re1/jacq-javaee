@@ -16,15 +16,17 @@
 package org.jacq.service.names.manager;
 
 import org.jacq.common.manager.NameParserManager;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jacq.common.model.jpa.openup.TblCommonNamesCache;
+import org.jacq.common.model.jpa.openup.TblScientificNameCache;
+import org.jacq.common.model.names.CommonName;
+import org.jacq.common.model.names.NameParserResponse;
+import org.jacq.common.model.names.OpenRefineInfo;
+import org.jacq.common.model.names.OpenRefineResponse;
+import org.jacq.common.rest.names.CommonNameService;
+import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
+import org.jacq.service.names.sources.util.SourceQueryThread;
+import org.jacq.service.names.sources.ylist.YListSource;
+
 import javax.annotation.ManagedBean;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -33,19 +35,15 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import org.jacq.common.model.jpa.openup.TblCommonNamesCache;
-import org.jacq.common.model.jpa.openup.TblScientificNameCache;
-import org.jacq.common.model.names.CommonName;
-import org.jacq.common.model.names.OpenRefineInfo;
-import org.jacq.common.model.names.OpenRefineResponse;
-import org.jacq.common.model.names.NameParserResponse;
-import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
-import org.jacq.service.names.sources.util.SourceQueryThread;
-import org.jacq.service.names.sources.ylist.YListSource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles all common names related actions
@@ -75,7 +73,7 @@ public class CommonNameManager {
     protected NameParserManager nameParserManager;
 
     /**
-     * @see org.jacq.common.rest.names.CommonNameService#query(java.lang.String)
+     * @see CommonNameService#query(String)
      */
     public OpenRefineInfo info() {
         OpenRefineInfo openRefineInfo = new OpenRefineInfo();
@@ -87,7 +85,7 @@ public class CommonNameManager {
     }
 
     /**
-     * @see org.jacq.common.rest.names.CommonNameService#query(java.lang.String)
+     * @see CommonNameService#query(String)
      */
     @Transactional
     public OpenRefineResponse<CommonName> query(String query) {
@@ -147,12 +145,12 @@ public class CommonNameManager {
         }
 
         // convert result map to list
-        ArrayList<CommonName> resultList = new ArrayList(resultMap.values());
+        ArrayList<CommonName> resultList = new ArrayList<>(resultMap.values());
 
         // iterate over results and fetch ids respectively or create them
         for (CommonName result : resultList) {
             // lookup scientific name from cache
-            TblScientificNameCache scientificNameCache = null;
+            TblScientificNameCache scientificNameCache;
             TypedQuery<TblScientificNameCache> scientificNameCacheQuery = em.createNamedQuery("TblScientificNameCache.findByName", TblScientificNameCache.class);
             scientificNameCacheQuery.setParameter("name", result.getTaxon());
             List<TblScientificNameCache> scientificNameCaches = scientificNameCacheQuery.getResultList();
@@ -171,7 +169,7 @@ public class CommonNameManager {
             result.setTaxonId(scientificNameCache.getId());
 
             // lookup common names from cache
-            TblCommonNamesCache commonNamesCache = null;
+            TblCommonNamesCache commonNamesCache;
 
             // we use a string building query here for performance reasons - should normally be avoided at any cost!
             String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.name = '" + result.getName() + "'";
@@ -201,7 +199,7 @@ public class CommonNameManager {
         }
 
         // prepare OpenRefine response
-        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse();
+        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse<>();
         openRefineResponse.setResult(resultList);
 
         return openRefineResponse;

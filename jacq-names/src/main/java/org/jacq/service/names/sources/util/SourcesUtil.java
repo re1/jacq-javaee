@@ -15,7 +15,6 @@
  */
 package org.jacq.service.names.sources.util;
 
-import org.jacq.common.rest.filter.RequestDebugFilter;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -39,7 +38,7 @@ public class SourcesUtil {
     }
 
     /**
-     * Create service instance for http://ylist.info/
+     * Create service instance for http://ylist.info
      *
      * @return
      */

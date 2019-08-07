@@ -23,6 +23,7 @@ import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.service.names.sources.CommonNamesSource;
 
 /**
+ * Queries the given common names source for a parsed scientific name and return the results
  *
  * @author wkoller
  */
@@ -36,9 +37,14 @@ public class SourceQueryThread implements Callable<ArrayList<CommonName>> {
         this.query = query;
     }
 
+    /**
+     * Query the objects' common names source for a parsed scientific name
+     *
+     * @return list of common names for the objects' parsed scientific name
+     */
     @Override
-    public ArrayList<CommonName> call() throws Exception {
-        return this.commonNamesSource.query(query);
+    public ArrayList<CommonName> call() {
+        return this.commonNamesSource.query(this.query);
 
 //        // query source for list of matching common names
 //        ArrayList<CommonName> queryResult = this.commonNamesSource.query(query);
