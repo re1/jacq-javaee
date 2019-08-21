@@ -1,5 +1,6 @@
-jacq-common contains JPA / JAX-RS classes / interfaces only.
-jacq-service contains the actual implementation using manager classes.
+**jacq-common** contains JPA / JAX-RS classes / interfaces only.
+
+**jacq-service** contains the actual implementation using manager classes.
 
 ## Dependencies
 
