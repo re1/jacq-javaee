@@ -39,6 +39,17 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>2.0.1.Final</version>
+                <configuration>
+                    <hostname>127.0.0.1</hostname>
+                    <port>9990</port>
+                    <username>jacq</username>
+                    <password>jacq</password>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <properties>
