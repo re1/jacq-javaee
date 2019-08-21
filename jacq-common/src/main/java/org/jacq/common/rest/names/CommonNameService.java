@@ -37,14 +37,20 @@ public interface CommonNameService {
     public static final String APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON + "; charset=UTF-8";
 
     /**
-     * Outputs OpenRefine compliant metadata information or Query the common names service
+     * Outputs OpenRefine Service metadata or queries the Common Names Service for a single or multiple query strings.
+     * The Single Query Mode has been deprecated but is still implemented due to compatibility reasons.
      *
-     * @param query
-     * @return List of matched common names
+     * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#service-metadata">OpenRefine Reconciliation Service API Service Metadata</a>
+     * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#query-request">OpenRefine Reconciliation Service API Query Request</a>
+     *
+     * @param queries multiple common name queries as a JSON string
+     * @param query single common name query string
+     *
+     * @return List of matched common names per query
      */
     @Path("/")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)
-    public Response query(@QueryParam("query") String query);
+    public Response query(@QueryParam("queries") String queries, @QueryParam("query") String query);
 }

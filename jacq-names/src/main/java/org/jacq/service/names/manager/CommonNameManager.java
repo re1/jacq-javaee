@@ -73,7 +73,7 @@ public class CommonNameManager {
     protected NameParserManager nameParserManager;
 
     /**
-     * @see CommonNameService#query(String)
+     * @see CommonNameService#query
      */
     public OpenRefineInfo info() {
         OpenRefineInfo openRefineInfo = new OpenRefineInfo();
@@ -85,7 +85,7 @@ public class CommonNameManager {
     }
 
     /**
-     * @see CommonNameService#query(String)
+     * @see CommonNameService#query
      */
     @Transactional
     public OpenRefineResponse<CommonName> query(String query) {
