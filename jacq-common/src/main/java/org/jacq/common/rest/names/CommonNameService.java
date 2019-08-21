@@ -24,11 +24,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Common Names service interface
+ * Common Names service interface reachable from both commonNames and names/common
  *
  * @author wkoller
  */
-@Path("/names/common")
+@Path("{a:commonNames|names/common}")
 public interface CommonNameService {
 
     /**
