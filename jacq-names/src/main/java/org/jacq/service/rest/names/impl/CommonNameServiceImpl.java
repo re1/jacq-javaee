@@ -39,10 +39,9 @@ import java.util.logging.Logger;
 /**
  * Main Common Names Webservice based on the OpenRefine Reconciliation API
  *
- * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API">OpenRefine Reconciliation API</a>
- *
  * @author wkoller
  * @author re1
+ * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API">OpenRefine Reconciliation API</a>
  */
 public class CommonNameServiceImpl implements CommonNameService {
 
@@ -55,8 +54,13 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @see CommonNameService#query
      */
     @Override
-    public Response query(String queries, String query) throws WebApplicationException {
+    public Response query(String queries, String query, String type) throws WebApplicationException {
         try {
+            // Project documentation states that the type parameter should always be /name/common/ so other values ar logged
+            // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
+            // TODO: Check if this is even necessary
+            if (StringUtils.isEmpty(type)) LOGGER.log(Level.INFO, "No type parameter given");
+            if (!StringUtils.equals(type, "/name/common")) LOGGER.log(Level.INFO, "Type parameter is not /name/common", type);
             // use multiple query mode if queries parameter is given
             if (StringUtils.isNotEmpty(queries)) {
                 // create a hash map to save common name results with their keys
