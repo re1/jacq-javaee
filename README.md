@@ -2,6 +2,8 @@
 
 **jacq-service** contains the actual implementation using manager classes.
 
+The JACQ project is documented under https://development.senegate.at/confluence/display/JACQ.
+
 ## Dependencies
 
 - [Java SE 8](https://docs.oracle.com/javase/8/) (JDK)
