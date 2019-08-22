@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
  * Common Names service interface reachable from both commonNames and names/common
  *
  * @author wkoller
+ * @author re1
  */
 @Path("{a:commonNames|names/common}")
 public interface CommonNameService {
