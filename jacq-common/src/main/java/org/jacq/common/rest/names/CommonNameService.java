@@ -15,11 +15,7 @@
  */
 package org.jacq.common.rest.names;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -52,5 +48,5 @@ public interface CommonNameService {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)
-    public Response query(@QueryParam("queries") String queries, @QueryParam("query") String query);
+    public Response query(@QueryParam("queries") String queries, @QueryParam("query") String query) throws WebApplicationException;
 }

@@ -24,13 +24,13 @@ import org.jacq.service.names.manager.CommonNameManager;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import javax.json.stream.JsonParsingException;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.io.StringReader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,42 +50,60 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @see CommonNameService#query
      */
     @Override
-    public Response query(String queries, String query) {
+    public Response query(String queries, String query) throws WebApplicationException {
         try {
+            // use multiple query mode if queries parameter is given
             if (StringUtils.isNotEmpty(queries)) {
                 // TODO: Log and handle invalid JSON formatting
+                // check if string is valid JSON
                 StringReader stringReader = new StringReader(queries);
                 JsonObject queriesObject = Json.createReader(stringReader).readObject();
                 // create a hash map to save common name results with their keys
                 Map<String, OpenRefineResponse<CommonName>> queryResultMap = new HashMap<>();
                 // iterate over queries and add results with their key to the results map
                 for (String key : queriesObject.keySet()) {
-                    queryResultMap.put(key, commonNameManager.query(queriesObject.getJsonObject(key).getString("query")));
+                    try {
+                        String queryString = queriesObject.getJsonObject(key).getString("query");
+                        queryResultMap.put(key, commonNameManager.query(queryString));
+                    } catch (ClassCastException e) {
+                        // Query JSON object or its query parameter cannot be cast to object or string respectively
+                        LOGGER.log(Level.INFO, "Query JSON object's query parameter is not a string", e);
+                        throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Query JSON object's query parameter is not a string").build());
+                    } catch (NullPointerException e) {
+                        // Query JSON object has no query parameter
+                        LOGGER.log(Level.INFO, "Query JSON object has no query parameter", e);
+                        throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Query JSON object has no query parameter").build());
+                    }
                 }
                 // return map of query responses
                 return Response.ok(queryResultMap).build();
             }
 
+            // use single query mode if query parameter is given
             if (StringUtils.isNotEmpty(query)) {
-                // check if query string is valid json
+                // check if query string is valid JSON
                 try (StringReader stringReader = new StringReader(query)) {
-                    // create object from valid json string
+                    // create object from valid JSON string
                     JsonObject queryObject = Json.createReader(stringReader).readObject();
                     query = queryObject.getString("query");
                 } catch (JsonParsingException e) {
-                    // log invalid json query
-                    // TODO: add notice to query results
-                    LOGGER.log(Level.FINE, "Query is not a valid JSON object and therefore interpreted as a string.", e);
+                    // log invalid JSON query
+                    LOGGER.log(Level.INFO, "Query is not valid JSON and used as a string", e);
                 }
-
+                // return query response
                 return Response.ok(commonNameManager.query(query)).build();
             }
+
             // return common name webservice information if no response was returned and no exception thrown
             return Response.ok(commonNameManager.info()).build();
-
+        } catch (WebApplicationException e) {
+            // Throw WebApplicationExceptions directly
+            // TODO: find a better solution
+            throw e;
         } catch (Exception e) {
+            // Check for other errors which might lead to internal error.
+            // Is this not obsolete as an internal error is thrown anyway?
             LOGGER.log(Level.SEVERE, null, e);
-
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
     }
