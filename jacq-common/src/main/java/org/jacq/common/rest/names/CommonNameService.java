@@ -47,5 +47,5 @@ public interface CommonNameService {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)
-    Response query(@QueryParam("queries") String queries, @QueryParam("query") String query, @QueryParam("type") String type) throws WebApplicationException;
+    Response query(@QueryParam("queries") String queries, @QueryParam("query") String query) throws WebApplicationException;
 }

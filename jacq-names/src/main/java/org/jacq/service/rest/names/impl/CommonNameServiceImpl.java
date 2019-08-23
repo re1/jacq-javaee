@@ -54,14 +54,8 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @see CommonNameService#query
      */
     @Override
-    public Response query(String queries, String query, String type) throws WebApplicationException {
+    public Response query(String queries, String query) throws WebApplicationException {
         try {
-            // Project documentation states that the type parameter should always be /name/common/ so other values ar logged
-            // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
-            // TODO: Check if this is even necessary
-            if (StringUtils.isEmpty(type)) LOGGER.log(Level.INFO, "No type parameter given");
-            if (!StringUtils.equals(type, "/name/common")) LOGGER.log(Level.INFO, "Type parameter is not /name/common", type);
-            // use multiple query mode if queries parameter is given
             if (StringUtils.isNotEmpty(queries)) {
                 // create a hash map to save common name results with their keys
                 Map<String, OpenRefineResponse<CommonName>> queryResultMap = new HashMap<>();
@@ -102,6 +96,22 @@ public class CommonNameServiceImpl implements CommonNameService {
                     // create object from valid JSON string
                     JsonObject queryObject = Json.createReader(stringReader).readObject();
                     query = queryObject.getString("query");
+                    // Project documentation states that the type parameter should always be /name/common so other values ar logged
+                    // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
+                    // TODO: Check if this is even necessary
+                    try {
+                        // check if type parameter is /name/common
+                        String type = queryObject.getString("type");
+                        if (!StringUtils.equals(type, "/name/common")) {
+                            LOGGER.log(Level.INFO, "Type parameter is not /name/common", type);
+                        }
+                    } catch (NullPointerException e) {
+                        // type parameter not found
+                        LOGGER.log(Level.INFO, "No type parameter given");
+                    } catch (ClassCastException e) {
+                        // type parameter is not a string
+                        LOGGER.log(Level.INFO, "Type parameter is not a string");
+                    }
                 } catch (JsonParsingException e) {
                     // log invalid JSON query
                     LOGGER.log(Level.INFO, "Query parameter is not valid JSON and used as a string", e);

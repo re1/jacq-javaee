@@ -31,13 +31,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Provides easy access to the biodiversity nameParser
- *
- * Note: The parser needs to be started manually using the parserver command: {@code ~ # parserver -r -o json}
- *
- * @see "https://rubygems.org/gems/biodiversity/"
+ * Provides easy access to the Global Names Parser
+ * Note: The parser is available as a ruby gem and needs to be installed and started manually on port 4334.
+ * 1. {@code gem install biodiversity}
+ * 2. {@code parserver -r -o json}
  *
  * @author wkoller
+ * @author re1
+ * @see "https://rubygems.org/gems/biodiversity/"
  */
 @ManagedBean
 public class NameParserManager {
@@ -50,7 +51,7 @@ public class NameParserManager {
     protected BufferedReader in;
 
     /**
-     * Connects to parserver on startup
+     * Connects to the Global Names Parser on startup
      */
     @PostConstruct
     public void init() {
@@ -58,8 +59,8 @@ public class NameParserManager {
             socket = new Socket("localhost", 4334);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
     }
 
@@ -109,13 +110,12 @@ public class NameParserManager {
                     nameParserResponse.setInfraspecies(infraspecies.getString("string"));
                     nameParserResponse.setRank(infraspecies.getString("rank", null));
                 }
-            }
-            else {
+            } else {
                 LOGGER.log(Level.WARNING, "Unable to parse scientific-name ''{0}''", scientificName);
             }
 
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
 
         return nameParserResponse;
