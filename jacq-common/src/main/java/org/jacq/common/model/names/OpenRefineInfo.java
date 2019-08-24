@@ -15,6 +15,8 @@
  */
 package org.jacq.common.model.names;
 
+import java.util.*;
+
 /**
  * Represents the metadata information provided by an OpenRefine service
  *
@@ -25,6 +27,7 @@ public class OpenRefineInfo {
     protected String name;
     protected String identifierSpace;
     protected String schemaSpace;
+    protected List<Map<String, String>> defaultTypes;
 
     public String getName() {
         return name;
@@ -48,5 +51,23 @@ public class OpenRefineInfo {
 
     public void setSchemaSpace(String schemaSpace) {
         this.schemaSpace = schemaSpace;
+    }
+
+    public List<Map<String, String>> getDefaultTypes() { return defaultTypes; }
+
+    /**
+     * Adds a type to the defaultTypes list
+     *
+     * @param id Type identifier url
+     * @param name Human readable type name
+     */
+    public void addDefaultType(String id, String name) {
+        // create defaultTypes list if it does not exist
+        if (defaultTypes == null) defaultTypes = new ArrayList<>();
+        // using LinkedHashMap to set order of arguments
+        Map<String, String> defaultType = new LinkedHashMap<>();
+        defaultType.put("id", id);
+        defaultType.put("name", name);
+        defaultTypes.add(defaultType);
     }
 }

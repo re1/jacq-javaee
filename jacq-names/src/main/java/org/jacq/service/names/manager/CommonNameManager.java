@@ -39,6 +39,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -80,6 +81,7 @@ public class CommonNameManager {
         openRefineInfo.setName("JACQ Common Names Service");
         openRefineInfo.setIdentifierSpace("http://openup.nhm-wien.ac.at/commonNames/");
         openRefineInfo.setSchemaSpace("http://openup.nhm-wien.ac.at/commonNames/");
+        openRefineInfo.addDefaultType("/name/common", "Common Name");
 
         return openRefineInfo;
     }
