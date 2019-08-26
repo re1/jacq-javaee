@@ -39,7 +39,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -93,7 +92,7 @@ public class CommonNameManager {
     public OpenRefineResponse<CommonName> query(String query) {
         HashMap<Long, CommonName> resultMap = new HashMap<>();
 
-        // before we start, clean the queried name
+        // parse the given common name
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
         // create a list of common name sources before executing any queries
@@ -102,13 +101,12 @@ public class CommonNameManager {
         queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
 
         try {
-            // now query all sources and wait for them to finish
+            // query all sources asynchronously and wait for them to finish
             List<Future<ArrayList<CommonName>>> queryResults = executorService.invokeAll(queryTasks);
-
+            // iterate over query results after a query is completed
             for (Future<ArrayList<CommonName>> queryResult : queryResults) {
                 try {
-                    ArrayList<CommonName> commonNameList;
-                    commonNameList = queryResult.get();
+                    ArrayList<CommonName> commonNameList = queryResult.get();
                     // merge results into global result map
                     for (CommonName commonName : commonNameList) {
                         // clean the scientific name
@@ -116,6 +114,7 @@ public class CommonNameManager {
 
                         // update score and match if one of them is not set
                         if (commonName.getMatch() == null || commonName.getScore() == null) {
+                            // check if common name taxon is a direct match to its scientific name
                             if (commonName.getTaxon().equalsIgnoreCase(nameParserResponse.getScientificName())) {
                                 commonName.setMatch(Boolean.TRUE);
                                 commonName.setScore(100L);
@@ -137,13 +136,12 @@ public class CommonNameManager {
                             resultMap.put(deduplicateHash, commonName);
                         }
                     }
-                } catch (ExecutionException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
+                } catch (ExecutionException e) {
+                    LOGGER.log(Level.SEVERE, null, e);
                 }
             }
-
-        } catch (InterruptedException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
 
         // convert result map to list
@@ -215,11 +213,6 @@ public class CommonNameManager {
      * @return String of "field='value'" or "field IS NULL"
      */
     protected String queryFieldHelper(String field, String value) {
-        if (value == null) {
-            return field + " IS NULL";
-        }
-        else {
-            return field + " = '" + value + "'";
-        }
+        return value == null ? field + " IS NULL" : field + " = '" + value + "'";
     }
 }

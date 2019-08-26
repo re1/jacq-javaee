@@ -15,13 +15,15 @@
  */
 package org.jacq.common.model.names;
 
+import org.apache.commons.lang3.StringUtils;
+
+import javax.persistence.Transient;
+import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Transient;
-import javax.validation.Valid;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * POJO for all information of a common name
@@ -40,6 +42,8 @@ public class CommonName {
     public String taxon;
     public Long score;
     public Boolean match;
+    // use taxon_id for representation to match OpenUp!
+    @XmlElement(name="taxon_id")
     public Long taxonId;
     @Valid
     public List<String> references = new ArrayList<>();
