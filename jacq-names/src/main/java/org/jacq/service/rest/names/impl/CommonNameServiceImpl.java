@@ -131,5 +131,4 @@ public class CommonNameServiceImpl implements CommonNameService {
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
     }
-
 }
