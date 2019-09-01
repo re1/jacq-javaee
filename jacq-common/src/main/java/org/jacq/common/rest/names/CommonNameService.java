@@ -15,6 +15,9 @@
  */
 package org.jacq.common.rest.names;
 
+import org.jacq.common.model.names.OpenRefineMultiRequest;
+import org.jacq.common.model.names.OpenRefineRequest;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,6 +39,7 @@ public interface CommonNameService {
     /**
      * Outputs OpenRefine Service metadata or queries the Common Names Service for a single or multiple query strings.
      * The Single Query Mode has been deprecated but is still implemented due to compatibility reasons.
+     * Query parameters do not use JAXB to improve error handling and reduce complexity.
      *
      * @param queries multiple common name queries as a JSON string
      * @param query   single common name query string
@@ -47,5 +51,5 @@ public interface CommonNameService {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)
-    Response query(@QueryParam("queries") String queries, @QueryParam("query") String query) throws WebApplicationException;
+    Response query(@QueryParam("queries") OpenRefineMultiRequest queries, @QueryParam("query") OpenRefineRequest query) throws WebApplicationException;
 }

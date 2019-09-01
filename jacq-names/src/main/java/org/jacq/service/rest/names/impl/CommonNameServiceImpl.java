@@ -15,22 +15,17 @@
  */
 package org.jacq.service.rest.names.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.names.CommonName;
+import org.jacq.common.model.names.OpenRefineMultiRequest;
+import org.jacq.common.model.names.OpenRefineRequest;
 import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.common.rest.names.CommonNameService;
 import org.jacq.service.names.manager.CommonNameManager;
 
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonException;
-import javax.json.JsonObject;
-import javax.json.stream.JsonParsingException;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -54,70 +49,29 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @see CommonNameService#query
      */
     @Override
-    public Response query(String queries, String query) throws WebApplicationException {
+    public Response query(OpenRefineMultiRequest queries, OpenRefineRequest query) throws WebApplicationException {
         try {
-            if (StringUtils.isNotEmpty(queries)) {
+            if (queries != null) {
                 // create a hash map to save common name results with their keys
                 Map<String, OpenRefineResponse<CommonName>> queryResultMap = new HashMap<>();
-                // check if string is valid JSON
-                try {
-                    StringReader stringReader = new StringReader(queries);
-                    JsonObject queriesObject = Json.createReader(stringReader).readObject();
-                    // iterate over queries and add results with their key to the results map
-                    for (String key : queriesObject.keySet()) {
-                        String queryString = queriesObject.getJsonObject(key).getString("query");
-                        queryResultMap.put(key, commonNameManager.query(queryString));
-                    }
-                } catch (JsonParsingException e) {
-                    // Queries parameter is not valid JSON
-                    LOGGER.log(Level.INFO, "Queries parameter is not valid JSON", e);
-                    throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Queries parameter is not valid JSON").build());
-                } catch (JsonException e) {
-                    // Queries parameter is valid JSON but not a JSON object
-                    LOGGER.log(Level.INFO, "Queries parameter is valid but not a JSON object", e);
-                    throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Queries parameter is not a JSON object").build());
-                } catch (ClassCastException e) {
-                    // Query JSON object or its query parameter cannot be cast to object or string respectively
-                    LOGGER.log(Level.INFO, "Query JSON object's query parameter is not a string", e);
-                    throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Query JSON object's query parameter is not a string").build());
-                } catch (NullPointerException e) {
-                    // Query JSON object has no query parameter
-                    LOGGER.log(Level.INFO, "Query JSON object has no query parameter", e);
-                    throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity("Query JSON object has no query parameter").build());
+                for (String key : queries.keySet()) {
+                    queryResultMap.put(key, commonNameManager.query(queries.get(key).getQuery()));
                 }
                 // return map of query responses
                 return Response.ok(queryResultMap).build();
             }
 
             // use single query mode if query parameter is given
-            if (StringUtils.isNotEmpty(query)) {
-                // check if query string is valid JSON
-                try (StringReader stringReader = new StringReader(query)) {
-                    // create object from valid JSON string
-                    JsonObject queryObject = Json.createReader(stringReader).readObject();
-                    query = queryObject.getString("query");
-                    // Project documentation states that the type parameter should always be /name/common so other values ar logged
-                    // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
-                    // TODO: Check if this is even necessary
-                    try {
-                        // check if type parameter is /name/common
-                        String type = queryObject.getString("type");
-                        if (!StringUtils.equals(type, "/name/common")) {
-                            LOGGER.log(Level.INFO, "Type parameter is not /name/common", type);
-                        }
-                    } catch (NullPointerException e) {
-                        // type parameter not found
-                        LOGGER.log(Level.INFO, "No type parameter given");
-                    } catch (ClassCastException e) {
-                        // type parameter is not a string
-                        LOGGER.log(Level.INFO, "Type parameter is not a string");
-                    }
-                } catch (JsonParsingException e) {
-                    // log invalid JSON query
-                    LOGGER.log(Level.INFO, "Query parameter is not valid JSON and used as a string", e);
+            if (query != null) {
+                // Project documentation states that the type parameter should always be /name/common so other values are logged
+                // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
+                // TODO: Check if this is even necessary
+                // use string comparision from static string as query.getType() can be null
+                if (!"/name/common".equals(query.getType())) {
+                    LOGGER.log(Level.INFO, "Type parameter is not /name/common", query.getType());
                 }
                 // return query response
-                return Response.ok(commonNameManager.query(query)).build();
+                return Response.ok(commonNameManager.query(query.getQuery())).build();
             }
             // return common name webservice information if no response was returned and no exception thrown
             return Response.ok(commonNameManager.info()).build();
