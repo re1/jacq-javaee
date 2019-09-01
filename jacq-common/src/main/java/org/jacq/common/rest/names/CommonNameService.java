@@ -28,7 +28,6 @@ import javax.ws.rs.core.Response;
  * @author wkoller
  * @author re1
  */
-@Path("{a:commonNames|names/common}")
 public interface CommonNameService {
 
     /**
@@ -40,6 +39,8 @@ public interface CommonNameService {
      * Outputs OpenRefine Service metadata or queries the Common Names Service for a single or multiple query strings.
      * The Single Query Mode has been deprecated but is still implemented due to compatibility reasons.
      * Query parameters do not use JAXB to improve error handling and reduce complexity.
+     * TODO: Implement names/scientific and scientificNames paths for reverse common name search
+     * TODO: Implement a single names path for both common and scientific name requests
      *
      * @param queries multiple common name queries as a JSON string
      * @param query   single common name query string
@@ -47,7 +48,7 @@ public interface CommonNameService {
      * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#service-metadata">OpenRefine Reconciliation Service API Service Metadata</a>
      * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#query-request">OpenRefine Reconciliation Service API Query Request</a>
      */
-    @Path("/")
+    @Path("{a:commonNames|names/common}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(APPLICATION_JSON_UTF8)

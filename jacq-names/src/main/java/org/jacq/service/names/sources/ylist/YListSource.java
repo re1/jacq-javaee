@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
+import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
@@ -147,5 +148,10 @@ public class YListSource implements CommonNamesSource {
         }
 
         return results;
+    }
+
+    @Override
+    public ArrayList<ScientificName> query(String query) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
