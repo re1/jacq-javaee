@@ -20,6 +20,6 @@ As most queries will be JSON objects the URL has to be [encoded](https://en.wiki
 - **Raw query**:
   http://localhost:8080/jacq-names/rest/commonNames?query=%7B%22type%22%3A%22%2Fname%2Fcommon%22%2C%20%22query%22%3A%22Veronica%2Bcaninotesticulata%22%7D.
 - **OpenRefine Single Query Mode** ([Deprecated](https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#deprecated-single-query-mode)):
-  http://localhost:8080/jacq-names/rest/commonNames?query={"query":"Veronica+caninotesticulata"}
+  http://localhost:8080/jacq-names/rest/commonNames?query=%7B%22query%22%3A%22Veronica%2Bcaninotesticulata%22%7D
 - **OpenRefine Multiple Query Mode**:
-  http://localhost:8080/jacq-names/rest/commonNames?queries={"q1":{"query":"Veronica+caninotesticulata"},"q2":{"query":"Wolffia+arrhiza"}}
+  http://localhost:8080/jacq-names/rest/commonNames?queries=%7B%22q1%22%3A%7B%22query%22%3A%22Veronica%2Bcaninotesticulata%22%7D%2C%22q2%22%3A%7B%22query%22%3A%22Wolffia%2Barrhiza%22%7D%7D
