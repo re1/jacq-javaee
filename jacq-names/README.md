@@ -15,4 +15,11 @@ mvn wildfly:deploy-only -f jacq -pl ../jacq-service,../jacq-names
 
 The Common Names Webservice can be reached from https://127.0.0.1:8080/jacq-names/rest/commonNames. Both requests and results are based on the [OpenRefine Reconciliation API](https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API).
 
-As most queries will be JSON objects the URL has to be [encoded](https://en.wikipedia.org/wiki/Percent-encoding) correctly. A valid URL would be: http://localhost:8080/jacq-names/rest/commonNames?query=%7B%22type%22%3A%22%2Fname%2Fcommon%22%2C%20%22query%22%3A%22Veronica%2Bcaninotesticulata%22%7D.
+As most queries will be JSON objects the URL has to be [encoded](https://en.wikipedia.org/wiki/Percent-encoding) correctly. Valid URLs include:
+
+- **Raw query**:
+  http://localhost:8080/jacq-names/rest/commonNames?query=%7B%22type%22%3A%22%2Fname%2Fcommon%22%2C%20%22query%22%3A%22Veronica%2Bcaninotesticulata%22%7D.
+- **OpenRefine Single Query Mode** ([Deprecated](https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#deprecated-single-query-mode)):
+  http://localhost:8080/jacq-names/rest/commonNames?query={"query":"Veronica+caninotesticulata"}
+- **OpenRefine Multiple Query Mode**:
+  http://localhost:8080/jacq-names/rest/commonNames?queries={"q1":{"query":"Veronica+caninotesticulata"},"q2":{"query":"Wolffia+arrhiza"}}
