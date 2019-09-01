@@ -23,3 +23,6 @@ As most queries will be JSON objects the URL has to be [encoded](https://en.wiki
   http://localhost:8080/jacq-names/rest/commonNames?query=%7B%22query%22%3A%22Veronica+caninotesticulata%22%7D
 - **OpenRefine Multiple Query Mode**:
   http://localhost:8080/jacq-names/rest/commonNames?queries=%7B%22q1%22%3A%7B%22query%22%3A%22Veronica+caninotesticulata%22%7D%2C%22q2%22%3A%7B%22query%22%3A%22Wolffia+arrhiza%22%7D%7D
+
+- **XML Format**:
+  localhost:8080/jacq-names/rest/commonNames?query=%7B%22type%22%3A%22%2Fname%2Fcommon%22%2C%22query%22%3A%22Veronica%20caninotesticulata%22%7D&format=edmSkos

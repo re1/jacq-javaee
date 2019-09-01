@@ -19,7 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Transient;
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +33,8 @@ import java.util.Objects;
  *
  * @author wkoller
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CommonName {
 
     public Long id;

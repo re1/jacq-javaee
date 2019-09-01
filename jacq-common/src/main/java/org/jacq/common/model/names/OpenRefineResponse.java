@@ -15,15 +15,21 @@
  */
 package org.jacq.common.model.names;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
  * Wrapper object for OpenRefine response format
+ * XmlSeeAlso is used for types not known to JAXB
  *
  * @author wkoller
  */
+@XmlRootElement(name = "RDF", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+@XmlSeeAlso(CommonName.class)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OpenRefineResponse<T> {
 
+    @XmlElement(name = "Concept", namespace = "http://www.w3.org/2004/02/skos/core#", type = CommonName.class)
     protected ArrayList<T> result = new ArrayList<>();
 
     public ArrayList<T> getResult() {

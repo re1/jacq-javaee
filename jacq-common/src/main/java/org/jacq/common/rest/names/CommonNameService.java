@@ -28,12 +28,14 @@ import javax.ws.rs.core.Response;
  * @author wkoller
  * @author re1
  */
+@Path("{a:commonNames|names/common}")
 public interface CommonNameService {
 
     /**
      * Definition of JSON Media-Type with UTF-8 encoding for valid response headers
      */
     String APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON + "; charset=UTF-8";
+    String APPLICATION_XML_UTF8 = MediaType.APPLICATION_XML;
 
     /**
      * Outputs OpenRefine Service metadata or queries the Common Names Service for a single or multiple query strings.
@@ -48,9 +50,9 @@ public interface CommonNameService {
      * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#service-metadata">OpenRefine Reconciliation Service API Service Metadata</a>
      * @see <a href="https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API#query-request">OpenRefine Reconciliation Service API Query Request</a>
      */
-    @Path("{a:commonNames|names/common}")
     @GET
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(APPLICATION_JSON_UTF8)
-    Response query(@QueryParam("queries") OpenRefineMultiRequest queries, @QueryParam("query") OpenRefineRequest query) throws WebApplicationException;
+    @Produces({APPLICATION_JSON_UTF8, APPLICATION_XML_UTF8})
+    Response query(@QueryParam("queries") OpenRefineMultiRequest queries, @QueryParam("query") OpenRefineRequest query, @QueryParam("format") String format) throws WebApplicationException;
 }

@@ -25,7 +25,9 @@ import org.jacq.service.names.manager.CommonNameManager;
 import javax.inject.Inject;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -49,8 +51,10 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @see CommonNameService#query
      */
     @Override
-    public Response query(OpenRefineMultiRequest queries, OpenRefineRequest query) throws WebApplicationException {
+    public Response query(OpenRefineMultiRequest queries, OpenRefineRequest query, String format) throws WebApplicationException {
         try {
+            format = "edmSkos".equals(format) ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON + "; charset=UTF-8";
+
             if (queries != null) {
                 // create a hash map to save common name results with their keys
                 Map<String, OpenRefineResponse<CommonName>> queryResultMap = new HashMap<>();
@@ -58,7 +62,7 @@ public class CommonNameServiceImpl implements CommonNameService {
                     queryResultMap.put(key, commonNameManager.query(queries.get(key).getQuery()));
                 }
                 // return map of query responses
-                return Response.ok(queryResultMap).build();
+                return Response.ok(queryResultMap, format).build();
             }
 
             // use single query mode if query parameter is given
@@ -71,10 +75,10 @@ public class CommonNameServiceImpl implements CommonNameService {
                     LOGGER.log(Level.INFO, "Type parameter is not /name/common", query.getType());
                 }
                 // return query response
-                return Response.ok(commonNameManager.query(query.getQuery())).build();
+                return Response.ok(commonNameManager.query(query.getQuery()), format).build();
             }
             // return common name webservice information if no response was returned and no exception thrown
-            return Response.ok(commonNameManager.info()).build();
+            return Response.ok(commonNameManager.info(), format).build();
         } catch (ClientErrorException e) {
             // Throw ClientErrorExceptions directly
             throw e;
