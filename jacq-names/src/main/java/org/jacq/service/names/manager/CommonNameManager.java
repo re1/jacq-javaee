@@ -23,6 +23,7 @@ import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.common.rest.names.CommonNameService;
+import org.jacq.service.names.sources.catalogueoflife.CatalogueOfLifeSource;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 import org.jacq.service.names.sources.util.SourceQueryThread;
 import org.jacq.service.names.sources.ylist.YListSource;
@@ -64,6 +65,9 @@ public class CommonNameManager {
     protected ManagedExecutorService executorService;
 
     @Inject
+    protected CatalogueOfLifeSource catalogueOfLifeSource;
+
+    @Inject
     protected DnpGoThSource dnpGoThSource;
 
     @Inject
@@ -92,11 +96,12 @@ public class CommonNameManager {
     public OpenRefineResponse<CommonName> query(String query) {
         HashMap<Long, CommonName> resultMap = new HashMap<>();
 
-        // parse the given common name
+        // parse the given scientific name
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
         // create a list of common name sources before executing any queries
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
+        queryTasks.add(new SourceQueryThread(catalogueOfLifeSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
 

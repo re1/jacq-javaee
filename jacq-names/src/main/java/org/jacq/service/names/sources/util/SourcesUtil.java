@@ -15,11 +15,11 @@
  */
 package org.jacq.service.names.sources.util;
 
+import org.jacq.service.names.sources.dnpgoth.DnpGoThWebSearch;
+import org.jacq.service.names.sources.ylist.YListWebSearch;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jacq.service.names.sources.dnpgoth.DnpGoThWebSearch;
-import org.jacq.service.names.sources.ylist.YListWebSearch;
 
 /**
  * Helper class for providing quick access to source-services
@@ -54,7 +54,7 @@ public class SourcesUtil {
      * @param serviceURI
      * @return
      */
-    protected static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
+    public static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
         //resteasyClient.register(new RequestDebugFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);

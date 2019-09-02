@@ -21,14 +21,15 @@ import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 
 /**
- * Interface definition for common names sources
+ * Interface for common names sources defining a method each to query for common names based on a parsed scientific name
+ * and for scientific names based on an unparsed common name.
  *
  * @author wkoller
  */
 public interface CommonNamesSource {
 
     /**
-     * Query the source for a list of common names, based on a scientific name
+     * Query source for common names based on a parsed scientific name
      *
      * @param query parsed scientific name
      * @return list of common names for given scientific name
@@ -36,9 +37,9 @@ public interface CommonNamesSource {
     public ArrayList<CommonName> query(NameParserResponse query);
 
     /**
-     * Query the source for a list of scientific names, based on a common name
+     * Query source for scientific names based on an unparsed common name
      *
-     * @param query common name to query for
+     * @param query unparsed common name
      * @return list of possible scientific names for given common name
      */
     public ArrayList<ScientificName> query(String query);
