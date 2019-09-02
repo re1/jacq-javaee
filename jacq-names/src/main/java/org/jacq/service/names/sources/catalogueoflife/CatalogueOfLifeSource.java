@@ -30,6 +30,7 @@ import javax.json.JsonObject;
 import javax.json.stream.JsonParsingException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,7 +75,18 @@ public class CatalogueOfLifeSource implements CommonNamesSource {
                         // TODO: refactor CommonName.id to string as not all common name ids are numbers
                         // commonName.setId(result.getString("id", ""));
                         commonName.setName(commonNameObject.getString("name", null));
-                        commonName.setLanguage(commonNameObject.getString("language", null));
+                        // languages do not come in ISO-639-6 format and are therefor converted
+                        // TODO improve language name conversion
+                        String language = commonNameObject.getString("language", null);
+                        if (language != null) {
+                            for (Locale locale : Locale.getAvailableLocales()) {
+                                if (locale.getDisplayLanguage().equals(language)) {
+                                    commonName.setLanguage(locale.getISO3Language());
+                                    break;
+                                }
+                            }
+                        }
+
                         commonName.setGeography(commonNameObject.getString("country", null));
                         commonName.setTaxon(resultObject.getString("name", null));
                         // TODO: refactor CommonName.taxonId to string as not all taxon ids are numbers

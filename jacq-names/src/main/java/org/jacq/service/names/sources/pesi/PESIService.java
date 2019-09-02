@@ -29,6 +29,7 @@ public interface PESIService {
 
     /**
      * Get the first exact matching GUID for a given name
+     * TODO: Add additional endpoints even when they are not used right now
      *
      * @param scientificName Parsed scientific name to get GUID for
      * @return GUID for scientificName or no content
