@@ -29,7 +29,7 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OpenRefineResponse<T> {
 
-    @XmlElement(name = "Concept", namespace = "http://www.w3.org/2004/02/skos/core#", type = CommonName.class)
+    @XmlElement(namespace = "http://www.w3.org/2004/02/skos/core#", type = CommonName.class)
     protected ArrayList<T> result = new ArrayList<>();
 
     public ArrayList<T> getResult() {
