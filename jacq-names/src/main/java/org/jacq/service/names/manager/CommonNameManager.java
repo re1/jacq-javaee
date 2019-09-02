@@ -21,7 +21,6 @@ import org.jacq.common.model.jpa.openup.TblScientificNameCache;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.OpenRefineInfo;
-import org.jacq.common.model.names.OpenRefineResponse;
 import org.jacq.common.rest.names.CommonNameService;
 import org.jacq.service.names.sources.catalogueoflife.CatalogueOfLifeSource;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
@@ -97,7 +96,7 @@ public class CommonNameManager {
      * @see CommonNameService#query
      */
     @Transactional
-    public OpenRefineResponse<CommonName> query(String query) {
+    public ArrayList<CommonName> query(String query) {
         HashMap<Long, CommonName> resultMap = new HashMap<>();
 
         // parse the given scientific name
@@ -208,11 +207,7 @@ public class CommonNameManager {
             result.setId(commonNamesCache.getId());
         }
 
-        // prepare OpenRefine response
-        OpenRefineResponse<CommonName> openRefineResponse = new OpenRefineResponse<>();
-        openRefineResponse.setResult(resultList);
-
-        return openRefineResponse;
+        return resultList;
     }
 
     /**

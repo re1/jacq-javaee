@@ -15,10 +15,7 @@
  */
 package org.jacq.service.rest.names.impl;
 
-import org.jacq.common.model.names.CommonName;
-import org.jacq.common.model.names.OpenRefineMultiRequest;
-import org.jacq.common.model.names.OpenRefineRequest;
-import org.jacq.common.model.names.OpenRefineResponse;
+import org.jacq.common.model.names.*;
 import org.jacq.common.rest.names.CommonNameService;
 import org.jacq.service.names.manager.CommonNameManager;
 
@@ -27,8 +24,8 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,20 +50,26 @@ public class CommonNameServiceImpl implements CommonNameService {
     @Override
     public Response query(OpenRefineMultiRequest queries, OpenRefineRequest query, String format) throws WebApplicationException {
         try {
-            format = "edmSkos".equals(format) ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON + "; charset=UTF-8";
+            String mediaType = "edmSkos".equals(format) ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON + "; charset=UTF-8";
 
             if (queries != null) {
                 // create a hash map to save common name results with their keys
-                Map<String, OpenRefineResponse<CommonName>> queryResultMap = new HashMap<>();
+                Map<String, NameResponse<CommonName>> queryResultMap = new HashMap<>();
                 for (String key : queries.keySet()) {
-                    queryResultMap.put(key, commonNameManager.query(queries.get(key).getQuery()));
+                    // prepare OpenRefine response
+                    NameResponse<CommonName> response = "edmSkos".equals(format)
+                            ? new EDMResponse<>() : new OpenRefineResponse<>();
+                    response.setResult(commonNameManager.query(queries.get(key).getQuery()));
+                    queryResultMap.put(key, response);
                 }
                 // return map of query responses
-                return Response.ok(queryResultMap, format).build();
+                return Response.ok(queryResultMap, mediaType).build();
             }
 
             // use single query mode if query parameter is given
             if (query != null) {
+                NameResponse<CommonName> response = "edmSkos".equals(format)
+                        ? new EDMResponse<>() : new OpenRefineResponse<>();
                 // Project documentation states that the type parameter should always be /name/common so other values are logged
                 // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
                 // TODO: Check if this is even necessary
@@ -74,11 +77,13 @@ public class CommonNameServiceImpl implements CommonNameService {
                 if (!"/name/common".equals(query.getType())) {
                     LOGGER.log(Level.INFO, "Type parameter is not /name/common", query.getType());
                 }
-                // return query response
-                return Response.ok(commonNameManager.query(query.getQuery()), format).build();
+
+                // return results as either EDMResponse or OpenRefineResponse
+                response.setResult(commonNameManager.query(query.getQuery()));
+                return Response.ok(response, mediaType).build();
             }
             // return common name webservice information if no response was returned and no exception thrown
-            return Response.ok(commonNameManager.info(), format).build();
+            return Response.ok(commonNameManager.info(), mediaType).build();
         } catch (ClientErrorException e) {
             // Throw ClientErrorExceptions directly
             throw e;
