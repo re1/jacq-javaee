@@ -15,8 +15,6 @@
  */
 package org.jacq.service.names.sources.util;
 
-import org.jacq.service.names.sources.dnpgoth.DnpGoThWebSearch;
-import org.jacq.service.names.sources.ylist.YListWebSearch;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -27,31 +25,12 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
  * @author wkoller
  */
 public class SourcesUtil {
-
     /**
-     * Create service instance for http://www.dnp.go.th
+     * Utility function for creating a proxy to a given source class using the service URI
      *
-     * @return
-     */
-    public static DnpGoThWebSearch getDnpGoThWebSearch() {
-        return getProxy(DnpGoThWebSearch.class, "http://www.dnp.go.th/");
-    }
-
-    /**
-     * Create service instance for http://ylist.info
-     *
-     * @return
-     */
-    public static YListWebSearch getYListWebSearch() {
-        return getProxy(YListWebSearch.class, "http://ylist.info/");
-    }
-
-    /**
-     * Utility function for creating a proxy to a given source class with base-url
-     *
-     * @param <T>
-     * @param serviceInterfaceClass
-     * @param serviceURI
+     * @param <T>                   Type of serviceInterfaceClass
+     * @param serviceInterfaceClass Resteasy Proxy Framework service interface class of a source
+     * @param serviceURI            unencoded URI to a source ReST service endpoint
      * @return
      */
     public static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {

@@ -15,19 +15,20 @@
  */
 package org.jacq.service.names.sources.dnpgoth;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
+
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Queries http://www.dnp.go.th for common names by simulating form submits
@@ -37,15 +38,12 @@ import org.jacq.service.names.sources.util.SourcesUtil;
 @ManagedBean
 public class DnpGoThSource implements CommonNamesSource {
 
-    private static final Logger LOGGER = Logger.getLogger(DnpGoThSource.class.getName());
-
     protected static final String VIEWSTATE = "__VIEWSTATE";
     protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
     protected static final String EVENTVALIDATION = "__EVENTVALIDATION";
-
     protected static final String REFERENCE = "Thai Plant Names - Tem Smitinand, Copyright 2006-2013 Forest Herbarium, http://www.dnp.go.th/botany/ThaiPlantName/DefaultEng.aspx";
     protected static final String LANGUAGE_CODE = "tha";
-
+    private static final Logger LOGGER = Logger.getLogger(DnpGoThSource.class.getName());
     protected Pattern inputFormPattern;
 
     protected Pattern resultLinkPattern;
@@ -70,7 +68,7 @@ public class DnpGoThSource implements CommonNamesSource {
         ArrayList<CommonName> results = new ArrayList<>();
 
         // create proxy service instance
-        DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getDnpGoThWebSearch();
+        DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getProxy(DnpGoThWebSearch.class, "http://www.dnp.go.th/");
 
         // get genus and species from parsed name
         String genus = (query.getGenus() != null) ? query.getGenus() : query.getUninomial();

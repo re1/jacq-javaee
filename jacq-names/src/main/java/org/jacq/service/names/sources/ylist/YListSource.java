@@ -15,19 +15,20 @@
  */
 package org.jacq.service.names.sources.ylist;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
+
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Queries http://ylist.info for common names by simulating form submits
@@ -37,15 +38,13 @@ import org.jacq.service.names.sources.util.SourcesUtil;
 @ManagedBean
 public class YListSource implements CommonNamesSource {
 
-    private static final Logger LOGGER = Logger.getLogger(YListSource.class.getName());
-
     /**
      * ISO 639-3 language codes for common names
      */
     protected static final String LANGUAGE_CODE_JAP = "jap";
     protected static final String LANGUAGE_CODE_ZHO = "zho";
     protected static final String LANGUAGE_CODE_KOR = "kor";
-
+    private static final Logger LOGGER = Logger.getLogger(YListSource.class.getName());
     // Patterns for various matching parts
     protected Pattern resultLinkPattern;
     protected Pattern resultNamePattern;
@@ -74,7 +73,7 @@ public class YListSource implements CommonNamesSource {
         ArrayList<CommonName> results = new ArrayList<>();
 
         // create proxy service instance
-        YListWebSearch yListWebSearch = SourcesUtil.getYListWebSearch();
+        YListWebSearch yListWebSearch = SourcesUtil.getProxy(YListWebSearch.class, "http://ylist.info/");
 
         // send initial query to search form
         Response response = yListWebSearch.simpleSearch(query.getScientificName(), 0, 2, 1, 0, 0, 0);
