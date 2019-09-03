@@ -127,8 +127,7 @@ public class CommonNameManager {
                             if (commonName.getTaxon().equalsIgnoreCase(nameParserResponse.getScientificName())) {
                                 commonName.setMatch(Boolean.TRUE);
                                 commonName.setScore(100L);
-                            }
-                            else {
+                            } else {
                                 commonName.setMatch(Boolean.FALSE);
                                 commonName.setScore(0L);
                             }
@@ -139,8 +138,7 @@ public class CommonNameManager {
                         if (resultMap.containsKey(deduplicateHash)) {
                             // only update references
                             resultMap.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
-                        }
-                        else {
+                        } else {
                             // add entry to result list
                             resultMap.put(deduplicateHash, commonName);
                         }
@@ -167,8 +165,7 @@ public class CommonNameManager {
             if (scientificNameCaches != null && scientificNameCaches.size() > 0) {
                 // use scientific name from cache
                 scientificNameCache = scientificNameCaches.get(0);
-            }
-            else {
+            } else {
                 // add scientific name to cache
                 scientificNameCache = new TblScientificNameCache();
                 scientificNameCache.setName(result.getTaxon());
@@ -193,8 +190,7 @@ public class CommonNameManager {
             if (commonNamesCaches != null && commonNamesCaches.size() > 0) {
                 // use common names from cache
                 commonNamesCache = commonNamesCaches.get(0);
-            }
-            else {
+            } else {
                 // add common names to cache
                 commonNamesCache = new TblCommonNamesCache();
                 commonNamesCache.setName(result.getName());

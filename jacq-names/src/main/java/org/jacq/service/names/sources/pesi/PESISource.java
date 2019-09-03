@@ -28,7 +28,6 @@ import javax.json.JsonArray;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.stream.JsonParsingException;
-import javax.ws.rs.core.Response;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
