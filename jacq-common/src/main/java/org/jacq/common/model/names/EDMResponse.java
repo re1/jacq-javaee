@@ -71,8 +71,9 @@ public class EDMResponse implements NameResponse<CommonName> {
          * @param referenceId reference id used for editorial note URL
          */
         EDMConcept(Long id, String name, String type, String language, String geography, String period, List<String> references, Long referenceId) {
-            // set about URL TODO: Build URL dynamically
-            if (id != null) this.about = String.format("http://openup.nhm-wien.ac.at/commonNames/%d", id);
+            // set about URL
+            if (id != null)
+                this.about = String.format("%scommonNames/%d", System.getProperty("jacq.serviceNamesUrl"), id);
 
             this.prefLabel = name;
             // set type note to "common name" or "scientific name"
@@ -88,10 +89,10 @@ public class EDMResponse implements NameResponse<CommonName> {
             // set references when given
             if (references != null && !references.isEmpty())
                 this.referenceNote = "Reference(s): " + String.join(", ", references);
-            // set editorial note TODO: Build URL dynamically
+            // set editorial note
             if (referenceId != null)
-                this.editorialNote = String.format(
-                        "http://openup.nhm-wien.ac.at/commonNames/references/scientificName/%s", referenceId);
+                this.editorialNote = String.format("%scommonNames/references/scientificName/%s",
+                        System.getProperty("jacq.serviceNamesUrl"), referenceId);
         }
     }
 }
