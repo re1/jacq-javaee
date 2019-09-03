@@ -15,6 +15,9 @@
  */
 package org.jacq.common.model.names;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
@@ -23,13 +26,11 @@ import java.util.List;
  * @author wkoller
  */
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OpenRefineResponse<T> implements NameResponse<T> {
 
     protected List<T> result;
-
-    public List<T> getResult() {
-        return result;
-    }
 
     public void setResult(List<T> result) {
         this.result = result;

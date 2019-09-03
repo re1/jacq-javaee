@@ -57,7 +57,7 @@ public class CommonNameServiceImpl implements CommonNameService {
                 for (String key : queries.keySet()) {
                     // prepare OpenRefine response
                     NameResponse<CommonName> response = "edmSkos".equals(format)
-                            ? new EDMResponse<>() : new OpenRefineResponse<>();
+                            ? new EDMResponse() : new OpenRefineResponse<>();
                     response.setResult(commonNameManager.query(queries.get(key).getQuery()));
                     queryResultMap.put(key, response);
                 }
@@ -68,7 +68,7 @@ public class CommonNameServiceImpl implements CommonNameService {
             // use single query mode if query parameter is given
             if (query != null) {
                 NameResponse<CommonName> response = "edmSkos".equals(format)
-                        ? new EDMResponse<>() : new OpenRefineResponse<>();
+                        ? new EDMResponse() : new OpenRefineResponse<>();
                 // Project documentation states that the type parameter should always be /name/common so other values are logged
                 // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
                 // TODO: Check if this is even necessary

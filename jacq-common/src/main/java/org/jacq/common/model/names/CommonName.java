@@ -48,7 +48,7 @@ public class CommonName {
     public Long score;
     public Boolean match;
     // use taxon_id for representation to match OpenUp!
-    @XmlElement(name="taxon_id")
+    @XmlElement(name = "taxon_id")
     public Long taxonId;
     @Valid
     public List<String> references = new ArrayList<>();
@@ -143,6 +143,16 @@ public class CommonName {
 
     public String getReference() {
         return StringUtils.join(this.references, ";");
+    }
+
+    /**
+     * Convenience function for {@code CommonName.getType().get(0)}
+     *
+     * @return First type as string of null if
+     */
+    @Transient
+    public String getFirstType() {
+        return this.type == null || this.type.isEmpty() ? null : this.type.get(0);
     }
 
     /**
