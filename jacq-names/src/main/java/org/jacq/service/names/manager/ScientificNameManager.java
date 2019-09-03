@@ -15,25 +15,21 @@
  */
 package org.jacq.service.names.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.ManagedBean;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
-import org.jacq.common.model.jpa.TblCultivar;
-import org.jacq.common.model.jpa.TblHabitusType;
-import org.jacq.common.model.jpa.TblNomEpithet;
-import org.jacq.common.model.jpa.TblNomName;
-import org.jacq.common.model.jpa.TblNomSubstantive;
-import org.jacq.common.model.jpa.TblScientificNameInformation;
+import org.jacq.common.model.jpa.*;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.names.ScientificNameService;
+
+import javax.annotation.ManagedBean;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manager class for handling scientific name business logic

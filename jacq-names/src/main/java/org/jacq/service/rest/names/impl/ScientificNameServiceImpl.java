@@ -15,8 +15,6 @@
  */
 package org.jacq.service.rest.names.impl;
 
-import java.util.List;
-import javax.inject.Inject;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
@@ -24,9 +22,12 @@ import org.jacq.common.model.rest.ScientificNameResult;
 import org.jacq.common.rest.names.ScientificNameService;
 import org.jacq.service.names.manager.ScientificNameManager;
 
+import javax.inject.Inject;
+import java.util.List;
+
 /**
- * @see ScientificNameService
  * @author wkoller
+ * @see ScientificNameService
  */
 public class ScientificNameServiceImpl implements ScientificNameService {
 
@@ -68,8 +69,7 @@ public class ScientificNameServiceImpl implements ScientificNameService {
     }
 
     /**
-     * @see
-     * ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
+     * @see ScientificNameService#scientificNameInformationSave(org.jacq.common.model.rest.ScientificNameInformationResult)
      */
     @Override
     public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult) {

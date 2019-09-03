@@ -15,41 +15,36 @@
  */
 package org.jacq.common.rest.names;
 
-import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import org.jacq.common.model.rest.CultivarResult;
 import org.jacq.common.model.rest.HabitusTypeResult;
 import org.jacq.common.model.rest.ScientificNameInformationResult;
 import org.jacq.common.model.rest.ScientificNameResult;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Service interface providing methods for access to scientific name searching
  *
  * @author wkoller
  */
-@Path("/scientificName")
+@Path("{a:scientificName|names/scientific}")
 public interface ScientificNameService {
 
     /**
-     * Search for a scientific name, search string will be split and quoted for
-     * autocompleting
+     * Search for a scientific name, search string will be split and quoted for autocompletion
      *
-     * @param search String to search for - no wildcards are allowed
+     * @param search       String to search for - no wildcards are allowed
      * @param autocomplete If set to true, search will return matches with
-     * wildcards (i.e. autocomplete) as well
+     *                     wildcards (i.e. autocomplete) as well
      * @return
      */
     @GET
     @Path("/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ScientificNameResult> find(@QueryParam("search") String search, @QueryParam("autocomplete") Boolean autocomplete);
+    List<ScientificNameResult> find(@QueryParam("search") String search, @QueryParam("autocomplete") Boolean autocomplete);
 
     /**
      * Load a single scientific name id entry
@@ -61,7 +56,7 @@ public interface ScientificNameService {
     @Path("/load")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ScientificNameResult load(@QueryParam("scientificNameId") Long scientificNameId);
+    ScientificNameResult load(@QueryParam("scientificNameId") Long scientificNameId);
 
     /**
      * Find cultivar entries for the given scientific name id
@@ -73,7 +68,7 @@ public interface ScientificNameService {
     @Path("/cultivar/find")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CultivarResult> cultivarFind(@QueryParam("scientificNameId") Long scientificNameId);
+    List<CultivarResult> cultivarFind(@QueryParam("scientificNameId") Long scientificNameId);
 
     /**
      * Load a single cultivar entry by its id
@@ -85,7 +80,7 @@ public interface ScientificNameService {
     @Path("/cultivar/load")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
+    CultivarResult cultivarLoad(@QueryParam("cultivarId") Long cultivarId);
 
     /**
      * Load the scientific name information for a given id
@@ -97,7 +92,7 @@ public interface ScientificNameService {
     @Path("/scientificNameInformation/load")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ScientificNameInformationResult scientificNameInformationLoad(@QueryParam("scientificNameId") Long scientificNameId);
+    ScientificNameInformationResult scientificNameInformationLoad(@QueryParam("scientificNameId") Long scientificNameId);
 
     /**
      * Save (create or update) a given scientific name information
@@ -109,7 +104,7 @@ public interface ScientificNameService {
     @Path("/scientificNameInformation/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult);
+    ScientificNameInformationResult scientificNameInformationSave(ScientificNameInformationResult scientificNameInformationResult);
 
     /**
      * Fetch a list of all habitus types
@@ -120,5 +115,5 @@ public interface ScientificNameService {
     @Path("/habitusType/findAll")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<HabitusTypeResult> findAllHabitusType();
+    List<HabitusTypeResult> findAllHabitusType();
 }
