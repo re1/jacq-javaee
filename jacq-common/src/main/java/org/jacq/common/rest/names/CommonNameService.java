@@ -37,7 +37,6 @@ public interface CommonNameService {
      * Definition of JSON Media-Type with UTF-8 encoding for valid response headers
      */
     String APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON + "; charset=UTF-8";
-    String APPLICATION_XML_UTF8 = MediaType.APPLICATION_XML;
 
     /**
      * Outputs OpenRefine Service metadata or queries the Common Names Service for a single or multiple query strings.
@@ -54,8 +53,19 @@ public interface CommonNameService {
     @GET
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({APPLICATION_JSON_UTF8, APPLICATION_XML_UTF8})
+    @Produces({APPLICATION_JSON_UTF8, MediaType.APPLICATION_XML})
     Response query(@QueryParam("queries") OpenRefineMultiRequest queries,
                    @QueryParam("query") OpenRefineRequest query,
                    @QueryParam("format") String format) throws WebApplicationException;
+
+    /**
+     * Get common name from cache by id in XML format
+     *
+     * @param id cached common name id
+     * @return Common name for given id
+     */
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    Response getCommonNameFromCache(@PathParam("id") String id);
 }

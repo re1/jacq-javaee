@@ -24,8 +24,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,5 +91,20 @@ public class CommonNameServiceImpl implements CommonNameService {
             LOGGER.log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
         }
+    }
+
+    /**
+     * Get cached common name from cache by id
+     *
+     * @param id cached common name id
+     * @return Common name for given id
+     */
+    @Override
+    public Response getCommonNameFromCache(String id) {
+        // create an EDM response and set its result to a list of a single common name
+        EDMResponse response = new EDMResponse();
+        response.setResult(Collections.singletonList(commonNameManager.getById(id)));
+        // return as XML
+        return Response.ok(response, MediaType.APPLICATION_XML).build();
     }
 }

@@ -206,6 +206,31 @@ public class CommonNameManager {
         return resultList;
     }
 
+    public CommonName getById(String id) {
+        // we use a string building query here for performance reasons - should normally be avoided at any cost!
+        String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.id = '" + id + "'";
+        // create query and fetch the result
+        TypedQuery<TblCommonNamesCache> commonNamesCacheQuery = em.createQuery(lookupQuery, TblCommonNamesCache.class);
+        List<TblCommonNamesCache> commonNamesCaches = commonNamesCacheQuery.getResultList();
+        // check if common name was found
+        if (commonNamesCaches != null && !commonNamesCaches.isEmpty()) {
+            // get first entry as there will not be more than one
+            TblCommonNamesCache commonNamesCache = commonNamesCaches.get(0);
+            // create common name and set values from cache
+            CommonName commonName = new CommonName();
+
+            commonName.setId(commonNamesCache.getId());
+            commonName.setName(commonNamesCache.getName());
+            commonName.setPeriod(commonNamesCache.getPeriod());
+            commonName.setGeography(commonNamesCache.getGeography());
+            commonName.setLanguage(commonNamesCache.getLanguage());
+
+            return commonName;
+        }
+
+        return null;
+    }
+
     /**
      * Small helper function for string building a null / value query
      *

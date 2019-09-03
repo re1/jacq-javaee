@@ -25,6 +25,8 @@ public class EDMResponse implements NameResponse<CommonName> {
                 commonName.getName(),
                 commonName.getFirstType(),
                 commonName.getLanguage(),
+                commonName.getGeography(),
+                commonName.getPeriod(),
                 commonName.getReferences(),
                 commonName.getTaxonId())));
     }
@@ -41,6 +43,10 @@ public class EDMResponse implements NameResponse<CommonName> {
         private String typeNote;
         @XmlElement(name = "note", namespace = "http://www.w3.org/2004/02/skos/core#")
         private String languageNote;
+        @XmlElement(name = "note", namespace = "http://www.w3.org/2004/02/skos/core#")
+        private String geographyNote;
+        @XmlElement(name = "note", namespace = "http://www.w3.org/2004/02/skos/core#")
+        private String periodNote;
         @XmlElement(name = "note", namespace = "http://www.w3.org/2004/02/skos/core#")
         private String referenceNote;
         @XmlElement(namespace = "http://www.w3.org/2004/02/skos/core#")
@@ -59,10 +65,12 @@ public class EDMResponse implements NameResponse<CommonName> {
          * @param name        concept label
          * @param type        concept type description
          * @param language    concept language code
+         * @param geography   concept verbose geography
+         * @param period      concept verbose time period
          * @param references  list of references for this concept
          * @param referenceId reference id used for editorial note URL
          */
-        EDMConcept(Long id, String name, String type, String language, List<String> references, Long referenceId) {
+        EDMConcept(Long id, String name, String type, String language, String geography, String period, List<String> references, Long referenceId) {
             // set about URL TODO: Build URL dynamically
             if (id != null) this.about = String.format("http://openup.nhm-wien.ac.at/commonNames/%d", id);
 
@@ -72,8 +80,11 @@ public class EDMResponse implements NameResponse<CommonName> {
             this.typeNote = "/name/common".equals(type) ? "common name" :
                     "/name/scientific".equals(type) ? "scientific name" : type;
             // set language if available
-            if (language != null)
-                this.languageNote = "Language: " + language;
+            if (language != null) this.languageNote = "Language: " + language;
+            // set geography if available
+            if (geography != null) this.geographyNote = "Geography: " + geography;
+            // set period if available
+            if (period != null) this.periodNote = "Period: " + period;
             // set references when given
             if (references != null && !references.isEmpty())
                 this.referenceNote = "Reference(s): " + String.join(", ", references);
