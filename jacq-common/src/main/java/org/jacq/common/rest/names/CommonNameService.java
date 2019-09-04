@@ -67,5 +67,5 @@ public interface CommonNameService {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_XML)
-    Response getCommonNameFromCache(@PathParam("id") String id);
+    Response getCommonNameFromCacheById(@PathParam("id") String id);
 }

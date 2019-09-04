@@ -100,7 +100,7 @@ public class CommonNameServiceImpl implements CommonNameService {
      * @return Common name for given id
      */
     @Override
-    public Response getCommonNameFromCache(String id) {
+    public Response getCommonNameFromCacheById(String id) {
         // create an EDM response and set its result to a list of a single common name
         EDMResponse response = new EDMResponse();
         response.setResult(Collections.singletonList(commonNameManager.getById(id)));
