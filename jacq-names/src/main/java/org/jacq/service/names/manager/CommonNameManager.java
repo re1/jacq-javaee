@@ -24,6 +24,7 @@ import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNameService;
 import org.jacq.service.names.sources.catalogueoflife.CatalogueOfLifeSource;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
+import org.jacq.service.names.sources.jacqlegacy.JacqLegacySource;
 import org.jacq.service.names.sources.pesi.PESISource;
 import org.jacq.service.names.sources.util.SourceQueryThread;
 import org.jacq.service.names.sources.ylist.YListSource;
@@ -71,6 +72,9 @@ public class CommonNameManager {
     protected DnpGoThSource dnpGoThSource;
 
     @Inject
+    protected JacqLegacySource jacqLegacySource;
+
+    @Inject
     protected PESISource pesiSource;
 
     @Inject
@@ -106,6 +110,7 @@ public class CommonNameManager {
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
         queryTasks.add(new SourceQueryThread(catalogueOfLifeSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
+        queryTasks.add(new SourceQueryThread(jacqLegacySource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(pesiSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
 
