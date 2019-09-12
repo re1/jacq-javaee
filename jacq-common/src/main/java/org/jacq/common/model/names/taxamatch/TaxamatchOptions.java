@@ -22,8 +22,17 @@ package org.jacq.common.model.names.taxamatch;
  */
 public class TaxamatchOptions {
 
+    protected boolean includeCommonNames;
     protected boolean showSyn;
     protected boolean NearMatch;
+
+    public boolean isIncludeCommonNames() {
+        return includeCommonNames;
+    }
+
+    public void setIncludeCommonNames(boolean includeCommonNames) {
+        this.includeCommonNames = includeCommonNames;
+    }
 
     public boolean isShowSyn() {
         return showSyn;

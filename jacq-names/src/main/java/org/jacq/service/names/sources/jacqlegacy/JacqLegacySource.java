@@ -4,6 +4,7 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.JsonRpcRequest;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
+import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
 import org.jacq.service.names.sources.CommonNamesSource;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
@@ -25,32 +26,38 @@ public class JacqLegacySource implements CommonNamesSource {
     private static final Logger LOGGER = Logger.getLogger(JacqLegacySource.class.getName());
 
     /**
-     * Query source for common names based on a parsed scientific name
+     * Source implementation for the JACQ Legacy JSON-RPC interface.
      *
      * @param query parsed scientific name
      * @return list of common names for given scientific name
-     * @see <a href="https://sourceforge.net/p/jacq/legacy/ci/master/tree/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php#l136">JACQ Legacy JSON-RPC Public functions</a>
+     * @see <a href="https://sourceforge.net/p/jacq/legacy/ci/master/tree/taxamatch/jsonRPC">JACQ Legacy JSON-RPC</a>
+     * @see <a href="https://www.jsonrpc.org/specification>JSON-RPC specification</a>
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
         // connect to JACQ legacy scientific name service
-        JacqLegacyService service = SourcesUtil.getProxy(JacqLegacyService.class, "http://development.jacq.org/jacq-legacy");
+        JacqLegacyService service = SourcesUtil.getProxy(JacqLegacyService.class, "http://131.130.131.9");
         // JSON-RPC params are used as positional arguments: https://www.jsonrpc.org/specification#examples
+        // 1. database, 2. searchitem, 3. params object
         // TODO: Consider using an object for name parameters
         LinkedList<Object> params = new LinkedList<>();
+        // set database parameter
+        params.add("vienna");
         // set searchtext parameter to scientific name
         params.add(query.getScientificName());
-        // set nearMatch parameter to false (as scientific names are parsed already)
-        params.add(false);
+        // set includeCommonNames parameter to true
+        TaxamatchOptions options = new TaxamatchOptions();
+        options.setIncludeCommonNames(true);
+        params.add(options);
         // Build JSON-RPC request
         JsonRpcRequest request = new JsonRpcRequest();
         request.setId(1L);
-        request.setMethod("getMatchesCommonNames");
+        request.setMethod("getMatchesService");
         request.setParams(params);
         // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
         String response = service.query(request);
-        // TODO: Improve error handling
+        // parse JSON-RPC response as JSON
         try (StringReader stringReader = new StringReader(response)) {
             // create JSON-RPC response object from valid JSON string
             JsonObject jsonRpcResponseObject = Json.createReader(stringReader).readObject();
@@ -58,24 +65,41 @@ public class JacqLegacySource implements CommonNamesSource {
             JsonObject jsonRpcResultObject = jsonRpcResponseObject.getJsonObject("result");
             // get taxamatch result from JSON-RPC result object
             JsonArray resultArray = jsonRpcResultObject.getJsonArray("result");
-
+            // iterate over JSON-RPC results
             for (int i = 0; i < resultArray.size(); i++) {
                 JsonObject resultObject = resultArray.getJsonObject(i);
-                JsonArray taxamatchArray = resultObject.getJsonArray("searchresult");
-
-                for (int j = 0; j < taxamatchArray.size(); j++) {
-                    JsonObject taxamatchObject = taxamatchArray.getJsonObject(j);
+                JsonArray taxamatchResultArray = resultObject.getJsonArray("searchresult");
+                // iterate over TAXAMATCH results
+                for (int j = 0; j < taxamatchResultArray.size(); j++) {
+                    JsonObject taxamatchObject = taxamatchResultArray.getJsonObject(j);
                     JsonArray speciesArray = taxamatchObject.getJsonArray("species");
-
+                    // iterate over TAXAMATCH results' species
                     for (int k = 0; k < speciesArray.size(); k++) {
                         JsonObject speciesObject = speciesArray.getJsonObject(k);
-
-                        CommonName commonName = new CommonName();
-                        commonName.setName(speciesObject.getString("commonName"));
-                        commonName.setTaxon(speciesObject.getString("taxon"));
-                        commonName.setTaxonId(Long.parseLong(speciesObject.getString("taxonID")));
-
-                        results.add(commonName);
+                        JsonArray commonNamesArray = speciesObject.getJsonArray("commonNames");
+                        // iterate over TAXAMATCH results' species' commonNames
+                        for (int l = 0; l < commonNamesArray.size(); l++) {
+                            JsonObject commonNameObject = commonNamesArray.getJsonObject(l);
+                            // build common name from common name and species JSON objects
+                            CommonName commonName = new CommonName();
+                            commonName.setName(commonNameObject.getString("name"));
+                            commonName.setId(Long.parseLong(commonNameObject.getString("id")));
+                            commonName.setTaxon(speciesObject.getString("taxon"));
+                            commonName.setTaxonId(Long.parseLong(speciesObject.getString("taxonID")));
+                            commonName.setLanguage(commonNameObject.getString("language"));
+                            commonName.setGeography(commonNameObject.getString("geography"));
+                            commonName.setPeriod(commonNameObject.getString("period"));
+                            commonName.getReferences().add(commonNameObject.getString("reference"));
+                            commonName.setScore((long) (speciesObject.getJsonNumber("ratio").doubleValue() * 100));
+                            // set match to true if score is 100
+                            if (commonName.getScore() == 100) {
+                                commonName.setMatch(true);
+                            } else {
+                                commonName.setMatch(false);
+                            }
+                            // add common name to results
+                            results.add(commonName);
+                        }
                     }
                 }
             }
@@ -83,8 +107,7 @@ public class JacqLegacySource implements CommonNamesSource {
                 JsonParsingException e) {
             // response is not valid JSON
             LOGGER.log(Level.WARNING, "Response string is not valid JSON", e);
-        } catch (
-                JsonException e) {
+        } catch (JsonException e) {
             // JSON object could not be created due to an i/o error
             LOGGER.log(Level.WARNING, "JSON object could not be created due to an i/o error", e);
         } catch (NullPointerException e) {

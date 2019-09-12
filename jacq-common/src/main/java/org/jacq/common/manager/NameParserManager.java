@@ -19,9 +19,7 @@ import org.jacq.common.model.names.NameParserResponse;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import javax.json.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -104,16 +102,50 @@ public class NameParserManager {
                 if (species != null) {
                     nameParserResponse.setSpecies(species.getString("string"));
                 }
-                // check for infraspecies
-                JsonObject infraspecies = scientificNameDetails.getJsonObject("infraspecies");
-                if (infraspecies != null) {
-                    nameParserResponse.setInfraspecies(infraspecies.getString("string"));
-                    nameParserResponse.setRank(infraspecies.getString("rank", null));
+
+                /* Infraspecies value can either be a single object or an array of multiple objects of values string,
+                rank, authorship and basionymAuthorTeam, the last being an object of authorTeam and author. */
+                JsonValue infraspeciesValue = scientificNameDetails.get("infraspecies");
+                // check if infraspecies has a JSON value
+                if (infraspeciesValue != null) {
+                    // check if infraspecies is a JSON object
+                    if (infraspeciesValue.getValueType() == JsonValue.ValueType.OBJECT) {
+                        JsonObject infraspeciesObject = scientificNameDetails.getJsonObject("infraspecies");
+                        // set name parser response fields from infraspecies array
+                        nameParserResponse.setInfraspecies(infraspeciesObject.getString("string"));
+                        nameParserResponse.setRank(infraspeciesObject.getString("rank", null));
+                    }
+                    // if infraspecies is not a JSON object check if it is a JSON array
+                    else if (infraspeciesValue.getValueType() == JsonValue.ValueType.ARRAY) {
+                        JsonArray infraspeciesArray = scientificNameDetails.getJsonArray("infraspecies");
+                        // check if infraspecies array is empty
+                        if (!infraspeciesArray.isEmpty()) {
+                            JsonObject infraspeciesObject = infraspeciesArray.getJsonObject(0);
+                            /* both name parser response fields infraspecies and rank only support a single string so
+                            only one element can be used. A warning is given that additional elements are ignored */
+                            if (infraspeciesArray.size() > 1) {
+                                LOGGER.log(Level.WARNING,
+                                        "Name parser response array for 'infraspecies' has more than one element. " +
+                                                "Additional elements are not used and therefore ignored.",
+                                        infraspeciesArray);
+                            }
+                            // set name parser response fields from infraspecies object
+                            nameParserResponse.setInfraspecies(infraspeciesObject.getString("string"));
+                            nameParserResponse.setRank(infraspeciesObject.getString("rank", null));
+                        }
+                    }
+                    // if infraspecies is neither a JSON array nor object a warning is given
+                    else {
+                        LOGGER.log(Level.WARNING, String.format(
+                                "Name parser response object's value 'infraspecies' is neither array nor object but '%s'",
+                                infraspeciesValue.toString()), infraspeciesValue);
+                    }
                 }
             } else {
                 LOGGER.log(Level.WARNING, "Unable to parse scientific-name ''{0}''", scientificName);
             }
-
+        } catch (ClassCastException e) {
+            LOGGER.log(Level.SEVERE, String.format("Name parser response for scientific name '%s' contains an unexpected value.", scientificName), e);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, null, e);
         }
