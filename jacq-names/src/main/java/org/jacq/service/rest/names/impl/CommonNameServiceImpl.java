@@ -94,10 +94,7 @@ public class CommonNameServiceImpl implements CommonNameService {
     }
 
     /**
-     * Get cached common name from cache by id
-     *
-     * @param id cached common name id
-     * @return Common name for given id
+     * @see CommonNameService#getCommonNameFromCacheById(String)
      */
     @Override
     public Response getCommonNameFromCacheById(String id) {
@@ -106,5 +103,13 @@ public class CommonNameServiceImpl implements CommonNameService {
         response.setResult(Collections.singletonList(commonNameManager.getById(id)));
         // return as XML
         return Response.ok(response, MediaType.APPLICATION_XML).build();
+    }
+
+    /**
+     * @see CommonNameService#getCommonNameReferencesByScientificNameId(String)
+     */
+    @Override
+    public Response getCommonNameReferencesByScientificNameId(String id) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

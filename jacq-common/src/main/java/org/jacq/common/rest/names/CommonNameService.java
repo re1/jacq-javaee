@@ -68,4 +68,15 @@ public interface CommonNameService {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_XML)
     Response getCommonNameFromCacheById(@PathParam("id") String id);
+
+    /**
+     * Get references to common names by a scientific name id
+     *
+     * @param id cached scientific name id
+     * @return Common name references for given id
+     */
+    @GET
+    @Path("references/scientificName/{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    Response getCommonNameReferencesByScientificNameId(@PathParam("id") String id);
 }
