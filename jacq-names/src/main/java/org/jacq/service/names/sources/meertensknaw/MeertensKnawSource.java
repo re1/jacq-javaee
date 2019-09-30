@@ -22,10 +22,11 @@ import java.util.logging.Logger;
 @ManagedBean
 public class MeertensKnawSource implements CommonNamesSource {
 
-    private static final Logger LOGGER = Logger.getLogger(MeertensKnawService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MeertensKnawSource.class.getName());
 
     /**
      * TODO: Improve error handling
+     *
      * @see CommonNamesSource#query(NameParserResponse)
      */
     @Override

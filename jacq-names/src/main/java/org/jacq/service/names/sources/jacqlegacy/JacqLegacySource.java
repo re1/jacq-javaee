@@ -86,7 +86,8 @@ public class JacqLegacySource implements CommonNamesSource {
                             commonName.setId(Long.parseLong(commonNameObject.getString("id")));
                             commonName.setTaxon(speciesObject.getString("taxon"));
                             commonName.setTaxonId(Long.parseLong(speciesObject.getString("taxonID")));
-                            commonName.setLanguage(commonNameObject.getString("language"));
+                            // language can be null and therefore throws a ClassCastException without a default value
+                            commonName.setLanguage(commonNameObject.getString("language", null));
                             commonName.setGeography(commonNameObject.getString("geography"));
                             commonName.setPeriod(commonNameObject.getString("period"));
                             commonName.getReferences().add(commonNameObject.getString("reference"));
@@ -115,7 +116,10 @@ public class JacqLegacySource implements CommonNamesSource {
             LOGGER.log(Level.WARNING, "JSON object has no valid result array field", e);
         } catch (NumberFormatException e) {
             // Long.parseLong could not convert a given id string to type long
-            LOGGER.log(Level.WARNING, "Failed to parse id string to number");
+            LOGGER.log(Level.WARNING, "Failed to parse id string to number", e);
+        } catch (Exception e) {
+            // exception was not handled explicitly
+            LOGGER.log(Level.WARNING, "An unhandled exception occurred", e);
         }
 
         return results;

@@ -22,6 +22,7 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNameService;
+import org.jacq.service.names.sources.artdatabanken.ArtDatabankenSource;
 import org.jacq.service.names.sources.catalogueoflife.CatalogueOfLifeSource;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 import org.jacq.service.names.sources.jacqlegacy.JacqLegacySource;
@@ -65,6 +66,9 @@ public class CommonNameManager {
 
     @Resource
     protected ManagedExecutorService executorService;
+
+    @Inject
+    protected ArtDatabankenSource artDatabankenSource;
 
     @Inject
     protected CatalogueOfLifeSource catalogueOfLifeSource;
@@ -112,6 +116,7 @@ public class CommonNameManager {
 
         // create a list of common name sources before executing any queries
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
+        // queryTasks.add(new SourceQueryThread(artDatabankenSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(catalogueOfLifeSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(jacqLegacySource, nameParserResponse));
