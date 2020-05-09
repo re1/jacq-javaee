@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_webservice_cache")
+@Table(name = "tbl_webservice_cache", schema = "openup", catalog = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblWebserviceCache.findAll", query = "SELECT t FROM TblWebserviceCache t"),
@@ -55,7 +55,7 @@ public class TblWebserviceCache implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "query")
+    @Column(name = "query", nullable = false)
     private String query;
     @Lob
     @Size(max = 2147483647)
@@ -63,12 +63,11 @@ public class TblWebserviceCache implements Serializable {
     private String response;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     private int timestamp;
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblService serviceId;
-
     public TblWebserviceCache() {
     }
 
@@ -136,10 +135,7 @@ public class TblWebserviceCache implements Serializable {
             return false;
         }
         TblWebserviceCache other = (TblWebserviceCache) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override

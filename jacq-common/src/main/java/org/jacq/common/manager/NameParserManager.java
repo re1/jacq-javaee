@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public class NameParserManager {
 
     private static final Logger LOGGER = Logger.getLogger(NameParserManager.class.getName());
+    private static final String JACQ_GNPARSER_URL = System.getProperty("jacq.gnparserUrl");
 
     // Reference to open socket
     protected Socket socket;
@@ -54,7 +55,7 @@ public class NameParserManager {
     @PostConstruct
     public void init() {
         try {
-            socket = new Socket("localhost", 4334);
+            socket = new Socket(JACQ_GNPARSER_URL, 4334);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {

@@ -15,36 +15,26 @@
  */
 package org.jacq.common.model.jpa.openup;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
- *
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_common_names_cache")
+@Table(name = "tbl_common_names_cache", schema = "openup")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCommonNamesCache.findAll", query = "SELECT t FROM TblCommonNamesCache t"),
-    @NamedQuery(name = "TblCommonNamesCache.findById", query = "SELECT t FROM TblCommonNamesCache t WHERE t.id = :id"),
-    @NamedQuery(name = "TblCommonNamesCache.findByName", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name"),
-    @NamedQuery(name = "TblCommonNamesCache.findByLanguage", query = "SELECT t FROM TblCommonNamesCache t WHERE t.language = :language"),
-    @NamedQuery(name = "TblCommonNamesCache.findByGeography", query = "SELECT t FROM TblCommonNamesCache t WHERE t.geography = :geography"),
-    @NamedQuery(name = "TblCommonNamesCache.findByPeriod", query = "SELECT t FROM TblCommonNamesCache t WHERE t.period = :period"),
-    @NamedQuery(name = "TblCommonNamesCache.findCachedEntry", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name and t.language = :language and t.geography = :geography and t.period = :period")
-})
+        @NamedQuery(name = "TblCommonNamesCache.findAll", query = "SELECT t FROM TblCommonNamesCache t"),
+        @NamedQuery(name = "TblCommonNamesCache.findById", query = "SELECT t FROM TblCommonNamesCache t WHERE t.id = :id"),
+        @NamedQuery(name = "TblCommonNamesCache.findByName", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name"),
+        @NamedQuery(name = "TblCommonNamesCache.findByLanguage", query = "SELECT t FROM TblCommonNamesCache t WHERE t.language = :language"),
+        @NamedQuery(name = "TblCommonNamesCache.findByGeography", query = "SELECT t FROM TblCommonNamesCache t WHERE t.geography = :geography"),
+        @NamedQuery(name = "TblCommonNamesCache.findByPeriod", query = "SELECT t FROM TblCommonNamesCache t WHERE t.period = :period"),
+        @NamedQuery(name = "TblCommonNamesCache.findCachedEntry", query = "SELECT t FROM TblCommonNamesCache t WHERE t.name = :name and t.language = :language and t.geography = :geography and t.period = :period")})
 public class TblCommonNamesCache implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,9 +51,11 @@ public class TblCommonNamesCache implements Serializable {
     @Size(max = 15)
     @Column(name = "language")
     private String language;
+    @Basic
     @Size(max = 200)
     @Column(name = "geography")
     private String geography;
+    @Basic
     @Size(max = 45)
     @Column(name = "period")
     private String period;
@@ -134,10 +126,7 @@ public class TblCommonNamesCache implements Serializable {
             return false;
         }
         TblCommonNamesCache other = (TblCommonNamesCache) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override

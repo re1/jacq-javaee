@@ -33,7 +33,7 @@ public class MeertensKnawSource implements CommonNamesSource {
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
         // connect to CatalogueOfLifeService
-        MeertensKnawService service = SourcesUtil.getProxy(MeertensKnawService.class, "http://www.meertens.knaw.nl/pland/rest");
+        MeertensKnawService service = SourcesUtil.getProxy(MeertensKnawService.class, "https://www.meertens.knaw.nl/pland/hitlist.php");
         // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
         String response = service.query("php", query.getScientificName());
 

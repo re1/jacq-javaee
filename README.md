@@ -43,3 +43,17 @@ mvn wildfly:deploy-only -f jacq -pl ../module-1,../module-2
 deploy-only is used to avoid dependency errors on goals executed before deployment.
 
 [WildFly]: https://rubygems.org/gems/biodiversity/
+
+As the JACQ project is using a microservice architecture, the frontend-code needs to know where the respecitve endpoints can be reached. This is defined through a system property inside the JVM.
+
+Add the following parameters to your JVM startup:
+
+```
+-Djacq.serviceUrl=http://localhost:8080/jacq-service/rest/
+-Djacq.serviceNamesUrl=http://localhost:8080/jacq-names/rest/
+-Djacq.serviceOutputUrl=http://localhost:8080/jacq-service-output/rest/
+-Djacq.serviceReportUrl=http://localhost:8080/jacq-service-report/rest/
+-Djacq.gnparserUrl=localhost
+```
+
+The URLs should be adapted depending on your setup.

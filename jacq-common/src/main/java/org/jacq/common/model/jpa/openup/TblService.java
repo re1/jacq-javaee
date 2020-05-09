@@ -15,35 +15,24 @@
  */
 package org.jacq.common.model.jpa.openup;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
- *
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_service")
+@Table(name = "tbl_service", schema = "openup")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblService.findAll", query = "SELECT t FROM TblService t"),
-    @NamedQuery(name = "TblService.findById", query = "SELECT t FROM TblService t WHERE t.id = :id"),
-    @NamedQuery(name = "TblService.findByUrl", query = "SELECT t FROM TblService t WHERE t.url = :url")})
+        @NamedQuery(name = "TblService.findAll", query = "SELECT t FROM TblService t"),
+        @NamedQuery(name = "TblService.findById", query = "SELECT t FROM TblService t WHERE t.id = :id"),
+        @NamedQuery(name = "TblService.findByUrl", query = "SELECT t FROM TblService t WHERE t.url = :url")})
 public class TblService implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -111,10 +100,7 @@ public class TblService implements Serializable {
             return false;
         }
         TblService other = (TblService) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
