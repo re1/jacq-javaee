@@ -15,35 +15,23 @@
  */
 package org.jacq.common.model.jpa.openup;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
- *
  * @author wkoller
  */
 @Entity
-@Table(name = "tbl_webservice_cache", schema = "openup", catalog = "")
+@Table(name = "tbl_webservice_cache", schema = "openup")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblWebserviceCache.findAll", query = "SELECT t FROM TblWebserviceCache t"),
-    @NamedQuery(name = "TblWebserviceCache.findById", query = "SELECT t FROM TblWebserviceCache t WHERE t.id = :id"),
-    @NamedQuery(name = "TblWebserviceCache.findByQuery", query = "SELECT t FROM TblWebserviceCache t WHERE t.query = :query"),
-    @NamedQuery(name = "TblWebserviceCache.findByTimestamp", query = "SELECT t FROM TblWebserviceCache t WHERE t.timestamp = :timestamp")})
+        @NamedQuery(name = "TblWebserviceCache.findAll", query = "SELECT t FROM TblWebserviceCache t"),
+        @NamedQuery(name = "TblWebserviceCache.findById", query = "SELECT t FROM TblWebserviceCache t WHERE t.id = :id"),
+        @NamedQuery(name = "TblWebserviceCache.findByQuery", query = "SELECT t FROM TblWebserviceCache t WHERE t.query = :query"),
+        @NamedQuery(name = "TblWebserviceCache.findByTimestamp", query = "SELECT t FROM TblWebserviceCache t WHERE t.timestamp = :timestamp")})
 public class TblWebserviceCache implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,6 +56,7 @@ public class TblWebserviceCache implements Serializable {
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TblService serviceId;
+
     public TblWebserviceCache() {
     }
 

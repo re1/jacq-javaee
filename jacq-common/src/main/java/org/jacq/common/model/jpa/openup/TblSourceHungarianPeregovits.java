@@ -1,15 +1,17 @@
 package org.jacq.common.model.jpa.openup;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_hungarian_peregovits", schema = "openup")
 public class TblSourceHungarianPeregovits {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Column(name = "id")
+    private Long id;
     @Basic
     @Size(max = 50)
     @Column(name = "Ordo")
@@ -38,6 +40,14 @@ public class TblSourceHungarianPeregovits {
     @Size(max = 50)
     @Column(name = "Period")
     private String period;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getOrdo() {
         return ordo;

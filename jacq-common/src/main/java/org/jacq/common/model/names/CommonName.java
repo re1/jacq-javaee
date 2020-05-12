@@ -53,94 +53,164 @@ public class CommonName {
     @Valid
     public List<String> references = new ArrayList<>();
 
+    /**
+     * @return Unique id for this common name used in the common name cache
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @param id Unique id for this common name used in the common name cache
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * @return Common name for this object
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name Common name for this object
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return OpenRefine compatible type for this common name object
+     */
     public List<String> getType() {
         return type;
     }
 
+    /**
+     * @param type OpenRefine compatible type for this common name object
+     */
     public void setType(List<String> type) {
         this.type = type;
     }
 
+    /**
+     * @return Language the common name is used in
+     */
     public String getLanguage() {
         return language;
     }
 
+    /**
+     * @param language Language the common name is used in
+     */
     public void setLanguage(String language) {
         this.language = language;
     }
 
+    /**
+     * @return Geographic location the common name is used in
+     */
     public String getGeography() {
         return geography;
     }
 
+    /**
+     * @param geography Geographic location the common name is used in
+     */
     public void setGeography(String geography) {
         this.geography = geography;
     }
 
+    /**
+     * @return Period of time the common name was used
+     */
     public String getPeriod() {
         return period;
     }
 
+    /**
+     * @param period Period of time the common name was used
+     */
     public void setPeriod(String period) {
         this.period = period;
     }
 
+    /**
+     * @return Scientific name for the common name
+     */
     public String getTaxon() {
         return taxon;
     }
 
+    /**
+     * @param taxon Scientific name for the common name
+     */
     public void setTaxon(String taxon) {
         this.taxon = taxon;
     }
 
+    /**
+     * @return Percent value of how much this common name differs from a possible query
+     */
     public Long getScore() {
         return score;
     }
 
+    /**
+     * @param score Percent value of how much this common name differs from a possible query
+     */
     public void setScore(Long score) {
         this.score = score;
     }
 
+    /**
+     * @return True if this common name is a direct match for a possible query
+     */
     public Boolean getMatch() {
         return match;
     }
 
+    /**
+     * @param match True if this common name is a direct match for a possible query
+     */
     public void setMatch(Boolean match) {
         this.match = match;
     }
 
+    /**
+     * @return Unique id for this scientific name also used in the scientific name cache
+     */
     public Long getTaxonId() {
         return taxonId;
     }
 
+    /**
+     * @param taxonId Unique id for this scientific name also used in the scientific name cache
+     */
     public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
     }
 
+    /**
+     * @return List of string references for this common name
+     */
     public List<String> getReferences() {
         return references;
     }
 
+    /**
+     * Sets references list to the given list. Add references through {@code getReferences.add()}.
+     * @param references List of string references for this common name
+     */
     public void setReferences(List<String> references) {
         this.references = references;
     }
 
+    /**
+     * @return Add single string of semicolon separated references for this common name
+     */
     public String getReference() {
         return StringUtils.join(this.references, ";");
     }

@@ -1,9 +1,6 @@
 package org.jacq.common.model.jpa.openup;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -11,6 +8,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "tbl_source_slovak_bratislava", schema = "openup")
 public class TblSourceSlovakBratislava {
+    // using unique field without null values as id
+    // TODO: check if adding an id column is favorable
+    @Id
     @Basic
     @NotNull
     @Size(max = 150)

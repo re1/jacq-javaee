@@ -1,15 +1,17 @@
 package org.jacq.common.model.jpa.openup;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_linnaeus_projects", schema = "openup")
 public class TblSourceLinnaeusProjects {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Column(name = "id")
+    private Long id;
     @Basic
     @NotNull
     @Column(name = "name", nullable = false, length = 150)
@@ -31,6 +33,13 @@ public class TblSourceLinnaeusProjects {
     @Column(name = "source", nullable = false, length = 20)
     private String source;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

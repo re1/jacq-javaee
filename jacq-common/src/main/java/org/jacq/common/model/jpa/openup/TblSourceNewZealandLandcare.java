@@ -2,11 +2,14 @@ package org.jacq.common.model.jpa.openup;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_newZealand_landcare", schema = "openup")
-public class TblSourceNewZealandLandcare {
+public class TblSourceNewZealandLandcare implements Serializable {
+    // using nameguid with VernacularGuid as id as their combination is unique and not null
+    // TODO: check if adding an id column is favorable
     @Id
     @Basic
     @Size(max = 36)
@@ -16,6 +19,7 @@ public class TblSourceNewZealandLandcare {
     @Size(max = 200)
     @Column(name = "NameFull")
     private String nameFull;
+    @Id
     @Basic
     @Size(max = 36)
     @Column(name = "VernacularGuid")

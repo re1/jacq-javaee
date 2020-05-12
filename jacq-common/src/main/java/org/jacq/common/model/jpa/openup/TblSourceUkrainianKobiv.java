@@ -1,15 +1,17 @@
 package org.jacq.common.model.jpa.openup;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_ukrainian_kobiv", schema = "openup")
 public class TblSourceUkrainianKobiv {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Column(name = "id")
+    private Long id;
     @Basic
     @Size(max = 10)
     @Column(name = "IND", length = 10)
@@ -50,6 +52,14 @@ public class TblSourceUkrainianKobiv {
     @Size(max = 10)
     @Column(name = "PRIOR", length = 10)
     private String prior;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getInd() {
         return ind;

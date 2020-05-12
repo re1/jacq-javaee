@@ -75,8 +75,8 @@ public class CatalogueOfLifeSource implements CommonNamesSource {
                         // TODO: refactor CommonName.id to string as not all common name ids are numbers
                         // commonName.setId(result.getString("id", ""));
                         commonName.setName(commonNameObject.getString("name", null));
-                        // languages do not come in ISO-639-6 format and are therefor converted
-                        // TODO improve language name conversion
+                        // languages do not come in ISO-639-6 format and are therefore converted
+                        // TODO: improve language name conversion
                         String language = commonNameObject.getString("language", null);
                         if (language != null) {
                             for (Locale locale : Locale.getAvailableLocales()) {

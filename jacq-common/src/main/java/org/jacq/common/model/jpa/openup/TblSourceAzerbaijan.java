@@ -1,15 +1,17 @@
 package org.jacq.common.model.jpa.openup;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_azerbaijan", schema = "openup")
 public class TblSourceAzerbaijan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Column(name = "id")
+    private Long id;
     @Basic
     @Size(max = 50)
     @Column(name = "FAMİLY")
@@ -66,6 +68,14 @@ public class TblSourceAzerbaijan {
     @Size(max = 150)
     @Column(name = "OTHERNAME")
     private String othername;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFami̇ly() {
         return fami̇ly;

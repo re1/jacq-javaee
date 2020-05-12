@@ -22,9 +22,11 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNameService;
+import org.jacq.service.names.sources.allearterdk.AllearterDKSource;
 import org.jacq.service.names.sources.catalogueoflife.CatalogueOfLifeSource;
 import org.jacq.service.names.sources.dnpgoth.DnpGoThSource;
 import org.jacq.service.names.sources.jacqlegacy.JacqLegacySource;
+import org.jacq.service.names.sources.linnaeusprojects.LinnaeusProjectsSource;
 import org.jacq.service.names.sources.meertensknaw.MeertensKnawSource;
 import org.jacq.service.names.sources.pesi.PESISource;
 import org.jacq.service.names.sources.util.SourceQueryThread;
@@ -67,6 +69,9 @@ public class CommonNameManager {
     protected ManagedExecutorService executorService;
 
     @Inject
+    protected AllearterDKSource allearterDKSource;
+
+    @Inject
     protected CatalogueOfLifeSource catalogueOfLifeSource;
 
     @Inject
@@ -74,6 +79,9 @@ public class CommonNameManager {
 
     @Inject
     protected JacqLegacySource jacqLegacySource;
+
+    @Inject
+    protected LinnaeusProjectsSource linnaeusProjectsSource;
 
     @Inject
     protected MeertensKnawSource meertensKnawSource;
@@ -113,9 +121,11 @@ public class CommonNameManager {
         // create a list of common name sources before executing any queries
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
         // queryTasks.add(new SourceQueryThread(artDatabankenSource, nameParserResponse));
+        queryTasks.add(new SourceQueryThread(allearterDKSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(catalogueOfLifeSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(jacqLegacySource, nameParserResponse));
+        queryTasks.add(new SourceQueryThread(linnaeusProjectsSource, nameParserResponse));
         // MeertensKnawSource is currently unavailable due to https://github.com/re1/jacq-javaee/issues/14
         // queryTasks.add(new SourceQueryThread(meertensKnawSource, nameParserResponse));
         queryTasks.add(new SourceQueryThread(pesiSource, nameParserResponse));

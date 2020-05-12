@@ -37,6 +37,9 @@
         <class>org.jacq.common.model.jpa.openup.TblSourceTogodbJapanese</class>
         <class>org.jacq.common.model.jpa.openup.TblSourceUkrainianKobiv</class>
         <class>org.jacq.common.model.jpa.openup.TblWebserviceCache</class>
+        <class>org.jacq.common.model.jpa.openup.TblSourceHebrewLinda</class>
+        <class>org.jacq.common.model.jpa.openup.TblSourceUkrainianKobivReferences</class>
+        <class>org.jacq.common.model.jpa.openup.TblSourceUkrainianKobivRegions</class>
         <properties>
             <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306"/>
             <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
