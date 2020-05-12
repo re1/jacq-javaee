@@ -1,4 +1,4 @@
-package org.jacq.service.names.sources.jacqlegacy;
+package org.jacq.service.names.sources.services;
 
 import org.jacq.common.model.names.JsonRpcRequest;
 

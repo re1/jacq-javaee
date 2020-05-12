@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jacq.service.names.sources.catalogueoflife;
+package org.jacq.service.names.sources.services;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

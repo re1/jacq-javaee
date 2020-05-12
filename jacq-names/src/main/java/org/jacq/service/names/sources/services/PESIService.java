@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jacq.service.names.sources.pesi;
+package org.jacq.service.names.sources.services;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

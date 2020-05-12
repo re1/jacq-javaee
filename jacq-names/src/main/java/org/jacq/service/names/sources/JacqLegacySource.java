@@ -1,11 +1,11 @@
-package org.jacq.service.names.sources.jacqlegacy;
+package org.jacq.service.names.sources;
 
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.JsonRpcRequest;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.common.model.names.taxamatch.TaxamatchOptions;
-import org.jacq.service.names.sources.CommonNamesSource;
+import org.jacq.service.names.sources.services.JacqLegacyService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;

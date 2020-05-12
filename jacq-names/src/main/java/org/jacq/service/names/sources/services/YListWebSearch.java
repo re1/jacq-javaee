@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.sources.ylist;
+package org.jacq.service.names.sources.services;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

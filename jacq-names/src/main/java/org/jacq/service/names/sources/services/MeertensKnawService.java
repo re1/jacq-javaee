@@ -1,4 +1,4 @@
-package org.jacq.service.names.sources.meertensknaw;
+package org.jacq.service.names.sources.services;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

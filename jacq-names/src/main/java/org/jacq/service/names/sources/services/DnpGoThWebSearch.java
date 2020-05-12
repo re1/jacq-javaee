@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.sources.dnpgoth;
+package org.jacq.service.names.sources.services;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;

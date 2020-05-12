@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jacq.service.names.sources.dnpgoth;
+package org.jacq.service.names.sources;
 
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
-import org.jacq.service.names.sources.CommonNamesSource;
+import org.jacq.service.names.sources.services.DnpGoThWebSearch;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;

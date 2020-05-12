@@ -1,6 +1,6 @@
-package org.jacq.service.names.sources.linnaeusprojects;
+package org.jacq.service.names.sources;
 
-import org.jacq.common.model.jpa.openup.TblSourceLinnaeusProjects;
+import org.jacq.common.model.jpa.openup.TblSourceAllearterDk;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
@@ -11,9 +11,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class LinnaeusProjectsSource implements CommonNamesSource {
+public class AllearterDKSource implements CommonNamesSource {
 
     @PersistenceContext(unitName = "openup")
     protected EntityManager em;
@@ -24,28 +23,24 @@ public class LinnaeusProjectsSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceLinnaeusProjects row WHERE row.taxon = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceLinnaeusProjects> linnaeusProjectsQuery = em.createQuery(lookupQuery, TblSourceLinnaeusProjects.class);
+        String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn = '" + query.getScientificName() + "'";
+        TypedQuery<TblSourceAllearterDk> linnaeusProjectsQuery = em.createQuery(lookupQuery, TblSourceAllearterDk.class);
         // get SQL lookup query results
-        List<TblSourceLinnaeusProjects> linnaeusProjectsResults = linnaeusProjectsQuery.getResultList();
+        List<TblSourceAllearterDk> linnaeusProjectsResults = linnaeusProjectsQuery.getResultList();
 
         ArrayList<CommonName> results = new ArrayList<>();
         // create common names for rows in SQL lookup query results
-        for (TblSourceLinnaeusProjects row : linnaeusProjectsResults) {
+        for (TblSourceAllearterDk row : linnaeusProjectsResults) {
             CommonName commonName = new CommonName();
-
-            commonName.setName(row.getName());
-            commonName.setTaxon(row.getTaxon());
-
-            String language = row.getLanguage();
-            for (Locale locale : Locale.getAvailableLocales()) {
-                if (locale.getDisplayLanguage().equals(language)) {
-                    commonName.setLanguage(locale.getISO3Language());
-                    break;
-                }
-            }
-
-            commonName.getReferences().add(row.getSource());
+            commonName.setName(row.getDanskNavn());
+            commonName.setTaxon(row.getVidenskabeligtNavn());
+            // all common names from this source are used in Denmark
+            commonName.setGeography("Denmark");
+            // all common names from this source are danish
+            commonName.setLanguage("dan");
+            commonName.getReferences().add(String.format(
+                    "%s, %s, %s", row.getReferencenavn(), row.getReferencetekst(), row.getReferenceår()
+            ));
             // TODO: Query tables with similar scientific names
             commonName.setScore(100L);
             commonName.setMatch(true);
