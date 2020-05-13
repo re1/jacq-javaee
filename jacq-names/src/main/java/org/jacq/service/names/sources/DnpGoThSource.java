@@ -52,7 +52,7 @@ public class DnpGoThSource implements CommonNamesSource {
 
     @PostConstruct
     public void init() {
-        inputFormPattern = Pattern.compile("<input.+ id=\"(.+)\" value=\"(.*)\" \\/>");
+        inputFormPattern = Pattern.compile("<input.+ id=\"(.+)\" value=\"(.*)\" />");
         resultLinkPattern = Pattern.compile("<td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('(.+)','(.+)'\\)\" id=\"(.+)\">.+<b>(.+)</b>");
         resultNamePattern = Pattern.compile("<td><img.+/></td><td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('.+','.+'\\)\" id=\".+\"><font face=\"Tahoma\" color=\"ForestGreen\" size=\"2\">(.+)\\s+\\((.+)\\)</font></a></td>");
     }

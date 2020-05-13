@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_czech_jiri_bezo1", schema = "openup")
-public class TblSourceCzechJiriBezo1 {
+public class TblSourceCzechJiriBezo1 implements TblSourceCzechJiri {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic

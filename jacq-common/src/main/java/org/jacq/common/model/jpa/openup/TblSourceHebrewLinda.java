@@ -205,8 +205,16 @@ public class TblSourceHebrewLinda {
         this.fragHebrew = fragHebrew;
     }
 
+    public String getHebrewGenus() {
+        return hebrewGenus;
+    }
+
     public void setHebrewGenus(String hebrewGenus) {
         this.hebrewGenus = hebrewGenus;
+    }
+
+    public String getHebrewSpecies() {
+        return hebrewSpecies;
     }
 
     public void setHebrewSpecies(String hebrewSpecies) {

@@ -24,13 +24,13 @@ public class AllearterDKSource implements CommonNamesSource {
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
         String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceAllearterDk> linnaeusProjectsQuery = em.createQuery(lookupQuery, TblSourceAllearterDk.class);
+        TypedQuery<TblSourceAllearterDk> sourceQuery = em.createQuery(lookupQuery, TblSourceAllearterDk.class);
         // get SQL lookup query results
-        List<TblSourceAllearterDk> linnaeusProjectsResults = linnaeusProjectsQuery.getResultList();
+        List<TblSourceAllearterDk> sourceQueryResults = sourceQuery.getResultList();
 
         ArrayList<CommonName> results = new ArrayList<>();
         // create common names for rows in SQL lookup query results
-        for (TblSourceAllearterDk row : linnaeusProjectsResults) {
+        for (TblSourceAllearterDk row : sourceQueryResults) {
             CommonName commonName = new CommonName();
             commonName.setName(row.getDanskNavn());
             commonName.setTaxon(row.getVidenskabeligtNavn());

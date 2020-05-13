@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_source_czech_jiri_vacnatci", schema = "openup")
-public class TblSourceCzechJiriVacnatci {
+public class TblSourceCzechJiriVacnatci implements TblSourceCzechJiri {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic
@@ -45,13 +45,17 @@ public class TblSourceCzechJiriVacnatci {
         this.latinName = latinName;
     }
 
-    public String getSynonym() {
+    public String getFirstSynonym() {
         return synonym;
     }
 
-    public void setSynonym(String synonym) {
+    public void setFirstSynonym(String synonym) {
         this.synonym = synonym;
     }
+
+    public String getSecondSynonym() { return null; }
+
+    public void setSecondSynonym(String synonym) { }
 
     public String getCzechName() {
         return czechName;

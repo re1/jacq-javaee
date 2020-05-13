@@ -56,7 +56,7 @@ public class YListSource implements CommonNamesSource {
      */
     @PostConstruct
     public void init() {
-        resultLinkPattern = Pattern.compile("<a  href = 'ylist_detail_display.php\\?pass=([^']+)'><span class = 'gakumei'>([^<]+)</span>");
+        resultLinkPattern = Pattern.compile("<a {2}href = 'ylist_detail_display.php\\?pass=([^']+)'><span class = 'gakumei'>([^<]+)</span>");
         resultNamePattern = Pattern.compile("<u>和名</u>：　 ([^<]+)<br>.*<u>掲載図鑑とページ番号</u>：　([^<]+)<br>");
         chineseNamePattern = Pattern.compile("<u>中国名</u>：　([^<]+)");
         koreanNamePattern = Pattern.compile("<u>韓国名</u>：　([^<]+)");

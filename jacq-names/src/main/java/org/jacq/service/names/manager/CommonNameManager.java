@@ -22,15 +22,8 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.OpenRefineInfo;
 import org.jacq.common.rest.names.CommonNameService;
-import org.jacq.service.names.sources.AllearterDKSource;
-import org.jacq.service.names.sources.CatalogueOfLifeSource;
-import org.jacq.service.names.sources.DnpGoThSource;
-import org.jacq.service.names.sources.JacqLegacySource;
-import org.jacq.service.names.sources.LinnaeusProjectsSource;
-import org.jacq.service.names.sources.MeertensKnawSource;
-import org.jacq.service.names.sources.PESISource;
+import org.jacq.service.names.sources.*;
 import org.jacq.service.names.sources.util.SourceQueryThread;
-import org.jacq.service.names.sources.YListSource;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.Resource;
@@ -42,6 +35,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -73,6 +67,18 @@ public class CommonNameManager {
 
     @Inject
     protected CatalogueOfLifeSource catalogueOfLifeSource;
+
+    @Inject
+    protected CzechJiriSource czechJiriSource;
+
+    @Inject
+    protected CzechPragueSource czechPragueSource;
+
+    @Inject
+    protected EtiDatabasesSource etiDatabasesSource;
+
+    @Inject
+    protected HebrewLindaSource hebrewLindaSource;
 
     @Inject
     protected DnpGoThSource dnpGoThSource;
@@ -119,17 +125,26 @@ public class CommonNameManager {
         NameParserResponse nameParserResponse = nameParserManager.parseName(query);
 
         // create a list of common name sources before executing any queries
+        List<CommonNamesSource> commonNamesSources = Arrays.asList(
+                allearterDKSource,
+                catalogueOfLifeSource,
+                czechJiriSource,
+                czechPragueSource,
+                dnpGoThSource,
+                etiDatabasesSource,
+                hebrewLindaSource,
+                jacqLegacySource,
+                linnaeusProjectsSource,
+                // MeertensKnawSource is currently unavailable due to https://github.com/re1/jacq-javaee/issues/14
+                // meertensKnawSource,
+                pesiSource,
+                yListSource
+        );
+
         ArrayList<Callable<ArrayList<CommonName>>> queryTasks = new ArrayList<>();
-        // queryTasks.add(new SourceQueryThread(artDatabankenSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(allearterDKSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(catalogueOfLifeSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(dnpGoThSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(jacqLegacySource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(linnaeusProjectsSource, nameParserResponse));
-        // MeertensKnawSource is currently unavailable due to https://github.com/re1/jacq-javaee/issues/14
-        // queryTasks.add(new SourceQueryThread(meertensKnawSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(pesiSource, nameParserResponse));
-        queryTasks.add(new SourceQueryThread(yListSource, nameParserResponse));
+        for (CommonNamesSource commonNamesSource : commonNamesSources) {
+            queryTasks.add(new SourceQueryThread(commonNamesSource, nameParserResponse));
+        }
 
         try {
             // query all sources asynchronously and wait for them to finish
@@ -200,13 +215,14 @@ public class CommonNameManager {
             TblCommonNamesCache commonNamesCache;
 
             // we use a string building query here for performance reasons - should normally be avoided at any cost!
-            String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.name = '" + result.getName() + "'";
-            lookupQuery += " AND " + queryFieldHelper("language", result.getLanguage());
-            lookupQuery += " AND " + queryFieldHelper("geography", result.getGeography());
-            lookupQuery += " AND " + queryFieldHelper("period", result.getPeriod());
+            String lookupQuery = "SELECT cnc FROM TblCommonNamesCache cnc WHERE cnc.name = :name AND "
+                    + queryFieldHelper("language", result.getLanguage()) + " AND "
+                    + queryFieldHelper("geography", result.getGeography()) + " AND "
+                    + queryFieldHelper("period", result.getPeriod());
 
             // create query and fetch the result
-            TypedQuery<TblCommonNamesCache> commonNamesCacheQuery = em.createQuery(lookupQuery, TblCommonNamesCache.class);
+            TypedQuery<TblCommonNamesCache> commonNamesCacheQuery = em.createQuery(
+                    lookupQuery, TblCommonNamesCache.class).setParameter("name", result.getName());
             List<TblCommonNamesCache> commonNamesCaches = commonNamesCacheQuery.getResultList();
 
             if (commonNamesCaches != null && commonNamesCaches.size() > 0) {
