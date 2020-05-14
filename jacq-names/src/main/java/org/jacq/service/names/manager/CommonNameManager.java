@@ -75,13 +75,16 @@ public class CommonNameManager {
     protected CzechPragueSource czechPragueSource;
 
     @Inject
+    protected DnpGoThSource dnpGoThSource;
+
+    @Inject
     protected EtiDatabasesSource etiDatabasesSource;
 
     @Inject
     protected HebrewLindaSource hebrewLindaSource;
 
     @Inject
-    protected DnpGoThSource dnpGoThSource;
+    protected HungarianPeregovitsSource hungarianPeregovitsSource;
 
     @Inject
     protected JacqLegacySource jacqLegacySource;
@@ -93,7 +96,13 @@ public class CommonNameManager {
     protected MeertensKnawSource meertensKnawSource;
 
     @Inject
+    protected NewZealandLandcareSource newZealandLandcareSource;
+
+    @Inject
     protected PESISource pesiSource;
+
+    @Inject
+    protected RussianPlantariumSource russianPlantariumSource;
 
     @Inject
     protected YListSource yListSource;
@@ -133,11 +142,14 @@ public class CommonNameManager {
                 dnpGoThSource,
                 etiDatabasesSource,
                 hebrewLindaSource,
+                hungarianPeregovitsSource,
                 jacqLegacySource,
                 linnaeusProjectsSource,
                 // MeertensKnawSource is currently unavailable due to https://github.com/re1/jacq-javaee/issues/14
                 // meertensKnawSource,
+                newZealandLandcareSource,
                 pesiSource,
+                russianPlantariumSource,
                 yListSource
         );
 

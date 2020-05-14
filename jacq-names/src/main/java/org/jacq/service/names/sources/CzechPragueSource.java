@@ -22,8 +22,10 @@ public class CzechPragueSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceCzechPrague row WHERE row.celeJmeno = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceCzechPrague> sourceQuery = em.createQuery(lookupQuery, TblSourceCzechPrague.class);
+        String lookupQuery = "SELECT row FROM TblSourceCzechPrague row WHERE row.celeJmeno = :scientificName";
+        TypedQuery<TblSourceCzechPrague> sourceQuery =
+                em.createQuery(lookupQuery, TblSourceCzechPrague.class)
+                        .setParameter("scientificName", query.getScientificName());
         // get SQL lookup query results
         List<TblSourceCzechPrague> sourceQueryResults = sourceQuery.getResultList();
 

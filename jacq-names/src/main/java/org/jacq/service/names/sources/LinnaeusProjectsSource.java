@@ -4,7 +4,6 @@ import org.jacq.common.model.jpa.openup.TblSourceLinnaeusProjects;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
-import org.jacq.service.names.sources.CommonNamesSource;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,8 +23,10 @@ public class LinnaeusProjectsSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceLinnaeusProjects row WHERE row.taxon = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceLinnaeusProjects> sourceQuery = em.createQuery(lookupQuery, TblSourceLinnaeusProjects.class);
+        String lookupQuery = "SELECT row FROM TblSourceLinnaeusProjects row WHERE row.taxon = :scientificName";
+        TypedQuery<TblSourceLinnaeusProjects> sourceQuery =
+                em.createQuery(lookupQuery, TblSourceLinnaeusProjects.class)
+                        .setParameter("scientificName", query.getScientificName());
         // get SQL lookup query results
         List<TblSourceLinnaeusProjects> sourceQueryResults = sourceQuery.getResultList();
 

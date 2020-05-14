@@ -4,7 +4,6 @@ import org.jacq.common.model.jpa.openup.TblSourceAllearterDk;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
-import org.jacq.service.names.sources.CommonNamesSource;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,8 +22,10 @@ public class AllearterDKSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceAllearterDk> sourceQuery = em.createQuery(lookupQuery, TblSourceAllearterDk.class);
+        String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn = :scientificName";
+        TypedQuery<TblSourceAllearterDk> sourceQuery =
+                em.createQuery(lookupQuery, TblSourceAllearterDk.class)
+                        .setParameter("scientificName", query.getScientificName());
         // get SQL lookup query results
         List<TblSourceAllearterDk> sourceQueryResults = sourceQuery.getResultList();
 

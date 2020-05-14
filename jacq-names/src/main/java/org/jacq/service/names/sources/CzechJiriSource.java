@@ -21,14 +21,17 @@ public class CzechJiriSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // add common names from Czech Jiri Bezo1
-        String lookupQuery = "SELECT row FROM TblSourceCzechJiriBezo1 row WHERE row.latinName = '" + query.getScientificName() + "'";
-        List<TblSourceCzechJiri> sourceQueryResults = new ArrayList<>(em.createQuery(lookupQuery, TblSourceCzechJiri.class).getResultList());
+        String lookupQuery = "SELECT row FROM TblSourceCzechJiriBezo1 row WHERE row.latinName = :scientificName";
+        List<TblSourceCzechJiri> sourceQueryResults = new ArrayList<>(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
+                .setParameter("scientificName", query.getScientificName()).getResultList());
         // add common names from Czech Jiri Roztoci
-        lookupQuery = "SELECT row FROM TblSourceCzechJiriRoztoci row WHERE row.latinName = '" + query.getScientificName() + "'";
-        sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class).getResultList());
+        lookupQuery = "SELECT row FROM TblSourceCzechJiriRoztoci row WHERE row.latinName = :scientificName";
+        sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
+                .setParameter("scientificName", query.getScientificName()).getResultList());
         // add common names from Czech Jiri Vacnatci
-        lookupQuery = "SELECT row FROM TblSourceCzechJiriVacnatci row WHERE row.latinName = '" + query.getScientificName() + "'";
-        sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class).getResultList());
+        lookupQuery = "SELECT row FROM TblSourceCzechJiriVacnatci row WHERE row.latinName = :scientificName";
+        sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
+                .setParameter("scientificName", query.getScientificName()).getResultList());
 
         ArrayList<CommonName> results = new ArrayList<>();
         // create common names for rows in SQL lookup query results

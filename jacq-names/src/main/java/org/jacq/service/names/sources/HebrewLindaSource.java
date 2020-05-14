@@ -22,8 +22,10 @@ public class HebrewLindaSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceHebrewLinda row WHERE row.cleanScientificName = '" + query.getScientificName() + "'";
-        TypedQuery<TblSourceHebrewLinda> sourceQuery = em.createQuery(lookupQuery, TblSourceHebrewLinda.class);
+        String lookupQuery = "SELECT row FROM TblSourceHebrewLinda row WHERE row.cleanScientificName = :scientificName";
+        TypedQuery<TblSourceHebrewLinda> sourceQuery =
+                em.createQuery(lookupQuery, TblSourceHebrewLinda.class)
+                        .setParameter("scientificName", query.getScientificName());
         // get SQL lookup query results
         List<TblSourceHebrewLinda> sourceQueryResults = sourceQuery.getResultList();
 

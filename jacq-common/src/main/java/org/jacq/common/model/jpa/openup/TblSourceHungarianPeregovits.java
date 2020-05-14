@@ -40,6 +40,9 @@ public class TblSourceHungarianPeregovits {
     @Size(max = 50)
     @Column(name = "Period")
     private String period;
+    @ManyToOne
+    @JoinColumn(name = "PUB_ID")
+    private TblSourceHungarianPeregovitsLiterature literature;
 
     public Long getId() {
         return id;
@@ -103,6 +106,10 @@ public class TblSourceHungarianPeregovits {
 
     public void setPeriod(String period) {
         this.period = period;
+    }
+
+    public TblSourceHungarianPeregovitsLiterature getLiterature() {
+        return literature;
     }
 
     @Override

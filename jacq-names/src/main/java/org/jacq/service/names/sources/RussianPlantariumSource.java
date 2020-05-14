@@ -1,6 +1,6 @@
 package org.jacq.service.names.sources;
 
-import org.jacq.common.model.jpa.openup.TblSourceEtiDatabases;
+import org.jacq.common.model.jpa.openup.TblSourceRussianPlantarium;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EtiDatabasesSource implements CommonNamesSource {
+public class RussianPlantariumSource implements CommonNamesSource {
 
     @PersistenceContext(unitName = "openup")
     protected EntityManager em;
@@ -22,22 +22,23 @@ public class EtiDatabasesSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceEtiDatabases row WHERE row.taxon = :scientificName";
-        TypedQuery<TblSourceEtiDatabases> sourceQuery =
-                em.createQuery(lookupQuery, TblSourceEtiDatabases.class)
+        String lookupQuery = "SELECT row FROM TblSourceRussianPlantarium row WHERE row.scientificName = :scientificName";
+        TypedQuery<TblSourceRussianPlantarium> sourceQuery =
+                em.createQuery(lookupQuery, TblSourceRussianPlantarium.class)
                         .setParameter("scientificName", query.getScientificName());
         // get SQL lookup query results
-        List<TblSourceEtiDatabases> sourceQueryResults = sourceQuery.getResultList();
+        List<TblSourceRussianPlantarium> sourceQueryResults = sourceQuery.getResultList();
 
         ArrayList<CommonName> results = new ArrayList<>();
         // create common names for rows in SQL lookup query results
-        for (TblSourceEtiDatabases row : sourceQueryResults) {
+        for (TblSourceRussianPlantarium row : sourceQueryResults) {
             CommonName commonName = new CommonName();
 
-            commonName.setName(row.getName());
-            commonName.setTaxon(row.getTaxon());
-            commonName.setLanguage(row.getIso6396());
-            commonName.getReferences().add(row.getSource());
+            commonName.setName(row.getRussianName());
+            commonName.setTaxon(row.getScientificName());
+            commonName.setLanguage("rus");
+            // https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/RussianPlantarium.php
+            commonName.getReferences().add("Plantarium - Russia");
             // TODO: Query tables with similar scientific names
             commonName.setScore(100L);
             commonName.setMatch(true);
