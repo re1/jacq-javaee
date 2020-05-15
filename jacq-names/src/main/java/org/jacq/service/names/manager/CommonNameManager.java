@@ -105,6 +105,15 @@ public class CommonNameManager {
     protected RussianPlantariumSource russianPlantariumSource;
 
     @Inject
+    protected SlovakBratislavaSource slovakBratislavaSource;
+
+    @Inject
+    protected TogoDbSource togoDbSource;
+
+    @Inject
+    protected UkrainianKobivSource ukrainianKobivSource;
+
+    @Inject
     protected YListSource yListSource;
 
     @Inject
@@ -150,6 +159,9 @@ public class CommonNameManager {
                 newZealandLandcareSource,
                 pesiSource,
                 russianPlantariumSource,
+                slovakBratislavaSource,
+                togoDbSource,
+                ukrainianKobivSource,
                 yListSource
         );
 
