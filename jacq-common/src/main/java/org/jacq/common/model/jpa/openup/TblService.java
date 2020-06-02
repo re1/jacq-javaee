@@ -46,7 +46,7 @@ public class TblService implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "url")
     private String url;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "service")
     private Collection<TblWebserviceCache> tblWebserviceCacheCollection;
 
     public TblService() {

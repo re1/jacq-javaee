@@ -52,10 +52,14 @@ public class TblWebserviceCache implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "timestamp", nullable = false)
-    private int timestamp;
-    @JoinColumn(name = "service_id", referencedColumnName = "id")
+    private long timestamp;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "service_id")
+    private Integer serviceId;
+    @JoinColumn(name = "service_id", referencedColumnName = "id", updatable = false, insertable = false)
     @ManyToOne(optional = false)
-    private TblService serviceId;
+    private TblService service;
 
     public TblWebserviceCache() {
     }
@@ -94,19 +98,27 @@ public class TblWebserviceCache implements Serializable {
         this.response = response;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
-    public TblService getServiceId() {
+    public TblService getService() {
+        return service;
+    }
+
+    public void setService(TblService service) {
+        this.service = service;
+    }
+
+    public Integer getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(TblService serviceId) {
+    public void setServiceId(Integer serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -131,5 +143,4 @@ public class TblWebserviceCache implements Serializable {
     public String toString() {
         return "org.jacq.common.model.jpa.openup.TblWebserviceCache[ id=" + id + " ]";
     }
-
 }

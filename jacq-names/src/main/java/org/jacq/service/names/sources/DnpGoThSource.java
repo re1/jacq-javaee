@@ -19,7 +19,9 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.services.DnpGoThWebSearch;
+import org.jacq.service.names.sources.util.CachedWebService;
 import org.jacq.service.names.sources.util.SourcesUtil;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -36,18 +38,18 @@ import java.util.regex.Pattern;
  * @author wkoller
  */
 @ManagedBean
-public class DnpGoThSource implements CommonNamesSource {
+public class DnpGoThSource extends CachedWebService {
 
     protected static final String VIEWSTATE = "__VIEWSTATE";
     protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
     protected static final String EVENTVALIDATION = "__EVENTVALIDATION";
     protected static final String REFERENCE = "Thai Plant Names - Tem Smitinand, Copyright 2006-2013 Forest Herbarium, http://www.dnp.go.th/botany/ThaiPlantName/DefaultEng.aspx";
     protected static final String LANGUAGE_CODE = "tha";
+
     private static final Logger LOGGER = Logger.getLogger(DnpGoThSource.class.getName());
+
     protected Pattern inputFormPattern;
-
     protected Pattern resultLinkPattern;
-
     protected Pattern resultNamePattern;
 
     @PostConstruct
@@ -55,6 +57,16 @@ public class DnpGoThSource implements CommonNamesSource {
         inputFormPattern = Pattern.compile("<input.+ id=\"(.+)\" value=\"(.*)\" />");
         resultLinkPattern = Pattern.compile("<td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('(.+)','(.+)'\\)\" id=\"(.+)\">.+<b>(.+)</b>");
         resultNamePattern = Pattern.compile("<td><img.+/></td><td nowrap=\"nowrap\"><a href=\"javascript:__doPostBack\\('.+','.+'\\)\" id=\".+\"><font face=\"Tahoma\" color=\"ForestGreen\" size=\"2\">(.+)\\s+\\((.+)\\)</font></a></td>");
+    }
+
+    /**
+     * TODO: Add caching for multiple source queries
+     *
+     * @see CachedWebService#getWebServiceResponse(NameParserResponse)
+     */
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        throw new NotImplementedException();
     }
 
     /**
@@ -68,7 +80,7 @@ public class DnpGoThSource implements CommonNamesSource {
         ArrayList<CommonName> results = new ArrayList<>();
 
         // create proxy service instance
-        DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getProxy(DnpGoThWebSearch.class, "http://www.dnp.go.th/");
+        DnpGoThWebSearch dnpGoThWebSearch = SourcesUtil.getProxy(DnpGoThWebSearch.class, "http://www.dnp.go.th");
 
         // get genus and species from parsed name
         String genus = (query.getGenus() != null) ? query.getGenus() : query.getUninomial();

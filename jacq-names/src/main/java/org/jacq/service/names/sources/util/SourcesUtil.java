@@ -31,12 +31,12 @@ public class SourcesUtil {
      * @param <T>                   Type of serviceInterfaceClass
      * @param serviceInterfaceClass Resteasy Proxy Framework service interface class of a source
      * @param serviceURI            unencoded URI to a source ReST service endpoint
-     * @return
+     * @return Proxy object for the given service
      */
     public static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
         //resteasyClient.register(new RequestDebugFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
-        return (T) resteasyWebTarget.proxy(serviceInterfaceClass);
+        return resteasyWebTarget.proxy(serviceInterfaceClass);
     }
 }

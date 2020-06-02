@@ -25,6 +25,10 @@ public class JacqLegacySource implements CommonNamesSource {
 
     private static final Logger LOGGER = Logger.getLogger(JacqLegacySource.class.getName());
 
+    private static final int serviceId = 1;
+    private static final long timeout = 86400; // 24 hours
+    private static final String serviceUrl = "http://131.130.131.9";
+
     /**
      * Source implementation for the JACQ Legacy JSON-RPC interface.
      *

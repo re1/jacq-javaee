@@ -20,9 +20,11 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.services.CatalogueOfLifeService;
+import org.jacq.service.names.sources.util.CachedWebService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
@@ -41,9 +43,28 @@ import java.util.logging.Logger;
  * @see <a href="http://www.catalogueoflife.org/col/webservice">Catalogue of Life Webservice</a>
  */
 @ManagedBean
-public class CatalogueOfLifeSource implements CommonNamesSource {
+public class CatalogueOfLifeSource extends CachedWebService {
 
     private static final Logger LOGGER = Logger.getLogger(CatalogueOfLifeSource.class.getName());
+
+    private static final String serviceUrl = "http://www.catalogueoflife.org/col/webservice";
+
+    @PostConstruct
+    public void init() {
+        setServiceId(1);
+        setTimeout(2592000); // 30 days
+    }
+
+    /**
+     * @see CachedWebService#getWebServiceResponse(NameParserResponse)
+     */
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        // connect to CatalogueOfLifeService
+        CatalogueOfLifeService service = SourcesUtil.getProxy(CatalogueOfLifeService.class, serviceUrl);
+        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
+        return service.query(query.getScientificName(), null, "json", "full", null);
+    }
 
     /**
      * @see CommonNamesSource#query(NameParserResponse)
@@ -51,10 +72,10 @@ public class CatalogueOfLifeSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
-        // connect to CatalogueOfLifeService
-        CatalogueOfLifeService service = SourcesUtil.getProxy(CatalogueOfLifeService.class, "http://www.catalogueoflife.org/col/webservice");
-        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
-        String response = service.query(query.getScientificName(), null, "json", "full", null);
+
+        // get cached response if possible
+        String response = getResponse(query);
+
         // check if result is valid JSON
         try (StringReader stringReader = new StringReader(response)) {
             // create object from valid JSON string
@@ -97,7 +118,6 @@ public class CatalogueOfLifeSource implements CommonNamesSource {
                     }
                 }
             }
-
         } catch (JsonParsingException e) {
             // response is not valid JSON
             LOGGER.log(Level.WARNING, "Response string is not valid JSON", e);

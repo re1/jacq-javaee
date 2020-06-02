@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 /**
  * Handles all common names related actions
  *
- * @author wkoller
+ * @author wkoller, re1
  */
 @ManagedBean
 @RequestScoped
