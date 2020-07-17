@@ -23,6 +23,7 @@ import org.jacq.service.names.sources.services.PESIService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
@@ -36,13 +37,21 @@ import java.util.logging.Logger;
 /**
  * Source implementation for the Pan-European Species directories infrastructure (PESI) using the PESIService interface.
  *
+ * @author re1
  * @see PESIService
  * @see <a href="http://www.eu-nomen.eu/portal/rest/">PESI RestAPI</a>
  */
 @ManagedBean
-public class PESISource implements CommonNamesSource {
+public class PESISource extends CachedWebServiceSource {
 
     private static final Logger LOGGER = Logger.getLogger(PESISource.class.getName());
+
+    private static final String serviceUrl = "http://www.eu-nomen.eu/portal/rest";
+
+    @PostConstruct
+    public void init() {
+        setServiceId(3);
+    }
 
     /**
      * @see CommonNamesSource#query(NameParserResponse)
@@ -50,14 +59,8 @@ public class PESISource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         ArrayList<CommonName> results = new ArrayList<>();
-        // connect to CatalogueOfLifeService
-        PESIService service = SourcesUtil.getProxy(PESIService.class, "http://www.eu-nomen.eu/portal/rest");
-        // query GUID for parsed scientific name
-        String guid = service.getGUIDByName(query.getScientificName());
-        // return if no GUID was found for this scientific name
-        if (guid == null || guid.isEmpty()) return results;
-        // query vernaculars for GUID (double quotes are remove manually)
-        String response = service.getVernacularsByGUID(guid.replaceAll("\"", ""), null);
+        // get Web service response
+        String response = getResponse(query);
         // return if no vernaculars were found for this GUID
         if (response == null || response.isEmpty()) return results;
         // check if response is valid JSON
@@ -93,5 +96,17 @@ public class PESISource implements CommonNamesSource {
     @Override
     public ArrayList<ScientificName> query(String query) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        // connect to PESIService
+        PESIService service = SourcesUtil.getProxy(PESIService.class, serviceUrl);
+        // query GUID for parsed scientific name
+        String guid = service.getGUIDByName(query.getScientificName());
+        // return if no GUID was found for this scientific name
+        if (guid == null || guid.isEmpty()) return null;
+        // query vernaculars for GUID (double quotes are remove manually)
+        return service.getVernacularsByGUID(guid.replaceAll("\"", ""), null);
     }
 }

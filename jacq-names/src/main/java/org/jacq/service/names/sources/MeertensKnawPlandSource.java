@@ -5,24 +5,34 @@ import de.ailis.pherialize.Pherialize;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
-import org.jacq.service.names.sources.services.MeertensKnawService;
+import org.jacq.service.names.sources.services.MeertensKnawPlandService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Source implementation for the Meertens KNAW (Pland) service using the MeertensKnawService interface.
+ * Source implementation for the Meertens KNAW (Pland) service using the MeertensKnawPlandService interface.
  *
- * @see MeertensKnawService#query(String, String)
+ * @author re1
+ * @see MeertensKnawPlandService#query(String, String)
  * @see <a href="http://www.meertens.knaw.nl/pland/">Meertens KNAW (Pland) service</a>
  */
 @ManagedBean
-public class MeertensKnawSource implements CommonNamesSource {
+public class MeertensKnawPlandSource extends CachedWebServiceSource {
 
-    private static final Logger LOGGER = Logger.getLogger(MeertensKnawSource.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MeertensKnawPlandSource.class.getName());
+
+    private static final String serviceUrl = "https://www.meertens.knaw.nl/pland/rest";
+
+    @PostConstruct
+    public void init() {
+        setServiceId(8);
+        setTimeout(2592000); // 30 days
+    }
 
     /**
      * TODO: Improve error handling
@@ -31,11 +41,9 @@ public class MeertensKnawSource implements CommonNamesSource {
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
+        String response = getResponse(query);
+
         ArrayList<CommonName> results = new ArrayList<>();
-        // connect to CatalogueOfLifeService
-        MeertensKnawService service = SourcesUtil.getProxy(MeertensKnawService.class, "https://www.meertens.knaw.nl/pland/hitlist.php");
-        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
-        String response = service.query("php", query.getScientificName());
 
         try {
             // iterate over response arrays
@@ -81,5 +89,16 @@ public class MeertensKnawSource implements CommonNamesSource {
     @Override
     public ArrayList<ScientificName> query(String query) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @see CachedWebServiceSource#getWebServiceResponse(NameParserResponse)
+     */
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        // connect to MeertensKnawPlandService
+        MeertensKnawPlandService service = SourcesUtil.getProxy(MeertensKnawPlandService.class, serviceUrl);
+        // query source for parsed scientific name using PHP response format
+        return service.query("php", query.getScientificName());
     }
 }

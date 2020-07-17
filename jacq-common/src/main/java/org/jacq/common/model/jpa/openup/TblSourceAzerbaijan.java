@@ -14,8 +14,8 @@ public class TblSourceAzerbaijan {
     private Long id;
     @Basic
     @Size(max = 50)
-    @Column(name = "FAMİLY")
-    private String fami̇ly;
+    @Column(name = "FAMILY")
+    private String family;
     @Basic
     @Size(max = 50)
     @Column(name = "FAMAUTHOR")
@@ -50,8 +50,8 @@ public class TblSourceAzerbaijan {
     private String subtauthor;
     @Basic
     @Size(max = 150)
-    @Column(name = "AZERİNAME")
-    private String azeri̇name;
+    @Column(name = "AZERINAME")
+    private String azeriname;
     @Basic
     @Size(max = 150)
     @Column(name = "RUSNAME")
@@ -77,12 +77,12 @@ public class TblSourceAzerbaijan {
         this.id = id;
     }
 
-    public String getFami̇ly() {
-        return fami̇ly;
+    public String getFamily() {
+        return family;
     }
 
-    public void setFami̇ly(String fami̇ly) {
-        this.fami̇ly = fami̇ly;
+    public void setFamily(String family) {
+        this.family = family;
     }
 
     public String getFamauthor() {
@@ -149,12 +149,12 @@ public class TblSourceAzerbaijan {
         this.subtauthor = subtauthor;
     }
 
-    public String getAzeri̇name() {
-        return azeri̇name;
+    public String getAzeriname() {
+        return azeriname;
     }
 
-    public void setAzeri̇name(String azeri̇name) {
-        this.azeri̇name = azeri̇name;
+    public void setAzeriname(String azeriname) {
+        this.azeriname = azeriname;
     }
 
     public String getRusname() {
@@ -194,7 +194,7 @@ public class TblSourceAzerbaijan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TblSourceAzerbaijan that = (TblSourceAzerbaijan) o;
-        return Objects.equals(fami̇ly, that.fami̇ly) &&
+        return Objects.equals(family, that.family) &&
                 Objects.equals(famauthor, that.famauthor) &&
                 Objects.equals(genus, that.genus) &&
                 Objects.equals(genauthor, that.genauthor) &&
@@ -203,7 +203,7 @@ public class TblSourceAzerbaijan {
                 Objects.equals(infrarank, that.infrarank) &&
                 Objects.equals(subtaxa, that.subtaxa) &&
                 Objects.equals(subtauthor, that.subtauthor) &&
-                Objects.equals(azeri̇name, that.azeri̇name) &&
+                Objects.equals(azeriname, that.azeriname) &&
                 Objects.equals(rusname, that.rusname) &&
                 Objects.equals(engname, that.engname) &&
                 Objects.equals(accename, that.accename) &&
@@ -212,6 +212,6 @@ public class TblSourceAzerbaijan {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fami̇ly, famauthor, genus, genauthor, species, spauthor, infrarank, subtaxa, subtauthor, azeri̇name, rusname, engname, accename, othername);
+        return Objects.hash(family, famauthor, genus, genauthor, species, spauthor, infrarank, subtaxa, subtauthor, azeriname, rusname, engname, accename, othername);
     }
 }

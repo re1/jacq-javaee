@@ -20,7 +20,6 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.services.CatalogueOfLifeService;
-import org.jacq.service.names.sources.util.CachedWebService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
@@ -43,7 +42,7 @@ import java.util.logging.Logger;
  * @see <a href="http://www.catalogueoflife.org/col/webservice">Catalogue of Life Webservice</a>
  */
 @ManagedBean
-public class CatalogueOfLifeSource extends CachedWebService {
+public class CatalogueOfLifeSource extends CachedWebServiceSource {
 
     private static final Logger LOGGER = Logger.getLogger(CatalogueOfLifeSource.class.getName());
 
@@ -53,17 +52,6 @@ public class CatalogueOfLifeSource extends CachedWebService {
     public void init() {
         setServiceId(1);
         setTimeout(2592000); // 30 days
-    }
-
-    /**
-     * @see CachedWebService#getWebServiceResponse(NameParserResponse)
-     */
-    @Override
-    public String getWebServiceResponse(NameParserResponse query) {
-        // connect to CatalogueOfLifeService
-        CatalogueOfLifeService service = SourcesUtil.getProxy(CatalogueOfLifeService.class, serviceUrl);
-        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
-        return service.query(query.getScientificName(), null, "json", "full", null);
     }
 
     /**
@@ -93,8 +81,6 @@ public class CatalogueOfLifeSource extends CachedWebService {
                         JsonObject commonNameObject = commonNamesArray.getJsonObject(j);
 
                         CommonName commonName = new CommonName();
-                        // TODO: refactor CommonName.id to string as not all common name ids are numbers
-                        // commonName.setId(result.getString("id", ""));
                         commonName.setName(commonNameObject.getString("name", null));
                         // languages do not come in ISO-639-6 format and are therefore converted
                         // TODO: improve language name conversion
@@ -138,5 +124,16 @@ public class CatalogueOfLifeSource extends CachedWebService {
     @Override
     public ArrayList<ScientificName> query(String query) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @see CachedWebServiceSource#getWebServiceResponse(NameParserResponse)
+     */
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        // connect to CatalogueOfLifeService
+        CatalogueOfLifeService service = SourcesUtil.getProxy(CatalogueOfLifeService.class, serviceUrl);
+        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
+        return service.query(query.getScientificName(), null, "json", "full", null);
     }
 }

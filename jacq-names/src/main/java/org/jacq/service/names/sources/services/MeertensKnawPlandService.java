@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
  * @author re1
  */
 @Path("/")
-public interface MeertensKnawService {
+public interface MeertensKnawPlandService {
     /**
      * Queries the Meertens KNAW (Pland) service.
      *

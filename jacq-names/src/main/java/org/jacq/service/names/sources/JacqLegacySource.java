@@ -9,6 +9,7 @@ import org.jacq.service.names.sources.services.JacqLegacyService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
@@ -20,47 +21,36 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Source implementation for the JACQ Legacy JSON-RPC interface.
+ *
+ * @author re1
+ */
 @ManagedBean
-public class JacqLegacySource implements CommonNamesSource {
+public class JacqLegacySource extends CachedWebServiceSource {
 
     private static final Logger LOGGER = Logger.getLogger(JacqLegacySource.class.getName());
 
-    private static final int serviceId = 1;
-    private static final long timeout = 86400; // 24 hours
     private static final String serviceUrl = "http://131.130.131.9";
 
+    @PostConstruct
+    public void init() {
+        setServiceId(2);
+    }
+
     /**
-     * Source implementation for the JACQ Legacy JSON-RPC interface.
+     * Get Web service and process Web service response.
      *
-     * @param query parsed scientific name
-     * @return list of common names for given scientific name
+     * @see CommonNamesSource#query(NameParserResponse)
      * @see <a href="https://sourceforge.net/p/jacq/legacy/ci/master/tree/taxamatch/jsonRPC">JACQ Legacy JSON-RPC</a>
      * @see <a href="https://www.jsonrpc.org/specification>JSON-RPC specification</a>
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
+        // get web service response
+        String response = getResponse(query);
+        // initialize result list
         ArrayList<CommonName> results = new ArrayList<>();
-        // connect to JACQ legacy scientific name service
-        JacqLegacyService service = SourcesUtil.getProxy(JacqLegacyService.class, "http://131.130.131.9");
-        // JSON-RPC params are used as positional arguments: https://www.jsonrpc.org/specification#examples
-        // 1. database, 2. searchitem, 3. params object
-        // TODO: Consider using an object for name parameters
-        LinkedList<Object> params = new LinkedList<>();
-        // set database parameter
-        params.add("vienna");
-        // set searchtext parameter to scientific name
-        params.add(query.getScientificName());
-        // set includeCommonNames parameter to true
-        TaxamatchOptions options = new TaxamatchOptions();
-        options.setIncludeCommonNames(true);
-        params.add(options);
-        // Build JSON-RPC request
-        JsonRpcRequest request = new JsonRpcRequest();
-        request.setId(1L);
-        request.setMethod("getMatchesService");
-        request.setParams(params);
-        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
-        String response = service.query(request);
         // parse JSON-RPC response as JSON
         try (StringReader stringReader = new StringReader(response)) {
             // create JSON-RPC response object from valid JSON string
@@ -97,11 +87,7 @@ public class JacqLegacySource implements CommonNamesSource {
                             commonName.getReferences().add(commonNameObject.getString("reference"));
                             commonName.setScore((long) (speciesObject.getJsonNumber("ratio").doubleValue() * 100));
                             // set match to true if score is 100
-                            if (commonName.getScore() == 100) {
-                                commonName.setMatch(true);
-                            } else {
-                                commonName.setMatch(false);
-                            }
+                            commonName.setMatch(commonName.getScore() == 100);
                             // add common name to results
                             results.add(commonName);
                         }
@@ -135,5 +121,33 @@ public class JacqLegacySource implements CommonNamesSource {
     @Override
     public ArrayList<ScientificName> query(String query) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @see CachedWebServiceSource#getWebServiceResponse(NameParserResponse)
+     */
+    @Override
+    public String getWebServiceResponse(NameParserResponse query) {
+        // connect to JACQ legacy scientific name service
+        JacqLegacyService service = SourcesUtil.getProxy(JacqLegacyService.class, serviceUrl);
+        // JSON-RPC params are used as positional arguments: https://www.jsonrpc.org/specification#examples
+        // 1. database, 2. searchitem, 3. params object
+        // TODO: Consider using an object for name parameters
+        LinkedList<Object> params = new LinkedList<>();
+        // set database parameter
+        params.add("vienna");
+        // set searchtext parameter to scientific name
+        params.add(query.getScientificName());
+        // set includeCommonNames parameter to true
+        TaxamatchOptions options = new TaxamatchOptions();
+        options.setIncludeCommonNames(true);
+        params.add(options);
+        // Build JSON-RPC request
+        JsonRpcRequest request = new JsonRpcRequest();
+        request.setId(1L);
+        request.setMethod("getMatchesService");
+        request.setParams(params);
+        // query source for parsed scientific name using JSON format and full response (tense has no common_names field)
+        return service.query(request);
     }
 }

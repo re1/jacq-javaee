@@ -66,6 +66,9 @@ public class CommonNameManager {
     protected AllearterDKSource allearterDKSource;
 
     @Inject
+    protected AzerbaijanSource azerbaijanSource;
+
+    @Inject
     protected CatalogueOfLifeSource catalogueOfLifeSource;
 
     @Inject
@@ -93,7 +96,7 @@ public class CommonNameManager {
     protected LinnaeusProjectsSource linnaeusProjectsSource;
 
     @Inject
-    protected MeertensKnawSource meertensKnawSource;
+    protected MeertensKnawPlandSource meertensKnawPlandSource;
 
     @Inject
     protected NewZealandLandcareSource newZealandLandcareSource;
@@ -112,6 +115,9 @@ public class CommonNameManager {
 
     @Inject
     protected UkrainianKobivSource ukrainianKobivSource;
+
+    @Inject
+    protected WboeOeawSource wboeOeawSource;
 
     @Inject
     protected YListSource yListSource;
@@ -145,6 +151,7 @@ public class CommonNameManager {
         // create a list of common name sources before executing any queries
         List<CommonNamesSource> commonNamesSources = Arrays.asList(
                 allearterDKSource,
+                azerbaijanSource,
                 catalogueOfLifeSource,
                 czechJiriSource,
                 czechPragueSource,
@@ -154,14 +161,14 @@ public class CommonNameManager {
                 hungarianPeregovitsSource,
                 jacqLegacySource,
                 linnaeusProjectsSource,
-                // MeertensKnawSource is currently unavailable due to https://github.com/re1/jacq-javaee/issues/14
-                // meertensKnawSource,
+                meertensKnawPlandSource,
                 newZealandLandcareSource,
                 pesiSource,
                 russianPlantariumSource,
                 slovakBratislavaSource,
                 togoDbSource,
                 ukrainianKobivSource,
+                wboeOeawSource,
                 yListSource
         );
 

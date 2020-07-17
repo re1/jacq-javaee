@@ -1,9 +1,8 @@
-package org.jacq.service.names.sources.util;
+package org.jacq.service.names.sources;
 
 import de.ailis.pherialize.Pherialize;
 import org.jacq.common.model.jpa.openup.TblWebserviceCache;
 import org.jacq.common.model.names.NameParserResponse;
-import org.jacq.service.names.sources.CommonNamesSource;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,8 +12,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+/**
+ * Abstract base class for all Common Names Web service sources using the Web service cache
+ *
+ * @author re1
+ */
 @Transactional
-public abstract class CachedWebService implements CommonNamesSource {
+public abstract class CachedWebServiceSource implements CommonNamesSource {
 
     @PersistenceContext(unitName = "openup")
     protected EntityManager em;
@@ -81,24 +85,43 @@ public abstract class CachedWebService implements CommonNamesSource {
     }
 
     /**
-     * Stores a response in the cache.
+     * Stores a response in the cache or updates it's timestamp if it already exists.
      *
-     * @param query     Query to cache this response for
-     * @param serviceId unique id used to identify the Web service of the cached response
-     * @param response  Response to cache
+     * @param query    Query to cache this response for
+     * @param response Response to cache
      */
-    private void setCachedResponse(String query, int serviceId, String response) {
+    private void setCachedResponse(String query, String response) {
         // PHP serialize queries and create a SHA1 hash for a quicker comparison with existing queries
         query = phpSha1(Pherialize.serialize(query));
         response = Pherialize.serialize(response);
+        // lookup existing timed out cached responses for this query and service
+        String lookupQuery = "SELECT row FROM TblWebserviceCache row WHERE row.serviceId = :serviceId AND row.query = :query AND row.response = :response";
+        TypedQuery<TblWebserviceCache> sourceQuery =
+                em.createQuery(lookupQuery, TblWebserviceCache.class)
+                        .setParameter("serviceId", this.serviceId)
+                        // find cached entry for this query
+                        .setParameter("query", query)
+                        // check if response is the same
+                        .setParameter("response", response)
+                        // only the most recent entry
+                        .setMaxResults(1);
 
-        // remember new values and cache them
-        TblWebserviceCache webserviceCache = new TblWebserviceCache();
-        webserviceCache.setServiceId(serviceId);
-        webserviceCache.setQuery(query);
-        webserviceCache.setResponse(response);
-        webserviceCache.setTimestamp(System.currentTimeMillis() / 1000L);
-        em.persist(webserviceCache);
+        List<TblWebserviceCache> sourceQueryResults = sourceQuery.getResultList();
+
+        if (sourceQueryResults.isEmpty()) {
+            // if the response does not exist create a new one
+            TblWebserviceCache webserviceCache = new TblWebserviceCache();
+            webserviceCache.setServiceId(this.serviceId);
+            webserviceCache.setQuery(query);
+            webserviceCache.setResponse(response);
+            webserviceCache.setTimestamp(System.currentTimeMillis() / 1000L);
+            em.persist(webserviceCache);
+        } else {
+            // if the response already exists update its timestamp
+            TblWebserviceCache webServiceCache = sourceQueryResults.get(0);
+            webServiceCache.setTimestamp(System.currentTimeMillis() / 1000L);
+            em.persist(webServiceCache);
+        }
     }
 
     /**
@@ -117,14 +140,12 @@ public abstract class CachedWebService implements CommonNamesSource {
                 setTimeout(0); // timeout of zero means a cached response is always valid
                 response = getCachedResponse(query.getScientificName());
             } else {
-                setCachedResponse(query.getScientificName(), serviceId, response);
+                setCachedResponse(query.getScientificName(), response);
             }
         }
 
         return response;
     }
-
-    ;
 
     /**
      * Returns the unprocessed Web service response string for a given parsed scientific name.

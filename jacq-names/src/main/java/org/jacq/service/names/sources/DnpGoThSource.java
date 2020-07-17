@@ -19,7 +19,6 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.service.names.sources.services.DnpGoThWebSearch;
-import org.jacq.service.names.sources.util.CachedWebService;
 import org.jacq.service.names.sources.util.SourcesUtil;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -38,7 +37,7 @@ import java.util.regex.Pattern;
  * @author wkoller
  */
 @ManagedBean
-public class DnpGoThSource extends CachedWebService {
+public class DnpGoThSource extends CachedWebServiceSource {
 
     protected static final String VIEWSTATE = "__VIEWSTATE";
     protected static final String VIEWSTATEGENERATOR = "__VIEWSTATEGENERATOR";
@@ -62,7 +61,7 @@ public class DnpGoThSource extends CachedWebService {
     /**
      * TODO: Add caching for multiple source queries
      *
-     * @see CachedWebService#getWebServiceResponse(NameParserResponse)
+     * @see CachedWebServiceSource#getWebServiceResponse(NameParserResponse)
      */
     @Override
     public String getWebServiceResponse(NameParserResponse query) {
