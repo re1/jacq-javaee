@@ -117,15 +117,16 @@ public abstract class CachedWebServiceSource implements CommonNamesSource {
             webServiceCache.setServiceId(this.serviceId);
             // PHP serialize queries and create a SHA1 hash for a quicker comparison with existing queries
             webServiceCache.setQuery(phpSha1(Pherialize.serialize(query.getScientificName())));
-            webServiceCache.setResponse(Pherialize.serialize(webServiceResponse));
         } else {
             // update the cached response if both a Web Service and cached response exist and persist the difference
+            // information on the patching of unified diffs can be found in this example:
+            // https://github.com/java-diff-utils/java-diff-utils/wiki/Examples#generate-a-file-in-unified-diff-format-import-it-and-apply-the-patch
             if (!webServiceResponse.equals(cachedResponse)) {
                 try {
-                    // calculate difference between cached response and Web service response
-                    Patch<String> diff = DiffUtils.diffInline(cachedResponse, webServiceResponse);
+                    // calculate difference between Web service and cached response
+                    Patch<String> diff = DiffUtils.diffInline(webServiceResponse, cachedResponse);
                     // create a unified diff for this patch
-                    List<String> unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(null, null, Collections.singletonList(cachedResponse), diff, 0);
+                    List<String> unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(null, null, Collections.singletonList(webServiceResponse), diff, 0);
                     // persist differences for the cached response and keep its timestamp
                     TblWebserviceCacheDiffs cacheDiff = new TblWebserviceCacheDiffs();
                     cacheDiff.setDiff(Pherialize.serialize(unifiedDiff));
@@ -139,7 +140,8 @@ public abstract class CachedWebServiceSource implements CommonNamesSource {
                 }
             }
         }
-        // update timeout and persist changes to the Web service cache
+        // update response and timeout and persist changes to the Web service cache
+        webServiceCache.setResponse(Pherialize.serialize(webServiceResponse));
         webServiceCache.setTimestamp(System.currentTimeMillis() / 1000L);
         em.persist(webServiceCache);
         // return Web service response after updating the cache
