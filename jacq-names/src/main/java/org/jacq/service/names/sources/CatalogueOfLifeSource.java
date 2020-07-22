@@ -63,6 +63,7 @@ public class CatalogueOfLifeSource extends CachedWebServiceSource {
 
         // get cached response if possible
         String response = getResponse(query);
+        if (response == null || response.isEmpty()) return results;
 
         // check if result is valid JSON
         try (StringReader stringReader = new StringReader(response)) {

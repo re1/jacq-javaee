@@ -61,7 +61,7 @@ public class PESISource extends CachedWebServiceSource {
         ArrayList<CommonName> results = new ArrayList<>();
         // get Web service response
         String response = getResponse(query);
-        // return if no vernaculars were found for this GUID
+        // return empty result list if response is null or empty
         if (response == null || response.isEmpty()) return results;
         // check if response is valid JSON
         try (StringReader stringReader = new StringReader(response)) {
@@ -81,7 +81,7 @@ public class PESISource extends CachedWebServiceSource {
             }
         } catch (JsonParsingException e) {
             // response is not valid JSON
-            LOGGER.log(Level.WARNING, "Response string is not valid JSON", e);
+            LOGGER.log(Level.WARNING, "Response string (" + response + ") is not valid JSON", e);
         } catch (JsonException e) {
             // JSON object could not be created due to an i/o error
             LOGGER.log(Level.WARNING, "JSON object could not be created due to an i/o error", e);

@@ -41,9 +41,10 @@ public class MeertensKnawPlandSource extends CachedWebServiceSource {
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
-        String response = getResponse(query);
-
         ArrayList<CommonName> results = new ArrayList<>();
+
+        String response = getResponse(query);
+        if (response == null || response.isEmpty()) return results;
 
         try {
             // iterate over response arrays

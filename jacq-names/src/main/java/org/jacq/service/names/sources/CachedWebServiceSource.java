@@ -1,7 +1,12 @@
 package org.jacq.service.names.sources;
 
+import com.github.difflib.DiffUtils;
+import com.github.difflib.UnifiedDiffUtils;
+import com.github.difflib.algorithm.DiffException;
+import com.github.difflib.patch.Patch;
 import de.ailis.pherialize.Pherialize;
 import org.jacq.common.model.jpa.openup.TblWebserviceCache;
+import org.jacq.common.model.jpa.openup.TblWebserviceCacheDiffs;
 import org.jacq.common.model.names.NameParserResponse;
 
 import javax.persistence.EntityManager;
@@ -10,7 +15,10 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Abstract base class for all Common Names Web service sources using the Web service cache
@@ -19,6 +27,8 @@ import java.util.List;
  */
 @Transactional
 public abstract class CachedWebServiceSource implements CommonNamesSource {
+
+    private static final Logger LOGGER = Logger.getLogger(CachedWebServiceSource.class.getName());
 
     @PersistenceContext(unitName = "openup")
     protected EntityManager em;
@@ -60,20 +70,17 @@ public abstract class CachedWebServiceSource implements CommonNamesSource {
      * @param query Query to look for
      * @return null if no valid response was found, else the response
      */
-    private String getCachedResponse(String query) {
+    private TblWebserviceCache getWebServiceCache(String query) {
         // PHP serialize queries and create a SHA1 hash for a quicker comparison with existing queries
         query = phpSha1(Pherialize.serialize(query));
 
         // build SQL lookup query for this service and query
-        String lookupQuery = "SELECT row FROM TblWebserviceCache row WHERE row.serviceId = :serviceId AND row.query = :query AND row.timestamp >= :timeout ORDER BY row.timestamp DESC";
+        String lookupQuery = "SELECT row FROM TblWebserviceCache row WHERE row.serviceId = :serviceId AND row.query = :query ORDER BY row.timestamp DESC";
         TypedQuery<TblWebserviceCache> sourceQuery =
                 em.createQuery(lookupQuery, TblWebserviceCache.class)
+                        // find the most recent cached response for this service and query
                         .setParameter("serviceId", serviceId)
-                        // find cached entry for this query
                         .setParameter("query", query)
-                        // make sure it's recent enough
-                        .setParameter("timeout", System.currentTimeMillis() / 1000L - timeout)
-                        // only the most recent entry
                         .setMaxResults(1);
         // get SQL lookup query results
         // TODO: Check if getSingleResult is the better option here
@@ -81,47 +88,7 @@ public abstract class CachedWebServiceSource implements CommonNamesSource {
         // check for valid cache entry
         if (sourceQueryResults.isEmpty()) return null;
         // deserialize PHP serialized response for existing queries
-        return Pherialize.unserialize(sourceQueryResults.get(0).getResponse()).toString();
-    }
-
-    /**
-     * Stores a response in the cache or updates it's timestamp if it already exists.
-     *
-     * @param query    Query to cache this response for
-     * @param response Response to cache
-     */
-    private void setCachedResponse(String query, String response) {
-        // PHP serialize queries and create a SHA1 hash for a quicker comparison with existing queries
-        query = phpSha1(Pherialize.serialize(query));
-        response = Pherialize.serialize(response);
-        // lookup existing timed out cached responses for this query and service
-        String lookupQuery = "SELECT row FROM TblWebserviceCache row WHERE row.serviceId = :serviceId AND row.query = :query AND row.response = :response";
-        TypedQuery<TblWebserviceCache> sourceQuery =
-                em.createQuery(lookupQuery, TblWebserviceCache.class)
-                        .setParameter("serviceId", this.serviceId)
-                        // find cached entry for this query
-                        .setParameter("query", query)
-                        // check if response is the same
-                        .setParameter("response", response)
-                        // only the most recent entry
-                        .setMaxResults(1);
-
-        List<TblWebserviceCache> sourceQueryResults = sourceQuery.getResultList();
-
-        if (sourceQueryResults.isEmpty()) {
-            // if the response does not exist create a new one
-            TblWebserviceCache webserviceCache = new TblWebserviceCache();
-            webserviceCache.setServiceId(this.serviceId);
-            webserviceCache.setQuery(query);
-            webserviceCache.setResponse(response);
-            webserviceCache.setTimestamp(System.currentTimeMillis() / 1000L);
-            em.persist(webserviceCache);
-        } else {
-            // if the response already exists update its timestamp
-            TblWebserviceCache webServiceCache = sourceQueryResults.get(0);
-            webServiceCache.setTimestamp(System.currentTimeMillis() / 1000L);
-            em.persist(webServiceCache);
-        }
+        return sourceQueryResults.get(0);
     }
 
     /**
@@ -131,20 +98,52 @@ public abstract class CachedWebServiceSource implements CommonNamesSource {
      * @return response string for the given query
      */
     public String getResponse(NameParserResponse query) {
-        // get cached response if possible
-        String response = getCachedResponse(query.getScientificName());
-        if (response == null) {
-            response = getWebServiceResponse(query);
-            // check if there was a webservice response and cache it or get the last timed out cached response
-            if (response == null) {
-                setTimeout(0); // timeout of zero means a cached response is always valid
-                response = getCachedResponse(query.getScientificName());
-            } else {
-                setCachedResponse(query.getScientificName(), response);
+        String cachedResponse = null;
+        // get cached response
+        TblWebserviceCache webServiceCache = getWebServiceCache(query.getScientificName());
+        // set response string to Web service response string if a cached response is found
+        if (webServiceCache != null) {
+            // existing responses are cached in PHP serialized format
+            cachedResponse = Pherialize.unserialize(webServiceCache.getResponse()).toString();
+            if (System.currentTimeMillis() / 1000L - webServiceCache.getTimestamp() < timeout) return cachedResponse;
+        }
+        // get the Web service response if no cached response has been returned
+        String webServiceResponse = getWebServiceResponse(query);
+        // return null or timed out cached response if there was no Web service response
+        if (webServiceResponse == null) return cachedResponse;
+        // if no cache exists for this Web service response create a new one
+        if (cachedResponse == null) {
+            webServiceCache = new TblWebserviceCache();
+            webServiceCache.setServiceId(this.serviceId);
+            // PHP serialize queries and create a SHA1 hash for a quicker comparison with existing queries
+            webServiceCache.setQuery(phpSha1(Pherialize.serialize(query.getScientificName())));
+            webServiceCache.setResponse(Pherialize.serialize(webServiceResponse));
+        } else {
+            // update the cached response if both a Web Service and cached response exist and persist the difference
+            if (!webServiceResponse.equals(cachedResponse)) {
+                try {
+                    // calculate difference between cached response and Web service response
+                    Patch<String> diff = DiffUtils.diffInline(cachedResponse, webServiceResponse);
+                    // create a unified diff for this patch
+                    List<String> unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(null, null, Collections.singletonList(cachedResponse), diff, 0);
+                    // persist differences for the cached response and keep its timestamp
+                    TblWebserviceCacheDiffs cacheDiff = new TblWebserviceCacheDiffs();
+                    cacheDiff.setDiff(Pherialize.serialize(unifiedDiff));
+                    cacheDiff.setTblWebserviceCacheId(webServiceCache.getId());
+                    cacheDiff.setTimestamp(webServiceCache.getTimestamp());
+                    em.persist(cacheDiff);
+                } catch (DiffException e) {
+                    // Exception handling will likely be removed as it was stated unnecessary in this
+                    // <a href="https://github.com/java-diff-utils/java-diff-utils/issues/70">java-diff-utils issue</a>.
+                    e.printStackTrace();
+                }
             }
         }
-
-        return response;
+        // update timeout and persist changes to the Web service cache
+        webServiceCache.setTimestamp(System.currentTimeMillis() / 1000L);
+        em.persist(webServiceCache);
+        // return Web service response after updating the cache
+        return webServiceResponse;
     }
 
     /**

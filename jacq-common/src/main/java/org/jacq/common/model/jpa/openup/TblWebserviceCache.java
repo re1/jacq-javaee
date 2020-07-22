@@ -46,7 +46,6 @@ public class TblWebserviceCache implements Serializable {
     @Column(name = "query", nullable = false)
     private String query;
     @Lob
-    @Size(max = 2147483647)
     @Column(name = "response")
     private String response;
     @Basic(optional = false)
