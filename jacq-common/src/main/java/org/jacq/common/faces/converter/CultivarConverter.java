@@ -15,15 +15,15 @@
  */
 package org.jacq.common.faces.converter;
 
+import org.jacq.common.model.rest.CultivarResult;
+import org.jacq.common.util.ServicesUtil;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.jacq.common.model.rest.CultivarResult;
-import org.jacq.common.util.ServicesUtil;
 
 /**
- *
  * @author fhafner
  */
 @FacesConverter("cultivarConverter")

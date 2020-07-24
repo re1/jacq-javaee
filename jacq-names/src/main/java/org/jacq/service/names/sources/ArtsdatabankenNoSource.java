@@ -19,15 +19,16 @@ package org.jacq.service.names.sources;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
+import org.jacq.common.model.names.artsdatabanken.Artssok;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.xml.namespace.QName;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.soap.*;
-import javax.xml.ws.Service;
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -42,9 +43,7 @@ import java.util.logging.Logger;
 public class ArtsdatabankenNoSource extends CachedWebServiceSource {
 
     private static final Logger LOGGER = Logger.getLogger(ArtsdatabankenNoSource.class.getName());
-
     private static final String serviceUrl = "http://webtjenester.artsdatabanken.no/Artsnavnebase.asmx?WSDL";
-
     private static SOAPConnectionFactory soapConnectionFactory;
     private static SOAPConnection soapConnection;
     private static MessageFactory messageFactory;
@@ -71,26 +70,32 @@ public class ArtsdatabankenNoSource extends CachedWebServiceSource {
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
-        /*
-        String artssokRequestXML = "" +
-                "<SOAP-ENV:Envelope" +
-                "        xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
-                "        xmlns:ns1=\"http://artsdatabanken.no/webtjenester\">\n" +
-                "    <SOAP-ENV:Body>\n" +
-                "        <ns1:Artssok>\n" +
-                "            <ns1:Search>$term</ns1:Search>\n" +
-                "        </ns1:Artssok>\n" +
-                "    </SOAP-ENV:Body>\n" +
-                "</SOAP-ENV:Envelope>";
+        try {
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            soapMessage.getMimeHeaders().addHeader("SOAPAction", "http://artsdatabanken.no/webtjenester/Artssok");
+            // create request JAXB object
+            Artssok artssok = new Artssok(query.getScientificName());
 
-        SOAPMessage soapMessage = messageFactory.createMessage(
-                new MimeHeaders(),
-                new ByteArrayInputStream(artssokRequestXML.getBytes(StandardCharsets.UTF_8)));
-        SOAPMessage loginResponse = soapConnection.call(soapMessage, serviceUrl);
-        loginResponse.getSOAPBody().getElementsByTagName("LoginResult");
-        */
+            JAXBContext jc = JAXBContext.newInstance(Artssok.class);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.marshal(artssok, soapBody);
 
-        throw new UnsupportedOperationException("Not supported yet.");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            soapMessage.writeTo(stream);
+
+            SOAPMessage response = soapConnection.call(soapMessage, serviceUrl);
+            response.writeTo(stream);
+
+            String message = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+            LOGGER.info(message);
+
+        } catch (SOAPException | JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+
+        // throw new UnsupportedOperationException("Not supported yet.");
+        return new ArrayList<>();
     }
 
     /**

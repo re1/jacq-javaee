@@ -23,15 +23,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * POJO for all information of a common name
  *
- * @author wkoller
+ * @author wkoller, re1
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -40,7 +37,7 @@ public class CommonName {
     public Long id;
     public String name;
     @Valid
-    public List<String> type = Arrays.asList("/name/common");
+    public List<String> type = Collections.singletonList("/name/common");
     public String language;
     public String geography;
     public String period;
@@ -51,7 +48,7 @@ public class CommonName {
     @XmlElement(name = "taxon_id")
     public Long taxonId;
     @Valid
-    public List<String> references = new ArrayList<>();
+    public Set<String> references = new TreeSet<>();
 
     /**
      * @return Unique id for this common name used in the common name cache
@@ -196,15 +193,16 @@ public class CommonName {
     /**
      * @return List of string references for this common name
      */
-    public List<String> getReferences() {
+    public Set<String> getReferences() {
         return references;
     }
 
     /**
      * Sets references list to the given list. Add references through {@code getReferences.add()}.
+     *
      * @param references List of string references for this common name
      */
-    public void setReferences(List<String> references) {
+    public void setReferences(Set<String> references) {
         this.references = references;
     }
 

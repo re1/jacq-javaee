@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -70,7 +71,7 @@ public class EDMResponse implements NameResponse<CommonName> {
          * @param references  list of references for this concept
          * @param referenceId reference id used for editorial note URL
          */
-        EDMConcept(Long id, String name, String type, String language, String geography, String period, List<String> references, Long referenceId) {
+        EDMConcept(Long id, String name, String type, String language, String geography, String period, Set<String> references, Long referenceId) {
             // set about URL
             if (id != null)
                 this.about = String.format("%scommonNames/%d", System.getProperty("jacq.serviceNamesUrl"), id);

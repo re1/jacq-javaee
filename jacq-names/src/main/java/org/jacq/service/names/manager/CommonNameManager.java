@@ -66,6 +66,9 @@ public class CommonNameManager {
     protected AllearterDKSource allearterDKSource;
 
     @Inject
+    protected ArtsdatabankenNoSource artsdatabankenNoSource;
+
+    @Inject
     protected AzerbaijanSource azerbaijanSource;
 
     @Inject
@@ -151,6 +154,7 @@ public class CommonNameManager {
         // create a list of common name sources before executing any queries
         List<CommonNamesSource> commonNamesSources = Arrays.asList(
                 allearterDKSource,
+                //artsdatabankenNoSource,
                 azerbaijanSource,
                 catalogueOfLifeSource,
                 czechJiriSource,
