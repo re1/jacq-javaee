@@ -224,6 +224,7 @@ public class CommonName {
     /**
      * @return Add single string of semicolon separated references for this common name
      */
+    @XmlElement(name = "reference")
     public String getReference() {
         return StringUtils.join(this.references, ";");
     }
