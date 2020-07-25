@@ -112,8 +112,11 @@ public class CatalogueOfLifeSource extends CachedWebServiceSource {
             // JSON object could not be created due to an i/o error
             LOGGER.log(Level.WARNING, "JSON object could not be created due to an i/o error", e);
         } catch (NullPointerException e) {
-            // JSON object has no valid result array field
-            LOGGER.log(Level.WARNING, "JSON object \"" + response + "\" has no valid result array field", e);
+            // ignore empty JSON response object messages
+            if (!response.contains("No names found")) {
+                // JSON object has no valid result array field
+                LOGGER.log(Level.WARNING, "JSON object \"" + response + "\" has no valid result array field", e);
+            }
         }
 
         return results;
