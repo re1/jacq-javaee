@@ -160,7 +160,22 @@ public class CommonName {
      */
     public void setScore(Long score) {
         this.score = score;
+        // mark as match if score is 100 percent
+        this.match = score == 100;
     }
+
+    /**
+     * Helper function to set the score for this common name calculated as the percent ratio of the Levenshtein distance
+     * between the query string and the currently set taxon and the larger length of either the query string or taxon.
+     *
+     * @param query Query string to calculate a score for
+     */
+    public void setScore(String query) {
+        this.setScore(Long.divideUnsigned(
+                StringUtils.getLevenshteinDistance(query, this.taxon) * 100,
+                Math.max(query.length(), this.taxon.length())));
+    }
+
 
     /**
      * @return True if this common name is a direct match for a possible query

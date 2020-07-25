@@ -1,5 +1,6 @@
 package org.jacq.service.names.sources;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.openup.TblSourceUkrainianKobiv;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
@@ -27,10 +28,10 @@ public class UkrainianKobivSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceUkrainianKobiv row WHERE row.lnom = :scientificName OR row.lsecond = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceUkrainianKobiv row WHERE row.lnom LIKE :scientificName OR row.lsecond LIKE :scientificName";
         TypedQuery<TblSourceUkrainianKobiv> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceUkrainianKobiv.class)
-                        .setParameter("scientificName", query.getScientificName());
+                        .setParameter("scientificName", "%" + query.getScientificName() + "%");
         // get SQL lookup query results
         List<TblSourceUkrainianKobiv> sourceQueryResults = sourceQuery.getResultList();
 
@@ -80,9 +81,7 @@ public class UkrainianKobivSource implements CommonNamesSource {
             List<String> referenceResults = referencesSourceQuery.getResultList();
             commonName.getReferences().addAll(referenceResults);
 
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

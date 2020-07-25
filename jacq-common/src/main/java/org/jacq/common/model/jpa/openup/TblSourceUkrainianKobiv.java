@@ -2,6 +2,7 @@ package org.jacq.common.model.jpa.openup;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import javax.ws.rs.Encoded;
 import java.util.Objects;
 
 @Entity
