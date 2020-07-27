@@ -31,9 +31,13 @@ import javax.json.JsonObject;
 import javax.json.stream.JsonParsingException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Source implementation for the Catalogue of Life using the CatalogueOfLifeService interface.
@@ -86,25 +90,42 @@ public class CatalogueOfLifeSource extends CachedWebServiceSource {
                         // languages do not come in ISO-639-6 format and are therefore converted
                         // TODO: improve language name conversion
                         String language = commonNameObject.getString("language", null);
-                        if (language != null) {
+                        if (language != null && !language.isEmpty()) {
                             for (Locale locale : Locale.getAvailableLocales()) {
                                 if (locale.getDisplayLanguage().equals(language)) {
-                                    commonName.setLanguage(locale.getISO3Language());
+                                    try {
+                                        commonName.setLanguage(locale.getISO3Language());
+                                    } catch (MissingResourceException e) {
+                                        LOGGER.warning("No three-letter language abbreviation available for language " + language);
+                                    }
                                     break;
                                 }
                             }
                         }
 
                         commonName.setGeography(commonNameObject.getString("country", null));
-                        commonName.setTaxon(resultObject.getString("name", null));
-                        // TODO: refactor CommonName.taxonId to string as not all taxon ids are numbers
-                        // commonName.setTaxonId(resultObject.getString("id", null));
-                        // TODO: build references from JSONArray
-                        // commonName.setReferences(commonNameObject.getJsonArray("references"));
+                        commonName.setTaxon(resultObject.getString("name", query.getScientificName()));
+                        // add default reference (from https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/COL.php)
+                        commonName.getReferences().add("Bisby F., Roskov Y., Culham A., Orrell T., Nicolson D., Paglinawan L., Bailly N., Kirk P., Bourgoin T., Baillargeon G., Hernandez F., De Wever A., Kunze T., eds (2013). Species 2000 & ITIS Catalogue of Life, 8th February 2013. Digital resource at www.catalogueoflife.org/col/. Species 2000: Reading, UK.");
+                        // build references from JSONArray
+                        List<String> list = commonNameObject
+                                .getJsonArray("references")
+                                .getValuesAs(JsonObject.class).stream().map(reference -> Stream.of(
+                                        reference.getString("author", null),
+                                        reference.getString("year", null),
+                                        reference.getString("title", null),
+                                        reference.getString("source", null))
+                                        .filter(s -> s != null && !s.isEmpty())
+                                        .collect(Collectors.joining(", "))).collect(Collectors.toList());
+                        commonName.getReferences().addAll(list);
+
                         results.add(commonName);
                     }
                 }
             }
+        } catch (ClassCastException e) {
+            // a JSON object could not be converted from the excepted type
+            LOGGER.log(Level.WARNING, "JSON object contains elements of unexpected type" + response, e);
         } catch (JsonParsingException e) {
             // response is not valid JSON
             LOGGER.log(Level.WARNING, "Response string is not valid JSON", e);

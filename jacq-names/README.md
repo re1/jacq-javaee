@@ -4,11 +4,12 @@ The JACQ Common Names Webservice is documented on [Confluence](https://developme
 
 ## Deployment
 
-Build `jacq-names` and also `jacq-service` and `jacq-common` which `jacq-names` depends on. Then deploy `jacq-service` and `jacq-names` modules using the [Maven WildFly Plugin](https://docs.jboss.org/wildfly/plugins/maven/latest/index.html).
+Clean the project if necessary. Build `jacq-names` and also `jacq-service` and `jacq-common` which `jacq-names` depends on. Then deploy `jacq-service` and `jacq-names` modules using the [Maven WildFly Plugin](https://docs.jboss.org/wildfly/plugins/maven/latest/index.html).
 
 ```sh
-mvn package -f jacq -pl ../jacq-common,../jacq-service,../jacq-names
-mvn wildfly:deploy-only -f jacq -pl ../jacq-service,../jacq-names
+mvn clean
+mvn package -f jacq -pl org.jacq:jacq-common,org.jacq:jacq-service,org.jacq:jacq-names
+mvn wildfly:deploy-only -f jacq -pl org.jacq:jacq-service,org.jacq:jacq-names
 ```
 
 ## Usage
@@ -28,9 +29,17 @@ As most queries will be JSON objects the URL has to be [encoded](https://en.wiki
 
 ## Inclusion of data sources
 
-[Sources](./src/main/java/org/jacq/service/names/sources) providing a webservice can be queried using the Reasteasy Proxy Framework. They are included in a package of both a CommonNamesSource implementation and a JAX-RS service interface.
+A class implementing the `CommonNamesSource` interface has to be added to the `org.jacq.service.names.sources` package.
 
-**Service interface**:
+### ReST Web services
+
+ReST Web service [Sources](./src/main/java/org/jacq/service/names/sources) providing ReST endpoints can be queried using
+the [RESTEasy](https://resteasy.github.io/) Proxy Framework. 
+In that case a Web service interface has to be added to the `org.jacq.service.names.sources.services` package.
+
+#### Web service interface
+
+`org.jacq.service.names.sources.services.SourceService`
 
 ```java
 @Path("/")
@@ -41,7 +50,9 @@ public interface SourceService {
 }
 ```
 
-**CommonNamesSource implementation**:
+#### `CommonNamesSource` implementation
+
+`org.jacq.service.names.sources.Source`
 
 ```java
 @ManagedBean
@@ -50,15 +61,53 @@ public class Source implements CommonNamesSource {
     public ArrayList<CommonName> query(NameParserResponse query) {
         SourceService service = SourcesUtil.getProxy(
             SourceService.class,
-            "http://www.source.local/webservice"
+            "https://www.source.tld/webservice"
         );
     }
 }
 ```
 
-The service implementation is used to send requests from within the source implementation which is then injected into the CommonNameManager class as a source to query.
+#### Caching
 
-**Inject source from CommonNameManager**:
+ReST Web services can easily be cached by extending the `CachedWebServiceSource` class.
+
+```java
+@ManagedBean
+public class Source extends CachedWebServiceSource {
+
+    private static final String serviceUrl = "https://www.source.tld/webservice";
+
+    @PostConstruct
+    public void init() {
+        setServiceId(1);        // serviceId used to identify the cached source
+        setTimeout(2592000);    // timeout in seconds (here 30 days)
+    }
+
+    /**
+     * @see CommonNamesSource#query(NameParserResponse)
+     */
+    @Override
+    public ArrayList<CommonName> query(NameParserResponse query) {
+        ArrayList<CommonName> results = new ArrayList<>();
+        // get cached response if possible
+        String response = getResponse(query);
+        if (response == null || response.isEmpty()) return results;
+        
+        // process response and add common names to the results list
+
+        return results;
+    }
+}
+```
+
+Cached Web service sources implement `CommonNamesSource` through `CachedWebServiceSource` and therefore replace the 
+original `CommonNamesSource` implementation.
+
+### Add a source to the `CommonNameManager`
+
+The source implementation then needs to be injected into the `CommonNameManager` class and added as a source to query.
+
+**Inject a source into the `CommonNameManager`**:
 
 ```java
 @Inject
@@ -68,5 +117,8 @@ protected Source source;
 **Add source to query tasks**:
 
 ```java
-queryTasks.add(new SourceQueryThread(source, nameParserResponse));
+commonNamesSources.add(source);
 ```
+
+It is recommended to add the injected source as a parameter to the 
+`List<CommonNamesSource> commonNamesSources = Arrays.asList();` call to avoid multiple method calls.

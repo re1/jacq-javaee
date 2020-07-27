@@ -60,9 +60,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <wildfly-hostname>localhost</wildfly-hostname>
+        <wildfly-hostname>94.130.56.28</wildfly-hostname>
         <wildfly-port>9990</wildfly-port>
         <wildfly-username>jacq</wildfly-username>
-        <wildfly-password>jacq</wildfly-password>
+        <wildfly-password>pFab9q5F_XTRK9at</wildfly-password>
     </properties>
 </project>
