@@ -1,19 +1,22 @@
-**jacq-common** contains JPA / JAX-RS classes / interfaces only.
+The JACQ project documentation can be found at https://development.senegate.at/confluence/display/JACQ.
+This document contains instructions on dependencies, usage and contribution of and to this project.
 
-**jacq-service** contains the actual implementation using manager classes.
+The Java project is separated into 8 mostly interdependent modules. The most important are listed here:
 
-The JACQ project is documented under https://development.senegate.at/confluence/display/JACQ.
+- **jacq-common** contains JPA / JAX-RS classes / interfaces only.
+- **jacq-service** contains the actual implementation using manager classes.
+- **jacq-names** implements the [Common Names Web service](https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice) (CNS).
 
 ## Dependencies
 
 - [Java SE 8](https://docs.oracle.com/javase/8/) (JDK)
 - [Maven](https://maven.apache.org) (> 3.3.9)
 
-Although Maven is used for dependency management, the **JACQ Input** needs [Geckodriver](https://github.com/mozilla/geckodriver) installed for tests.
+While all modules use Maven for their dependency management, the **jacq-input** module needs [Geckodriver](https://github.com/mozilla/geckodriver) installed manually for tests.
 
 ## Development Setup
 
-:information_source: The required development setup is also available as a docker implementation in the [JACQ Docker](https://github.com/jacq-system/jacq-docker) project.
+:information_source: The required development setup is also available as a Docker implementation in the [JACQ Docker](https://github.com/jacq-system/jacq-docker) project.
 
 **Required:**
 
@@ -27,10 +30,10 @@ Although Maven is used for dependency management, the **JACQ Input** needs [Geck
 
 **Recommended:**
 
-- Netbeans (> 8.0.2)
+- NetBeans (> 8.0.2)
   - WildFly Plugin / JavaEE Edition
 
-Maven projects can be opened directly from Netbeans.
+Maven projects can be opened directly from NetBeans.
 
 ## Deployment
 
@@ -44,7 +47,7 @@ deploy-only is used to avoid dependency errors on goals executed before deployme
 
 [WildFly]: https://rubygems.org/gems/biodiversity/
 
-As the JACQ project is using a microservice architecture, the frontend-code needs to know where the respecitve endpoints can be reached. This is defined through a system property inside the JVM.
+As the JACQ project is using a microservice architecture, the frontend-code needs to know where the respective endpoints can be reached. This is defined through a system property inside the JVM.
 
 Add the following parameters to your JVM startup:
 
