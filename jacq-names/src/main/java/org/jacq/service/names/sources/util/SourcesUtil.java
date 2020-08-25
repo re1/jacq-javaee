@@ -19,6 +19,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Helper class for providing quick access to source-services
  *
@@ -34,8 +36,12 @@ public class SourcesUtil {
      * @return Proxy object for the given service
      */
     public static <T> T getProxy(Class<T> serviceInterfaceClass, String serviceURI) {
-        ResteasyClient resteasyClient = new ResteasyClientBuilder().connectionPoolSize(20).build();
-        //resteasyClient.register(new RequestDebugFilter());
+        ResteasyClient resteasyClient = new ResteasyClientBuilder()
+                .connectionPoolSize(20)
+                .establishConnectionTimeout(120, TimeUnit.SECONDS)
+                .socketTimeout(20, TimeUnit.SECONDS)
+                .build();
+        // resteasyClient.register(new RequestDebugFilter());
         ResteasyWebTarget resteasyWebTarget = resteasyClient.target(serviceURI);
         return resteasyWebTarget.proxy(serviceInterfaceClass);
     }

@@ -20,14 +20,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>ailis-releases</id>
-            <name>Ailis Maven Releases</name>
-            <url>http://nexus.ailis.de/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -53,9 +45,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>de.ailis.pherialize</groupId>
+            <groupId>com.xk72</groupId>
             <artifactId>pherialize</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.4</version>
         </dependency>
         <dependency>
             <groupId>io.github.java-diff-utils</groupId>

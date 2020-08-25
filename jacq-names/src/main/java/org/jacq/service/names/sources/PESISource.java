@@ -29,6 +29,7 @@ import javax.json.JsonArray;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.stream.JsonParsingException;
+import javax.ws.rs.NotFoundException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -102,11 +103,16 @@ public class PESISource extends CachedWebServiceSource {
     public String getWebServiceResponse(NameParserResponse query) {
         // connect to PESIService
         PESIService service = SourcesUtil.getProxy(PESIService.class, serviceUrl);
-        // query GUID for parsed scientific name
-        String guid = service.getGUIDByName(query.getScientificName());
-        // return if no GUID was found for this scientific name
-        if (guid == null || guid.isEmpty()) return null;
-        // query vernaculars for GUID (double quotes are remove manually)
-        return service.getVernacularsByGUID(guid.replaceAll("\"", ""), null);
+        // watch out for 404 errors before querying the scientific name
+        try {
+            // query GUID for parsed scientific name
+            String guid = service.getGUIDByName(query.getScientificName());
+            // return if no GUID was found for this scientific name
+            if (guid == null || guid.isEmpty()) return null;
+            // query vernaculars for GUID (double quotes are remove manually)
+            return service.getVernacularsByGUID(guid.replaceAll("\"", ""), null);
+        } catch (NotFoundException e) {
+            return null;
+        }
     }
 }
