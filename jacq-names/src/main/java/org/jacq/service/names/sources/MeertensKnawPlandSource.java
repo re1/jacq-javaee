@@ -2,6 +2,7 @@ package org.jacq.service.names.sources;
 
 import de.ailis.pherialize.MixedArray;
 import de.ailis.pherialize.Pherialize;
+import de.ailis.pherialize.exceptions.UnserializeException;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
@@ -10,6 +11,7 @@ import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +50,7 @@ public class MeertensKnawPlandSource extends CachedWebServiceSource {
 
         try {
             // iterate over response arrays
-            MixedArray responseArray = Pherialize.unserialize(response).toArray();
+            MixedArray responseArray = Pherialize.unserialize(response, StandardCharsets.ISO_8859_1).toArray();
             for (Object responseKey : responseArray.keySet()) {
                 // iterate over common name results
                 MixedArray resultsArray = responseArray.getArray(responseKey);
@@ -77,6 +79,8 @@ public class MeertensKnawPlandSource extends CachedWebServiceSource {
                     }
                 }
             }
+        } catch (UnserializeException e) {
+            LOGGER.log(Level.WARNING, "Failed to deserialize '" + response + "' at " + e.position, e);
         } catch (NullPointerException e) {
             LOGGER.log(Level.WARNING, "Failed to retrieve value from deserialized PHP object", e);
         }

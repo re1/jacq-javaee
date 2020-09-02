@@ -154,7 +154,6 @@ public class CommonNameManager {
         // create a list of common name sources before executing any queries
         List<CommonNamesSource> commonNamesSources = Arrays.asList(
                 allearterDKSource,
-                // still in development
                 //artsdatabankenNoSource,
                 azerbaijanSource,
                 catalogueOfLifeSource,

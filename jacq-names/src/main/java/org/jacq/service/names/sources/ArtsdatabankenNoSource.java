@@ -20,16 +20,15 @@ import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
 import org.jacq.common.model.names.ScientificName;
 import org.jacq.common.model.names.artsdatabanken.Artssok;
+import org.jacq.service.names.sources.services.ArtsdatabankenNoService;
+import org.jacq.service.names.sources.util.SourcesUtil;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.soap.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -37,30 +36,25 @@ import java.util.logging.Logger;
  * Source implementation for the Artsdatabanken Web service
  *
  * @author re1
+ * @see ArtsdatabankenNoService#query(String)
  * @see <a href="http://webtjenester.artsdatabanken.no/Artsnavnebase.asmx">Artsnavnebase</a>
  */
 @ManagedBean
 public class ArtsdatabankenNoSource extends CachedWebServiceSource {
 
     private static final Logger LOGGER = Logger.getLogger(ArtsdatabankenNoSource.class.getName());
-    private static final String serviceUrl = "http://webtjenester.artsdatabanken.no/Artsnavnebase.asmx?WSDL";
-    private static SOAPConnectionFactory soapConnectionFactory;
-    private static SOAPConnection soapConnection;
-    private static MessageFactory messageFactory;
+    private static final String serviceUrl = "http://webtjenester.artsdatabanken.no/Artsnavnebase.asmx/Artssok";
+
+    private Unmarshaller jaxbUnmarshaller;
 
     @PostConstruct
     public void init() {
         setServiceId(4);
         setTimeout(2592000); // 30 days
-
+        // setup JAXBUnmarshaller for Artssok class
         try {
-            // Create SOAP Connection
-            soapConnectionFactory = SOAPConnectionFactory.newInstance();
-            soapConnection = soapConnectionFactory.createConnection();
-
-            messageFactory = MessageFactory.newInstance();
-        } catch (SOAPException e) {
-            // TODO: Improve error handling
+            jaxbUnmarshaller = JAXBContext.newInstance(Artssok.class).createUnmarshaller();
+        } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
@@ -70,32 +64,19 @@ public class ArtsdatabankenNoSource extends CachedWebServiceSource {
      */
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
+        ArrayList<CommonName> results = new ArrayList<>();
+
+        // get cached response if possible
+        String response = getResponse(query);
+        if (response == null || response.isEmpty()) return results;
+
         try {
-            SOAPMessage soapMessage = messageFactory.createMessage();
-            SOAPBody soapBody = soapMessage.getSOAPBody();
-            soapMessage.getMimeHeaders().addHeader("SOAPAction", "http://artsdatabanken.no/webtjenester/Artssok");
-            // create request JAXB object
-            Artssok artssok = new Artssok(query.getScientificName());
-
-            JAXBContext jc = JAXBContext.newInstance(Artssok.class);
-            Marshaller marshaller = jc.createMarshaller();
-            marshaller.marshal(artssok, soapBody);
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            soapMessage.writeTo(stream);
-
-            SOAPMessage response = soapConnection.call(soapMessage, serviceUrl);
-            response.writeTo(stream);
-
-            String message = new String(stream.toByteArray(), StandardCharsets.UTF_8);
-            LOGGER.info(message);
-
-        } catch (SOAPException | JAXBException | IOException e) {
+            Artssok artssok = (Artssok) jaxbUnmarshaller.unmarshal(new StringReader(response));
+        } catch (JAXBException e) {
             e.printStackTrace();
         }
 
-        // throw new UnsupportedOperationException("Not supported yet.");
-        return new ArrayList<>();
+        return results;
     }
 
     /**
@@ -108,6 +89,9 @@ public class ArtsdatabankenNoSource extends CachedWebServiceSource {
 
     @Override
     public String getWebServiceResponse(NameParserResponse query) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // connect to ArtsdatabankenNoService
+        ArtsdatabankenNoService service = SourcesUtil.getProxy(ArtsdatabankenNoService.class, serviceUrl);
+        // query source for parsed scientific name
+        return service.query(query.getScientificName());
     }
 }

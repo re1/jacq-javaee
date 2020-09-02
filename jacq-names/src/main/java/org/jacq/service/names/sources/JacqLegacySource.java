@@ -84,7 +84,7 @@ public class JacqLegacySource extends CachedWebServiceSource {
                             commonName.setLanguage(commonNameObject.getString("language", null));
                             commonName.setGeography(commonNameObject.getString("geography"));
                             commonName.setPeriod(commonNameObject.getString("period"));
-                            commonName.getReferences().add(commonNameObject.getString("reference"));
+                            commonName.getReferences().add(commonNameObject.getString("reference", "JACQ Legacy source"));
                             commonName.setScore((long) (speciesObject.getJsonNumber("ratio").doubleValue() * 100));
                             // set match to true if score is 100
                             commonName.setMatch(commonName.getScore() == 100);
@@ -94,16 +94,18 @@ public class JacqLegacySource extends CachedWebServiceSource {
                     }
                 }
             }
-        } catch (
-                JsonParsingException e) {
+        } catch (ClassCastException e) {
+            // JSON object is of invalid type
+            LOGGER.log(Level.WARNING, "JSON object is of invalid type in response string '" + response + "'", e);
+        } catch (JsonParsingException e) {
             // response is not valid JSON
-            LOGGER.log(Level.WARNING, "Response string is not valid JSON", e);
+            LOGGER.log(Level.WARNING, "Response string '" + response + "' is not valid JSON", e);
         } catch (JsonException e) {
             // JSON object could not be created due to an i/o error
             LOGGER.log(Level.WARNING, "JSON object could not be created due to an i/o error", e);
         } catch (NullPointerException e) {
             // JSON object has no valid result array field
-            LOGGER.log(Level.WARNING, "JSON object has no valid result array field", e);
+            LOGGER.log(Level.WARNING, "JSON object has no valid result array field in response string '" + response + "'", e);
         } catch (NumberFormatException e) {
             // Long.parseLong could not convert a given id string to type long
             LOGGER.log(Level.WARNING, "Failed to parse id string to number", e);
