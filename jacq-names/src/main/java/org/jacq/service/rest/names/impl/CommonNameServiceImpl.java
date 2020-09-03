@@ -24,6 +24,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,18 +51,22 @@ public class CommonNameServiceImpl implements CommonNameService {
         try {
             String mediaType = "edmSkos".equals(format) ? MediaType.APPLICATION_XML : MediaType.APPLICATION_JSON + "; charset=UTF-8";
 
+            // use multiple query mode if queries parameter is given (edmSkos format is currently ignored!)
             if (queries != null) {
                 // create a hash map to save common name results with their keys
-                Map<String, NameResponse<CommonName>> queryResultMap = new HashMap<>();
+                Map<String, NameResponse<CommonName>> responseMap = new HashMap<>();
                 for (String key : queries.keySet()) {
                     // prepare OpenRefine response
-                    NameResponse<CommonName> response = "edmSkos".equals(format)
-                            ? new EDMResponse() : new OpenRefineResponse<>();
-                    response.setResult(commonNameManager.query(queries.get(key).getQuery()));
-                    queryResultMap.put(key, response);
+                    NameResponse<CommonName> response = new OpenRefineResponse<>();
+                    ArrayList<CommonName> tmp = commonNameManager.query(queries.get(key).getQuery());
+                    response.setResult(tmp);
+                    responseMap.put(key, response);
+                    LOGGER.log(Level.INFO, String.valueOf(tmp.size()));
                 }
+                OpenRefineResponseMap<CommonName> openRefineResponseMap = new OpenRefineResponseMap<>();
+                openRefineResponseMap.setResult(responseMap);
                 // return map of query responses
-                return Response.ok(queryResultMap, mediaType).build();
+                return Response.ok(openRefineResponseMap, mediaType).build();
             }
 
             // use single query mode if query parameter is given
@@ -71,7 +76,7 @@ public class CommonNameServiceImpl implements CommonNameService {
                 // Project documentation states that the type parameter should always be /name/common so other values are logged
                 // https://development.senegate.at/confluence/display/JACQ/Common+Names+Webservice#CommonNamesWebservice-III.Requests&Responses
                 // TODO: Check if this is even necessary
-                // use string comparision from static string as query.getType() can be null
+                // use string comparison from static string as query.getType() can be null
                 if (!"/name/common".equals(query.getType())) {
                     LOGGER.log(Level.INFO, "Type parameter is not /name/common", query.getType());
                 }
