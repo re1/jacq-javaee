@@ -1,6 +1,5 @@
 package org.jacq.service.names.sources;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.openup.TblSourceUkrainianKobiv;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;

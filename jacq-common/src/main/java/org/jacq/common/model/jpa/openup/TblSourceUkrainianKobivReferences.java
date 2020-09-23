@@ -8,6 +8,10 @@ import java.util.Objects;
 @Table(name = "tbl_source_ukrainian_kobiv_references", schema = "openup")
 public class TblSourceUkrainianKobivReferences {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Column(name = "id")
+    private Long id;
     @Basic
     @Size(max = 6)
     @Column(name = "short", length = 6)
@@ -16,6 +20,14 @@ public class TblSourceUkrainianKobivReferences {
     @Size(max = 338)
     @Column(name = "reference", length = 338)
     private String reference;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getShortField() {
         return shortField;

@@ -16,14 +16,11 @@
 
 package org.jacq.service.names.sources.services;
 
-import org.jacq.common.model.names.artsdatabanken.Artssok;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * RESTEasy Proxy Framework interface for querying the Artsdatabanken SOAP service using HTTP GET
@@ -41,6 +38,6 @@ public interface ArtsdatabankenNoService {
      */
     @GET
     @Path("/")
-    @Produces({MediaType.APPLICATION_XML})
+    @Produces({MediaType.TEXT_XML})
     String query(@QueryParam("Search") String search);
 }
