@@ -32,7 +32,7 @@ import java.util.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CommonName {
+public class CommonName implements Comparable<CommonName> {
 
     public Long id;
     public String name;
@@ -253,5 +253,10 @@ public class CommonName {
         hash = 61 * hash + Objects.hashCode(this.period);
         hash = 61 * hash + Objects.hashCode(this.taxon);
         return hash;
+    }
+
+    @Override
+    public int compareTo(CommonName commonName) {
+        return commonName.score.compareTo(this.score);
     }
 }

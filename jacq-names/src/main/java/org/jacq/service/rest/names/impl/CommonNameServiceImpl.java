@@ -80,9 +80,11 @@ public class CommonNameServiceImpl implements CommonNameService {
                 if (!"/name/common".equals(query.getType())) {
                     LOGGER.log(Level.INFO, "Type parameter is not /name/common", query.getType());
                 }
-
+                // sort results before returning them
+                ArrayList<CommonName> results = commonNameManager.query(query.getQuery());
+                Collections.sort(results);
+                response.setResult(results);
                 // return results as either EDMResponse or OpenRefineResponse
-                response.setResult(commonNameManager.query(query.getQuery()));
                 return Response.ok(response, mediaType).build();
             }
             // return common name webservice information if no response was returned and no exception thrown
