@@ -118,6 +118,7 @@ public class CatalogueOfLifeSource extends CachedWebServiceSource {
                                         .filter(s -> s != null && !s.isEmpty())
                                         .collect(Collectors.joining(", "))).collect(Collectors.toList());
                         commonName.getReferences().addAll(list);
+                        commonName.setScore(query.getScientificName());
 
                         results.add(commonName);
                     }

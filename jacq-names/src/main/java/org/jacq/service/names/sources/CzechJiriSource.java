@@ -21,15 +21,15 @@ public class CzechJiriSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // add common names from Czech Jiri Bezo1
-        String lookupQuery = "SELECT row FROM TblSourceCzechJiriBezo1 row WHERE row.latinName = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceCzechJiriBezo1 row WHERE row.latinName LIKE :scientificName";
         List<TblSourceCzechJiri> sourceQueryResults = new ArrayList<>(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
                 .setParameter("scientificName", query.getScientificName()).getResultList());
         // add common names from Czech Jiri Roztoci
-        lookupQuery = "SELECT row FROM TblSourceCzechJiriRoztoci row WHERE row.latinName = :scientificName";
+        lookupQuery = "SELECT row FROM TblSourceCzechJiriRoztoci row WHERE row.latinName LIKE :scientificName";
         sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
                 .setParameter("scientificName", query.getScientificName()).getResultList());
         // add common names from Czech Jiri Vacnatci
-        lookupQuery = "SELECT row FROM TblSourceCzechJiriVacnatci row WHERE row.latinName = :scientificName";
+        lookupQuery = "SELECT row FROM TblSourceCzechJiriVacnatci row WHERE row.latinName LIKE :scientificName";
         sourceQueryResults.addAll(em.createQuery(lookupQuery, TblSourceCzechJiri.class)
                 .setParameter("scientificName", query.getScientificName()).getResultList());
 
@@ -43,9 +43,7 @@ public class CzechJiriSource implements CommonNamesSource {
             commonName.setLanguage("ces");
             // from https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/CzechJiri.php
             commonName.getReferences().add("Czech names provided by Jiri Kvacek");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

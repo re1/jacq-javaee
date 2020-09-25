@@ -22,7 +22,7 @@ public class CzechPragueSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceCzechPrague row WHERE row.celeJmeno = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceCzechPrague row WHERE row.celeJmeno LIKE :scientificName";
         TypedQuery<TblSourceCzechPrague> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceCzechPrague.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -39,9 +39,7 @@ public class CzechPragueSource implements CommonNamesSource {
             commonName.setLanguage("ces");
 
             commonName.getReferences().add("Institute of Botany, Academy of Sciences of Czech Republic - Květena");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

@@ -22,7 +22,7 @@ public class SlovakBratislavaSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceSlovakBratislava row WHERE row.fldName = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceSlovakBratislava row WHERE row.fldName LIKE :scientificName";
         TypedQuery<TblSourceSlovakBratislava> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceSlovakBratislava.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -39,9 +39,7 @@ public class SlovakBratislavaSource implements CommonNamesSource {
             commonName.setLanguage("slk");
             // https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/SlovakBratislava.php
             commonName.getReferences().add("Slovak Academy of Sciences");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

@@ -22,7 +22,7 @@ public class TogoDbSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceTogodbJapanese row WHERE row.scientificName = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceTogodbJapanese row WHERE row.scientificName LIKE :scientificName";
         TypedQuery<TblSourceTogodbJapanese> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceTogodbJapanese.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -41,9 +41,7 @@ public class TogoDbSource implements CommonNamesSource {
             commonName.getReferences().add(String.format("%s (%s, %s) <%s>",
                     row.getInformationSourceName(), row.getInformationSourceDistributor(),
                     row.getInformationSourceDistributor(), row.getId()));
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

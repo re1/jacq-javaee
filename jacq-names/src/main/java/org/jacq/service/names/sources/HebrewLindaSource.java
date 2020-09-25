@@ -22,7 +22,7 @@ public class HebrewLindaSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceHebrewLinda row WHERE row.cleanScientificName = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceHebrewLinda row WHERE row.cleanScientificName LIKE :scientificName";
         TypedQuery<TblSourceHebrewLinda> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceHebrewLinda.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -39,9 +39,7 @@ public class HebrewLindaSource implements CommonNamesSource {
             commonName.setLanguage("heb");
             // https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/HebrewLinda.php
             commonName.getReferences().add("Hebrew Names");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

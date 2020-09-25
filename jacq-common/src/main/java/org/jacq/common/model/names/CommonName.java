@@ -222,7 +222,7 @@ public class CommonName {
     }
 
     /**
-     * @return Add single string of semicolon separated references for this common name
+     * @return Single string of semicolon separated references or if none exist sources for this common name
      */
     @XmlElement(name = "reference")
     public String getReference() {
@@ -246,7 +246,7 @@ public class CommonName {
      */
     @Transient
     public Long deduplicateHash() {
-        Long hash = 7L;
+        long hash = 7L;
         hash = 61 * hash + Objects.hashCode(this.name);
         hash = 61 * hash + Objects.hashCode(this.language);
         hash = 61 * hash + Objects.hashCode(this.geography);

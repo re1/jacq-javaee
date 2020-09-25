@@ -1,5 +1,6 @@
 package org.jacq.service.names.sources;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jacq.common.model.jpa.openup.TblSourceAllearterDk;
 import org.jacq.common.model.names.CommonName;
 import org.jacq.common.model.names.NameParserResponse;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AllearterDKSource implements CommonNamesSource {
@@ -22,7 +24,7 @@ public class AllearterDKSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceAllearterDk row WHERE row.videnskabeligtNavn LIKE :scientificName AND NOT (row.danskNavn IS NULL OR row.danskNavn = '')";
         TypedQuery<TblSourceAllearterDk> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceAllearterDk.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -39,12 +41,16 @@ public class AllearterDKSource implements CommonNamesSource {
             commonName.setGeography("Denmark");
             // all common names from this source are danish
             commonName.setLanguage("dan");
-            commonName.getReferences().add(String.format(
-                    "%s, %s, %s", row.getReferencenavn(), row.getReferencetekst(), row.getReferenceår()
-            ));
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.getReferences().add(
+                    StringUtils.defaultIfEmpty(
+                            StringUtils.join(
+                                    Arrays.asList(
+                                            row.getReferencenavn(),
+                                            row.getReferencetekst(),
+                                            row.getReferenceår()),
+                                    ","),
+                            "Allearter.dk"));
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

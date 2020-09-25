@@ -210,7 +210,7 @@ public class CommonNameManager {
                         // check if result already exists
                         Long deduplicateHash = commonName.deduplicateHash();
                         if (resultMap.containsKey(deduplicateHash)) {
-                            // only update references
+                            // merge references and sources
                             resultMap.get(deduplicateHash).getReferences().addAll(commonName.getReferences());
                         } else {
                             // add entry to result list

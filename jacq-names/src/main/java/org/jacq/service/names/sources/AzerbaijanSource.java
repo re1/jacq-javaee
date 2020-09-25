@@ -45,9 +45,7 @@ public class AzerbaijanSource implements CommonNamesSource {
             // all common names from this source are azerbaijani
             commonName.setLanguage("aze");
             commonName.getReferences().add("Azerbaijan National Academy of Sciences, Institute of Botany, Azerbaijan");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

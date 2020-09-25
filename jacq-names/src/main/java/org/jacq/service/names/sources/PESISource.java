@@ -74,9 +74,11 @@ public class PESISource extends CachedWebServiceSource {
 
                 CommonName commonName = new CommonName();
 
-                commonName.setTaxon(query.getScientificName());
                 commonName.setName(vernacular.getString("vernacular", null));
+                commonName.setTaxon(query.getScientificName());
                 commonName.setLanguage(vernacular.getString("language_code", null));
+                commonName.getReferences().add("PESI (2014). Pan-European Species directories Infrastructure. Accessed through www.eu-nomen.eu/portal");
+                commonName.setScore(100L);
 
                 results.add(commonName);
             }

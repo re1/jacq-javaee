@@ -22,7 +22,7 @@ public class EtiDatabasesSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceEtiDatabases row WHERE row.taxon = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceEtiDatabases row WHERE row.taxon LIKE :scientificName";
         TypedQuery<TblSourceEtiDatabases> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceEtiDatabases.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -38,9 +38,7 @@ public class EtiDatabasesSource implements CommonNamesSource {
             commonName.setTaxon(row.getTaxon());
             commonName.setLanguage(row.getIso6396());
             commonName.getReferences().add(row.getSource());
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }

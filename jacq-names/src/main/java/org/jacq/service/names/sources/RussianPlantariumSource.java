@@ -22,7 +22,7 @@ public class RussianPlantariumSource implements CommonNamesSource {
     @Override
     public ArrayList<CommonName> query(NameParserResponse query) {
         // build SQL lookup query for source rows for the given query
-        String lookupQuery = "SELECT row FROM TblSourceRussianPlantarium row WHERE row.scientificName = :scientificName";
+        String lookupQuery = "SELECT row FROM TblSourceRussianPlantarium row WHERE row.scientificName LIKE :scientificName";
         TypedQuery<TblSourceRussianPlantarium> sourceQuery =
                 em.createQuery(lookupQuery, TblSourceRussianPlantarium.class)
                         .setParameter("scientificName", query.getScientificName());
@@ -39,9 +39,7 @@ public class RussianPlantariumSource implements CommonNamesSource {
             commonName.setLanguage("rus");
             // https://github.com/wkollernhm/openup/blob/master/protected/components/Sources/RussianPlantarium.php
             commonName.getReferences().add("Plantarium - Russia");
-            // TODO: Query tables with similar scientific names
-            commonName.setScore(100L);
-            commonName.setMatch(true);
+            commonName.setScore(query.getScientificName());
             // add common name to results
             results.add(commonName);
         }
